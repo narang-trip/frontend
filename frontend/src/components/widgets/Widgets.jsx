@@ -1,4 +1,5 @@
 import ClipLoader from "react-spinners/ClipLoader";
+import CalendarCp from "./CalendarCp";
 
 export default function Widgets() {
   return (
@@ -6,6 +7,7 @@ export default function Widgets() {
       위젯 두는 곳
       <hr/>
       <ClipLoader color="d3d3d3" />
+      <CalendarCp />
     </div>
-  );
+  )
 }

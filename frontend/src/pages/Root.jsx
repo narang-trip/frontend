@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
 import MainNavigation from "../components/MainNavigation";
-import Widgets from "../components/Widgets";
+import Widgets from "../components/widgets/Widgets";
 import { Fragment } from "react";
 import UpperNavbar from "../components/UpperNavBar";
 
 function RootLayout() {
   // const navigation = useNavigation();
+
 
   return (
     <Fragment>
