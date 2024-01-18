@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import moment from "moment";
 
-import "../css/Calendar.css";
+import "../../css/Calendar.css";
+import CarroselRightSide from "./CarroselRightSide";
 
 const dayList = [
   "2024-01-10",
@@ -34,7 +35,8 @@ export default function CalendarCp() {
 
   const onClickDayHandler = (value, event) => {
     if (event.target.textContent.includes("😂")) {
-      console.log("hi")
+      console.log("hi");
+      navigate("/search")
     }
   };
 
@@ -49,7 +51,7 @@ export default function CalendarCp() {
         tileContent={addContent}
         onClickDay={onClickDayHandler}
       />
-      ;
+      <CarroselRightSide />
     </div>
   );
 }

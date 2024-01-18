@@ -9,5 +9,5 @@ export default function Widgets() {
       <ClipLoader color="d3d3d3" />
       <CalendarCp />
     </div>
-  );
+  )
 }
