@@ -6,6 +6,7 @@ import ErrorPage from "./pages/Error";
 import SearchPage from "./pages/Search";
 import PlanningPage from "./pages/Planning";
 import ApplicantList from "./pages/ApplicantList";
+import WritePage from "./pages/Write";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
+      {
+        path: "write",
+        element: <WritePage />
+      },
       {
         path: "search",
         element: <SearchPage />,
