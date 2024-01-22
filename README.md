@@ -55,3 +55,6 @@
 |feature   			|`추가 기능 개발 브랜치. develop 브랜치에 들어간다` 		    |
 |release 	|`다음 버전 출시를 준비하는 브랜치. develop 브랜치를 release 브랜치로 옮긴 후 QA, 테스트를 진행하고 master 브랜치로 합친다`	|	
 |hotfix    			|`master 브랜치에서 발생한 버그를 수정하는 브랜치` 		    |
+
+
+....
