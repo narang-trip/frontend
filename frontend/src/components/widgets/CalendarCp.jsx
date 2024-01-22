@@ -14,7 +14,7 @@ const dayList = [
   "2024-01-27",
 ];
 // 체크용 더미데이터 실제로는 axios.get을 통해 api통신으로 받아올 예정
-export default function CalendarCp() {
+const CalendarCp = () => {
   const [value, setValue] = useState(new Date());
   const navigate = useNavigate();
   const addContent = ({ date }) => {
@@ -25,7 +25,6 @@ export default function CalendarCp() {
     if (dayList.find((day) => day === moment(date).format("YYYY-MM-DD"))) {
       contents.push(
         <>
-          {/* <div className="dot"></div> */}
           😂
         </>
       );
@@ -49,9 +48,12 @@ export default function CalendarCp() {
         value={value}
         minDate={new Date(2024, 0, 1)}
         tileContent={addContent}
+        
         onClickDay={onClickDayHandler}
       />
       <CarroselRightSide />
     </div>
   );
 }
+
+export default CalendarCp;
