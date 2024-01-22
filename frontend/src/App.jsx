@@ -7,6 +7,8 @@ import SearchPage from "./pages/Search";
 import PlanningPage from "./pages/Planning";
 import ApplicantList from "./pages/ApplicantList";
 import WritePage from "./pages/Write";
+import ChatTestPage from "./pages/ChatTest";
+import ChatPage from "./pages/Chat";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,15 @@ const router = createBrowserRouter([
         path: "planning",
         element: <PlanningPage />,
       },
+      {
+        path: "chatRoomTest",
+        element: <ChatTestPage />,
+        
+      },
+      {
+        path: "chatRoomTest/chat/:chatRoomId",
+        element: <ChatPage/>
+      }
     ],
   },
 ]);

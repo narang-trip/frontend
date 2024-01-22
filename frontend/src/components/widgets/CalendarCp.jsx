@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import moment from "moment";
@@ -23,19 +23,15 @@ const CalendarCp = () => {
 
     // date(각 날짜)가  리스트의 날짜와 일치하면 해당 컨텐츠(이모티콘) 추가
     if (dayList.find((day) => day === moment(date).format("YYYY-MM-DD"))) {
-      contents.push(
-        <>
-          😂
-        </>
-      );
+      contents.push(<Fragment key={moment(date).format("YYYY-MM-DD")}>😂</Fragment>);
     }
-    return <div>{contents}</div>; // 각 날짜마다 해당 요소가 들어감
+    return <div key={moment(date).format("YYYY-MM-DD")}>{contents}</div>; // 각 날짜마다 해당 요소가 들어감
   };
 
   const onClickDayHandler = (value, event) => {
     if (event.target.textContent.includes("😂")) {
       console.log("hi");
-      navigate("/search")
+      navigate("/search");
     }
   };
 
@@ -48,12 +44,11 @@ const CalendarCp = () => {
         value={value}
         minDate={new Date(2024, 0, 1)}
         tileContent={addContent}
-        
         onClickDay={onClickDayHandler}
       />
       <CarroselRightSide />
     </div>
   );
-}
+};
 
 export default CalendarCp;

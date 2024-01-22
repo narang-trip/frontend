@@ -1,7 +1,5 @@
-
-
- const Carousel = () => {
-  return <>Carousel</>
-}
+const Carousel = () => {
+  return <>Carousel</>;
+};
 
 export default Carousel;

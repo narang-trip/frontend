@@ -8,7 +8,7 @@ export default function HomePage() {
       <div className="text-3xl text-red-500 text-center">홈페이지</div>
       <img
         src="/assets/travelBanner.jpg"
-        className="object-cover w-[100%] h-40"
+        className="object-cover w-full h-40"
       />
       <Concept />
       <TripList />
