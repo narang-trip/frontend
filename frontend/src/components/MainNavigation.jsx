@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 function MainNavigation() {
   return (
     <div>
-      <nav className=" flex items-center" >
+      <nav className="flex items-center">
         <ul className="text-center">
           <li className="mb-[400px]">
             <NavLink to="/" end>
@@ -21,9 +21,6 @@ function MainNavigation() {
           </li>
           <li>
             <NavLink to="/planning">Planning</NavLink>
-          </li>
-          <li>
-            <NavLink to="/chatRoomTest">ChatroomTest</NavLink>
           </li>
         </ul>
       </nav>
