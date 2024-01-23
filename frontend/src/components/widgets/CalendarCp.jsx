@@ -14,7 +14,7 @@ const dayList = [
   "2024-01-27",
 ];
 // 체크용 더미데이터 실제로는 axios.get을 통해 api통신으로 받아올 예정
-export default function CalendarCp() {
+const CalendarCp = () => {
   const [value, setValue] = useState(new Date());
   const navigate = useNavigate();
   const addContent = ({ date }) => {
@@ -23,14 +23,9 @@ export default function CalendarCp() {
 
     // date(각 날짜)가  리스트의 날짜와 일치하면 해당 컨텐츠(이모티콘) 추가
     if (dayList.find((day) => day === moment(date).format("YYYY-MM-DD"))) {
-      contents.push(
-        <>
-          {/* <div className="dot"></div> */}
-          😂
-        </>
-      );
+      contents.push(<Fragment key={moment(date).format("YYYY-MM-DD")}>😂</Fragment>);
     }
-    return <div>{contents}</div>; // 각 날짜마다 해당 요소가 들어감
+    return <div key={moment(date).format("YYYY-MM-DD")}>{contents}</div>; // 각 날짜마다 해당 요소가 들어감
   };
 
   const onClickDayHandler = (value, event) => {
@@ -54,4 +49,6 @@ export default function CalendarCp() {
       <CarroselRightSide />
     </div>
   );
-}
+};
+
+export default CalendarCp;
