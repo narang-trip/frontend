@@ -1,9 +1,47 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import DayPlan from "./DayPlan";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
+import * as Y from "yjs";
+import { WebrtcProvider } from "y-webrtc";
+
+const ydoc = new Y.Doc();
+
+const ymap = ydoc.getMap("test");
+const ymapNested = new Y.Map();
+
+ymap.set("my nested map", ymapNested);
+ymap.set("list", []);
+
+const provider = new WebrtcProvider("test-demo-room", ydoc, {
+  signaling: ["ws://localhost:5174"],
+});
+
+const awareness = provider.awareness;
+
+awareness.setLocalStateField("user", {
+  name: "Emmanuelle Charpentier",
+  color: "#ffb61e",
+});
+
+awareness.on("change", () => {
+  console.log(Array.from(awareness.getStates().values()));
+});
+
 const Plan = () => {
   const [list, setList] = useState([]);
+
+  ydoc.on("afterTransaction", () => {
+    setList(Array.from(ymap.get("list")));
+  });
+
+  useMemo(() => {
+    ymap.set("list", list);
+  }, [JSON.stringify(list)]);
+
+  const update = () => {
+    setList(list);
+  };
 
   const add = () => {
     setList([...list, new Array()]);
@@ -31,6 +69,7 @@ const Plan = () => {
                 <div ref={provided.innerRef} {...provided.droppableProps}>
                   <DayPlan
                     data={{ index: index + 1, list: list.at(index) }}
+                    update={update}
                     key={index}
                   />
                 </div>

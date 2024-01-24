@@ -8,6 +8,7 @@ const DayPlan = (props) => {
   const add = () => {
     props.data.list.push(new Array(1).fill(`${1 + list.length}`));
     setList([...list, new Array(1).fill(`${1 + list.length}`)]);
+    props.update();
   };
 
   return (
