@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: trip-service
+server:
+  port: 8083
+
+springdoc:
+  api-docs:
+    path: /trip/v3/api-docs
+  swagger-ui:
+    path: /trip/swagger-ui.html
