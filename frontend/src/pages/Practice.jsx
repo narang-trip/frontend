@@ -2,7 +2,7 @@ import useNativeLazyLoading from '@charlietango/use-native-lazy-loading';
 import { useInView } from 'react-intersection-observer';
 
 const PracticePage = () => {
-  const height = "500px";
+  const height = "700px";
   const width = "700px";
   const supportsLazyLoading = useNativeLazyLoading();
   const { ref, inView } = useInView({
@@ -20,6 +20,7 @@ const PracticePage = () => {
         background: '#2a4b7a',
       }}
     >
+      33
       {inView || supportsLazyLoading ? (
         <img
           src={"assets/travel1.jpg"}
