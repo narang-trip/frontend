@@ -1,28 +1,26 @@
+import { Fragment } from "react";
+import { useInView, InView } from "react-intersection-observer";
+
 const SearchPage = () => {
-  // IntersectionObserver 등록
-  const entries = [];
-    
-  // 20개의 아이템 추가 함수
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      // 관찰 대상이 viewport 안에 들어온 경우 'active' 클래스 추가
-      if (entry.intersectionRatio > 0) {
-        entry.target.classList.add("active");
-      }
-      // 그 외의 경우 'active' 클래스 제거
-      else {
-        entry.target.classList.remove("active");
-      }
-    });
+  const { ref, inView, entry } = useInView({
+    /* Optional options */
+    threshold: 0.5,
   });
-
-  // 관찰할 대상을 선언하고, 해당 속성을 관찰
-  const boxList = document.querySelectorAll(".box");
-  boxList.forEach((el) => {
-    io.observe(el);
-  });
-  return <div className=""></div>;
+  return (
+    <Fragment>
+      <div ref={ref} className="">
+        <h2>{`Header inside viewport ${inView}.`}</h2>
+      </div>
+      <InView
+        as="div"
+        onChange={(inView, entry) => console.log("Inview:", inView)}
+      >
+        <h2>
+          Plain children are always rendered. Use onChange to monitor state.
+        </h2>
+      </InView>
+    </Fragment>
+  );
 };
 
 export default SearchPage;
