@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        gradle Gradle
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -15,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Gradle을 사용하여 trip-service 프로젝트 빌드
-                sh "cd backend/trip-service && gradlew clean build"
+                sh "cd backend/trip-service && gradle clean build"
             }
         }
         stage('Deploy') {
