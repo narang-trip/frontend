@@ -1,0 +1,39 @@
+#version: '3.8'
+#
+#services:
+#  rabbitmq:
+#    build:
+#      context: ./rabbitmq
+#    hostname: "rabbitmq"
+#    environment:
+#      - RABBITMQ_STOMP_PORT=61613
+#    ports:
+#      - "5672:5672"  # RabbitMQ default port
+#      - "15672:15672"  # RabbitMQ management console port
+#      - "61613:61613"  # STOMP port
+#
+#  spring-app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - rabbitmq
+#    ports:
+##      - "8080:8080"  # Spring Boot app port
+#version: '3'
+#services:
+#  rabbitmq:
+#    image: "rabbitmq:3.8.22-management"
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+#    environment:
+#      RABBITMQ_DEFAULT_USER: "guest"
+#      RABBITMQ_DEFAULT_PASS: "guest"
+#  spring-app:
+#    image: "your-spring-app-image:latest"
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - rabbitmq
+#
