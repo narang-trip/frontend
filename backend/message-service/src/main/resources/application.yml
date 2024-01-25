@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: message-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/rr?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
+    password: ssafy
+  jpa:
+    show-sql: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    stream:
+      username: guest
+      password: guest
+
+server:
+  port: 8084
+
+springdoc:
+  api-docs:
+    path: /message/v3/api-docs
+  swagger-ui:
+    path: /message/swagger-ui.html
