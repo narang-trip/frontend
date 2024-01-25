@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+    tools {
+        // 여기서 뒤 이름을 우리가 젠킨스에서 설정하는 것. 
+        gradle 'Gradle'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                // 소스 코드 체크아웃
+                checkout scm
+            }
+        }
+        stage('Jar Build') {
+            steps {
+                // Gradle을 사용하여 chat-service 프로젝트 빌드
+                sh "cd backend/chat-service && chmod +x gradlew && ./gradlew clean build"
+            }
+        }
+        stage('Docker Image Build') {
+            steps {
+                // 빌드된 JAR 파일 도커 이미지로 생성 
+                // sh 'cp backend/chat-service/build/libs/chat-service-0.0.1-SNAPSHOT.jar backend/deployments'
+                // sh 'pwd && ls'
+                
+                // sh('echo "docker running"')
+                // sh('docker ps -a')
+                // sh('docker ps -a | grep "chat-service"')
+                // sh('docker ps -a | grep "chat-service" | awk \'{print $1}\'' )
+                sh('(docker ps -a | grep "8084" | awk \'{print $1}\') | xargs docker stop || true' )
+
+                sh('chmod +x ./jenkinsfile/port-refresh-chat.sh')
+
+                // echo 'No chat-service running . . . About to Build a image . . .'
+                sh 'docker build -t chat-service -f ./backend/chat-service/Dockerfile .'
+                // 배포 스크립트 실행 (예: Docker 컨테이너에 배포)
+                sh 'docker run -p 8084:8084 -d chat-service'
+            }
+        }
+    }
+}
