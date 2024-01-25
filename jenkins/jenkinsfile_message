@@ -13,28 +13,28 @@ pipeline {
         }
         stage('Jar Build') {
             steps {
-                // Gradle을 사용하여 chat-service 프로젝트 빌드
-                sh "cd backend/chat-service && chmod +x gradlew && ./gradlew clean build"
+                // Gradle을 사용하여 message-service 프로젝트 빌드
+                sh "cd backend/message-service && chmod +x gradlew && ./gradlew clean build"
             }
         }
         stage('Docker Image Build') {
             steps {
                 // 빌드된 JAR 파일 도커 이미지로 생성 
-                // sh 'cp backend/chat-service/build/libs/chat-service-0.0.1-SNAPSHOT.jar backend/deployments'
+                // sh 'cp backend/message-service/build/libs/message-service-0.0.1-SNAPSHOT.jar backend/deployments'
                 // sh 'pwd && ls'
                 
                 // sh('echo "docker running"')
                 // sh('docker ps -a')
-                // sh('docker ps -a | grep "chat-service"')
-                // sh('docker ps -a | grep "chat-service" | awk \'{print $1}\'' )
+                // sh('docker ps -a | grep "message-service"')
+                // sh('docker ps -a | grep "message-service" | awk \'{print $1}\'' )
                 sh('(docker ps -a | grep "8084" | awk \'{print $1}\') | xargs docker stop || true' )
 
-                sh('chmod +x ./jenkins/port-refresh-chat.sh')
+                sh('chmod +x ./jenkins/port-refresh-message.sh')
 
-                // echo 'No chat-service running . . . About to Build a image . . .'
-                sh 'docker build -t chat-service -f ./backend/chat-service/Dockerfile .'
+                // echo 'No message-service running . . . About to Build a image . . .'
+                sh 'docker build -t message-service -f ./backend/message-service/Dockerfile .'
                 // 배포 스크립트 실행 (예: Docker 컨테이너에 배포)
-                sh 'docker run -p 8084:8084 -d chat-service'
+                sh 'docker run -p 8084:8084 -d message-service'
             }
         }
     }
