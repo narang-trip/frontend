@@ -1,6 +1,7 @@
 package com.ssafy.messageservice.api.controller;
 
-import com.ssafy.messageservice.api.service.ChatService;
+import com.ssafy.messageservice.api.response.ChatCreateResponse;
+import com.ssafy.messageservice.api.service.ChatServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/chat")
-public class ChatRoomController {
-    private ChatService chatService;
+public class ChatroomController {
+    private ChatServiceImpl chatServiceImpl;
 
     @Autowired
-    public ChatRoomController(ChatService chatService){
-        this.chatService = chatService;
+    public ChatroomController(ChatServiceImpl chatServiceImpl){
+        this.chatServiceImpl = chatServiceImpl;
     }
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatServiceImpl.class);
 
     // 채팅방 리스트
 //    @GetMapping("/list")
-//    public ResponseEntity<String> getChatrooms(Long chatRoomId, String nickname) {
-//        LOGGER.info(String.format("Message 확인!!!!! -> %s", chatRoomId));
-//        return ResponseEntity.ok("Hello, this is an example!");
+//    public ResponseEntity<ChatCreateResponse> getChatrooms() {
+//        LOGGER.info(String.format("채팅방 리스트 출력..."));
+////        chatServiceImpl.
+////        return ResponseEntity.ok("Hello, this is an example!");
 //    }
-//    private final RabbitTemplate template;
 
 //    @GetMapping("/room")
 //    public String chatPage() {
