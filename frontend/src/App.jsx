@@ -9,7 +9,7 @@ import ApplicantList from "./pages/ApplicantList";
 import WritePage from "./pages/Write";
 import ChatTestPage from "./pages/ChatTest";
 import ChatPage from "./pages/Chat";
-import PracticePage from "./pages/Practice";
+import PracticePage from "./pages/PracticeInfinite";
 
 const router = createBrowserRouter([
   {
