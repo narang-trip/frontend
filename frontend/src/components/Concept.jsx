@@ -7,7 +7,7 @@ export default function Concept() {
   console.log(concept);
   return <div className="flex">
     {conceptImage.map((value) => {
-      return <img onClick={() => setConcept(value)} className="m-1" src={`concept/${value}.jpg`} key={value} width="12.5%" height="auto"/>
+      return <img onClick={() => setConcept(value)} className="m-1 rounded-full" src={`concept/${value}.jpg`} key={value} width="12.5%" height="auto"/>
     })}
     
   </div>

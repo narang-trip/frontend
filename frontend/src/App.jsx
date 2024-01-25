@@ -7,9 +7,9 @@ import SearchPage from "./pages/Search";
 import PlanningPage from "./pages/Planning";
 import ApplicantList from "./pages/ApplicantList";
 import WritePage from "./pages/Write";
-import ChatTestPage from "./pages/ChatTest";
 import ChatPage from "./pages/Chat";
 import PracticePage from "./pages/PracticeInfinite";
+import ChatRoomPage from "./pages/ChatRoom";
 
 const router = createBrowserRouter([
   {
@@ -36,11 +36,11 @@ const router = createBrowserRouter([
       },
       {
         path: "chatRoomTest",
-        element: <ChatTestPage />,
+        element: <ChatPage />,
       },
       {
         path: "chatRoomTest/chat/:chatRoomId",
-        element: <ChatPage />,
+        element: <ChatRoomPage />,
       },
       {
         path: "practice",

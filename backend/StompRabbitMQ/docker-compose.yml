@@ -20,20 +20,20 @@
 #      - rabbitmq
 #    ports:
 ##      - "8080:8080"  # Spring Boot app port
-#version: '3'
-#services:
-#  rabbitmq:
-#    image: "rabbitmq:3.8.22-management"
-#    ports:
-#      - "5672:5672"
-#      - "15672:15672"
-#    environment:
-#      RABBITMQ_DEFAULT_USER: "guest"
-#      RABBITMQ_DEFAULT_PASS: "guest"
-#  spring-app:
-#    image: "your-spring-app-image:latest"
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - rabbitmq
-#
+version: '3'
+services:
+  rabbitmq:
+    image: "rabbitmq:3.8.22-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+  spring-app:
+    image: "your-spring-app-image:latest"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+
