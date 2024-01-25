@@ -25,6 +25,9 @@ function MainNavigation() {
           <li>
             <NavLink to="/chatRoomTest">ChatroomTest</NavLink>
           </li>
+          <li>
+            <NavLink to="/practice">Practice</NavLink>
+          </li>
         </ul>
       </nav>
     </div>

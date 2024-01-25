@@ -9,6 +9,7 @@ import ApplicantList from "./pages/ApplicantList";
 import WritePage from "./pages/Write";
 import ChatTestPage from "./pages/ChatTest";
 import ChatPage from "./pages/Chat";
+import PracticePage from "./pages/Practice";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       {
         path: "write",
-        element: <WritePage />
+        element: <WritePage />,
       },
       {
         path: "search",
@@ -36,12 +37,15 @@ const router = createBrowserRouter([
       {
         path: "chatRoomTest",
         element: <ChatTestPage />,
-        
       },
       {
         path: "chatRoomTest/chat/:chatRoomId",
-        element: <ChatPage/>
-      }
+        element: <ChatPage />,
+      },
+      {
+        path: "practice",
+        element: <PracticePage />,
+      },
     ],
   },
 ]);
