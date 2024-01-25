@@ -1,5 +1,5 @@
 import {Fragment} from 'react';
-import WriteForm from "../components/WriteFrom";
+import WriteForm from "../components//WriteForm/WriteForm";
 
 export default function WritePage() {
     return ( 
