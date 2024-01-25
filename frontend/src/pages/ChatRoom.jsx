@@ -1,82 +1,83 @@
 import { Fragment, useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 
 import Button from "../ui/Button";
 
 const ChatRoomPage = () => {
+  const params = useParams();
+  const chatRoomId = params.chatRoomId;
   const nickname = new URLSearchParams(location.search).get("nickname");
-  const chatRoomId = new URLSearchParams(location.search).get("chatRoomId");
-  const [chats, setChats] = useState([]);
-  const [msgContent, setMsgContent] = useState("");
+  const inputRef = useRef("");
+  const [stomp, setStomp] = useState(null);
+  const [chats, setChats] = useState([
+    { nickname: "관리자", message: "--님이 입장하셨습니다." },
+  ]);
+  const [inputMsg, setInputMsg] = useState("");
+  const onError = () => {
+    console.log("에러 남");
+  };
 
-  const sockJS = new SockJS("/stomp/chat");
-  const stomp = Stomp.over(sockJS);
-  // stomp.heartbeat.outgoing = 0; //Rabbit에선 heartbeat 안먹힌다고 함
-  // stomp.heartbeat.incoming = 0; //Rabbit에선 heartbeat 안먹힌다고 함
+  console.log("또 실행되면 나옴");
+  useEffect(() => {
+    console.log("또 실행되면 나옴 유즈이펙트 안에 있음");
+    inputRef.current.focus();
+    const sockJS = new SockJS("http://localhost:8084/stomp/chat");
+    const stompClient = Stomp.over(sockJS);
+    stompClient.connect(
+      "guest",
+      "guest",
+      function (frame) {
+        console.log("Connected to Stomp");
 
-  function onError(e) {
-    console.log("STOMP ERROR", e);
-  }
+        stompClient.subscribe(
+          `/exchange/chat.exchange/room.${chatRoomId}`,
+          function (message) {
+            const chatDto = JSON.parse(message.body);
 
-  function onDebug(m) {
-    console.log("STOMP DEBUG", m);
-  }
+            setChats((prevData) => [
+              ...prevData,
+              {
+                [chatDto.nickname]: chatDto.message,
+              },
+            ]);
+          },
+          function (error) {
+            console.error("Stomp connection error", error);
+          }
+        );
 
-  stomp.debug = onDebug;
-
-  stomp.connect(
-    "guest",
-    "guest",
-    function (frame) {
-      console.log("STOMP Connected");
-
-      stomp.subscribe(
-        `/exchange/chat.exchange/room.${chatRoomId}`,
-        function (content) {
-          const payload = JSON.parse(content.body);
-
-          let className = payload.nickname == nickname ? "mine" : "yours";
-
-          setChats((prevData) => [...prevData, {
-            className, nickname, message: msgContent
-          }]);
-
-          //밑의 인자는 Queue 생성 시 주는 옵션
-          //auto-delete : Consumer가 없으면 스스로 삭제되는 Queue
-          //durable : 서버와 연결이 끊겨도 메세지를 저장하고 있음
-          //exclusive : 동일한 이름의 Queue 생길 수 있음
-        },
-        { "auto-delete": true, durable: false, exclusive: false }
-      );
-
-      //입장 메세지 전송
-      stomp.send(
-        `/pub/chat.enter.${chatRoomId}`,
-        {},
-        JSON.stringify({
-          memberId: 1,
-          nickname: nickname,
-        })
-      );
-    },
-    onError,
-    "/"
-  );
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    stomp.send(
-      `/pub/chat.message.${chatRoomId}`,
-      {},
-      JSON.stringify({
-        message: msgContent,
-        memberId: 1,
-        nickname: nickname,
-      })
+        //입장 메세지 전송
+        stompClient.send(
+          `/pub/chat.enter.${chatRoomId}`,
+          {},
+          JSON.stringify({
+            memberId: 1,
+            nickname: nickname,
+          })
+        );
+      },
+      onError,
+      "/"
     );
-    setMsgContent("");
+    setStomp(stompClient);
+  }, [chatRoomId, nickname]);
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+
+    // stomp.send(
+    //   "/pub/chat.message.1",
+    //   {},
+    //   JSON.stringify({
+    //     message: inputRef.current,
+    //     memberId: 1,
+    //     nickname: "YourNickname",
+    //   })
+    // );
+    // inputRef.current.valueOf("");
+    setInputMsg("");
   };
 
   return (
@@ -86,9 +87,13 @@ const ChatRoomPage = () => {
       <h2>안녕하세요 {nickname}님</h2>
       <div>
         <form onSubmit={submitHandler}>
+          <label htmlFor="message">Message:</label>
           <input
             type="text"
             id="message"
+            ref={inputRef}
+            value={inputMsg}
+            onChange={(e) => setInputMsg(e.target.value)}
             className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           <Button type="submit">전송</Button>
@@ -97,12 +102,11 @@ const ChatRoomPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <div className="w-64 h-80 bg-gray-300 p-4 rounded-md shadow-md">
           <h1>채팅방 입장</h1>
-          {chats.map((chat, index) => (
-            <div key={index} className={chat.className}>
-              <div>{chat.nickname}</div>
-              <div>{chat.message}</div>
-            </div>
-          ))}
+          <div id="chatArea">
+            {chats.map((msg) => (
+              <li key={msg.message}>{`${msg.nickname} : ${msg.message}`}</li>
+            ))}
+          </div>
         </div>
       </div>
     </Fragment>

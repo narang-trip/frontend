@@ -17,7 +17,7 @@ export default function CarroselRightSide() {
   };
   return (
     <Fragment>
-      <Carousel slides={slides} />
+      {/* <Carousel slides={slides} /> */}
     </Fragment>
   );
 }
