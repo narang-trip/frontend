@@ -1,7 +1,7 @@
 package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.response.ChatDto;
-import com.ssafy.messageservice.api.service.ChatService;
+import com.ssafy.messageservice.api.service.ChatServiceImpl;
 import com.ssafy.messageservice.db.entity.Chat;
 import com.ssafy.messageservice.db.entity.Chatroom;
 import com.ssafy.messageservice.db.repository.ChatRepository;
@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @Slf4j
 public class StompRabbitController {
     private final RabbitTemplate template;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatServiceImpl.class);
 
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final static String CHAT_QUEUE_NAME = "chat.queue";

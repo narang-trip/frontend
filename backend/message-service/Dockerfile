@@ -1,12 +1,13 @@
-#FROM openjdk:17-alpine
-## 빌드된 JAR 파일을 복사
-#COPY build/libs/StompRabbitMQ-0.0.1-SNAPSHOT.jar /app.jar
-## 애플리케이션 포트
-#EXPOSE 8080
-#
-## 애플리케이션 실행
-#CMD ["java", "-jar", "/app.jar"]
+# Dockerfile
+
+# 사용할 기본 이미지를 선택합니다.
 FROM openjdk:17-alpine
-ARG JAR_FILE=message-service-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} /message-service.jar
-ENTRYPOINT ["java", "-jar", "/message-service.jar"]
+
+# 작업 디렉토리를 지정합니다.
+ARG JAR_FILE=./backend/message-service/build/libs/message-service-0.0.1-SNAPSHOT.jar
+
+# 호스트의 JAR 파일을 컨테이너의 작업 디렉토리로 복사합니다.
+COPY ${JAR_FILE} ./message-service.jar
+
+# 컨테이너에서 수행될 명령어를 지정합니다.
+ENTRYPOINT ["java","-jar", "message-service.jar"]
