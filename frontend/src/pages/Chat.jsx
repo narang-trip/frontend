@@ -8,7 +8,7 @@ const ChatPage = () => {
     const chatRoomId = e.target.elements.chatRoomId.value;
     const nickname = e.target.elements.nickname.value;
 
-    const dynamicPath = `/chat/room?chatRoomId=${chatRoomId}&nickname=${nickname}`;
+    const dynamicPath = `chat/chatRoomId=${chatRoomId}?nickname=${nickname}`;
 
     navigate(dynamicPath);
   };
