@@ -12,7 +12,7 @@ function RootLayout() {
     <Fragment>
         <UpperNavbar/>
       <div className="flex">
-        <div className="w-1/12 flex bg-slate-400">
+        <div className="flex justify-center w-1/12 h-screen bg-slate-400">
           <MainNavigation />
         </div>
         <main className="w-8/12 bg-slate-200">
