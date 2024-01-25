@@ -3,43 +3,44 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { GoHome, GoPersonAdd, GoSearch } from "react-icons/go";
 import { LiaCalendarDaySolid } from "react-icons/lia";
 import Tooltip from "./ToolTip";
+
 function MainNavigation() {
   return (
-    <div>
-      <nav className="flex justify-items-center">
+    <div className="flex">
+      <nav className="flex h-screen">
         <ul className="flex-row">
           <Tooltip text="메인화면">
-            <li className="mb-[100px] bg-white bg-opacity-0 hover:bg-opacity-100">
+            <li className="flex h-20 mb-[100px] bg-white bg-opacity-0 hover:bg-opacity-100 items-center justify-center">
               <NavLink to="/">
-                <GoHome className="w-14 h-14" />
+                <GoHome className="mx-auto w-14 h-14" />
               </NavLink>
             </li>
           </Tooltip>
           <li className="bg-white bg-opacity-0 hover:bg-opacity-100">
             <Tooltip text="동행모집작성">
               <NavLink to="/write">
-                <PencilSquareIcon className="w-14 h-14" />
+                <PencilSquareIcon className="mx-auto my-8 w-14 h-14" />
               </NavLink>
             </Tooltip>
           </li>
           <li className="bg-white bg-opacity-0 hover:bg-opacity-100">
-            <Tooltip text="동행모집검색">
+            <Tooltip text="동행모집검색"> 
               <NavLink to="/search">
-                <GoSearch className="w-14 h-14" />
+                <GoSearch className="mx-auto my-8 w-14 h-14" />
               </NavLink>
             </Tooltip>
           </li>
           <li className="bg-white bg-opacity-0 hover:bg-opacity-100">
             <Tooltip text="신청현황">
               <NavLink to="/applicantList">
-                <GoPersonAdd className="w-14 h-14" />
+                <GoPersonAdd className="mx-auto my-8 w-14 h-14" />
               </NavLink>
             </Tooltip>
           </li>
           <li className="bg-white bg-opacity-0 hover:bg-opacity-100">
             <Tooltip text="여행일정생성">
               <NavLink to="/planning">
-                <LiaCalendarDaySolid className="w-14 h-14" />
+                <LiaCalendarDaySolid className="mx-auto my-8 w-14 h-14" />
               </NavLink>
             </Tooltip>
           </li>

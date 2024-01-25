@@ -1,23 +1,24 @@
 import { useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import FileUploadBox from "./FileUploadBox";
 
 export default function WriteForm() {
   const [formData, setFormData] = useState({
     title: "",
     concept: "",
     img: "",
-    period: "",
+    startDate: "",
+    endDate: "",
+    DateRange: [],
     location: "",
     count: "",
     position: "",
     plan: "",
     description: "",
   });
-
-  // 이미지 파일 자체의 상태
-  const [file, setFile] = useState("");
-  // 이미지 파일의 url
-  const [uploadedImage, setUploadedImage] = useState("");
 
   const navigate = useNavigate();
 
@@ -30,22 +31,10 @@ export default function WriteForm() {
     }));
   };
 
-  // 파일 데이터 보관하기 위한 함수
-  const handleFileChange = (e) => {
-    const { files } = e.target;
-    setFile(files[0]);
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onloadend = () => {
-      setUploadedImage(reader.result);
-    };
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
   }; // handleSubmit 끝
+
   return (
     <Fragment>
       <form onSubmit={handleSubmit}>
@@ -62,7 +51,11 @@ export default function WriteForm() {
         </div>
         <div>
           <label>여행 컨셉</label>
-          <select>
+          <select
+            name="concept"
+            value={formData.concept}
+            onChange={handleChange}
+          >
             <option>빨강</option>
             <option>주황</option>
             <option>노랑</option>
@@ -72,10 +65,19 @@ export default function WriteForm() {
             <option>보라</option>
           </select>
         </div>
+        <FileUploadBox />
         <div>
-          <label>메인 이미지</label>
-          {uploadedImage ? <img src={uploadedImage} /> : <img src={`assets/airplain.jpg`} alt="기본이미지" />}
-          <input type="file" onChange={handleFileChange} />
+          <label>여행 기간</label>
+          <DatePicker
+            selectsRange={true}
+            startDate={formData.startDate}
+            endDate={formData.endDate}
+            onChange={(update) => {
+              setFormData.DateRange(update);
+            }}
+            isClearable={true}
+            dateFormat="yy/MM/dd"
+          />
         </div>
       </form>
     </Fragment>
