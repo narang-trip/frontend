@@ -29,6 +29,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.kafka:spring-kafka'
 //	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	// mongodb -> 만약 에러 생기면 mongodb 설치하고 database : narangdb, collection : trip, plan 이렇게 두 개 만들기
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'

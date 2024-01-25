@@ -1,4 +1,4 @@
-package com.ssafy.tripservice.controller;
+package com.ssafy.tripservice.api.controller;
 
 import com.ssafy.tripservice.messenger.TripEventProducer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.CompletableFuture;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/trip")
 public class TripController {
