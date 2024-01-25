@@ -29,7 +29,7 @@ pipeline {
                 // sh('docker ps -a | grep "trip-service" | awk \'{print $1}\'' )
                 sh('(docker ps -a | grep "8083" | awk \'{print $1}\') | xargs docker stop || true' )
 
-                sh('chmod +x ./jenkinsfile/port-refresh-trip.sh')
+                sh('chmod +x ./jenkins/port-refresh-trip.sh')
 
                 // echo 'No trip-service running . . . About to Build a image . . .'
                 sh 'docker build -t trip-service -f ./backend/trip-service/Dockerfile .'
