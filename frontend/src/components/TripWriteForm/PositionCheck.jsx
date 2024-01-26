@@ -16,12 +16,14 @@ export default function PositionCheck({ value, onChange }) {
   return (
     <div>
           <label>모집 포지션</label>
+          <div  className="flex flex-row">
           {positionList.map((position, index) => (
             <div key={index}>
               <input type="checkbox" value={position}></input>
               <label>{position}</label>
             </div>
           ))}
+          </div>
           </div>
   );
 }

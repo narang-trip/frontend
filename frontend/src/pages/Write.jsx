@@ -4,9 +4,9 @@ import TripWriteForm from "../components//TripWriteForm/TripWriteForm";
 export default function WritePage() {
   return (
     <Fragment>
-        <div className="flex justify-center">
-      <TripWriteForm />
-      </div>
+        <div className="w-10/12 mx-auto my-10">
+          <TripWriteForm />
+        </div>
     </Fragment>
   );
 }
