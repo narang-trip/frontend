@@ -10,7 +10,7 @@ const store = configureStore({
     directions: directionsSliceReducer,
     places: placesSliceReducer,
     auth : authReducer, 
-    trip: tripReducer
+    trip: tripReducer,
   },
 });
 
