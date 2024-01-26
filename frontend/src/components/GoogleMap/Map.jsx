@@ -7,7 +7,7 @@ import PlaceCard from "./PlaceCard";
 import { useDispatch } from "react-redux";
 import { placesActions } from '../../store/placeSlice';
 
-const Map = (props) => {
+const Map = () => {
   const containerStyle = {
     width: "700px",
     height: "550px",
@@ -53,7 +53,7 @@ const Map = (props) => {
     [center]
   );
 
-  const onUnmount = useCallback(function callback(map) {
+  const onUnmount = useCallback(function callback() {
     setMap(null);
   }, []);
 
