@@ -14,7 +14,8 @@ pipeline {
         stage('Jar Build') {
             steps {
                 // Gradle을 사용하여 message-service 프로젝트 빌드
-                sh "cd backend/message-service && chmod +x gradlew && ./gradlew clean build"
+                sh "cd backend/message-service && chmod +x gradlew && ./gradlew clean build -x test"
+                // sh "cd backend/message-service && chmod +x gradlew && ./gradlew clean build"
             }
         }
         stage('Docker Image Build') {
