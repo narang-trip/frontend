@@ -7,7 +7,7 @@ import Tooltip from "./ToolTip";
 function MainNavigation() {
   return (
     <div className="flex">
-      <nav className="flex h-screen">
+      <nav className="flex">
         <ul className="flex-row">
           <Tooltip text="메인화면">
             <li className="flex h-20 mb-[100px] bg-white bg-opacity-0 hover:bg-opacity-100 items-center justify-center">
