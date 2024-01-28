@@ -13,9 +13,9 @@ import { WebrtcProvider } from "y-webrtc";
 // ymap.set("my nested map", ymapNested);
 // ymap.set("list", []);
 
-const provider = new WebrtcProvider("test-demo-room", ydoc, {
-  signaling: ["ws://localhost:5173"],
-});
+// const provider = new WebrtcProvider("test-demo-room", ydoc, {
+//   signaling: ["ws://localhost:5173"],
+// });
 
 // const awareness = provider.awareness;
 
