@@ -7,6 +7,11 @@ pipeline {
         releaseServerUri = 'i10a701.p.ssafy.io'
     }
     stages {
+        stage('Example') {
+            steps {
+                sh 'npm version'
+            }
+        }
         stage('Checkout') {
             steps {
                 // 소스 코드 체크아웃
