@@ -21,7 +21,7 @@ pipeline {
         stage('node Build') {
             steps {
                 // npm 이용 frontend 프로젝트 빌드
-                sh "cd frontend/" 
+                dir("frontend/")
                 sh "npm install"
                 sh "npm run build"
             }
