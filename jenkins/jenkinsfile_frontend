@@ -1,7 +1,8 @@
 pipeline {
     agent any
+    tools {nodejs "nodejs"}
 
-      environment {
+    environment {
         releaseServerAccount = 'ubuntu'
         releaseServerUri = 'i10a701.p.ssafy.io'
     }
