@@ -1,9 +1,47 @@
 package com.ssafy.messageservice.api.service;
 
+import com.ssafy.messageservice.api.response.ChatDto;
+import com.ssafy.messageservice.api.response.ChatListResponse;
+import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.db.entity.Chat;
+import com.ssafy.messageservice.db.entity.Chatroom;
+import com.ssafy.messageservice.db.repository.ChatRepository;
+import com.ssafy.messageservice.db.repository.ChatRepositoryCustom;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Service;
 
-public interface ChatService {
-    @Query("SELECT MAX(c.sendTime) FROM Chat c")
-    Chat readChatroomList(String chatroomId);
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+@RequiredArgsConstructor
+@Service
+public class ChatService {
+    private final ChatRepositoryCustom chatRepositoryCustom;
+    private final ChatRepository chatRepository;
+
+
+    public ChatroomListResponse getLatestChatsByUserId(String userId) {
+        return chatRepositoryCustom.getLatestChatsByUserId(userId);
+    }
+
+    public Page<ChatListResponse> getChatMessagesByChatroomId(String chatroomId, int page) {
+        // 페이지 번호는 0부터 시작하므로, PageRequest.of(page, 20)로 페이지를 가져온다 -> size는 변경 가능
+        Page<Chat> chatPage = chatRepository.findByChatroomChatroomIdOrderBySendTimeDesc(chatroomId, PageRequest.of(page, 10));
+
+        return chatPage.map(chat -> new ChatListResponse(
+                chat.getChatId(),
+                chat.getChatroom().getChatroomId(),
+                chat.getContent(),
+                chat.getSendTime(),
+                chat.getUserId(),
+                chat.getNickname(),
+                chat.getProfileUrl()
+        ));
+    }
 }

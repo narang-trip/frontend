@@ -1,35 +1,40 @@
 package com.ssafy.messageservice.api.controller;
 
-import com.ssafy.messageservice.api.response.ChatCreateResponse;
-import com.ssafy.messageservice.api.service.ChatServiceImpl;
+import com.ssafy.messageservice.api.response.ChatListResponse;
+import com.ssafy.messageservice.api.response.ChatroomListResponse;
+import com.ssafy.messageservice.api.service.ChatService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("*")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/chat")
-public class ChatroomController {
-    private ChatServiceImpl chatServiceImpl;
-
-    @Autowired
-    public ChatroomController(ChatServiceImpl chatServiceImpl){
-        this.chatServiceImpl = chatServiceImpl;
-    }
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatServiceImpl.class);
+public class ChatController {
+    private final ChatService chatService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatService.class);
 
     // 채팅방 리스트
-//    @GetMapping("/list")
-//    public ResponseEntity<ChatCreateResponse> getChatrooms() {
-//        LOGGER.info(String.format("채팅방 리스트 출력..."));
-////        chatServiceImpl.
-////        return ResponseEntity.ok("Hello, this is an example!");
-//    }
+    @GetMapping("/list")
+    public ResponseEntity<ChatroomListResponse> getLatestChatsByUserId() {
+        // Todo: User 서버에서 userId랑, userName, userImgUrl 받아오자!!
+        // "userId" 부분에 넣어주면 됨
+        ChatroomListResponse chatroomListResponse = chatService.getLatestChatsByUserId("조예진");
+        return ResponseEntity.ok(chatroomListResponse);
+    }
+
+    // 채팅방 조회 (해당 채팅방의 채팅 불러오기)
+    @GetMapping("/{chatroomId}")
+    public ResponseEntity<Page<ChatListResponse>> getChatMessagesByChatroomId(@PathVariable String chatroomId, @RequestParam(defaultValue = "0") int page) {
+        Page<ChatListResponse> chatPage = chatService.getChatMessagesByChatroomId(chatroomId, page);
+        return ResponseEntity.ok(chatPage);
+    }
 
 //    @GetMapping("/room")
 //    public String chatPage() {
