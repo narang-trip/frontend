@@ -17,7 +17,7 @@ ADD ./frontend/dist ./build
 RUN rm /etc/nginx/conf.d/default.conf
 
 # host pc의 nginx.conf를 아래 경로에 복사
-COPY ./frontend./nginx.conf /etc/nginx/conf.d
+COPY ./frontend/nginx.conf /etc/nginx/conf.d
 
 # 3176 포트 개방
 EXPOSE 3716
