@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+      environment {
+        releaseServerAccount = 'ubuntu'
+        releaseServerUri = 'i10a701.p.ssafy.io'
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -7,30 +12,24 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Jar Build') {
+        stage('npm run Build') {
             steps {
-                // Gradle을 사용하여 trip-service 프로젝트 빌드
-                sh "cd backend/trip-service && chmod +x gradlew && ./gradlew clean build"
+                // npm 이용 frontend 프로젝트 빌드
+                sh "cd frontend/ && npm install && npm run build"
             }
         }
         stage('Docker Image Build') {
             steps {
-                // 빌드된 JAR 파일 도커 이미지로 생성 
-                // sh 'cp backend/trip-service/build/libs/trip-service-0.0.1-SNAPSHOT.jar backend/deployments'
-                // sh 'pwd && ls'
+                // 빌드된 frontend 파일 도커 이미지로 생성 
                 
-                // sh('echo "docker running"')
-                // sh('docker ps -a')
-                // sh('docker ps -a | grep "trip-service"')
-                // sh('docker ps -a | grep "trip-service" | awk \'{print $1}\'' )
-                sh('(docker ps -a | grep "8083" | awk \'{print $1}\') | xargs docker stop || true' )
+                sh('(docker ps -a | grep "3000" | awk \'{print $1}\') | xargs docker stop || true' )
 
-                sh('chmod +x ./jenkins/port-refresh-trip.sh')
+                sh('chmod +x ./jenkins/port-refresh-frontend.sh')
 
                 // echo 'No trip-service running . . . About to Build a image . . .'
-                sh 'docker build -t trip-service -f ./backend/trip-service/Dockerfile .'
+                sh 'docker build -t frontend -f ./frontend/Dockerfile .'
                 // 배포 스크립트 실행 (예: Docker 컨테이너에 배포)
-                sh 'docker run -p 8083:8083 -d trip-service'
+                sh 'docker run -p 3000:3716 -d frontend'
             }
         }
     }
