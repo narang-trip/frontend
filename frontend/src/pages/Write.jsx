@@ -1,5 +1,12 @@
-
+import { Fragment } from "react";
+import TripWriteForm from "../components//TripWriteForm/TripWriteForm";
 
 export default function WritePage() {
-    return <h1>글쓰는 페이지</h1>
+  return (
+    <Fragment>
+        <div className="flex justify-center">
+      <TripWriteForm />
+      </div>
+    </Fragment>
+  );
 }

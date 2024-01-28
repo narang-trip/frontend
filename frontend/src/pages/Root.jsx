@@ -11,8 +11,8 @@ function RootLayout() {
   return (
     <Fragment>
         <UpperNavbar/>
-      <div className="flex">
-        <div className="w-1/12 flex bg-slate-400">
+      <div className="flex h-screen gap-4">
+        <div className="flex justify-center w-1/12 bg-slate-400">
           <MainNavigation />
         </div>
         <main className="w-8/12 bg-slate-200">

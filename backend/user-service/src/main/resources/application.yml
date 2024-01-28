@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: user-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/narangdb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
+    password: ssafy
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+
+server:
+  port: 8081
+
+grpc:
+  server:
+    port: 9090
+
+springdoc:
+  api-docs:
+    path: /user/v3/api-docs
+  swagger-ui:
+    path: /user/swagger-ui.html
