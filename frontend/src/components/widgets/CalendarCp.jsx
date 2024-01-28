@@ -23,7 +23,7 @@ const CalendarCp = () => {
 
     // date(각 날짜)가  리스트의 날짜와 일치하면 해당 컨텐츠(이모티콘) 추가
     if (dayList.find((day) => day === moment(date).format("YYYY-MM-DD"))) {
-      contents.push(<Fragment key={moment(date).format("YYYY-MM-DD")}>😂</Fragment>);
+      contents.push(<Fragment key={moment(date).format("YYYY-MM-DD")}>👩</Fragment>);
     }
     return <div key={moment(date).format("YYYY-MM-DD")}>{contents}</div>; // 각 날짜마다 해당 요소가 들어감
   };
