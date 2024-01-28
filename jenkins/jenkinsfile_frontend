@@ -20,12 +20,15 @@ pipeline {
         }
         stage('node Build') {
             steps {
-                // npm 이용 frontend 프로젝트 빌드
-                dir("frontend/") {
-                    sh "npm install"
-                    // package.json 기반 필요 모듈 설치
-                    sh "npm run build"
-                    // 빌드
+                script {
+                    // npm 이용 frontend 프로젝트 빌드
+                    dir("frontend/") {
+                        sh "npm install"
+                        // package.json 기반 필요 모듈 설치
+                        sh "npm run build"
+                        // 빌드
+                    }
+
                 }
             }
         }
