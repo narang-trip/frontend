@@ -12,10 +12,12 @@ pipeline {
                 checkout scm
             }
         }
-        stage('npm run Build') {
+        stage('node Build') {
             steps {
                 // npm 이용 frontend 프로젝트 빌드
-                sh "cd frontend/ && npm install && npm run build"
+                sh "cd frontend/" 
+                sh "npm install"
+                sh "npm run build"
             }
         }
         stage('Docker Image Build') {
