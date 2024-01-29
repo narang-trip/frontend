@@ -32,12 +32,4 @@ public class Chat {
 
     @Column(length = 50)
     private String userId;
-
-    // todo : 추가하고 싶은 부분
-    @Column(length = 20)
-    private String nickname;
-
-    @Column
-    private String profileUrl;
-    // 끝
 }
