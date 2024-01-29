@@ -1,17 +1,20 @@
 package com.ssafy.userservice.api.controller;
 
+import com.ssafy.userservice.db.entity.PrincipalDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-
+    @ResponseBody
     @GetMapping("/welcome")
-    public String getWelcome() {
-        System.out.println("welcome");
-        return "welcome";
+    public String getWelcome(Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        String uuid = principalDetails.getAuth().getId();
+        return uuid; // 로그인 성공시 uuid 리턴
     }
 
     /**
