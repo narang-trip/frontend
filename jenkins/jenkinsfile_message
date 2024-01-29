@@ -1,6 +1,7 @@
 pipeline {
     agent any
-    def service = "${service}"
+    service = "message-service"
+    
     tools {
         // 여기서 뒤 이름을 우리가 젠킨스에서 설정하는 것. 
         gradle 'Gradle'
