@@ -9,6 +9,7 @@ export default function HomePage() {
         src="/assets/travelBanner.jpg"
         className="object-cover w-full h-40"
       />
+      <h1>홈페이지</h1>
       <Concept />
       <TripList />
     </div>
