@@ -1,6 +1,9 @@
 pipeline {
     agent any
-    service = "message-service"
+
+    environment {
+        service = "message-service"
+    }
     
     tools {
         // 여기서 뒤 이름을 우리가 젠킨스에서 설정하는 것. 
