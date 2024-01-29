@@ -1,45 +1,75 @@
-import { useState } from "react";
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
-import { RxDotFilled } from "react-icons/rx";
-const Carousel = ({ slides }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+import { Fragment, useState } from "react";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
-  const prevSlide = () => {
-    const isFirstSlide = currentIndex === 0;
-    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
-  };
-  const nextSlide = () => {
-    const isLastSlide = currentIndex === slides.length - 1;
-    const newIndex = isLastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
+const Carousel22 = () => {
+  const [transformValue, setTransformValue] = useState(0);
+  const [itemWidth, setItemWidth] = useState(0);
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 4,
+      slidesToSlide: 1, // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+      slidesToSlide: 2, // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      slidesToSlide: 1, // optional, default to 1.
+    },
   };
 
-  const goToSlide = (slideIndex) => {
-    setCurrentIndex(slideIndex);
+  const handleSlide = (currentItem, currentSlide) => {
+    // 현재 항목 및 해당 폭을 기반으로 새로운 transform 값을 계산합니다.
+    const newTransformValue = -currentItem * itemWidth;
+    setTransformValue(newTransformValue);
   };
 
+  const handleResize = () => {
+    // 창 크기 조정 시 항목 너비를 업데이트합니다.
+    const currentWidth = document.querySelector(".carousel-item").offsetWidth;
+    setItemWidth(currentWidth);
+  };
   return (
-    <div>
-      <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 -translate-y-[50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-point">
-        <FaArrowAltCircleLeft onClick={prevSlide} size={30} />
-      </div>
-      <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 -translate-y-[50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-point">
-        <FaArrowAltCircleRight onClick={nextSlide} size={30} />
-      </div>
-      {/* <div className="flex top-4 justify-center p-2">
-        {slides.map((slide, slideIndex) => (
-          <div
-            key={slideIndex}
-            onClick={() => goToSlide(slideIndex)}
-            className="text-2xl cursor-pointer"
-          >
-            <RxDotFilled />
-          </div>
-        ))}
-      </div> */}
-    </div>
+    <Fragment>
+      <Carousel
+        swipeable={false}
+        draggable={false}
+        showDots={true}
+        responsive={responsive}
+        ssr={true} // means to render carousel on server-side.
+        infinite={true}
+        autoPlay={true}
+        autoPlaySpeed={2000}
+        keyBoardControl={true}
+        customTransition="transform 500ms ease-in-out 0s"
+        transitionDuration={500}
+        containerClass="carousel-container"
+        removeArrowOnDeviceType={["tablet", "mobile"]}
+        dotListClass="custom-dot-list-style"
+        itemClass="carousel-item-padding-40-px"
+      >
+        <div
+          id="carousel_item"
+          className="h-[200px] border border-black boder-solid flex flex-wrap"
+        >
+          <div className="w-[45%] h[auto] m-1 border border-solid border-black carousel-item"></div>
+          <div className="w-[45%] h[auto] m-1 border border-solid border-black"></div>
+          <div className="w-[45%] h[auto] m-1 border border-solid border-black"></div>
+          <div className="w-[45%] h[auto] m-1 border border-solid border-black"></div>
+        </div>
+        <div className="h-[200px] border border-black boder-solid">Item 2</div>
+        <div className="h-[200px] border border-black boder-solid">Item 3</div>
+        <div className="h-[200px] border border-black boder-solid">Item 4</div>
+        <div className="h-[200px] border border-black boder-solid">Item 5</div>
+        <div className="h-[200px] border border-black boder-solid">Item 6</div>
+      </Carousel>
+    </Fragment>
   );
 };
 
-export default Carousel;
+export default Carousel22;
