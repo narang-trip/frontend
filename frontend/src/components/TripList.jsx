@@ -1,4 +1,4 @@
-import Carousel22 from "../ui/Carousel";
+import CarouselTemplete from "../ui/Carousel";
 export default function TripList() {
   let slides = [
     [
@@ -35,7 +35,7 @@ export default function TripList() {
   }
   return (
     <div className="w-full h-full m-auto">
-      <Carousel22 slides={slides} />
+      <CarouselTemplete slides={slides} />
     </div>
   );
 }
