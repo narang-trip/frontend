@@ -1,7 +1,7 @@
 package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.response.ChatDto;
-import com.ssafy.messageservice.api.service.ChatServiceImpl;
+import com.ssafy.messageservice.api.service.ChatService;
 import com.ssafy.messageservice.db.entity.Chat;
 import com.ssafy.messageservice.db.entity.Chatroom;
 import com.ssafy.messageservice.db.repository.ChatRepository;
@@ -17,13 +17,14 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
 public class StompRabbitController {
     private final RabbitTemplate template;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatService.class);
 
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final static String CHAT_QUEUE_NAME = "chat.queue";
@@ -48,7 +49,7 @@ public class StompRabbitController {
     public void send(ChatDto chatDto, @DestinationVariable String chatRoomId) {
         chatDto.setRegDate(LocalDateTime.now());
         LOGGER.info(String.format("보낸다 !!!! 확인!!!!! -> %s", chatRoomId));
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId.toString(), chatDto);
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatDto);
     }
 
     @RabbitListener(queues = CHAT_QUEUE_NAME)
@@ -56,13 +57,13 @@ public class StompRabbitController {
         LOGGER.info(String.format("받는다 !!!! 확인!!!!! -> %s", chatDto));
         String chatRoomId = chatDto.getChatRoomId();
         Chatroom chatroom = chatroomRepository.findById("1").orElse(null);
-        Chat chat = new Chat("test22",
+        // todo: 나중에 알맞게 수정해야 함
+        Chat chat = new Chat(UUID.randomUUID().toString(),
                 chatroom,
                 chatDto.getMessage(),
                 chatDto.getRegDate(),
-                chatDto.getMemberId());
+                chatDto.getMemberId(), "nickname", "url");
         LOGGER.info(String.format("Message receive -> %s", chat));
         chatRepository.save(chat);
-
     }
 }
