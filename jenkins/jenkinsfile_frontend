@@ -1,11 +1,17 @@
 pipeline {
     agent any
+    tools {nodejs "nodejs-21.6.1"}
 
-      environment {
+    environment {
         releaseServerAccount = 'ubuntu'
         releaseServerUri = 'i10a701.p.ssafy.io'
     }
     stages {
+        stage('Example') {
+            steps {
+                sh 'npm version'
+            }
+        }
         stage('Checkout') {
             steps {
                 // 소스 코드 체크아웃
@@ -14,10 +20,16 @@ pipeline {
         }
         stage('node Build') {
             steps {
-                // npm 이용 frontend 프로젝트 빌드
-                sh "cd frontend/" 
-                sh "npm install"
-                sh "npm run build"
+                script {
+                    // npm 이용 frontend 프로젝트 빌드
+                    dir("frontend/") {
+                        sh "npm install"
+                        // package.json 기반 필요 모듈 설치
+                        sh "npm run build"
+                        // 빌드
+                    }
+
+                }
             }
         }
         stage('Docker Image Build') {
