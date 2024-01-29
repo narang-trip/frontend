@@ -37,6 +37,7 @@ export default function TripWriteForm() {
     });
   };
 
+
   const [dateRange, setDateRange] = useState([null, null]);
   // 기간 변할 때 추적하는 함수
   const handleDateChange = (range) => {
@@ -54,62 +55,41 @@ export default function TripWriteForm() {
   }; // handleSubmit 끝
 
   const saveWrite = () => {
-    console.log("저장완료");
+    console.log('저장완료');
   };
 
   const cancle = () => {
-    console.log("취소");
+    console.log('취소');
   };
 
   return (
     <Fragment>
-      <div className="text-left">
-        <form onSubmit={handleSubmit}>
-          <div className="px-8 py-8 mx-auto border rounded-3xl bg-stone-100 border-stone-200">
-            <div className="grid grid-cols-3 gap-6 px-8">
-              <div className="col-span-3">
-                <p className="my-8 text-4xl font-bold text-center">
-                  동행 글 작성하기
-                </p>
+      <form onSubmit={handleSubmit}>
+          <div className="container px-8 py-8 mx-auto border bg-stone-400 border-stone-700">
+            <div className="flex flex-col flex-wrap ">
+              <p className="mb-8 text-4xl text-center ">동행 글 작성하기</p>
+              <TitleInput value={formData.title} onChange={handleChange} />
+              <ConceptSelect value={formData.concept} onChange={handleChange} />
+              <FileUploadBox />
+              <DateRangePicker
+                dateRange={dateRange}
+                onChange={handleDateChange}
+              />
+              <div>
+                <label>여행 장소</label>
               </div>
-              <div className="flex flex-col justify-between col-span-2">
-                <TitleInput value={formData.title} onChange={handleChange} />
-                <ConceptSelect
-                  value={formData.concept}
-                  onChange={handleChange}
-                />
-                <div className="w-full my-5">
-                  <label className="mr-10 text-xl font-medium">대표 사진</label>
-                  <input type="file" />
-                </div>
-                <DateRangePicker
-                  dateRange={dateRange}
-                  onChange={handleDateChange}
-                />
-                <div className="w-full my-5">
-                  <label className="mr-10 text-xl font-medium">여행 장소</label>
-                </div>
-                <PositionCheck
-                  value={formData.position}
-                  onChange={handleChange}
-                />
-                <div className="w-full my-5">
-                  <label className="mr-10 text-xl font-medium">
-                    여행 계획표
-                  </label>
-                </div>
+              <PositionCheck
+                value={formData.position}
+                onChange={handleChange}
+              />
+              <div>
+                <label>여행 계획표</label>
               </div>
               <div>
-                <div className="mt-5 h-2/5" >
-                  <img src={`assets/airplain.jpg`} className="h-full"/>
-                </div>
-                <div className="mt-5 h-3/5">
-                  <label className="text-xl font-medium">여행 설명</label>
-                  <br/>
-                  <textarea className="w-full h-full"/>
-                </div>
+                <label>여행 설명</label>
+                <textarea/>
               </div>
-              <div className="flex justify-around col-start-2">
+              <div>
                 <button
                   className="px-6 py-2 rounded-md text-stone-800 bg-stone-500 hover:text-stone-950"
                   onClick={saveWrite}
@@ -125,8 +105,7 @@ export default function TripWriteForm() {
               </div>
             </div>
           </div>
-        </form>
-      </div>
+      </form>
     </Fragment>
   );
 }

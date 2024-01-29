@@ -13,12 +13,18 @@ function Tooltip({ children, text }) {
       </div>
       <div
         className={`${
-          show ? "visible" : "hidden"
-        } absolute mx-auto w-48 h-20 top-0 left-20 py-4 px-6 bg-white rounded text-lg text-neutral-900 font-bold
-        `}
+          show ? "scale-100 opacity-100" : "scale-0 opacity-0"
+        } absolute top-[0.5rem] block whitespace-nowrap py-2 px-4 rounded left-[1.5rem] -ml-[-100%] transform transform-origin-left transition-transform ease-in-out duration-150 bg-stone-100 text-neutral-900 font-semibold text-xl`}
       >
         {text}
       </div>
+      <span
+        className={`${
+          show
+            ? "absolute left-[1.2rem] -ml-[-100%] block w-3 h-3 transform rotate-45 -translate-y-1/2 bg-stone-100 rounded-sm top-1/2"
+            : null
+        }`}
+      ></span>
     </div>
   );
 }
