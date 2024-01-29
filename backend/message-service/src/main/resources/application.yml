@@ -32,6 +32,6 @@ server:
 
 springdoc:
   api-docs:
-    path: /message/v3/api-docs
+    path: /api/message/v3/api-docs
   swagger-ui:
-    path: /message/swagger-ui.html
+    path: /api/message/swagger-ui.html
