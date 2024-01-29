@@ -22,7 +22,7 @@ export default function FileUploadBox() {
   return (
     <Fragment>
       <div>
-        <label>메인 이미지</label>
+        <label className="mr-10 text-xl font-medium">메인 이미지</label>
         <img src={`assets/airplain.jpg`} alt="기본이미지" />
         <input type="file" onChange={handleFileChange} />
       </div>

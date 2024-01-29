@@ -4,56 +4,59 @@ import { GoHome, GoPersonAdd, GoSearch } from "react-icons/go";
 import { LiaCalendarDaySolid } from "react-icons/lia";
 import Tooltip from "./ToolTip";
 
-function MainNavigation() {
+function MainNavigation() { 
   return (
-    <div className="flex">
-      <nav className="flex">
-        <ul className="flex-row">
+    <div className="flex flex-col items-center h-screen justify-evenly bg-stone-400 rounded-[4.5rem]">
+      <nav>
+      <ul className="flex flex-col items-center justify-between h-screen py-20 mx-auto list-none">
+        <li>
           <Tooltip text="메인화면">
-            <li className="flex h-20 mb-[100px] bg-white bg-opacity-0 hover:bg-opacity-100 items-center justify-center">
-              <NavLink to="/">
-                <GoHome className="mx-auto w-14 h-14" />
-              </NavLink>
-            </li>
+            <div>
+            <NavLink to="/" className="flex items-center justify-center w-16 h-16 rounded-l-full hover:bg-stone-100 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30">
+              <GoHome className="w-[2.5rem] h-[2.5rem] mx-auto " />
+            </NavLink>
+            </div>
           </Tooltip>
-          <li className="bg-white bg-opacity-0 hover:bg-opacity-100">
-            <Tooltip text="동행모집작성">
-              <NavLink to="/write">
-                <PencilSquareIcon className="mx-auto my-8 w-14 h-14" />
-              </NavLink>
-            </Tooltip>
-          </li>
-          <li className="bg-white bg-opacity-0 hover:bg-opacity-100">
-            <Tooltip text="동행모집검색"> 
-              <NavLink to="/search">
-                <GoSearch className="mx-auto my-8 w-14 h-14" />
-              </NavLink>
-            </Tooltip>
-          </li>
-          <li className="bg-white bg-opacity-0 hover:bg-opacity-100">
-            <Tooltip text="신청현황">
-              <NavLink to="/applicantList">
-                <GoPersonAdd className="mx-auto my-8 w-14 h-14" />
-              </NavLink>
-            </Tooltip>
-          </li>
-          <li className="bg-white bg-opacity-0 hover:bg-opacity-100">
-            <Tooltip text="여행일정생성">
-              <NavLink to="/planning">
-                <LiaCalendarDaySolid className="mx-auto my-8 w-14 h-14" />
-              </NavLink>
-            </Tooltip>
-          </li>
-          <li>
-            <NavLink to="/chatRoomTest">ChatroomTest</NavLink>
-          </li>
-          <li>
-            <NavLink to="/practice">Practice</NavLink>
-          </li>
-        </ul>
+        </li>
+        <li>
+          <Tooltip text="동행모집작성">
+            <NavLink to="/write" className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30">
+              <PencilSquareIcon className="w-[2.5rem] h-[2.5rem] mx-auto " />
+            </NavLink>
+          </Tooltip>
+        </li>
+        <li>
+          <Tooltip text="동행모집검색">
+            <NavLink to="/search" className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30">
+              <GoSearch className="w-10 h-10 mx-auto" />
+            </NavLink>
+          </Tooltip>
+        </li>
+        <li>
+          <Tooltip text="신청현황">
+            <NavLink to="/applicantList" className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30">
+              <GoPersonAdd className="w-10 h-10 mx-auto" />
+            </NavLink>
+          </Tooltip>
+        </li>
+        <li>
+          <Tooltip text="여행일정생성">
+            <NavLink to="/planning" className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30">
+              <LiaCalendarDaySolid className="w-10 h-10 mx-auto" />
+            </NavLink>
+          </Tooltip>
+        </li>
+        <li>
+          <NavLink to="/chatRoomTest">ChatroomTest</NavLink>
+        </li>
+        <li>
+          <NavLink to="/practice">Practice</NavLink>
+        </li>
+      </ul>
       </nav>
     </div>
   );
 }
 
 export default MainNavigation;
+
