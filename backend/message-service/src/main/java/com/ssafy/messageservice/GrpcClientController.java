@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GrpcClientController {
     private final GrpcClientService grpcClientService;
 
-    // 되는거까지 확인
+    // 되는거까지 확인 완료
     @GetMapping("/test")
     public String printMessage() {
         return grpcClientService.sendMessage("test");

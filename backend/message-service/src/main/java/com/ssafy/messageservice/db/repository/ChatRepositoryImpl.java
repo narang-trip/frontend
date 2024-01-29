@@ -67,6 +67,7 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
             );
         }
 
+        // 임의로 넣어둠
         ChatroomListResponse.ChatroomResponse.UserResponse a1 = new ChatroomListResponse.ChatroomResponse.UserResponse("조예진", "진코");
         ChatroomListResponse.ChatroomResponse.UserResponse a2 = new ChatroomListResponse.ChatroomResponse.UserResponse("구본승", "rootwin");
         List<ChatroomListResponse.ChatroomResponse.UserResponse> users = List.of(a1, a2);
