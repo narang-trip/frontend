@@ -2,6 +2,7 @@ package com.ssafy.messageservice.db.repository;
 
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.messageservice.api.response.ChatroomListMidResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.db.entity.*;
 import lombok.RequiredArgsConstructor;
@@ -62,18 +63,23 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
             return new ChatroomListResponse.ChatroomResponse(
                     null,
                     null,
-                    null
+                    null, null
             );
         }
+
+        ChatroomListResponse.ChatroomResponse.UserResponse a1 = new ChatroomListResponse.ChatroomResponse.UserResponse("조예진", "진코");
+        ChatroomListResponse.ChatroomResponse.UserResponse a2 = new ChatroomListResponse.ChatroomResponse.UserResponse("구본승", "rootwin");
+        List<ChatroomListResponse.ChatroomResponse.UserResponse> users = List.of(a1, a2);
 
         return new ChatroomListResponse.ChatroomResponse(
                 chat.getChatroom().getChatroomId(),
                 chat.getChatroom().getChatroomName(),
                 new ChatroomListResponse.ChatroomResponse.ChatResponse(
                         chat.getUserId(),
+                        "받아",
                         chat.getContent(),
                         chat.getSendTime()
-                )
+                ),users
         );
     }
 }

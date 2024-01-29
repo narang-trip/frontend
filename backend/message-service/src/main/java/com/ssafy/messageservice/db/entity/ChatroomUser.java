@@ -23,6 +23,4 @@ public class ChatroomUser {
 
     @Column(length = 50)
     private String userId;
-//    @EmbeddedId
-//    private ChatroomUserTableKey id;
 }
