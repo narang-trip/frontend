@@ -4,14 +4,23 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
+import { DragDropContext, Draggable } from "react-beautiful-dnd";
 
 const PlaceCard = () => {
   const searchResults = useSelector((state) => state.places);
   console.log(searchResults);
 
   return (
-    <>
+    <DragDropContext>
       {searchResults.map((place, index) => (
+        // <Draggable draggableId={`${place}_${index}`} index={index} key={index}>
+        //   {(provided) => (
+        //     <div
+        //       ref={provided.innerRef}
+        //       {...provided.draggableProps}
+        //       {...provided.dragHandleProps}
+        //     >
+        //       test
         <Card key={index} sx={{ maxWidth: 345 }}>
           <CardMedia
             sx={{ height: 200 }}
@@ -34,8 +43,11 @@ const PlaceCard = () => {
             </Typography>
           </CardContent>
         </Card>
+        //     </div>
+        //   )}
+        // </Draggable>
       ))}
-    </>
+    </DragDropContext>
   );
 };
 
