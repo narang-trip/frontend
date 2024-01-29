@@ -20,7 +20,6 @@ const PlaceCard = () => {
               {...provided.draggableProps}
               {...provided.dragHandleProps}
             >
-              test
               <Card key={index} sx={{ maxWidth: 345 }}>
                 <CardMedia
                   sx={{ height: 200 }}
