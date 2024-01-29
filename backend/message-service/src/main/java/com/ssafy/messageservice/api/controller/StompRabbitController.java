@@ -1,6 +1,9 @@
 package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.response.ChatDto;
+import com.ssafy.messageservice.api.response.ChatRequest;
+import com.ssafy.messageservice.api.response.ChatSendRequest;
+import com.ssafy.messageservice.api.response.UserInviteRequest;
 import com.ssafy.messageservice.api.service.ChatService;
 import com.ssafy.messageservice.db.entity.Chat;
 import com.ssafy.messageservice.db.entity.Chatroom;
@@ -31,38 +34,41 @@ public class StompRabbitController {
     private final ChatRepository chatRepository;
     private final ChatroomRepository chatroomRepository;
 
+
+    // todo: 알림을 통해 정보 얻기
     @MessageMapping("chat.enter.{chatRoomId}")
-    public void enter(ChatDto chatDto, @DestinationVariable String chatRoomId) {
-
+    public void enter(UserInviteRequest inviteRequest, @DestinationVariable String chatRoomId) {
         LOGGER.info(String.format("입장 !!!! 확인!!!!! -> %s", chatRoomId));
-        chatDto.setMessage("입장하셨습니다.");
-        chatDto.setRegDate(LocalDateTime.now());
-
+        ChatRequest chatRequest = new ChatRequest();
+        chatRequest.setChatroomId(chatRoomId);
+        chatRequest.setSenderId(inviteRequest.getSenderId());
+        chatRequest.setContent("입장하셨습니다.");
         // exchange
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatDto);
-        // template.convertAndSend("room." + chatRoomId, chat); //queue
-        // template.convertAndSend("amq.topic", "room." + chatRoomId, chat); //topic
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatRequest);
+
     }
 
-
     @MessageMapping("chat.message.{chatRoomId}")
-    public void send(ChatDto chatDto, @DestinationVariable String chatRoomId) {
-        chatDto.setRegDate(LocalDateTime.now());
+    public void send(ChatSendRequest chatSendRequest, @DestinationVariable String chatRoomId) {
+        ChatRequest chatRequest = new ChatRequest(
+                chatSendRequest.getChatroomId(),
+                chatSendRequest.getSenderId(),
+                LocalDateTime.now(),
+                chatSendRequest.getContent());
         LOGGER.info(String.format("보낸다 !!!! 확인!!!!! -> %s", chatRoomId));
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatDto);
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatRequest);
     }
 
     @RabbitListener(queues = CHAT_QUEUE_NAME)
-    public void receive(ChatDto chatDto) {
-        LOGGER.info(String.format("받는다 !!!! 확인!!!!! -> %s", chatDto));
-        String chatRoomId = chatDto.getChatRoomId();
-        Chatroom chatroom = chatroomRepository.findById("1").orElse(null);
-        // todo: 나중에 알맞게 수정해야 함
+    public void receive(ChatRequest chatRequest) {
+        LOGGER.info(String.format("받는다 !!!! 확인!!!!! -> %s", chatRequest));
+        String chatRoomId = chatRequest.getChatroomId();
+        Chatroom chatroom = chatroomRepository.findById(chatRoomId).orElse(null);
         Chat chat = new Chat(UUID.randomUUID().toString(),
                 chatroom,
-                chatDto.getMessage(),
-                chatDto.getRegDate(),
-                chatDto.getMemberId(), "nickname", "url");
+                chatRequest.getContent(),
+                chatRequest.getSendTime(),
+                chatRequest.getSenderId());
         LOGGER.info(String.format("Message receive -> %s", chat));
         chatRepository.save(chat);
     }

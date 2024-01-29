@@ -66,15 +66,11 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
             );
         }
 
-        // todo : senderId를 이용해서 User 서버로부터 senderName과 senderImgUrl을 받아와야 한다.
-        // 만약 chat에 senderName(nickname), senderImgUrl(profileUrl)을 가지고 있다면 해당 과정은 필요없다
         return new ChatroomListResponse.ChatroomResponse(
                 chat.getChatroom().getChatroomId(),
                 chat.getChatroom().getChatroomName(),
                 new ChatroomListResponse.ChatroomResponse.ChatResponse(
                         chat.getUserId(),
-                        chat.getNickname(),
-                        chat.getProfileUrl(),
                         chat.getContent(),
                         chat.getSendTime()
                 )
