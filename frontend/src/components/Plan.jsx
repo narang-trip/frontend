@@ -29,7 +29,7 @@ import { WebrtcProvider } from "y-webrtc";
 // });
 
 const Plan = () => {
-  // const [list, setList] = useState([]);
+  const [list, setList] = useState([]);
 
   // ydoc.on("afterTransaction", () => {
   //   setList(Array.from(ymap.get("list")));
@@ -39,29 +39,29 @@ const Plan = () => {
   //   ymap.set("list", list);
   // }, [JSON.stringify(list)]);
 
-  // const update = () => {
-  //   setList(list);
-  // };
+  const update = () => {
+    setList(list);
+  };
 
-  // const add = () => {
-  //   setList([...list, new Array()]);
-  // };
+  const add = () => {
+    setList([...list, new Array()]);
+  };
 
-  // const onDragEnd = ({ source, destination }) => {
-  //   if (!destination) return;
+  const onDragEnd = ({ source, destination }) => {
+    if (!destination) return;
 
-  //   const scourceKey = Number(source.droppableId.replace("list", ""));
-  //   const destinationKey = Number(destination.droppableId.replace("list", ""));
+    const scourceKey = Number(source.droppableId.replace("list", ""));
+    const destinationKey = Number(destination.droppableId.replace("list", ""));
 
-  //   const tmplist = Array.from(list);
-  //   const [value] = tmplist.at(scourceKey).splice(source.index, 1);
-  //   tmplist.at(destinationKey).splice(destination.index, 0, value);
-  //   setList(tmplist);
-  // };
+    const tmplist = Array.from(list);
+    const [value] = tmplist.at(scourceKey).splice(source.index, 1);
+    tmplist.at(destinationKey).splice(destination.index, 0, value);
+    setList(tmplist);
+  };
 
   return (
     <div style={{ display: "flex" }}>
-      {/* <DragDropContext onDragEnd={onDragEnd} style={{ display: "flex" }}>
+      <DragDropContext onDragEnd={onDragEnd} style={{ display: "flex" }}>
         {list.map((data, index) => (
           <div style={{ flexDirection: "column" }} key={index}>
             <Droppable droppableId={`list${index}`}>
@@ -78,7 +78,7 @@ const Plan = () => {
           </div>
         ))}
       </DragDropContext>
-      <button onClick={add}>날짜추가</button> */}
+      <button onClick={add}>날짜추가</button>
     </div>
   );
 };

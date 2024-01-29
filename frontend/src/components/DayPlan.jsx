@@ -12,7 +12,7 @@ const DayPlan = (props) => {
   };
 
   return (
-    <>
+    <div className="bg-slate-400">
       {props.data.index} 일<button onClick={add}>추가</button>
       {props.data.list.map((data, index) => (
         <Draggable
@@ -31,7 +31,7 @@ const DayPlan = (props) => {
           )}
         </Draggable>
       ))}
-    </>
+    </div>
   );
 };
 
