@@ -1,6 +1,7 @@
 package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.response.ChatListResponse;
+import com.ssafy.messageservice.api.response.ChatroomListMidResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.api.service.ChatService;
 import lombok.RequiredArgsConstructor;

@@ -5,6 +5,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql-container:3306/narangdb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+#    url: jdbc:mysql://i10a701.p.ssafy.io:3306/narangdb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+#    url: jdbc:mysql://localhost:3306/narangdb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: root
     password: ssafy
   jpa:
@@ -35,3 +37,11 @@ springdoc:
     path: /api/message/v3/api-docs
   swagger-ui:
     path: /api/message/swagger-ui.html
+
+
+# grpc를 위해 추가
+grpc:
+  client:
+    test:
+      address: 'static://127.0.0.1:9091'
+      negotiationtype: plaintext
