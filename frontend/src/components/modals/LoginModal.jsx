@@ -22,16 +22,20 @@ const LoginModal = (props) => {
           <h3 className="">로 그 인</h3>
           <div className="flex flex-col">
             <button>
-              <img
-                className="w-36 h-16 object-cover rounded-xl"
-                src="assets/kakao_login.png"
-              />
+              <a href="/oauth2/authorization/kakao">
+                <img
+                  className="w-36 h-16 object-cover rounded-xl"
+                  src="assets/kakao_login.png"
+                />
+              </a>
             </button>
             <button>
-              <img
-                className="w-36 h-16 object-cover rounded-xl"
-                src="assets/naver_login.png"
-              />
+              <a href="/oauth2/authorization/naver">
+                <img
+                  className="w-36 h-16 object-cover rounded-xl"
+                  src="assets/naver_login.png"
+                />
+              </a>
             </button>
           </div>
         </div>
