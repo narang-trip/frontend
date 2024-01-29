@@ -15,44 +15,31 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class ChatListResponse {
-    private String chatId;
-    private String chatroomId;
-    private String content;
-    private LocalDateTime sendTime;
-    private String userId;
-    private String nickname;
-    private String profileUrl;
-//    private List<ChatsResponse> chatList;
-//    private PageResponse page;
-//    private boolean last;       // 마지막 페이지 여부
-//    private int totalPages;     // 전체 페이지 수
-//    private long totalElements; // 전체 항목 수
-//    private boolean first;      // 첫번째ㅍ
-//    private int numberOfElements;
-//    private boolean empty;
-//
-//    @Getter
-//    @AllArgsConstructor
-//    public static class ChatsResponse {
-//        private String chatId;
-//        private String chatroomId;
-//        private String content;
-//        private LocalDateTime sendTime;
-//        private String userId;
-//        private String nickname;
-//        private String profileUrl;
-//
-//    }
-//
-//    @Getter
-//    @AllArgsConstructor
-//    public static class PageResponse {
-//        private String senderId;
-//        private String senderName;
-//        private String senderImgUrl;
-//        private String latestContent;
-//        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-//        private LocalDateTime latestTime;
-//    }
+    private List<ChatsResponse> chatList;
 
+    private PageResponse page;
+
+    private boolean last;          // 마지막 페이지 여부
+    private int totalPages;        // 전체 페이지 수
+    private long totalElements;    // 전체 항목 수
+    private boolean first;         // 첫번째 페이지 여부
+    private int numberOfElements;  // 현재 페이지에 표시된 항목의 수
+
+    @Getter
+    @AllArgsConstructor
+    public static class ChatsResponse {
+        private String chatId;
+        private String chatroomId;
+        private String content;
+        private LocalDateTime sendTime;
+        private String userId;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class PageResponse {
+        private int pageNumber;       // 현재 페이지 번호
+        private int pageSize;         // 페이지 크기
+        private int offset;           // 현재 페이지의 첫번째 항목의 인덱스 (pageNumber * pageSize)
+    }
 }

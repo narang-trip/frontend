@@ -30,18 +30,28 @@ public class ChatService {
         return chatRepositoryCustom.getLatestChatsByUserId(userId);
     }
 
-    public Page<ChatListResponse> getChatMessagesByChatroomId(String chatroomId, int page) {
+    public ChatListResponse getChatMessagesByChatroomId(String chatroomId, int page) {
         // 페이지 번호는 0부터 시작하므로, PageRequest.of(page, 20)로 페이지를 가져온다 -> size는 변경 가능
         Page<Chat> chatPage = chatRepository.findByChatroomChatroomIdOrderBySendTimeDesc(chatroomId, PageRequest.of(page, 10));
 
-        return chatPage.map(chat -> new ChatListResponse(
-                chat.getChatId(),
-                chat.getChatroom().getChatroomId(),
-                chat.getContent(),
-                chat.getSendTime(),
-                chat.getUserId(),
-                chat.getNickname(),
-                chat.getProfileUrl()
-        ));
+        return new ChatListResponse(
+                chatPage.map(chat -> new ChatListResponse.ChatsResponse(
+                        chat.getChatId(),
+                        chat.getChatroom().getChatroomId(),
+                        chat.getContent(),
+                        chat.getSendTime(),
+                        chat.getUserId()
+                )).getContent(),
+                new ChatListResponse.PageResponse(
+                        chatPage.getNumber(),
+                        chatPage.getSize(),
+                        chatPage.getNumber() * chatPage.getSize()
+                ),
+                chatPage.isLast(),
+                chatPage.getTotalPages(),
+                chatPage.getTotalElements(),
+                chatPage.isFirst(),
+                chatPage.getNumberOfElements()
+        );
     }
 }
