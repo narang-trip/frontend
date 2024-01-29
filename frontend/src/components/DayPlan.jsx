@@ -1,14 +1,17 @@
 import { useState } from "react";
 import Schedule from "./Schedule";
 import { Draggable } from "react-beautiful-dnd";
+import { useSelector, useDispatch } from "react-redux";
 
 const DayPlan = (props) => {
-  const [list = props.data.list, setList] = useState([]);
+  const list = useSelector((state) => state.schedule);
+  const tmplist = { ...list };
+  console.log(list);
 
   const add = () => {
-    props.data.list.push(new Array(1).fill(`${1 + list.length}`));
-    setList([...list, new Array(1).fill(`${1 + list.length}`)]);
-    props.update();
+    // props.data.list.push(new Array(1).fill(`${1 + list.length}`));
+    // setList([...list, new Array(1).fill(`${1 + list.length}`)]);
+    // props.update();
   };
 
   return (
