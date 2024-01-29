@@ -2,11 +2,10 @@ import Plan from "../components/Plan";
 import Map from "../components/GoogleMap/Map";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
-import { scheduleActions } from "../store/scheduleSlice";
 
 export default function PlanningPage() {
   const list = useSelector((state) => state.schedule);
-  const tmplist = [...list];
+  const tmplist = { ...list };
   const card = useSelector((state) => state.places);
   const dispatch = useDispatch();
 
@@ -26,7 +25,7 @@ export default function PlanningPage() {
       const idx = destination.droppableId.substr(4);
       console.log(tmplist[idx]);
       tmplist[idx].push(schedule);
-      // tmplist[idx].splice(destination.index, 0, schedule);
+      tmplist[idx].splice(destination.index, 0, schedule);
       // dispatch(scheduleActions.setSchedule(schedule));
       console.log("추가");
     } else {

@@ -31,7 +31,8 @@ import { scheduleActions } from "../store/scheduleSlice";
 // });
 
 const Plan = () => {
-  const tmplist = useSelector((state) => state.schedule);
+  const list = useSelector((state) => state.schedule);
+  const tmplist = [];
   const dispatch = useDispatch();
 
   // ydoc.on("afterTransaction", () => {
@@ -45,8 +46,10 @@ const Plan = () => {
   const update = () => {};
 
   const add = () => {
-    dispatch(scheduleActions.setSchedule(sss));
-    dispatch(scheduleActions.setSchedule(sss));
+    tmplist.push([]);
+    dispatch(scheduleActions.setSchedule(tmplist));
+    // dispatch(scheduleActions.setSchedule(sss));
+    // dispatch(scheduleActions.setSchedule(sss));
   };
 
   // const onDragEnd = ({ source, destination }) => {
