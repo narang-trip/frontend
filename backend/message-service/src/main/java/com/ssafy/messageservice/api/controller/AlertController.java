@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class AlertController {
     private final AlertService alertService;
 
-    // 클라이언트 구독 api
+    // 로그인 한 유저 sse 연결 -> 로그인 버튼 눌렀을 때 호출해야 함
     @GetMapping(value = "/subscribe/{userId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(@PathVariable String userId) {
         return alertService.subscribe(userId);
