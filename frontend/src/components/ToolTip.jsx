@@ -14,7 +14,7 @@ function Tooltip({ children, text }) {
       <div
         className={`${
           show ? "scale-100 opacity-100" : "scale-0 opacity-0"
-        } absolute top-[0.5rem] block whitespace-nowrap py-2 px-4 rounded left-[1.5rem] -ml-[-100%] transform transform-origin-left transition-transform ease-in-out duration-150 bg-stone-100 text-neutral-900 font-semibold text-xl`}
+        } absolute top-[0.5rem] block whitespace-nowrap py-4 px-4 rounded left-[1.5rem] -ml-[-100%] transform transform-origin-left transition-transform ease-in-out duration-150 bg-stone-100 text-neutral-900 font-semibold text-sm`}
       >
         {text}
       </div>
