@@ -1,4 +1,6 @@
 # root에 /app 폴더 생성
+FROM nginx:latest
+
 RUN mkdir /app
 
 # work dir 고정
