@@ -1,9 +1,10 @@
 // 하나의 저장소를 유지하면서 개별적인 Slice 파일 관리 가능
 import { configureStore } from "@reduxjs/toolkit";
-import directionsSliceReducer from './directionsSlice';
-import placesSliceReducer from './placeSlice';
-import authReducer from './auth-slice'
-import tripReducer from './trip-slice'
+import directionsSliceReducer from "./directionsSlice";
+import placesSliceReducer from "./placeSlice";
+import authReducer from "./auth-slice";
+import tripReducer from "./trip-slice";
+import scheduleSliceReducer from "./scheduleSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     places: placesSliceReducer,
     auth: authReducer,
     trip: tripReducer,
+    schedule: scheduleSliceReducer,
   },
 });
 

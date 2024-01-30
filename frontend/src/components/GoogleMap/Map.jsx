@@ -5,7 +5,7 @@ import Directions from "./Directions";
 import Markers from "./Markers";
 import PlaceCard from "./PlaceCard";
 import { useDispatch } from "react-redux";
-import { placesActions } from '../../store/placeSlice';
+import { placesActions } from "../../store/placeSlice";
 
 const Map = () => {
   const containerStyle = {
@@ -15,7 +15,7 @@ const Map = () => {
 
   const center = {
     lat: 37.5012647456244,
-    lng: 127.03958123605
+    lng: 127.03958123605,
   };
 
   const options = {
@@ -90,11 +90,13 @@ const Map = () => {
       for (let j = 0; j < n; j++) {
         if (
           !visited[j] &&
-          calculateDistance(markers[current].position, markers[j].position) < minDistance
-          ) {
+          calculateDistance(markers[current].position, markers[j].position) <
+            minDistance
+        ) {
           nearestNeighbor = j;
           minDistance = calculateDistance(
-            markers[current].position, markers[j].position
+            markers[current].position,
+            markers[j].position
           );
         }
       }
@@ -105,11 +107,12 @@ const Map = () => {
         current = nearestNeighbor;
       }
     }
-    console.log('path' + path);
+    console.log("path" + path);
     return path;
   };
 
-  const handlePlaceSelected = useCallback((place) => {
+  const handlePlaceSelected = useCallback(
+    (place) => {
       const newMarkers = [
         ...markers,
         {
@@ -121,51 +124,63 @@ const Map = () => {
 
       setMarkers(newMarkers);
 
-  // Places API로 세부 정보 요청
-  const placesService = new window.google.maps.places.PlacesService(map);
+      // Places API로 세부 정보 요청
+      const placesService = new window.google.maps.places.PlacesService(map);
 
-  const request = {
-    placeId: place.placeId,
-    fields: ["name", "photos", "business_status", "formatted_address", "geometry", "icon", "rating", "opening_hours", "url"],
-  };
+      const request = {
+        placeId: place.placeId,
+        fields: [
+          "name",
+          "photos",
+          "business_status",
+          "formatted_address",
+          "geometry",
+          "icon",
+          "rating",
+          "opening_hours",
+          "url",
+        ],
+      };
 
-  const placeResult = {
-    name: '',
-    photo: '',
-    businessStatus: '',
-    formattedAddress: '',
-    icon: '',
-    rating: '',
-    weekdayText: [],
-    url: '',
-  };
+      const placeResult = {
+        name: "",
+        photo: "",
+        businessStatus: "",
+        formattedAddress: "",
+        icon: "",
+        rating: "",
+        weekdayText: [],
+        url: "",
+      };
 
-  placesService.getDetails(request, (result, status) => {
-    if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-  
-    placeResult.name = result.name;
-    placeResult.photo = result.photos && result.photos.length > 0 ? result.photos[1].getUrl({ maxHeight: 200, maxWidth: 200 }) : null;
-    placeResult.businessStatus = result.business_status;
-    placeResult.formattedAddress = result.formatted_address;
-    placeResult.icon = result.icon;
-    placeResult.rating = result.rating;
-    placeResult.icon = result.icon;
-    placeResult.url = result.url;
-  
-    if (result.opening_hours && result.opening_hours.weekday_text) {
-      placeResult.weekdayText = result.opening_hours.weekday_text
-    }
+      placesService.getDetails(request, (result, status) => {
+        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          placeResult.name = result.name;
+          placeResult.photo =
+            result.photos && result.photos.length > 0
+              ? result.photos[1].getUrl({ maxHeight: 200, maxWidth: 200 })
+              : null;
+          placeResult.businessStatus = result.business_status;
+          placeResult.formattedAddress = result.formatted_address;
+          placeResult.icon = result.icon;
+          placeResult.rating = result.rating;
+          placeResult.icon = result.icon;
+          placeResult.url = result.url;
 
-    console.log(placeResult.weekdayText);
+          if (result.opening_hours && result.opening_hours.weekday_text) {
+            placeResult.weekdayText = result.opening_hours.weekday_text;
+          }
 
-    } else {
-      console.error("Error fetching place details:", status);
-    }
+          console.log(placeResult.weekdayText);
+        } else {
+          console.error("Error fetching place details:", status);
+        }
 
-    dispatch(placesActions.setSearchResults(placeResult));
-  });
-
-}, [markers, map]);
+        dispatch(placesActions.setSearchResults(placeResult));
+      });
+    },
+    [markers, map]
+  );
 
   useEffect(() => {
     if (markers.length >= 2) {
@@ -175,7 +190,7 @@ const Map = () => {
       console.log(sortedMarkers);
     }
   }, [markers]);
-  
+
   useEffect(() => {
     if (sortedPath.length > 0) {
       setSortedMarkers(sortedPath.map((index) => markers[index]));
@@ -189,8 +204,6 @@ const Map = () => {
   const handleDirectionsInfoUpdate = (directionsInfo) => {
     setDirectionsInfoArr((prevArr) => [...prevArr, directionsInfo]);
   };
-
-  
 
   return isLoaded ? (
     <Fragment>
@@ -209,7 +222,7 @@ const Map = () => {
           options,
         }}
       >
-      <Markers markers={sortedMarkers} />
+        <Markers markers={sortedMarkers} />
         {sortedMarkers.length >= 2 && (
           <Fragment>
             {sortedMarkers.slice(0, -1).map((marker, index) => (
@@ -230,12 +243,8 @@ const Map = () => {
         <div>
           {directionsInfoArr.map((info, index) => (
             <div key={index}>
-              <div>
-                출발지: {info.startAddress}
-              </div>
-              <div>
-                도착지: {info.endAddress}
-              </div>
+              <div>출발지: {info.startAddress}</div>
+              <div>도착지: {info.endAddress}</div>
               <div>거리: {info.distance} </div>
               <div>시간: {info.duration} </div>
             </div>
