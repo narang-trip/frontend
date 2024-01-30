@@ -1,1 +1,0 @@
-sudo fuser -k 3716/tcp || true

@@ -1,7 +1,16 @@
 import { useRef } from "react";
+import {
+  kakaoApiKey,
+  kakaoRedirectUrl,
+  naverApikey,
+  naverRedirectUrl,
+  naverState,
+} from "../../../public/apikey";
 
 const LoginModal = (props) => {
   const modalBG = useRef(null);
+  const kakaoLoginURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoApiKey}&redirect_uri=${kakaoRedirectUrl}&response_type=code`;
+  const naverLoginURL = `https://nid.naver.com/oauth2.0/authorize?client_id=${naverApikey}&response_type=code&redirect_uri=${naverRedirectUrl}&state=${naverState}`;
 
   return (
     <div
@@ -21,16 +30,14 @@ const LoginModal = (props) => {
           </button>
           <h3 className="">로 그 인</h3>
           <div className="flex flex-col">
+            <a href={kakaoLoginURL}>
+              <img
+                className="w-36 h-16 object-cover rounded-xl"
+                src="assets/kakao_login.png"
+              />
+            </a>
             <button>
-              <a href="/oauth2/authorization/kakao">
-                <img
-                  className="w-36 h-16 object-cover rounded-xl"
-                  src="assets/kakao_login.png"
-                />
-              </a>
-            </button>
-            <button>
-              <a href="/oauth2/authorization/naver">
+              <a href={naverLoginURL}>
                 <img
                   className="w-36 h-16 object-cover rounded-xl"
                   src="assets/naver_login.png"

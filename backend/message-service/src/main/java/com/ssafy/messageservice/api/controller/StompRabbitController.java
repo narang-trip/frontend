@@ -1,9 +1,8 @@
 package com.ssafy.messageservice.api.controller;
 
-import com.ssafy.messageservice.api.response.ChatDto;
-import com.ssafy.messageservice.api.response.ChatRequest;
-import com.ssafy.messageservice.api.response.ChatSendRequest;
-import com.ssafy.messageservice.api.response.UserInviteRequest;
+import com.ssafy.messageservice.api.request.ChatRequest;
+import com.ssafy.messageservice.api.request.ChatSendRequest;
+import com.ssafy.messageservice.api.request.UserInviteRequest;
 import com.ssafy.messageservice.api.service.ChatService;
 import com.ssafy.messageservice.db.entity.Chat;
 import com.ssafy.messageservice.db.entity.Chatroom;
@@ -18,10 +17,12 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@CrossOrigin("*")
 @Controller
 @RequiredArgsConstructor
 @Slf4j

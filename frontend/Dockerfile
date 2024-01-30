@@ -1,7 +1,6 @@
-# nginx 이미지 사용
+# root에 /app 폴더 생성
 FROM nginx:latest
 
-# root에 /app 폴더 생성
 RUN mkdir /app
 
 # work dir 고정
@@ -13,14 +12,9 @@ RUN mkdir ./build
 # host pc의 현재 경로의 build 폴더를 work dir의 build 폴더로 복사
 ADD ./frontend/dist ./build
 
-# nginx의 default.conf 삭제
-RUN rm /etc/nginx/conf.d/default.conf
-
-# host pc의 nginx.conf를 아래 경로에 복사
-COPY ./frontend/nginx.conf /etc/nginx/conf.d
 
 # 3176 포트 개방
 EXPOSE 3716
 
-# container 실행 시 자동으로 실행할 command. nginx 시작함
-CMD ["nginx", "-g", "daemon off;"]
+# # container 실행 시 자동으로 실행할 command. nginx 시작함
+# CMD ["nginx", "-g", "daemon off;"]
