@@ -17,11 +17,12 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-//@CrossOrigin("*")
+@CrossOrigin("*")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
