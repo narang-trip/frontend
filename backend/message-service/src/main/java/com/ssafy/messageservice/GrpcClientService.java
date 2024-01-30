@@ -22,19 +22,10 @@ public class GrpcClientService {
     public String sendMessage(final String userId) {
         try{
             UserReply response = this.simpleStub.sayHello(UserRequest.newBuilder().setUserId(userId).build());
-            LOGGER.info(response.getUserId() + response.getUserName());
+            System.out.println(response.getUserId() + response.getUserName()+ "휷.,,");
             return response.getUserName();
         } catch (StatusRuntimeException e) {
             return "FAILED with " + e.getStatus().getCode().name();
         }
     }
-
-//    public String sendMessage(final String name) {
-//        try{
-//            HelloReply response = this.simpleStub.sayHello(HelloRequest.newBuilder().setName(name).build());
-//            return response.getMessage();
-//        } catch (StatusRuntimeException e) {
-//            return "FAILED with " + e.getStatus().getCode().name();
-//        }
-//    }
 }
