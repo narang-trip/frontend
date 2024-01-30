@@ -5,7 +5,12 @@ export default function ConceptSelect({ value, onChange }) {
   return (
     <div className="w-full my-2">
       <label className="mr-10 text-sm font-medium">여행 컨셉</label>
-      <select name="concept" value={value} onChange={onChange} className="w-2/3 p-1.5 border border-stone-200 bg-stone-0  text-gray-900 text-xs">
+      <select
+        name="concept"
+        value={value !== '' ? value : conceptList[0]}
+        onChange={onChange}
+        className="w-2/3 p-1.5 border border-stone-200 bg-stone-0  text-gray-900 text-xs"
+      >
         {conceptList.map((option, index) => (
           <option key={index} id={option}>
             {option}
@@ -15,4 +20,3 @@ export default function ConceptSelect({ value, onChange }) {
     </div>
   );
 }
-
