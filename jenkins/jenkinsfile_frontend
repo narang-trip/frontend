@@ -32,7 +32,7 @@ pipeline {
                 // 도커 컨테이너 있으면 삭제 없으면 그냥 실행
                 sh 'docker rm frontend | true'
                 // 
-                sh 'docker build -t frontend ./frontend/Dockerfile .'
+                sh 'docker build -t frontend -f ./frontend/Dockerfile .'
                 // 배포 스크립트 실행 (예: Docker 컨테이너에 배포)
                 sh 'docker run --name frontend --network Narang -d frontend'
                 
