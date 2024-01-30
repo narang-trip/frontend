@@ -8,13 +8,10 @@ import FileUploadBox from "./FileUploadBox";
 import PositionCheck from "./PositionCheck.jsx";
 
 export default function TripWriteForm() {
-  const [formData, setFormData] = useState({
+  const [board, setBoard] = useState({
     title: "",
     concept: "",
     img: "",
-    startDate: "",
-    endDate: "",
-    dateRange: [],
     location: "",
     count: "",
     position: [],
@@ -27,39 +24,26 @@ export default function TripWriteForm() {
   // 값이 변할 때 추적하기 위한 함수
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => {
-      const updatedFormData = {
-        ...prev,
-        [name]: value,
-      };
-      console.log("Updated FormData:", updatedFormData); // Log updated form data
-      return updatedFormData;
-    });
+    console.log(name, value); // 콘솔에 출력
+    setBoard((board) => ({ ...board, [name]: value }));
   };
 
   const [dateRange, setDateRange] = useState([null, null]);
   // 기간 변할 때 추적하는 함수
   const handleDateChange = (range) => {
     setDateRange(range);
-    setFormData((prev) => ({
-      ...prev,
+    setBoard((board) => ({
+      ...board,
       startDate: range[0],
       endDate: range[1],
-      DateRange: range,
+      dateRange: range,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(board);
   }; // handleSubmit 끝
-
-  const saveWrite = () => {
-    console.log("저장완료");
-  };
-
-  const cancle = () => {
-    console.log("취소");
-  };
 
   return (
     <Fragment>
@@ -73,14 +57,11 @@ export default function TripWriteForm() {
                 </p>
               </div>
               <div className="flex flex-col justify-between col-span-2">
-                <TitleInput value={formData.title} onChange={handleChange} />
-                <ConceptSelect
-                  value={formData.concept}
-                  onChange={handleChange}
-                />
+                <TitleInput value={board.title} onChange={handleChange} />
+                <ConceptSelect value={board.concept} onChange={handleChange} />
                 <div className="w-full my-2">
                   <label className="mr-10 text-sm font-medium">대표 사진</label>
-                  <input type="file" className="w-2/3 text-xs"/>
+                  <input type="file" className="w-2/3 text-xs" />
                 </div>
                 <DateRangePicker
                   dateRange={dateRange}
@@ -90,8 +71,10 @@ export default function TripWriteForm() {
                   <label className="mr-10 text-sm font-medium">여행 장소</label>
                 </div>
                 <PositionCheck
-                  value={formData.position}
-                  onChange={handleChange}
+                  value={board.position}
+                  onChange={(positions) =>
+                    setBoard((prev) => ({ ...prev, position: positions }))
+                  }
                 />
                 <div className="w-full my-2">
                   <label className="mr-10 text-sm font-medium">
@@ -100,27 +83,23 @@ export default function TripWriteForm() {
                 </div>
               </div>
               <div>
-                <div className="mt-3 h-2/5" >
-                  <img src={`assets/airplain.jpg`} className="h-full"/>
+                <div className="mt-3 h-2/5">
+                  <img src={`assets/airplain.jpg`} className="h-full" />
                 </div>
                 <div className="mt-3 h-3/5">
                   <label className="text-sm font-medium">여행 설명</label>
-                  <br/>
-                  <textarea className="w-full text-xs resize-none h-4/5 p-1.5"/>
+                  <br />
+                  <textarea
+                    value={board.description}
+                    onChange={handleChange}
+                    className="w-full text-xs resize-none h-4/5 p-1.5"
+                    name="description"
+                  />
                 </div>
               </div>
               <div className="flex justify-around col-start-2 mt-10 mb-5">
-                <button
-                  className="px-6 py-2 rounded-md text-stone-800 bg-stone-500 hover:text-stone-950"
-                  onClick={saveWrite}
-                >
+                <button className="px-6 py-2 rounded-md text-stone-800 bg-stone-500 hover:text-stone-950">
                   저장
-                </button>
-                <button
-                  className="px-6 py-2 rounded-md bg-stone-800 text-stone-50"
-                  onClick={cancle}
-                >
-                  취소
                 </button>
               </div>
             </div>
