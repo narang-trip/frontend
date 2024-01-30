@@ -6,7 +6,6 @@ import { scheduleActions } from "../store/scheduleSlice";
 
 export default function PlanningPage() {
   const list = useSelector((state) => state.schedule);
-  const tmplist = [...list];
   const card = useSelector((state) => state.places);
   const dispatch = useDispatch();
 
@@ -15,21 +14,22 @@ export default function PlanningPage() {
 
   const onDragEnd = ({ source, destination }) => {
     if (!destination) return;
-
-    console.log(source);
-    console.log(destination);
+    const idx = Number(destination.droppableId.substr(4));
+    const schedule = {
+      img: card[source.index].photo,
+      title: card[source.index].name,
+    };
     if (source.droppableId === "PlaceCard") {
-      const schedule = {
-        img: card[source.index].photo,
-        title: card[source.index].name,
-      };
-      const idx = destination.droppableId.substr(4);
-      console.log(tmplist[idx]);
-      tmplist[idx].push(schedule);
-      // tmplist[idx].splice(destination.index, 0, schedule);
-      // dispatch(scheduleActions.setSchedule(schedule));
+      dispatch(scheduleActions.addSchedule([schedule, source.index, idx]));
       console.log("추가");
     } else {
+      const idx2 = Number(source.droppableId.substr(4));
+      dispatch(
+        scheduleActions.moveSchedule([
+          [idx2, source.index],
+          [idx, destination.index],
+        ])
+      );
       console.log("이동");
     }
   };
