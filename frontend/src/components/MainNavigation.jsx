@@ -13,7 +13,7 @@ function MainNavigation() {
           <Tooltip text="메인화면">
             <div>
             <NavLink to="/" className="flex items-center justify-center w-16 h-16 rounded-l-full hover:bg-stone-100 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30">
-              <GoHome className="w-[2.5rem] h-[2.5rem] mx-auto " />
+              <GoHome className="w-[2rem] h-[2rem] mx-auto" />
             </NavLink>
             </div>
           </Tooltip>
@@ -21,28 +21,28 @@ function MainNavigation() {
         <li>
           <Tooltip text="동행모집작성">
             <NavLink to="/write" className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30">
-              <PencilSquareIcon className="w-[2.5rem] h-[2.5rem] mx-auto " />
+              <PencilSquareIcon className="w-[2rem] h-[2rem] mx-auto" />
             </NavLink>
           </Tooltip>
         </li>
         <li>
           <Tooltip text="동행모집검색">
             <NavLink to="/search" className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30">
-              <GoSearch className="w-10 h-10 mx-auto" />
+              <GoSearch className="w-[2rem] h-[2rem] mx-auto" />
             </NavLink>
           </Tooltip>
         </li>
         <li>
           <Tooltip text="신청현황">
             <NavLink to="/applicantList" className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30">
-              <GoPersonAdd className="w-10 h-10 mx-auto" />
+              <GoPersonAdd className="w-[2rem] h-[2rem] mx-auto" />
             </NavLink>
           </Tooltip>
         </li>
         <li>
           <Tooltip text="여행일정생성">
             <NavLink to="/planning" className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30">
-              <LiaCalendarDaySolid className="w-10 h-10 mx-auto" />
+              <LiaCalendarDaySolid className="w-[2rem] h-[2rem] mx-auto" />
             </NavLink>
           </Tooltip>
         </li>
@@ -59,4 +59,3 @@ function MainNavigation() {
 }
 
 export default MainNavigation;
-
