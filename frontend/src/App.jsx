@@ -46,6 +46,14 @@ const router = createBrowserRouter([
         path: "practice",
         element: <PracticePage />,
       },
+      {
+        path: "login/oauth2/code/kakao",
+        element: <HomePage />,
+      },
+      {
+        path: "login/oauth2/code/naver",
+        element: <HomePage />,
+      },
     ],
   },
 ]);

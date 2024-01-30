@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Getter
 @AllArgsConstructor
-public class ChatroomListResponse {
+public class ChatroomListMidResponse {
     private List<ChatroomResponse> chatroomList;
 
     @Getter
@@ -21,9 +21,6 @@ public class ChatroomListResponse {
         private String chatroomId;
         private String chatroomName;
         private ChatResponse chat;
-        // 이 코드 추가
-        private List<UserResponse> userList;
-        // 여기까지
 
         @Override
         public int compareTo(ChatroomResponse other) {
@@ -46,18 +43,5 @@ public class ChatroomListResponse {
                 return other.getLatestTime().compareTo(this.latestTime);
             }
         }
-
-        @Getter
-        @AllArgsConstructor
-        public static class UserResponse {
-            private String userId;
-            private String nickname;
-        }
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public static class UserIdResponse {
-        private String userId;
     }
 }

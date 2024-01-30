@@ -1,6 +1,7 @@
 package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.response.ChatListResponse;
+import com.ssafy.messageservice.api.response.ChatroomListMidResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.api.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/message")
+@RequestMapping("/api/message/chat")
 public class ChatController {
     private final ChatService chatService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatService.class);

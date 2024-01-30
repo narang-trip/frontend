@@ -26,7 +26,7 @@ import java.util.UUID;
 public class UserService extends DefaultOAuth2UserService {
     private final BCryptPasswordEncoder encoder;
     private final UserRepository userRepository;
-    private  final AuthRepository authRepository;
+    private final AuthRepository authRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -52,7 +52,7 @@ public class UserService extends DefaultOAuth2UserService {
         String id = uuid.toString();
         String username = userInfo.getName();
         String email = userInfo.getEmail();
-        String authority = "AUTH_USER"; //일반 유저
+        String authority = "ROLE_USER"; //일반 유저
         String profileUrl = userInfo.getProfileUrl();
         String gender = userInfo.getGender();
         int ageRange = userInfo.getAgeRange();
