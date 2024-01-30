@@ -1,4 +1,4 @@
-package com.ssafy.messageservice.api.response;
+package com.ssafy.messageservice.api.request;
 
 import lombok.*;
 
