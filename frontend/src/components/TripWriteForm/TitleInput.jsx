@@ -1,4 +1,3 @@
-
 export default function TitleInput({ value, onChange }) {
   return (
     <div className="w-full my-2">
