@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeRequests()
                 .requestMatchers("/private/**").authenticated() //private로 시작하는 uri는 로그인 필수
-                .requestMatchers("/admin/**").access("hasRole('AUTH_ADMIN')") //admin으로 시작하는 uri는 관릴자 계정만 접근 가능
+                .requestMatchers("/admin/**").access("hasRole('ROLE_ADMIN')") //admin으로 시작하는 uri는 관릴자 계정만 접근 가능
                 .anyRequest().permitAll() //나머지 uri는 모든 접근 허용
                 .and()
                 .formLogin() // form login 관련 설정
@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/home") // 로그인 성공 후 이동할 url
                 .and().oauth2Login()//oauth2 관련 설정
                 .loginPage("/loginForm") //로그인이 필요한데 로그인을 하지 않았다면 이동할 uri 설정
-                .defaultSuccessUrl("/") //OAuth 구글 로그인이 성공하면 이동할 uri 설정
+                .defaultSuccessUrl("/welcome") //OAuth 로그인이 성공하면 이동할 uri 설정
                 .userInfoEndpoint()//로그인 완료 후 회원 정보 받기
                 .userService(userService).and().and().build(); //
     }
