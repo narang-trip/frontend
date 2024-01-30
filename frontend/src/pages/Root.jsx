@@ -11,7 +11,7 @@ function RootLayout() {
   return (
     <Fragment>
         <UpperNavbar/>
-      <div className="flex h-screen gap-16">
+      <div className="flex h-screen gap-6">
         <div className="w-1/12 ml-[1.5rem]">
           <MainNavigation />
         </div>
