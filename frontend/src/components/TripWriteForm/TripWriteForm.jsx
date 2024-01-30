@@ -6,10 +6,9 @@ import ConceptSelect from "./ConceptSelect";
 import DateRangePicker from "./DateRangePicker.jsx";
 import FileUploadBox from "./FileUploadBox";
 import PositionCheck from "./PositionCheck.jsx";
-import { useDispatch } from "react-redux";
 
 export default function TripWriteForm() {
-  const [board, setBoard] = useState({
+  const [formData, setFormData] = useState({
     title: "",
     concept: "",
     img: "",
@@ -23,36 +22,22 @@ export default function TripWriteForm() {
     description: "",
   });
 
-  // 여행 제목
-  const [title, setTitle] = useState("");
-  // 여행 컨셉
-  const [concept, setConcept] = useState("");
-  // 여행 시작 날짜
-  const [startDate, setStartDate] = useState("");
-  // 여행 끝 날짜
-  const [endDate, setEndDate] = useState("");
-  // 여행 기간
-  const [dateRange, setDateRange] = useState([null, null]);
-  // 여행 장소
-  const [location, setLocation] = useState([null, null, null]);
-  // 모집 인원
-  const [count, setCount] = useState(0);
-  // 여행 설명
-  const [description, setDescription] = useState("");
-
-  const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   // 값이 변할 때 추적하기 위한 함수
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBoard({
-      ...board,
-      [name]: value,
+    setFormData((prev) => {
+      const updatedFormData = {
+        ...prev,
+        [name]: value,
+      };
+      console.log("Updated FormData:", updatedFormData); // Log updated form data
+      return updatedFormData;
     });
   };
 
+  const [dateRange, setDateRange] = useState([null, null]);
   // 기간 변할 때 추적하는 함수
   const handleDateChange = (range) => {
     setDateRange(range);
@@ -115,7 +100,6 @@ export default function TripWriteForm() {
                 </div>
               </div>
               <div>
-<<<<<<< HEAD
                 <div className="mt-3 h-2/5" >
                   <img src={`assets/airplain.jpg`} className="h-full"/>
                 </div>
@@ -123,15 +107,6 @@ export default function TripWriteForm() {
                   <label className="text-sm font-medium">여행 설명</label>
                   <br/>
                   <textarea className="w-full text-xs resize-none h-4/5 p-1.5"/>
-=======
-                <div className="mt-5 h-2/5">
-                  <img src={`assets/airplain.jpg`} className="h-full" />
-                </div>
-                <div className="mt-5 h-3/5">
-                  <label className="text-xl font-medium">여행 설명</label>
-                  <br />
-                  <textarea className="w-full h-full" />
->>>>>>> feature_writeForm
                 </div>
               </div>
               <div className="flex justify-around col-start-2 mt-10 mb-5">
