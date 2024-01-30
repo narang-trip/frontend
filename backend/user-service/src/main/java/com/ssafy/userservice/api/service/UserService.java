@@ -26,7 +26,7 @@ import java.util.UUID;
 public class UserService extends DefaultOAuth2UserService {
     private final BCryptPasswordEncoder encoder;
     private final UserRepository userRepository;
-    private  final AuthRepository authRepository;
+    private final AuthRepository authRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
