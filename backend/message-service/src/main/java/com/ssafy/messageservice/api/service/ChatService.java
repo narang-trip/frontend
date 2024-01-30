@@ -2,6 +2,7 @@ package com.ssafy.messageservice.api.service;
 
 import com.ssafy.messageservice.api.response.ChatDto;
 import com.ssafy.messageservice.api.response.ChatListResponse;
+import com.ssafy.messageservice.api.response.ChatroomListMidResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.db.entity.Chat;
 import com.ssafy.messageservice.db.entity.Chatroom;
@@ -24,7 +25,6 @@ import java.util.stream.Collectors;
 public class ChatService {
     private final ChatRepositoryCustom chatRepositoryCustom;
     private final ChatRepository chatRepository;
-
 
     public ChatroomListResponse getLatestChatsByUserId(String userId) {
         return chatRepositoryCustom.getLatestChatsByUserId(userId);

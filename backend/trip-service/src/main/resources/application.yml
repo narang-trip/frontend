@@ -2,17 +2,17 @@ spring:
   application:
     name: trip-service
   # MongoDB 추가
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: narangdb
+  # data:
+    # mongodb:
+    #   host: localhost
+    #   port: 27017
+    #   database: narangdb
 
 server:
   port: 8083
 
 springdoc:
   api-docs:
-    path: /trip/v3/api-docs
+    path: /api/trip/v3/api-docs
   swagger-ui:
-    path: /trip/swagger-ui.html
+    path: /api/trip/swagger-ui.html

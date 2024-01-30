@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/trip")
+@RequestMapping("/api/trip")
 public class TripController {
 
 //    @Autowired
