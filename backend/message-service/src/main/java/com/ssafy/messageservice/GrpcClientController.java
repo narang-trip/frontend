@@ -12,6 +12,6 @@ public class GrpcClientController {
     // 되는거까지 확인 완료
     @GetMapping("/test")
     public String printMessage() {
-        return grpcClientService.sendMessage("test");
+        return grpcClientService.sendMessage("조예진");
     }
 }

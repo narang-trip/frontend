@@ -15,9 +15,9 @@ public class AlertService {
     private final EmitterRepository emitterRepository;
 
     /**
-     * 클라이언트가 구독을 위해 호출하는 메서드.
+     * 클라이언트가 구독을 위해 호출하는 메서드
      *
-     * @param userId - 구독하는 클라이언트의 사용자 아이디.
+     * @param userId - 구독하는 클라이언트의 사용자 아이디
      * @return SseEmitter - 서버에서 보낸 이벤트 Emitter
      */
     public SseEmitter subscribe(String userId) {
@@ -29,10 +29,10 @@ public class AlertService {
 
     /**
      * 서버의 이벤트를 클라이언트에게 보내는 메서드
-     * 다른 서비스 로직에서 이 메서드를 사용해 데이터를 Object event에 넣고 전송하면 된다.
+     * 다른 서비스 로직에서 이 메서드를 사용해 데이터를 Object event에 넣고 전송하면 된다
      *
-     * @param userId - 메세지를 전송할 사용자의 아이디.
-     * @param event  - 전송할 이벤트 객체.
+     * @param userId - 메세지를 전송할 사용자의 아이디
+     * @param event  - 전송할 이벤트 객체
      */
     public void notify(String userId, Object event) {
         sendToClient(userId, event);
@@ -41,8 +41,8 @@ public class AlertService {
     /**
      * 클라이언트에게 데이터를 전송
      *
-     * @param id   - 데이터를 받을 사용자의 아이디.
-     * @param data - 전송할 데이터.
+     * @param id   - 데이터를 받을 사용자의 아이디
+     * @param data - 전송할 데이터
      */
     private void sendToClient(String id, Object data) {
         SseEmitter emitter = emitterRepository.get(id);
@@ -59,8 +59,8 @@ public class AlertService {
     /**
      * 사용자 아이디를 기반으로 이벤트 Emitter를 생성
      *
-     * @param id - 사용자 아이디.
-     * @return SseEmitter - 생성된 이벤트 Emitter.
+     * @param id - 사용자 아이디
+     * @return SseEmitter - 생성된 이벤트 Emitter
      */
     private SseEmitter createEmitter(String id) {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
