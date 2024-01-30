@@ -1,8 +1,8 @@
 const Schedule = (props) => {
   const data = {
-    // img: props.img,
-    // title: props.title,
-    // time: props.time,
+    img: props.data.img,
+    title: props.data.title,
+    time: props.data.time,
   };
 
   return (

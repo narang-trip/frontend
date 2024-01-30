@@ -32,7 +32,6 @@ import { scheduleActions } from "../store/scheduleSlice";
 
 const Plan = () => {
   const list = useSelector((state) => state.schedule);
-  const tmplist = [];
   const dispatch = useDispatch();
 
   // ydoc.on("afterTransaction", () => {
@@ -46,30 +45,11 @@ const Plan = () => {
   const update = () => {};
 
   const add = () => {
-    tmplist.push([]);
-    dispatch(scheduleActions.setSchedule(tmplist));
-    // dispatch(scheduleActions.setSchedule(sss));
-    // dispatch(scheduleActions.setSchedule(sss));
+    dispatch(scheduleActions.tmpAddDay());
   };
-
-  // const onDragEnd = ({ source, destination }) => {
-  //   if (!destination) return;
-
-  //   console.log(source);
-  //   console.log(destination);
-
-  //   const scourceKey = Number(source.droppableId.replace("list", ""));
-  //   const destinationKey = Number(destination.droppableId.replace("list", ""));
-
-  //   const tmplist = Array.from(list);
-  //   const [value] = tmplist.at(scourceKey).splice(source.index, 1);
-  //   tmplist.at(destinationKey).splice(destination.index, 0, value);
-  //   setList(tmplist);
-  // };
 
   return (
     <div style={{ display: "flex" }}>
-      {/* <DragDropContext onDragEnd={onDragEnd} style={{ display: "flex" }}> */}
       {list.map((data, index) => (
         <div style={{ flexDirection: "column" }} key={index}>
           <Droppable droppableId={`list${index}`}>
@@ -85,7 +65,6 @@ const Plan = () => {
           </Droppable>
         </div>
       ))}
-      {/* </DragDropContext> */}
       <button onClick={add}>날짜추가</button>
     </div>
   );
