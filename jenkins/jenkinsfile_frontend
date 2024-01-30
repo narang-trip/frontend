@@ -7,11 +7,6 @@ pipeline {
         releaseServerUri = 'i10a701.p.ssafy.io'
     }
     stages {
-        stage('Example') {
-            steps {
-                sh 'npm version'
-            }
-        }
         stage('Checkout') {
             steps {
                 // 소스 코드 체크아웃
@@ -34,16 +29,15 @@ pipeline {
         }
         stage('Docker Image Build') {
             steps {
-                // 빌드된 frontend 파일 도커 이미지로 생성 
-                
-                sh('(docker ps -a | grep "3000" | awk \'{print $1}\') | xargs docker stop || true' )
-
-                sh('chmod +x ./jenkins/port-refresh-frontend.sh')
-
-                // echo 'No trip-service running . . . About to Build a image . . .'
+                // 도커 컨테이너 있으면 삭제 없으면 그냥 실행
+                sh 'docker rm frontend | true'
+                // 
                 sh 'docker build -t frontend -f ./frontend/Dockerfile .'
                 // 배포 스크립트 실행 (예: Docker 컨테이너에 배포)
-                sh 'docker run -p 3000:3716 -d frontend'
+                sh 'docker run --name frontend --network Narang -d frontend'
+                
+                // 도커 nginx 재시작
+                sh 'docker restart nginx'
             }
         }
     }
