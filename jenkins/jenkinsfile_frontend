@@ -29,14 +29,21 @@ pipeline {
         }
         stage('Docker Image Build') {
             steps {
-                // 도커 컨테이너 있으면 삭제 없으면 그냥 실행
-                sh '(docker stop frontend && docker rm frontend) | true'
+                // 도커 컨테이너에 프론트앤드 있으면 중지
+                sh 'docker stop frontend || true'
+                // 도커 컨테이너에 프론트앤드 있으면 삭제
+                sh 'docker rm frontend || true'
                 // 
                 sh 'docker build -t frontend -f ./frontend/Dockerfile .'
                 // 배포 스크립트 실행 (예: Docker 컨테이너에 배포)
                 sh 'docker run --name frontend -p 3000:3000 --network Narang -d frontend'
                 
-                // 도커 nginx 재시작
+               
+            }
+        }
+        stage('Restart Nginx') {
+            steps {
+                 // 도커 nginx 재시작
                 sh 'docker restart nginx'
             }
         }
