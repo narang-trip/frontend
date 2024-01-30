@@ -43,5 +43,5 @@ springdoc:
 grpc:
   client:
     test:
-      address: 'static://127.0.0.1:9091'
+      address: 'static://i10a701.p.ssafy.io:9090'
       negotiationtype: plaintext

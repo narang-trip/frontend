@@ -16,8 +16,8 @@ public class EmitterRepository {
     /**
      * 주어진 아이디와 이미터를 저장
      *
-     * @param id      - 사용자 아이디.
-     * @param emitter - 이벤트 Emitter.
+     * @param id      - 사용자 아이디
+     * @param emitter - 이벤트 Emitter
      */
     public void save(String id, SseEmitter emitter) {
         emitters.put(id, emitter);
@@ -26,17 +26,17 @@ public class EmitterRepository {
     /**
      * 주어진 아이디의 Emitter를 제거
      *
-     * @param id - 사용자 아이디.
+     * @param id - 사용자 아이디
      */
     public void deleteById(String id) {
         emitters.remove(id);
     }
 
     /**
-     * 주어진 아이디의 Emitter를 가져옴.
+     * 주어진 아이디의 Emitter를 가져옴
      *
-     * @param id - 사용자 아이디.
-     * @return SseEmitter - 이벤트 Emitter.
+     * @param id - 사용자 아이디
+     * @return SseEmitter - 이벤트 Emitter
      */
     public SseEmitter get(String id) {
         return emitters.get(id);
