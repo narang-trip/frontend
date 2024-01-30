@@ -14,7 +14,6 @@ import java.util.UUID;
 public class ChatroomUser {
     @Id
     @Column(length = 50)
-    // 임의로 pk 추가
     private String id = UUID.randomUUID().toString();
 
     @ManyToOne(fetch = FetchType.LAZY)
