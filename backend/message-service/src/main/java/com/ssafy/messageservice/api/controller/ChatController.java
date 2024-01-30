@@ -16,7 +16,7 @@ import java.util.List;
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/message")
+@RequestMapping("/api/message/chat")
 public class ChatController {
     private final ChatService chatService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatService.class);

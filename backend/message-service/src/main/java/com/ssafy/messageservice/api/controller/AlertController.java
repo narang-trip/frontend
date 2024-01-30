@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/alert")
+@RequestMapping("/api/message/alert")
 public class AlertController {
     private final AlertService alertService;
 
