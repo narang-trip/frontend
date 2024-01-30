@@ -17,7 +17,7 @@ public class AlertController {
     private final AlertService alertService;
 
     // 로그인 한 유저 sse 연결 -> 로그인 버튼 눌렀을 때 호출해야 함
-    @GetMapping(value = "/subscribe/{userId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/subscribe/{userId}", produces = "text/event-stream")
     public SseEmitter subscribe(@PathVariable String userId) {
         return alertService.subscribe(userId);
     }

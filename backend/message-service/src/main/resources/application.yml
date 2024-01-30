@@ -42,7 +42,7 @@ springdoc:
 # grpc를 위해 추가
 grpc:
   client:
-    test:
+    user-service:
 #      address: 'static://127.0.0.1:9091'
-      address: 'static://i10a701.p.ssafy.io:9090'
+      address: 'static://user-service:9090'
       negotiationtype: plaintext
