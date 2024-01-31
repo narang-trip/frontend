@@ -10,4 +10,4 @@ ARG JAR_FILE=./backend/trip-service/build/libs/trip-service-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} ./eureka-service.jar
 
 # 컨테이너에서 수행될 명령어를 지정합니다.
-ENTRYPOINT ["java","-jar", "eureka-service.jar"]
+ENTRYPOINT ["java","-jar", "eureka-server.jar"]
