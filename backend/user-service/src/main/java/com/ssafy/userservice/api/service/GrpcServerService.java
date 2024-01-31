@@ -15,6 +15,7 @@ import java.util.Optional;
 public class GrpcServerService extends UserInfoGrpc.UserInfoImplBase {
     AuthRepository authRepository;
     public void sayHello(UserRequest request, StreamObserver<UserReply> responseObserver) {
+        System.out.println("TEST ... ... REQUEST RECIEVED");
         Optional<Auth> findAuth = authRepository.findById(request.getUserId());
         if(findAuth.isPresent()) {
             UserReply reply = UserReply.newBuilder()
