@@ -41,11 +41,11 @@ pipeline {
                
             }
         }
-        stage('Restart Nginx') {
-            steps {
-                 // 도커 nginx 재시작
-                sh 'docker restart nginx'
-            }
-        }
+        // stage('Restart Nginx') {
+        //     steps {
+        //          // 도커 nginx 재시작
+        //         sh 'docker restart nginx'
+        //     }
+        // }
     }
 }
