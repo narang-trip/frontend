@@ -1,4 +1,3 @@
-
 FROM nginx:latest
 
 # root에 /app 폴더 생성
