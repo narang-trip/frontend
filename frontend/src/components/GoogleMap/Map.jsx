@@ -9,8 +9,8 @@ import { placesActions } from "../../store/placeSlice";
 
 const Map = () => {
   const containerStyle = {
-    width: "700px",
-    height: "550px",
+    width: "300px",
+    height: "300px",
   };
 
   const center = {
