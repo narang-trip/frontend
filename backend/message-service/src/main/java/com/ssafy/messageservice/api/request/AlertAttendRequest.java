@@ -10,10 +10,12 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 public class AlertAttendRequest {
+    private String tripId;
+    private String tripName;
     private String senderId;
     private String receiverId;
     private String position;
     private String aspiration;
-    private String status;
+    private String alertType;
     private boolean isRead;
 }
