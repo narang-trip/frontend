@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import HomePage from "./pages/Home";
 import RootLayout from "./pages/Root";
+import RootLayoutOffWidgets from "./pages/RootOffWidgets";
 import ErrorPage from "./pages/Error";
 import SearchPage from "./pages/Search";
 import PlanningPage from "./pages/Planning";
@@ -14,6 +15,26 @@ import Login from "./pages/Login";
 import Mypage from "./pages/Mypage";
 
 const router = createBrowserRouter([
+  {
+    path: "/Mypage",
+    element: <RootLayoutOffWidgets />,
+    children: [
+      {
+        path: "",
+        element: <Mypage />,
+      },
+    ],
+  },
+  {
+    path: "/planning",
+    element: <RootLayoutOffWidgets />,
+    children: [
+      {
+        path: "",
+        element: <PlanningPage />,
+      },
+    ],
+  },
   {
     path: "/",
     element: <RootLayout />,
