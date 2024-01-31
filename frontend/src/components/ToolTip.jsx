@@ -21,7 +21,7 @@ function Tooltip({ children, text }) {
       <span
         className={`${
           show
-            ? "absolute left-[1.2rem] -ml-[-100%] block w-3 h-3 transform rotate-45 -translate-y-1/2 bg-stone-100 rounded-sm top-1/2"
+            ? "absolute left-[1.2rem] -ml-[-100%] block w-3 h-3 transform rotate-45 -translate-y-1/2 bg-stone-100 rounded-sm top-1/2 transition-transform ease-in-out duration-150"
             : null
         }`}
       ></span>
