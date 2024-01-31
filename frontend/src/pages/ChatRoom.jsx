@@ -23,7 +23,7 @@ const ChatRoomPage = () => {
   useEffect(() => {
     console.log("또 실행되면 나옴 유즈이펙트 안에 있음");
     inputRef.current.focus();
-    const sockJS = new SockJS("https://i10a701.p.ssafy.io:8084/");
+    const sockJS = new SockJS("https://i10a701.p.ssafy.io:8084/stomp/chat");
     const stompClient = Stomp.over(sockJS);
     stompClient.connect(
       "guest",
