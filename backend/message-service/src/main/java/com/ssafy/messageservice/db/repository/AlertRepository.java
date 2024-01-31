@@ -1,5 +1,6 @@
 package com.ssafy.messageservice.db.repository;
 
+import com.ssafy.messageservice.db.entity.Alert;
 import com.ssafy.messageservice.db.entity.Chat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,6 @@ import java.util.List;
 
 //@Repository
 //@RequiredArgsConstructor
-//public interface AlertRepository extends JpaRepository<Chat, String> {
-//
-//}
+public interface AlertRepository extends JpaRepository<Alert, String> {
+
+}
