@@ -23,6 +23,10 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/pub");
 
         //registry.enableSimpleBroker("/sub");
-        registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue");
+        registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue")
+                .setRelayHost("127.0.0.1")
+                .setRelayPort(61613)  // 기본 RabbitMQ STOMP 포트
+                .setClientLogin("guest")  // RabbitMQ 사용자 정보
+                .setClientPasscode("guest");
     }
 }
