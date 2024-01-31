@@ -22,12 +22,11 @@ spring:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 #        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
 
-
   rabbitmq:
-    host: localhost
+    host: rabbitmq
     port: 5672
-    username: admin
-    password: admin
+    username: guest
+    password: guest
 
 server:
   port: 8084
