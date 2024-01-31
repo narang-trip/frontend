@@ -11,17 +11,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 
 
-import com.example.logincomplete.domain.auth.login.handler.LoginFailureHandler;
-import com.example.logincomplete.domain.auth.login.handler.LoginSuccessHandler;
-import com.example.logincomplete.domain.auth.login.service.LoginService;
-import com.example.logincomplete.domain.auth.oauth2.handler.OAuth2LoginFailureHandler;
-import com.example.logincomplete.domain.auth.oauth2.handler.OAuth2LoginSuccessHandler;
-import com.example.logincomplete.domain.auth.oauth2.service.CustomOAuth2UserService;
-import com.example.logincomplete.domain.auth.repository.AuthRepository;
-import com.example.logincomplete.domain.security.filter.CustomJsonUsernamePasswordAuthenticationFilter;
-import com.example.logincomplete.domain.security.filter.JwtAuthenticationProcessingFilter;
-import com.example.logincomplete.domain.security.jwt.JwtService;
-import com.example.logincomplete.domain.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
