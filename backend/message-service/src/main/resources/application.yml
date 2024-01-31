@@ -45,3 +45,8 @@ grpc:
 #      negotiationtype: plaintext
     user-service:
       address: 'static://user-service:9090'
+
+eureka:
+  client:
+    service-url:
+      defaultZone: eureka-server:8761

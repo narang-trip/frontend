@@ -52,6 +52,7 @@ spring:
 server:
   port: 8081
 
+
 grpc:
   server:
     port: 9090
@@ -62,3 +63,8 @@ springdoc:
     path: /api/user/v3/api-docs
   swagger-ui:
     path: /api/user/swagger-ui.html
+eureka:
+  client:
+    service-url:
+      defaultZone: eureka-server:8761
+
