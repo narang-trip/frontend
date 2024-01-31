@@ -6,7 +6,8 @@ import ErrorPage from "./pages/Error";
 import SearchPage from "./pages/Search";
 import PlanningPage from "./pages/Planning";
 import ApplicantList from "./pages/ApplicantList";
-import WritePage from "./pages/Write";
+import TripRegisterPage from "./pages/TripResgister";
+import TripDetailPage from './pages/TripDetail';
 import ChatPage from "./pages/Chat";
 import PracticePage from "./pages/PracticeInfinite";
 import ChatRoomPage from "./pages/ChatRoom";
@@ -19,15 +20,19 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       {
-        path: "write",
-        element: <WritePage />,
+        path: "register",
+        element: <TripRegisterPage />,
+      },
+      {
+        path: "detail",
+        element: <TripDetailPage />,
       },
       {
         path: "search",
         element: <SearchPage />,
       },
       {
-        path: "ApplicantList",
+        path: "applicantList",
         element: <ApplicantList />,
       },
       {

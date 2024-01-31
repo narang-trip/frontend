@@ -26,7 +26,7 @@ const PlaceCard = () => {
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
                 >
-                  <Card key={index} sx={{ maxWidth: 345 }}>
+                  <Card key={index} sx={{ maxWidth: 200 }}>
                     <CardMedia
                       sx={{ height: 200 }}
                       image={place.photo}

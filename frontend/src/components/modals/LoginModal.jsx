@@ -14,12 +14,12 @@ const LoginModal = (props) => {
 
   return (
     <div
-      className="bg-gray-500 bg-opacity-70 absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center z-0"
+      className="fixed top-0 bottom-0 left-0 right-0 z-0 flex items-center justify-center bg-gray-500 bg-opacity-70"
       onClick={props.onClose}
       ref={modalBG}
     >
       <div
-        className="bg-white px-10 py-4 rounded-3xl w-96 h-82 z-10"
+        className="z-10 px-10 py-4 bg-white rounded-3xl w-96 h-82"
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -32,14 +32,14 @@ const LoginModal = (props) => {
           <div className="flex flex-col">
             <a href={kakaoLoginURL}>
               <img
-                className="w-36 h-16 object-cover rounded-xl"
+                className="object-cover h-16 w-36 rounded-xl"
                 src="assets/kakao_login.png"
               />
             </a>
             <button>
               <a href={naverLoginURL}>
                 <img
-                  className="w-36 h-16 object-cover rounded-xl"
+                  className="object-cover h-16 w-36 rounded-xl"
                   src="assets/naver_login.png"
                 />
               </a>

@@ -14,7 +14,7 @@ function RootLayout() {
         <div className="w-1/12">
           <MainNavigation />
         </div>
-        <main className="w-7/12 bg-slate-200">
+        <main className="w-7/12 bg-stone-50">
           <Outlet />
         </main>
         <div className="w-3/12 bg-slate-300">
