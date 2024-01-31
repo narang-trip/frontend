@@ -13,6 +13,7 @@
     "@charlietango/use-native-lazy-loading": "^1.10.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@mui/material": "^5.15.6",
     "@react-google-maps/api": "^2.19.2",
