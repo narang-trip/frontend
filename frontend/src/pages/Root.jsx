@@ -9,7 +9,7 @@ function RootLayout() {
 
   return (
     <Fragment>
-        <UpperNavbar/>
+      <UpperNavbar />
       <div className="flex justify-center h-screen mt-4 gap-7">
         <div className="w-1/12">
           <MainNavigation />
@@ -20,7 +20,7 @@ function RootLayout() {
         <div className="w-3/12 bg-slate-300">
           <Widgets />
         </div>
-      </div> 
+      </div>
     </Fragment>
   );
 }
