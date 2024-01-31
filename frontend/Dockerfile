@@ -13,6 +13,8 @@ RUN mkdir ./build
 # host pc의 현재 경로의 build 폴더를 work dir의 build 폴더로 복사
 ADD ./frontend/dist ./build
 
+# nginx 설정 파일 복사
+COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 # 3000 포트 개방
 EXPOSE 3000
