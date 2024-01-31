@@ -1,11 +1,11 @@
 import { Fragment } from "react";
-import TripWriteForm from "../components//TripWriteForm/TripWriteForm";
+import RegisterForm from "../components/Trip/Register/TripRegisterForm";
 
-export default function WritePage() {
+export default function TripRegisterPage() {
   return (
     <Fragment>
         <div className="w-9/12 mx-auto my-5">
-          <TripWriteForm />
+          <RegisterForm />
         </div>
     </Fragment>
   );

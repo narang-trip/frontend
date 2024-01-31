@@ -1,10 +1,10 @@
 import { useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 
-import TitleInput from "./TitleInput";
-import ConceptSelect from "./ConceptSelect";
+import TitleInput from "./TitleInput.jsx";
+import ConceptSelect from "./ConceptSelect.jsx";
 import DateRangePicker from "./DateRangePicker.jsx";
-import FileUploadBox from "./FileUploadBox";
+import FileUploadBox from "./FileUploadBox.jsx";
 import PositionCheck from "./PositionCheck.jsx";
 
 export default function TripWriteForm() {
@@ -42,7 +42,11 @@ export default function TripWriteForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(board);
+    // 데이터 저장 또는 데이터 저장을 위한 액션 디스패치
+    console.log("데이터 저장 중:", board);
+
+    // 저장 후 이동할 페이지로 이동
+    navigate("/detail");
   }; // handleSubmit 끝
 
   return (
