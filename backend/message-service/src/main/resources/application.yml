@@ -38,11 +38,10 @@ springdoc:
   swagger-ui:
     path: /api/message/swagger-ui.html
 
-
 # grpc를 위해 추가
 grpc:
   client:
+#      address: 'static://user-service:9090'
+#      negotiationtype: plaintext
     user-service:
-#      address: 'static://127.0.0.1:9091'
       address: 'static://user-service:9090'
-      negotiationtype: plaintext
