@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { SlCalender, SlLocationPin, SlPeople, SlBadge } from "react-icons/sl";
-import ApplicationModal from "../modals/ApplicationModal";
+import ApplicationModal from "../modals/applicationModal";
 import { ModalPortal } from "../modals/ModalPortal";
 
 export default function TripDetail() {
