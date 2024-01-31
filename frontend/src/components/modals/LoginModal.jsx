@@ -33,7 +33,7 @@ const LoginModal = (props) => {
 
   return (
     <div
-      className="bg-gray-500 bg-opacity-70 absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center z-0"
+      className="bg-gray-500 bg-opacity-70 fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-0"
       onClick={props.onClose}
       ref={modalBG}
     >
