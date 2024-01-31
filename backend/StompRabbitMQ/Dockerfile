@@ -9,4 +9,6 @@
 FROM openjdk:17-alpine
 ARG JAR_FILE=StompRabbitMQ-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} /StompRabbitMQ.jar
+ENV RABBITMQ_DEFAULT_USER "guest"
+ENV RABBITMQ_DEFAULT_PASS "guest"
 ENTRYPOINT ["java", "-jar", "/StompRabbitMQ.jar"]
