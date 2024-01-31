@@ -72,27 +72,58 @@ public class AlertService {
     }
 
     // 알림 보내는 메소드
-    public void send(AlertAttendRequest alertAttendRequest) {
-        Alert alert = new Alert(UUID.randomUUID().toString(),
-                alertAttendRequest.getTripId(),
-                alertAttendRequest.getTripName(),
-                alertAttendRequest.getSenderId(),
-                alertAttendRequest.getReceiverId(),
-                alertAttendRequest.getPosition(),
-                alertAttendRequest.getAspiration(),
-                alertAttendRequest.getAlertType(),
-                alertAttendRequest.isRead());
-        alertRepository.save(alert);
-        String receiver = alertAttendRequest.getReceiverId();
-        String eventId = receiver + "_" + System.currentTimeMillis();
-        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
-        emitters.forEach(
-                (key, emitter) -> {
-                    emitterRepository.saveEventCache(key, alert);
-                    sendAlert(emitter, eventId, key, "success");
-                }
-        );
+    public boolean send(AlertAttendRequest alertAttendRequest) {
+        try{
+            // DB Alert 테이블에 데이터 저장하기
+            Alert alert = new Alert(UUID.randomUUID().toString(),
+                    alertAttendRequest.getTripId(),
+                    alertAttendRequest.getTripName(),
+                    alertAttendRequest.getSenderId(),
+                    alertAttendRequest.getReceiverId(),
+                    alertAttendRequest.getPosition(),
+                    alertAttendRequest.getAspiration(),
+                    alertAttendRequest.getAlertType(),
+                    alertAttendRequest.isRead());
+            alertRepository.save(alert);
+            String receiver = alertAttendRequest.getReceiverId();
+            String eventId = receiver + "_" + System.currentTimeMillis();
+            Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
+            emitters.forEach(
+                    (key, emitter) -> {
+                        emitterRepository.saveEventCache(key, alert);
+                        sendAlert(emitter, eventId, key, "success");
+                    }
+            );
+            return true;
+        }catch (Exception e){
+            System.out.println("알림 보내기를 실패했습니다.");
+            return false;
+        }
     }
+
+
+//    public void send(AlertAttendRequest alertAttendRequest) {
+//        // DB Alert 테이블에 데이터 저장하기
+//        Alert alert = new Alert(UUID.randomUUID().toString(),
+//                alertAttendRequest.getTripId(),
+//                alertAttendRequest.getTripName(),
+//                alertAttendRequest.getSenderId(),
+//                alertAttendRequest.getReceiverId(),
+//                alertAttendRequest.getPosition(),
+//                alertAttendRequest.getAspiration(),
+//                alertAttendRequest.getAlertType(),
+//                alertAttendRequest.isRead());
+//        alertRepository.save(alert);
+//        String receiver = alertAttendRequest.getReceiverId();
+//        String eventId = receiver + "_" + System.currentTimeMillis();
+//        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
+//        emitters.forEach(
+//                (key, emitter) -> {
+//                    emitterRepository.saveEventCache(key, alert);
+//                    sendAlert(emitter, eventId, key, "success");
+//                }
+//        );
+//    }
 
 //    private Alert createNotification(Member receiver, Notify.NotificationType notificationType, String content, String url) {
 //        return Alert.builder()

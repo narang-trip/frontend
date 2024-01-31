@@ -32,7 +32,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'org.webjars:stomp-websocket:2.3.4'
-	implementation 'org.webjars:sockjs-client:1.5.1'
+//	implementation 'org.webjars:sockjs-client:1.5.1'
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	/*
 		Swagger (OpenAPI 3.0)
