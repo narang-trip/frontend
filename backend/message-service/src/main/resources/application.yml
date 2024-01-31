@@ -49,4 +49,4 @@ grpc:
 eureka:
   client:
     service-url:
-      defaultZone: eureka-server:8761
+      defaultZone: http://eureka-server:8761
