@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import MainNavigation from "../components/MainNavigation";
-import Widgets from "../components/widgets/Widgets";
 import { Fragment } from "react";
 import UpperNavbar from "../components/UpperNavBar";
 
@@ -14,12 +13,9 @@ function RootLayout() {
         <div className="w-1/12">
           <MainNavigation />
         </div>
-        <main className="w-7/12 bg-slate-200">
+        <main className="w-10/12 bg-slate-200">
           <Outlet />
         </main>
-        <div className="w-3/12 bg-slate-300">
-          <Widgets />
-        </div>
       </div>
     </Fragment>
   );
