@@ -20,7 +20,7 @@ public class GrpcClientService {
     private static final Logger LOGGER = LoggerFactory.getLogger(GrpcClientService.class);
 
     public String sendMessage(final String userId) {
-        System.out.println("ㅜㅜㅜㅜㅜ");
+        System.out.println("TEST . . . REQUEST SENT . . .");
         try{
             UserReply response = this.simpleStub.sayHello(UserRequest.newBuilder().setUserId(userId).build());
             System.out.println(response.getUserId() + response.getUserName()+ "휷.,,");
