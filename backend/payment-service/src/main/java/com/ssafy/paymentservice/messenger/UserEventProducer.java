@@ -1,12 +1,12 @@
-package com.ssafy.userservice.messenger;
-
+//package com.ssafy.paymentservice.messenger;
+//
 //import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
-
-
-@Component
-public class UserEventProducer {
-
+//import org.springframework.stereotype.Component;
+//
+//
+//@Component
+//public class UserEventProducer {
+//
 //    private final KafkaTemplate<String, Object> kafkaTemplate;
 //
 //    public UserEventProducer(KafkaTemplate<String, Object> kafkaTemplate) {
@@ -17,4 +17,4 @@ public class UserEventProducer {
 //        // Topic + Message
 //        kafkaTemplate.send(topic, "Message : " + message);
 //    }
-}
+//}

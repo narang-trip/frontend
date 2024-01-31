@@ -1,4 +1,4 @@
-//package com.ssafy.userservice.config;
+//package com.ssafy.paymentservice.config;
 //
 //import org.apache.kafka.clients.consumer.ConsumerConfig;
 //import org.apache.kafka.common.serialization.StringDeserializer;

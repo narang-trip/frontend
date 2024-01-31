@@ -7,6 +7,8 @@
 ## 애플리케이션 실행
 #CMD ["java", "-jar", "/app.jar"]
 FROM openjdk:17-alpine
-ARG JAR_FILE=StompRabbitMQ-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=./backend/StompRabbitMQ/build/libs/StompRabbitMQ-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} /StompRabbitMQ.jar
+ENV RABBITMQ_DEFAULT_USER "guest"
+ENV RABBITMQ_DEFAULT_PASS "guest"
 ENTRYPOINT ["java", "-jar", "/StompRabbitMQ.jar"]
