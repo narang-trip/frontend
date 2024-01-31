@@ -23,6 +23,7 @@ spring:
     username: yoonjae
     password: dbswoWkd
     addresses: i10a701.p.ssafy.io:5672
+    host: i10a701.p.ssafy.io
 
 server:
   port: 8084
