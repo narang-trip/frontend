@@ -49,12 +49,12 @@ const LoginModal = (props) => {
           </button>
           <h3 className="">로 그 인</h3>
           <div className="flex flex-col" onClick={Login}>
-            {/* <a href={kakaoLoginURL2}> */}
-            <img
-              className="w-36 h-16 object-cover rounded-xl"
-              src="assets/kakao_login.png"
-            />
-            {/* </a> */}
+            <a href={kakaoLoginURL2}>
+              <img
+                className="w-36 h-16 object-cover rounded-xl"
+                src="assets/kakao_login.png"
+              />
+            </a>
             <button>
               <a href={naverLoginURL}>
                 <img
