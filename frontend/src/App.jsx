@@ -10,6 +10,8 @@ import WritePage from "./pages/Write";
 import ChatPage from "./pages/Chat";
 import PracticePage from "./pages/PracticeInfinite";
 import ChatRoomPage from "./pages/ChatRoom";
+import Login from "./pages/Login";
+import Mypage from "./pages/Mypage";
 
 const router = createBrowserRouter([
   {
@@ -47,12 +49,16 @@ const router = createBrowserRouter([
         element: <PracticePage />,
       },
       {
+        path: "Mypage",
+        element: <Mypage />,
+      },
+      {
         path: "login/oauth2/code/kakao",
-        element: <HomePage />,
+        element: <Login />,
       },
       {
         path: "login/oauth2/code/naver",
-        element: <HomePage />,
+        element: <Login />,
       },
     ],
   },
