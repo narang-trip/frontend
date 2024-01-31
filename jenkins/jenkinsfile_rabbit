@@ -34,15 +34,15 @@ pipeline {
                 
                 // 이미지 생성 중 . . .
                 echo 'No ${service} running . . . About to Build a image . . .'
-                sh 'docker build -t ${service} -f ./backend/${service}/Dockerfile .'
+                sh 'docker build -t rabbitmq -f ./backend/${service}/Dockerfile .'
 
                 // 메세지 서비스 네트워크 연결 끊고 종료
                 echo 'Removing Existing Containers . . . Wait a Sec . . .' 
-                sh '(docker network disconnect Narang ${service} && docker stop ${service}) | true'
-                sh 'docker rm ${service} | true'
+                sh '(docker network disconnect Narang rabbitmq && docker stop rabbitmq) | true'
+                sh 'docker rm rabbitmq | true'
 
                 // 해당 이미지로 컨테이너 생성 중 . . . 
-                sh 'docker run -it --name ${service} --net Narang -d ${service} && docker start ${service}'
+                sh 'docker run -it --name rabbitmq --net Narang -d rabbitmq && docker start rabbitmq'
             }
         }
     }
