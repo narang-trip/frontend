@@ -17,7 +17,7 @@ ADD ./frontend/dist ./build
 # COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 # 3000 포트 개방
-EXPOSE 3000p
+EXPOSE 3000
 
 # # container 실행 시 자동으로 실행할 command. nginx 시작함
 # CMD ["nginx", "-g", "daemon off;"]
