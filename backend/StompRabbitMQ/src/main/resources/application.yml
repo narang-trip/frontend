@@ -5,7 +5,7 @@ spring:
   datasource:
     username: root
     password: ssafy
-    url: jdbc:mysql://i10a701.p.ssafy.io/:3306/rr?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://i10a701.p.ssafy.io/:3306/?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
   jpa:
     show-sql: true
     hibernate:
