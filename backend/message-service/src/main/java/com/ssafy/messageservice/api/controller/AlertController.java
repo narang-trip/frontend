@@ -26,8 +26,13 @@ public class AlertController {
     // 여행 참여 요청 생성
     @PostMapping("/attend")
     public ResponseEntity<String> postAttendAlert(@RequestBody AlertAttendRequest alertAttendRequest) {
-        alertService.send(alertAttendRequest);
-        // 성공적인 응답 반환
-        return new ResponseEntity<>("Alert sent successfully", HttpStatus.OK);
+        boolean isAlertSent = alertService.send(alertAttendRequest);
+        if (isAlertSent) {
+            // 성공적인 응답 반환
+            return new ResponseEntity<>("Alert sent successfully", HttpStatus.OK);
+        } else {
+            // 실패 시 응답 반환
+            return new ResponseEntity<>("Failed to send alert", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
