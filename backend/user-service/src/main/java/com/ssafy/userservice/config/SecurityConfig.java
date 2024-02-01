@@ -64,12 +64,17 @@ public class SecurityConfig {
                         .requestMatchers("/", "api/user/oauth2/**", "/login/**", "/h2-console/**", "/sign-up").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2Login -> oauth2Login
-                        .defaultSuccessUrl("/") //OAuth 로그인이 성공하면 이동할 uri 설정
+                                .defaultSuccessUrl("/") //OAuth 로그인이 성공하면 이동할 uri 설정
 //                        .successHandler(oAuth2LoginSuccessHandler)
 //                        .failureHandler(oAuth2LoginFailureHandler)
-                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                                .userService(userService)
-                        ));
+                                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+                                        .userService(userService)
+                                )
+                )
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/loginForm")
+                        .permitAll()
+                );
         return httpSecurity.build();
 
     }
