@@ -6,6 +6,6 @@ server:
 
 springdoc:
   api-docs:
-    path: /payment/v3/api-docs
+    path: /api/payment/v3/api-docs
   swagger-ui:
-    path: /payment/swagger-ui.html
+    path: /api/payment/swagger-ui.html
