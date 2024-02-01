@@ -1,8 +1,8 @@
-import { useState } from "react";
+// import { useState } from "react";
 import DayPlan from "./DayPlan";
 import { Droppable } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
-import { scheduleActions } from "../store/scheduleSlice";
+import { scheduleActions } from "../../store/scheduleSlice";
 
 // import * as Y from "yjs";
 // import { WebrtcProvider } from "y-webrtc";
