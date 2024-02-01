@@ -61,7 +61,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(AbstractHttpConfigurer::disable) // 개발 단계에서만 사용하기!
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/oauth2/**", "/login/**", "/h2-console/**", "/sign-up").permitAll()
+                        .requestMatchers("/", "api/user/oauth2/**", "/login/**", "/h2-console/**", "/sign-up").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2Login -> oauth2Login
                         .defaultSuccessUrl("/") //OAuth 로그인이 성공하면 이동할 uri 설정
