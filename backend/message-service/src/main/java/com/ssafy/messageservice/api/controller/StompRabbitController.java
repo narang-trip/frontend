@@ -6,8 +6,10 @@ import com.ssafy.messageservice.api.request.UserInviteRequest;
 import com.ssafy.messageservice.api.service.ChatService;
 import com.ssafy.messageservice.db.entity.Chat;
 import com.ssafy.messageservice.db.entity.Chatroom;
+import com.ssafy.messageservice.db.entity.ChatroomUser;
 import com.ssafy.messageservice.db.repository.ChatRepository;
 import com.ssafy.messageservice.db.repository.ChatroomRepository;
+import com.ssafy.messageservice.db.repository.ChatroomUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -34,19 +36,21 @@ public class StompRabbitController {
     private final static String CHAT_QUEUE_NAME = "chat.queue";
     private final ChatRepository chatRepository;
     private final ChatroomRepository chatroomRepository;
+    private final ChatroomUserRepository chatroomUserRepository;
 
-
-    // todo: 알림을 통해 정보 얻기
+    // 여행 참여 요청에 대한 수락 이후 해당 메소드 호출!
     @MessageMapping("chat.enter.{chatRoomId}")
-    public void enter(UserInviteRequest inviteRequest, @DestinationVariable String chatRoomId) {
+    public void enter(String userId, @DestinationVariable String chatRoomId) {
         LOGGER.info(String.format("입장 !!!! 확인!!!!! -> %s", chatRoomId));
         ChatRequest chatRequest = new ChatRequest();
         chatRequest.setChatroomId(chatRoomId);
-        chatRequest.setSenderId(inviteRequest.getSenderId());
+        chatRequest.setUserId(userId);
+        chatRequest.setSendTime(LocalDateTime.now());
         chatRequest.setContent("입장하셨습니다.");
-        // exchange
+        Chatroom chatroom = chatroomRepository.findById(chatRoomId).orElse(null);
+        ChatroomUser invite = new ChatroomUser(UUID.randomUUID().toString(),chatroom, userId);
+        chatroomUserRepository.save(invite);
         template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatRequest);
-
     }
 
     @MessageMapping("chat.message.{chatRoomId}")
@@ -69,7 +73,7 @@ public class StompRabbitController {
                 chatroom,
                 chatRequest.getContent(),
                 chatRequest.getSendTime(),
-                chatRequest.getSenderId());
+                chatRequest.getUserId());
         LOGGER.info(String.format("Message receive -> %s", chat));
         chatRepository.save(chat);
     }
