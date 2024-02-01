@@ -29,7 +29,7 @@ const ChatRoomPage = () => {
     console.log("sockJS 실행 후");
     const stompClient = Stomp.over(sockJS);
     console.log("stomClient 만들었어용");
-
+    
     stompClient.connect(
       {
         login: "yoonjae", // RabbitMQ 및 STOMP 브로커에 사용되는 로그인 정보를 동일하게 설정
