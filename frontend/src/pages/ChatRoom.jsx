@@ -30,20 +30,20 @@ const ChatRoomPage = () => {
     const stompClient = Stomp.over(sockJS);
     console.log("stomClient 만들었어용");
     
-    stompClient.connect(
-      {
-        login: "yoonjae", // RabbitMQ 및 STOMP 브로커에 사용되는 로그인 정보를 동일하게 설정
-        passcode: "dbswoWkd",
-      },
-      () => {
-        // 연결이 성공하면 원하는 작업을 수행
-        console.log("Connected to STOMP broker");
-        // Subscribe, Send 등의 작업 수행
-      },
-      (error) => {
-        console.error("Error connecting to STOMP broker:", error);
-      }
-    );
+    // stompClient.connect(
+    //   {
+    //     login: "yoonjae", // RabbitMQ 및 STOMP 브로커에 사용되는 로그인 정보를 동일하게 설정
+    //     passcode: "dbswoWkd",
+    //   },
+    //   () => {
+    //     // 연결이 성공하면 원하는 작업을 수행
+    //     console.log("Connected to STOMP broker");
+    //     // Subscribe, Send 등의 작업 수행
+    //   },
+    //   (error) => {
+    //     console.error("Error connecting to STOMP broker:", error);
+    //   }
+    // );
 
     // stompClient.connect(
     //   "yoonjae",
