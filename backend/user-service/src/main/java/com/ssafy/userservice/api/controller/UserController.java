@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
+
+    @GetMapping("/")
+    public String index(){
+        return "index";
+    }
+
     @ResponseBody
     @GetMapping("/welcome")
     public String getWelcome(Authentication authentication) {
@@ -27,7 +33,7 @@ public class UserController {
 
     @GetMapping("/loginForm")
     public String home() {
-        System.out.println("loginForm");
+        System.out.println("loginFormmmmmmmmmmmmmmmmmmmmmmmmmmmm");
         return "loginForm";
     }
     /**
