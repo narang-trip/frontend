@@ -10,14 +10,14 @@ function RootLayout() {
   return (
     <Fragment>
       <UpperNavbar />
-      <div className="flex justify-center h-screen mt-4 gap-7">
-        <div className="w-20">
-          <MainNavigation />
+      <div className="flex justify-center h-screen mt-5">
+        <div className="w-1/12 mr-8">
+          <MainNavigation className="fixed top-0 h-screen"/>
         </div>
         <main className="w-7/12 bg-stone-50">
           <Outlet />
         </main>
-        <div className="w-3/12 bg-slate-300">
+        <div className="w-3/12 bg-stone-100">
           <Widgets />
         </div>
       </div>
