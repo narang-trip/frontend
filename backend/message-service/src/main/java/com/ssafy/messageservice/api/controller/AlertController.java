@@ -23,10 +23,11 @@ public class AlertController {
         return alertService.subscribe(userId, lastEventId);
     }
 
-    // 여행 참여 요청 생성
+    // 여행 참여 요청 생성 + 수락/거절
     @PostMapping("/attend")
     public ResponseEntity<String> postAttendAlert(@RequestBody AlertAttendRequest alertAttendRequest) {
         boolean isAlertSent = alertService.send(alertAttendRequest);
+        // 여기서 만약 alertType이 ACCEPT일 경우 프론트 측에서
         if (isAlertSent) {
             // 성공적인 응답 반환
             return new ResponseEntity<>("Alert sent successfully", HttpStatus.OK);
