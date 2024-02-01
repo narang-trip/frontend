@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = "plan")
+@Document(collection = "narang-plan")
 public class Plan extends BaseEntity{
     private String planName;
     private String planRecruitDate;

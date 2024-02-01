@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = "trip")
+@Document(collection = "narang-trip")
 public class Trip extends BaseEntity{
     private String tripName;
     private String tripDesc;
@@ -25,6 +25,8 @@ public class Trip extends BaseEntity{
     private String tripChat;
     private String tripPlan;
     private List<Participant> participants;
+    // plan_id : json, java.
+    // trip_Age : json
 
     @Data
     public static class Participant {
