@@ -18,12 +18,12 @@ spring:
       hibernate:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-  rabbitmq:
-    port: 5672
-    username: yoonjae
-    password: dbswoWkd
-    addresses: i10a701.p.ssafy.io:5672
-    host: i10a701.p.ssafy.io
+#  rabbitmq:
+#    port: 5672
+#    username: yoonjae
+#    password: dbswoWkd
+#    addresses: i10a701.p.ssafy.io:5672
+#    host: i10a701.p.ssafy.io
 
 server:
   port: 8084
