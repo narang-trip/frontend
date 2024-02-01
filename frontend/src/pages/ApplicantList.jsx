@@ -14,6 +14,7 @@ export default function ApplicantList() {
 
   return (
     <Fragment>
+      <div>
       <div className="flex flex-row p-10 justify-evenly">
         <div
           className={`flex flex-row rounded-3xl p-3 hover:font-semibold ${
@@ -40,6 +41,7 @@ export default function ApplicantList() {
       </div>
       {selectedOption === "received" && <ReceivedRequests />}
       {selectedOption === "sent" && <SentRequests />}
+      </div>
     </Fragment>
   );
 }
