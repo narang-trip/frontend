@@ -24,9 +24,9 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
 
         //registry.enableSimpleBroker("/sub");
         registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue")
-                .setRelayHost("127.0.0.1")
-                .setRelayPort(61613)  // 기본 RabbitMQ STOMP 포트
-                .setClientLogin("guest")  // RabbitMQ 사용자 정보
-                .setClientPasscode("guest");
+                .setRelayHost("rabbitmq")  // Docker 컨테이너명을 relay host로 사용
+                .setRelayPort(61613)
+                .setClientLogin("yoonjae")  // RabbitMQ 및 STOMP 브로커에 사용되는 로그인 정보를 동일하게 설정
+                .setClientPasscode("dbswoWkd");
     }
 }
