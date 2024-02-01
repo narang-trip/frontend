@@ -13,7 +13,7 @@ function RootLayout() {
         <div className="w-20">
           <MainNavigation />
         </div>
-        <main className="w-11/12 bg-slate-200">
+        <main className="w-10/12 bg-slate-200">
           <Outlet />
         </main>
       </div>
