@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { SlCalender, SlLocationPin, SlPeople, SlBadge } from "react-icons/sl";
-import ApplicationModal from "../modals/applicationModal";
+import ApplicationModal from "../modals/ApplicationModal";
 import { ModalPortal } from "../modals/ModalPortal";
 
 export default function TripDetail() {
@@ -16,10 +16,12 @@ export default function TripDetail() {
     "역할8",
   ]);
 
+  // 모달 open
   const OpenApplicationModal = () => {
     setIsOpen(true);
   };
 
+  // 모달 close
   const CloseApplicationModal = () => {
     setIsOpen(false);
   };
