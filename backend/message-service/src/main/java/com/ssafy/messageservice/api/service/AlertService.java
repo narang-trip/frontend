@@ -32,12 +32,14 @@ public class AlertService {
     public SseEmitter subscribe(String userId, String lastEventId) {
         String emitterId = userId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
+        System.out.println("구독합니다! "+userId);
 
         // Emitter가 완료될 때(모든 데이터가 성공적으로 전송된 상태) Emitter를 삭제
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
         // Emitter가 타임아웃 되었을 때(지정된 시간동안 어떠한 이벤트도 전송되지 않았을 때) Emitter를 삭제
         emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
 
+        System.out.println("구독합니다????? "+userId);
         String eventId = userId + "_" + System.currentTimeMillis();
         // 503 에러를 방지하기 위한 더미 이벤트 전송
         sendAlert(emitter, eventId, emitterId, "EventStream Created. [userId=" + userId + "]");
@@ -58,6 +60,7 @@ public class AlertService {
                     .name("sse")
                     .data(data)
             );
+            System.out.println("구독합니다?ㅋㅋㅋㅋㅋㅋ" );
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
         }
