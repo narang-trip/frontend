@@ -24,7 +24,7 @@ function MainNavigation() {
           <li>
             <Tooltip text="동행모집작성">
               <NavLink
-                to="/write"
+                to="/register"
                 className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30"
               >
                 <PencilSquareIcon className="w-[2rem] h-[2rem] mx-auto" />
