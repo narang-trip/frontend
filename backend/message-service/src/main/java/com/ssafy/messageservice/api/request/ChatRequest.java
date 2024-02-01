@@ -16,7 +16,9 @@ import java.util.UUID;
 @Setter
 public class ChatRequest {
     private String chatroomId;
-    private String senderId;
+    // enter -> 초대했을 경우는 초대되는 사람의 id
+    // send -> 채팅을 보내는 경우는 보내는 사람의 id
+    private String userId;
     private LocalDateTime sendTime;
     private String content;
 }
