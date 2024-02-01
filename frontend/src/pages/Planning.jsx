@@ -1,4 +1,4 @@
-import Plan from "../components/Plan";
+import Plan from "../components/Planning/Plan";
 import Map from "../components/GoogleMap/Map";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";

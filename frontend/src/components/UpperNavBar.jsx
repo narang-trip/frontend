@@ -3,7 +3,7 @@ import { ModalPortal } from "./modals/ModalPortal";
 import LoginModal from "./modals/LoginModal";
 import { useDispatch, useSelector } from "react-redux";
 import { authAction } from "../store/auth-slice";
-import Dropdown from "./Dropdown";
+import Dropdown from "./UpNavDropdown";
 
 export default function UpperNavbar() {
   const [isOpen, setIsOpen] = useState(false);
