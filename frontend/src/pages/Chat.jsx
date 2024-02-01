@@ -16,7 +16,7 @@ const ChatPage = () => {
   };
 
   const eventSource = new EventSource(`https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`);
-
+    
     eventSource.onmessage = function (event) {
         const eventData = JSON.parse(event.data);
         // 서버에서 전송한 데이터를 처리

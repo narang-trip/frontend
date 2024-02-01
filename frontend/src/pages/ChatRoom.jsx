@@ -23,12 +23,12 @@ const ChatRoomPage = () => {
     console.log("또 실행되면 나옴 유즈이펙트 안에 있음");
     // inputRef.current.focus();
     console.log("sockJS 실행 전");
-    // const sockJS = new SockJS(
-    //   "https://i10a701.p.ssafy.io/api/message/stomp/chat"
-    // );
     const sockJS = new SockJS(
-      "http://rabbitmq:61613/stomp/chat"
+      "https://i10a701.p.ssafy.io/api/message/stomp/chat"
     );
+    // const sockJS = new SockJS(
+    //   "http://rabbitmq:61613/stomp/chat"
+    // );
     
     console.log("sockJS 실행 후");
     const stompClient = Stomp.over(sockJS);
