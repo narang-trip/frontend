@@ -1,4 +1,4 @@
-package com.ssafy.userservice.api.oauth2;
+package com.ssafy.userservice.api.oauth2.userinfo;
 
 import java.util.Map;
 

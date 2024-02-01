@@ -1,4 +1,4 @@
-package com.ssafy.userservice.api.oauth2;
+package com.ssafy.userservice.api.oauth2.userinfo;
 
 public interface OAuth2UserInfo {
     String getProviderId(); //공급자 아이디 ex) google, facebook
