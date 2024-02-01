@@ -209,7 +209,7 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
-    location /jenkins {
+    location /jenkins { 
         proxy_pass http://jenkins:8080;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
