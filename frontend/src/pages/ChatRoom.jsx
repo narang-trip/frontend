@@ -26,7 +26,7 @@ const ChatRoomPage = () => {
     // const sockJS = new SockJS(
     //   "https://i10a701.p.ssafy.io/api/message/stomp/chat"
     // );
-    const sockJS = new SockJS(
+    const sockJS = new WebSocket(
       "wss://i10a701.p.ssafy.io:15674/stomp/chat"
     );
     
