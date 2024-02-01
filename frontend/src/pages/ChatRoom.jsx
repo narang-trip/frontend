@@ -27,7 +27,7 @@ const ChatRoomPage = () => {
     //   "https://i10a701.p.ssafy.io/api/message/stomp/chat"
     // );
     const sockJS = new SockJS(
-      "https://rabbitmq:61613/stomp/chat"
+      "https://rabbitmq:15674/stomp/chat"
     );
     
     console.log("sockJS 실행 후");
