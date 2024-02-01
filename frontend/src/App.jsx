@@ -8,7 +8,7 @@ import SearchPage from "./pages/Search";
 import PlanningPage from "./pages/Planning";
 import ApplicantList from "./pages/ApplicantList";
 import TripRegisterPage from "./pages/TripResgister";
-import TripDetailPage from './pages/TripDetail';
+import TripDetailPage from "./pages/TripDetail";
 import ChatPage from "./pages/Chat";
 import PracticePage from "./pages/PracticeInfinite";
 import ChatRoomPage from "./pages/ChatRoom";
@@ -17,51 +17,44 @@ import Mypage from "./pages/Mypage";
 
 const router = createBrowserRouter([
   {
-    path: "/Mypage",
+    path: "",
     element: <RootLayoutOffWidgets />,
+    errorElement: <ErrorPage />,
     children: [
       {
-        path: "",
-        element: <Mypage />,
+        path: "/applicantList",
+        element: <ApplicantList />,
       },
-    ],
-  },
-  {
-    path: "/planning",
-    element: <RootLayoutOffWidgets />,
-    children: [
       {
-        path: "",
+        path: "/planning",
         element: <PlanningPage />,
       },
+
+      {
+        path: "/Mypage",
+        element: <Mypage />,
+      },
+      {
+        path: "/register",
+        element: <TripRegisterPage />,
+      },
+      {
+        path: "/detail",
+        element: <TripDetailPage />,
+      },
+      {
+        path: "/search",
+        element: <SearchPage />,
+      },
     ],
   },
+
   {
     path: "/",
     element: <RootLayout />,
     // errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
-      {
-        path: "register",
-        element: <TripRegisterPage />,
-      },
-      {
-        path: "detail",
-        element: <TripDetailPage />,
-      },
-      {
-        path: "search",
-        element: <SearchPage />,
-      },
-      {
-        path: "applicantList",
-        element: <ApplicantList />,
-      },
-      {
-        path: "planning",
-        element: <PlanningPage />,
-      },
       {
         path: "chatRoomTest",
         element: <ChatPage />,
@@ -73,10 +66,6 @@ const router = createBrowserRouter([
       {
         path: "practice",
         element: <PracticePage />,
-      },
-      {
-        path: "Mypage",
-        element: <Mypage />,
       },
       {
         path: "login/oauth2/code/kakao",

@@ -15,6 +15,7 @@ export default function DateRangePicker({ dateRange, onChange }) {
         onChange={onChange}
         isClearable={true}
         dateFormat="yy/MM/dd"
+        wrapperClassName="w-2/3"
         className="border border-stone-200 bg-stone-0 p-1.5 w-full text-gray-900 placeholder:text-gray-300 text-xs"
       />
     </div>
