@@ -2,7 +2,6 @@ package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.request.ChatRequest;
 import com.ssafy.messageservice.api.request.ChatSendRequest;
-import com.ssafy.messageservice.api.request.UserInviteRequest;
 import com.ssafy.messageservice.api.service.ChatService;
 import com.ssafy.messageservice.db.entity.Chat;
 import com.ssafy.messageservice.db.entity.Chatroom;

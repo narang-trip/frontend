@@ -18,6 +18,7 @@ spring:
       hibernate:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+
 #  rabbitmq:
 #    port: 5672
 #    username: yoonjae

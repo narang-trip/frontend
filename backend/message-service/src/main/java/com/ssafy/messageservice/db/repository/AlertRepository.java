@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//@Repository
-//@RequiredArgsConstructor
 public interface AlertRepository extends JpaRepository<Alert, String> {
-
+    List<Alert> findByReceiverId(String receiverId);
 }

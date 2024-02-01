@@ -1,6 +1,7 @@
 package com.ssafy.messageservice.api.service;
 
 import com.ssafy.messageservice.api.request.AlertAttendRequest;
+import com.ssafy.messageservice.api.response.AlertListResponse;
 import com.ssafy.messageservice.db.entity.Alert;
 import com.ssafy.messageservice.db.repository.AlertRepository;
 import com.ssafy.messageservice.db.repository.EmitterRepository;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -99,6 +102,34 @@ public class AlertService {
             System.out.println("알림 보내기를 실패했습니다.");
             return false;
         }
+    }
+
+
+    // 알림 리스트 보내기
+    public List<AlertListResponse.AlertResponse> getAlertsByReceiverId(String receiverId) {
+        List<Alert> alerts = alertRepository.findByReceiverId(receiverId);
+        return mapAlertsToAlertResponses(alerts);
+    }
+
+    private List<AlertListResponse.AlertResponse> mapAlertsToAlertResponses(List<Alert> alerts) {
+        return alerts.stream()
+                .map(alert -> new AlertListResponse.AlertResponse(
+                        alert.getAlertId(),
+                        alert.getTripId(),
+                        alert.getTripName(),
+                        alert.getSenderId(),
+                        getSenderName(alert.getSenderId()),
+                        alert.getPosition(),
+                        alert.getAspiration(),
+                        alert.getAlertType(),
+                        alert.isRead()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    private String getSenderName(String senderId) {
+        // todo : senderId 값을 바탕으로 senderName 받아오기
+        return "Sample Sender Name 예진";
     }
 
 
