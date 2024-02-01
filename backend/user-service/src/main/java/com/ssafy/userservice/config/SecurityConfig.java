@@ -66,22 +66,22 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(AbstractHttpConfigurer::disable) // 개발 단계에서만 사용하기!
                 .authorizeHttpRequests((auth) -> auth
-                        .anyRequest().permitAll() //나머지 uri는 모든 접근 허용
-//                        .requestMatchers("/", "api/user/oauth2/**", "/login/**", "/h2-console/**", "/sign-up").permitAll()
-//                        .anyRequest().authenticated()
-                        )
+//                        .anyRequest().permitAll() //나머지 uri는 모든 접근 허용
+                                .requestMatchers("/", "api/user/oauth2/**", "/login/**", "/h2-console/**", "/sign-up").permitAll()
+                                .anyRequest().authenticated()
+                )
                 .oauth2Login(oauth2Login -> oauth2Login
-                                .defaultSuccessUrl("/welcome") //OAuth 로그인이 성공하면 이동할 uri 설정
+                        .defaultSuccessUrl("/welcome") //OAuth 로그인이 성공하면 이동할 uri 설정
                         .successHandler(oAuth2LoginSuccessHandler)
                         .failureHandler(oAuth2LoginFailureHandler)
-                                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                                        .userService(userService)
-                                )
-                )
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/loginForm")
-                        .permitAll()
+                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+                                .userService(userService)
+                        )
                 );
+//                .formLogin(formLogin -> formLogin
+//                        .loginPage("/loginForm")
+//                        .permitAll()
+//                );
         return httpSecurity.build();
 
     }
