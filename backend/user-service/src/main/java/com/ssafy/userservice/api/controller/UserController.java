@@ -40,14 +40,16 @@ public class UserController {
         User user = userService.getTest("1").get();
         return user; // 로그인 성공시 uuid 리턴
     }
-    
-    @GetMapping("/oauth2/authorization/naver")
-    public String naverLogin() {
-        return "redirect:/oauth2/authorization/naver";
-    }
 
-    @GetMapping("/oauth2/authorization/kakao")
-    public String kakaoLogin() {
-        return "redirect:/oauth2/authorization/kakao";
-    }
+
+    
+//    @GetMapping("/oauth2/authorization/naver")
+//    public String naverLogin() {
+//        return "redirect:/oauth2/authorization/naver";
+//    }
+//
+//    @GetMapping("/oauth2/authorization/kakao")
+//    public String kakaoLogin() {
+//        return "redirect:/oauth2/authorization/kakao";
+//    }
 }
