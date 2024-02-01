@@ -16,10 +16,12 @@ export default function TripDetail() {
     "역할8",
   ]);
 
+  // 모달 open
   const OpenApplicationModal = () => {
     setIsOpen(true);
   };
 
+  // 모달 close
   const CloseApplicationModal = () => {
     setIsOpen(false);
   };

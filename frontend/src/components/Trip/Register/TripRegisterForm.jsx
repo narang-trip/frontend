@@ -1,11 +1,13 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ModalPortal } from "../../modals/ModalPortal.jsx";
 
 import TitleInput from "./TitleInput.jsx";
 import ConceptSelect from "./ConceptSelect.jsx";
 import DateRangePicker from "./DateRangePicker.jsx";
 import FileUploadBox from "./FileUploadBox.jsx";
 import PositionCheck from "./PositionCheck.jsx";
+import LocationModal from "../../modals/LocationModal.jsx";
 
 export default function TripWriteForm() {
   const [board, setBoard] = useState({
@@ -13,18 +15,18 @@ export default function TripWriteForm() {
     concept: "",
     img: "",
     location: "",
-    count: "",
+    count: 0,
     position: [],
     plan: "",
     description: "",
   });
+  const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
 
   // 값이 변할 때 추적하기 위한 함수
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value); // 콘솔에 출력
     setBoard((board) => ({ ...board, [name]: value }));
   };
 
@@ -40,6 +42,16 @@ export default function TripWriteForm() {
     }));
   };
 
+  // 모달 open
+  const OpenLocaitonModal = () => {
+    setIsOpen(true);
+  };
+
+  // 모달 close
+  const CloseLocationModal = () => {
+    setIsOpen(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // 데이터 저장 또는 데이터 저장을 위한 액션 디스패치
@@ -48,6 +60,19 @@ export default function TripWriteForm() {
     // 저장 후 이동할 페이지로 이동
     navigate("/detail");
   }; // handleSubmit 끝
+
+  useEffect(() => {
+    // 모달이 열렸을 때 스크롤 막기 위함
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
 
   return (
     <Fragment>
@@ -63,16 +88,37 @@ export default function TripWriteForm() {
               <div className="flex flex-col justify-between col-span-2">
                 <TitleInput value={board.title} onChange={handleChange} />
                 <ConceptSelect value={board.concept} onChange={handleChange} />
-                <div className="w-full my-2">
-                  <label className="mr-10 text-sm font-medium">대표 사진</label>
-                  <input type="file" className="w-2/3 text-xs" />
-                </div>
                 <DateRangePicker
                   dateRange={dateRange}
                   onChange={handleDateChange}
                 />
                 <div className="w-full my-2">
                   <label className="mr-10 text-sm font-medium">여행 장소</label>
+                  <input
+                    type="text"
+                    name="location"
+                    placeholder="장소를 선택해주세요"
+                    value={board.location}
+                    onClick={OpenLocaitonModal}
+                    className="border border-stone-200 bg-stone-0 p-1.5 w-2/3 text-gray-900 placeholder:text-gray-300 text-xs"
+                  ></input>
+                  {isOpen && (
+                    <ModalPortal>
+                      <LocationModal onClose={CloseLocationModal} />
+                    </ModalPortal>
+                  )}
+                </div>
+                <div className="w-full my-2">
+                  <label className="mr-10 text-sm font-medium">모집 인원</label>
+                  <input
+                    type="number"
+                    name="count"
+                    placeholder="모집 인원을 입력해주세요"
+                    value={board.count}
+                    onChange={handleChange}
+                    required
+                    className="border border-stone-200 bg-stone-0 p-1.5 w-2/3 text-gray-900 placeholder:text-gray-300 text-xs"
+                  />
                 </div>
                 <PositionCheck
                   value={board.position}
@@ -86,11 +132,12 @@ export default function TripWriteForm() {
                   </label>
                 </div>
               </div>
-              <div>
-                <div className="mt-3 h-2/5">
-                  <img src={`assets/airplain.jpg`} className="h-full" />
+              <div className="flex flex-col justify-between col-span-1">
+                <div className="h-2/5">
+                  <img src={`assets/airplain.jpg`} className="my-1 h-3/4" />
+                  <input type="file" className="text-xs" />
                 </div>
-                <div className="mt-3 h-3/5">
+                <div className="h-3/5">
                   <label className="text-sm font-medium">여행 설명</label>
                   <br />
                   <textarea
