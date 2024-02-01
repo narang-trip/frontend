@@ -1,4 +1,30 @@
+import { useState, useEffect } from "react";
+import { ModalPortal } from "../modals/ModalPortal";
+import AddInfoModal from "../modals/AddInfoModal";
+
 const UserInfo = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const Openmodify = () => {
+    setIsOpen(true);
+  };
+
+  const Closemodify = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    // 모달이 열렸을 때 스크롤 막기 위함
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   return (
     <div className="w-2/5 shadow-xl p-3 border-black rounded-lg relative justify-center">
       <img className="rounded-full" alt="프로필 이미지" src="" />
@@ -24,9 +50,14 @@ const UserInfo = () => {
         <p>New Yorkers are facing the winter chill...</p>
       </article>
       <div className="absolute bottom-0 right-0 ">
-        <button>정보 수정</button>
+        <button onClick={Openmodify}>정보 수정</button>
         <button>회원 탈퇴</button>
       </div>
+      {isOpen && (
+        <ModalPortal>
+          <AddInfoModal onClose={Closemodify} />
+        </ModalPortal>
+      )}
     </div>
   );
 };
