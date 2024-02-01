@@ -1,11 +1,14 @@
 package com.ssafy.userservice.api.controller;
 
 import com.ssafy.userservice.api.service.UserService;
+import com.ssafy.userservice.db.entity.Auth;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
+import com.ssafy.userservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
@@ -22,6 +25,11 @@ public class UserController {
         return uuid; // 로그인 성공시 uuid 리턴
     }
 
+    @GetMapping("/loginForm")
+    public String home() {
+        System.out.println("loginForm");
+        return "loginForm";
+    }
     /**
      *
      * @param name
