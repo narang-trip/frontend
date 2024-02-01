@@ -26,8 +26,8 @@ const ChatRoomPage = () => {
     const sockJS = new SockJS("https://i10a701.p.ssafy.io/api/message/stomp/chat");
     const stompClient = Stomp.over(sockJS);
     stompClient.connect(
-      "guest",
-      "guest",
+      "yoonjae",
+      "dbswoWkd",
       function (frame) {
         console.log("Connected to Stomp");
 
