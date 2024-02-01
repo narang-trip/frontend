@@ -2,14 +2,21 @@ spring:
   application:
     name: trip-service
   # MongoDB 추가
-  # data:
-    # mongodb:
-    #   host: localhost
-    #   port: 27017
-    #   database: narangdb
+
+
+  data:
+    mongodb:
+      host: mongo
+      username: root
+      password: ssafy
+      uri: mongodb://mongo
+      port: 27017
+      database: narang-trip
+      uuid-representation: standard
+
 
 server:
-  port: 8083
+  port: 8081
 
 springdoc:
   api-docs:
