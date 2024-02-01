@@ -21,9 +21,13 @@ public class AlertController {
 
     // 로그인 한 유저 sse 연결 -> 로그인 버튼 눌렀을 때 호출해야 함
     @GetMapping(value = "/subscribe/{userId}", produces = "text/event-stream")
-    public SseEmitter subscribe(@PathVariable String userId,
+    public ResponseEntity<SseEmitter> subscribe(@PathVariable String userId,
                                 @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
-        return alertService.subscribe(userId, lastEventId);
+        if (lastEventId.isEmpty()) {
+            return new ResponseEntity<>(alertService.subscribe(userId, ""), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(alertService.subscribe(userId, lastEventId), HttpStatus.OK);
+        }
     }
 
     // 여행 참여 요청 생성 + 수락/거절
