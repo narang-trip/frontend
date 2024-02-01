@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
 
+const userId = "조예진"
+
 const ChatPage = () => {
   const navigate = useNavigate();
   const submitHandler = (e) => {
@@ -13,6 +15,18 @@ const ChatPage = () => {
     navigate(dynamicPath);
   };
 
+  const eventSource = new EventSource(`https://i10a701.p.ssafy.io/api/message/subscribe/${userId}`);
+
+    eventSource.onmessage = function (event) {
+        const eventData = JSON.parse(event.data);
+        // 서버에서 전송한 데이터를 처리
+        console.log('Received data:', eventData.message);
+    };
+
+    eventSource.onerror = function (error) {
+        console.error('Error with SSE connection:', error);
+        eventSource.close();  // 에러 발생 시 연결 종료
+    };
 
   return (
     <div className="">
