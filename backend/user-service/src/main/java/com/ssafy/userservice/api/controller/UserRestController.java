@@ -16,6 +16,7 @@ public class UserRestController {
 
     @GetMapping("/welcome")
     public String getWelcome(Authentication authentication) {
+        System.out.println("welcome");
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         String uuid = principalDetails.getAuth().getId();
         return uuid; // 로그인 성공시 uuid 리턴
@@ -29,7 +30,7 @@ public class UserRestController {
     }
 
 
-    
+
 //    @GetMapping("/oauth2/authorization/naver")
 //    public String naverLogin() {
 //        return "redirect:/oauth2/authorization/naver";

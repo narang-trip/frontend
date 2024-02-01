@@ -21,13 +21,18 @@ public class UserController {
 
     @GetMapping
     public String index(){
+        System.out.println("indexxxxxxxxxxxxxxx");
         return "index";
     }
-
+    @GetMapping("/loginForm2")
+    public String home2() {
+        System.out.println("loginForm222222222222222");
+        return "loginForm";
+    }
 
     @GetMapping("/loginForm")
     public String home() {
-        System.out.println("loginFormmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+        System.out.println("loginForm111111111111111111");
         return "loginForm";
     }
     /**
@@ -39,7 +44,7 @@ public class UserController {
      */
     @PostMapping("/signup")
     public String signup(@RequestBody String name) {
-
+        System.out.println("sign@@@@@@@@@@@@@");
         return "signup";
     }
 
