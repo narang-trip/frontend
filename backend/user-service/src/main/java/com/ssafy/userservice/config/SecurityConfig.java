@@ -1,5 +1,7 @@
 package com.ssafy.userservice.config;
 
+import com.ssafy.userservice.api.oauth2.handler.OAuth2LoginFailureHandler;
+import com.ssafy.userservice.api.oauth2.handler.OAuth2LoginSuccessHandler;
 import com.ssafy.userservice.api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +35,9 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @EnableWebSecurity
 public class SecurityConfig {
     private final UserService userService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
@@ -67,8 +72,8 @@ public class SecurityConfig {
                         )
                 .oauth2Login(oauth2Login -> oauth2Login
                                 .defaultSuccessUrl("/welcome") //OAuth 로그인이 성공하면 이동할 uri 설정
-//                        .successHandler(oAuth2LoginSuccessHandler)
-//                        .failureHandler(oAuth2LoginFailureHandler)
+                        .successHandler(oAuth2LoginSuccessHandler)
+                        .failureHandler(oAuth2LoginFailureHandler)
                                 .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                         .userService(userService)
                                 )

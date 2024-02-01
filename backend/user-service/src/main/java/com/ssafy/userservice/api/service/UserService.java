@@ -1,15 +1,14 @@
 package com.ssafy.userservice.api.service;
 
-import com.ssafy.userservice.api.oauth2.KakaoUserInfo;
-import com.ssafy.userservice.api.oauth2.NaverUserInfo;
-import com.ssafy.userservice.api.oauth2.OAuth2UserInfo;
+import com.ssafy.userservice.api.oauth2.userinfo.KakaoUserInfo;
+import com.ssafy.userservice.api.oauth2.userinfo.NaverUserInfo;
+import com.ssafy.userservice.api.oauth2.userinfo.OAuth2UserInfo;
 import com.ssafy.userservice.db.entity.Auth;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
 import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -56,7 +55,7 @@ public class UserService extends DefaultOAuth2UserService {
         String id = uuid.toString();
         String username = userInfo.getName();
         String email = userInfo.getEmail();
-        String authority = "ROLE_USER"; //일반 유저
+        String role = "ROLE_USER"; //일반 유저
         String profileUrl = userInfo.getProfileUrl();
         String gender = userInfo.getGender();
         int ageRange = userInfo.getAgeRange();
@@ -81,7 +80,7 @@ public class UserService extends DefaultOAuth2UserService {
                     .name(username)
                     .provider(provider)
                     .providerId(providerId)
-                    .authority(authority)
+                    .role(role)
                     .build();
             authRepository.save(auth);
         }

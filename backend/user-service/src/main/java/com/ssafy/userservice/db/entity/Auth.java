@@ -21,15 +21,17 @@ public class Auth extends BaseEntity {
     @Column
     private String providerId;
     @Column
-    private String authority;
+    private String role;
+    @Column
+    private String refreshToken;
 
     @Builder
-    public Auth(String id, String email, String name, String provider, String providerId, String authority){
+    public Auth(String id, String email, String name, String provider, String providerId, String role){
         super.setId(id);
         this.email = email;
         this.name = name;
         this.provider = provider;
         this.providerId = providerId;
-        this.authority = authority;
+        this.role = role;
     }
 }
