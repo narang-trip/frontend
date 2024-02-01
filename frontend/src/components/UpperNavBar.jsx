@@ -36,7 +36,7 @@ export default function UpperNavbar() {
   }, [isOpen]);
 
   return (
-    <header className="flex justify-between p-4 bg-slate-100">
+     <header className="sticky top-0 flex justify-between w-full p-4 bg-slate-100">
       <div>나랑</div>
       {code === "" && <div onClick={OpenLoginModal}>Login</div>}
       {code !== "" && (

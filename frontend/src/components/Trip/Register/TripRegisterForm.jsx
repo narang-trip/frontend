@@ -10,6 +10,8 @@ import PositionCheck from "./PositionCheck.jsx";
 import LocationModal from "../../modals/LocationModal.jsx";
 
 export default function TripWriteForm() {
+
+  
   const [board, setBoard] = useState({
     title: "",
     concept: "",
