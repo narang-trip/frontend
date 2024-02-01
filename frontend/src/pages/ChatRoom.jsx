@@ -19,49 +19,69 @@ const ChatRoomPage = () => {
     console.log("에러 남");
   };
 
-  console.log("또 실행되면 나옴");
   useEffect(() => {
     console.log("또 실행되면 나옴 유즈이펙트 안에 있음");
-    inputRef.current.focus();
-    const sockJS = new SockJS("https://i10a701.p.ssafy.io/api/message/stomp/chat");
-    const stompClient = Stomp.over(sockJS);
-    stompClient.connect(
-      "yoonjae",
-      "dbswoWkd",
-      function (frame) {
-        console.log("Connected to Stomp");
-
-        stompClient.subscribe(
-          `/exchange/chat.exchange/room.${chatRoomId}`,
-          function (message) {
-            const chatDto = JSON.parse(message.body);
-
-            setChats((prevData) => [
-              ...prevData,
-              {
-                [chatDto.nickname]: chatDto.message,
-              },
-            ]);
-          },
-          function (error) {
-            console.error("Stomp connection error", error);
-          }
-        );
-
-        //입장 메세지 전송
-        stompClient.send(
-          `/pub/chat.enter.${chatRoomId}`,
-          {},
-          JSON.stringify({
-            memberId: 1,
-            nickname: nickname,
-          })
-        );
-      },
-      onError,
-      "/"
+    // inputRef.current.focus();
+    console.log("sockJS 실행 전");
+    const sockJS = new SockJS(
+      "https://i10a701.p.ssafy.io/api/message/stomp/chat"
     );
-    setStomp(stompClient);
+    console.log("sockJS 실행 후");
+    const stompClient = Stomp.over(sockJS);
+    console.log("stomClient 만들었어용");
+
+    stompClient.connect(
+      {
+        login: "yoonjae", // RabbitMQ 및 STOMP 브로커에 사용되는 로그인 정보를 동일하게 설정
+        passcode: "dbswoWkd",
+      },
+      () => {
+        // 연결이 성공하면 원하는 작업을 수행
+        console.log("Connected to STOMP broker");
+        // Subscribe, Send 등의 작업 수행
+      },
+      (error) => {
+        console.error("Error connecting to STOMP broker:", error);
+      }
+    );
+
+    // stompClient.connect(
+    //   "yoonjae",
+    //   "dbswoWkd",
+    //   function (frame) {
+    //     console.log("Connected to Stomp");
+
+    //     stompClient.subscribe(
+    //       `/exchange/chat.exchange/room.${chatRoomId}`,
+    //       function (message) {
+    //         const chatDto = JSON.parse(message.body);
+
+    //         setChats((prevData) => [
+    //           ...prevData,
+    //           {
+    //             [chatDto.nickname]: chatDto.message,
+    //           },
+    //         ]);
+    //       },
+    //       function (error) {
+    //         console.error("Stomp connection error", error);
+    //       }
+    //     );
+
+    //     //입장 메세지 전송
+    //     stompClient.send(
+    //       `/pub/chat.enter.${chatRoomId}`,
+    //       {},
+    //       JSON.stringify({
+    //         memberId: 1,
+    //         nickname: nickname,
+    //       })
+    //     );
+    //   },
+    //   onError,
+    //   "/"
+    // );
+    // setStomp(stompClient);
   }, [chatRoomId, nickname]);
 
   const submitHandler = (event) => {
