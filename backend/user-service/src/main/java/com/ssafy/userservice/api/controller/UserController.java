@@ -24,6 +24,16 @@ public class UserController {
         System.out.println("indexxxxxxxxxxxxxxx");
         return "index";
     }
+    @GetMapping("/loginForm4")
+    public String home4() {
+        System.out.println("loginForm4444444444444");
+        return "loginForm";
+    }
+    @GetMapping("/loginForm3")
+    public String home3() {
+        System.out.println("loginForm333333333333333");
+        return "loginForm";
+    }
     @GetMapping("/loginForm2")
     public String home2() {
         System.out.println("loginForm222222222222222");
