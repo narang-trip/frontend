@@ -58,6 +58,7 @@ public class RabbitConfig {
         factory.setPort(5672);
         factory.setUsername("yoonjae");
         factory.setPassword("dbswoWkd");
+        factory.setCloseTimeout(1000000);
         return factory;
     }
 
