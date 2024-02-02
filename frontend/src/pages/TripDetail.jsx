@@ -4,7 +4,7 @@ import TripDetail from "../components/Trip/TripDetail";
 export default function TripRegisterPage() {
   return (
     <Fragment>
-        <div className="w-9/12 mx-auto my-5">
+        <div className="w-full mx-auto my-5">
           <TripDetail />
         </div>
     </Fragment>

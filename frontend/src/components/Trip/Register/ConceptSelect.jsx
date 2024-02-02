@@ -12,7 +12,7 @@ export default function ConceptSelect({ value, onChange }) {
         className="w-2/3 p-1.5 border border-stone-200 bg-stone-0  text-gray-900 text-xs"
       >
         {conceptList.map((option, index) => (
-          <option key={index} id={option}>
+          <option className="text-sm" key={index} id={option}>
             {option}
           </option>
         ))}
