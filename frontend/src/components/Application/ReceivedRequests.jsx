@@ -3,7 +3,7 @@ import TripInfo from "./TripInfo";
 export default function ReceivedRequests() {
   return (
     <Fragment>
-      <div>
+      <div className="h-screen">
         <TripInfo />
         <TripInfo />
         <TripInfo />
