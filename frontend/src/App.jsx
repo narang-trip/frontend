@@ -14,6 +14,7 @@ import PracticePage from "./pages/PracticeInfinite";
 import ChatRoomPage from "./pages/ChatRoom";
 import Login from "./pages/Login";
 import Mypage from "./pages/Mypage";
+import SubscribePage from "./pages/SubScribeTestPage";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
         path: "/search",
         element: <SearchPage />,
       },
+      {
+        path: "/SubscribeTest",
+        element: <SubscribePage />,
+      }
     ],
   },
 
