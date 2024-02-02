@@ -36,9 +36,11 @@ export default function UpperNavbar() {
   }, [isOpen]);
 
   return (
-     <header className="sticky top-0 flex justify-between w-full p-4 bg-slate-100">
-      <div>나랑</div>
-      {code === "" && <div onClick={OpenLoginModal}>Login</div>}
+    <header className="sticky top-0 flex items-center justify-between w-full p-4 bg-stone-100">
+      <div className='ml-5'>
+        <img src="../public/narang_logo.png" className="w-11 h-11" />
+      </div>
+      {code === "" && <button onClick={OpenLoginModal} className="mr-5 hover:font-semibold" >Login</button>}
       {code !== "" && (
         <div className="flex justify-between space-x-4">
           <div>🔔</div>
