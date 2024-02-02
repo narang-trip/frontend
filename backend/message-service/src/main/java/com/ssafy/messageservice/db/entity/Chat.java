@@ -32,10 +32,4 @@ public class Chat {
 
     @Column(length = 50)
     private String userId;
-
-    public static Chat create() {
-        Chat message = new Chat();
-        message.chatId = UUID.randomUUID().toString();
-        return message;
-    }
 }

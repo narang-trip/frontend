@@ -14,8 +14,7 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp/chat")
-                .setAllowedOriginPatterns("*") //안해도 무관
-                .withSockJS();
+                .setAllowedOrigins("https://i10a701.p.ssafy.io").withSockJS();
     }
 
     @Override
@@ -24,6 +23,10 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/pub");
 
         //registry.enableSimpleBroker("/sub");
-        registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue");
+        registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue")
+                .setRelayHost("rabbitmq")  // Docker 컨테이너명을 relay host로 사용
+                .setRelayPort(61613)
+                .setClientLogin("yoonjae")  // RabbitMQ 및 STOMP 브로커에 사용되는 로그인 정보를 동일하게 설정
+                .setClientPasscode("dbswoWkd");
     }
 }

@@ -27,14 +27,14 @@ ext {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	implementation 'org.springframework.kafka:spring-kafka'
+//	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+//	implementation 'org.springframework.kafka:spring-kafka'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.kafka:spring-kafka-test'
+//	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	/*
 		Swagger (OpenAPI 3.0)
 	 */
@@ -45,6 +45,8 @@ dependencies {
 	runtimeOnly 'io.grpc:grpc-netty-shaded:1.61.0'
 	implementation 'io.grpc:grpc-protobuf:1.61.0'
 	implementation 'io.grpc:grpc-stub:1.61.0'
+	implementation 'net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE'
+	implementation files('libs/GrpcInterface-1.0-SNAPSHOT.jar')
 
 	/*
 		QueryDSL
@@ -60,6 +62,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
 	runtimeOnly 'com.mysql:mysql-connector-j'// necessary for Java 9+
+
+	/*
+		OAuth2
+	 */
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'com.auth0:java-jwt:4.2.1'
 }
 
 dependencyManagement {
