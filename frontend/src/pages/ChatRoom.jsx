@@ -24,12 +24,11 @@ const ChatRoomPage = () => {
     // inputRef.current.focus();
     console.log("sockJS 실행 전");
     const sockJS = new SockJS(
-      "https://i10a701.p.ssafy.io:15674/stomp/chat"
+      "https://i10a701.p.ssafy.io/rabbitmq/stomp/chat"
     );
     // const sockJS = new SockJS(
     //   "http://rabbitmq:61613/stomp/chat"
     // );
-    
     console.log("sockJS 실행 후");
     const stompClient = Stomp.over(sockJS);
     console.log("stomClient 만들었어용");
