@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/plan")
+@RequestMapping("/api/plan/")
 public class PlanController {
 
 

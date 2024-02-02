@@ -23,7 +23,7 @@ public class TripController {
 
     private final TripService tripService;
 
-    @GetMapping("/trip/available")
+    @GetMapping("/available")
     public ResponseEntity<List<TripDto>> getTripsAvailable() {
 
         List<TripDto> availableTrips = tripService.getAvailableTrips(LocalDateTime.now());
@@ -31,7 +31,7 @@ public class TripController {
         return new ResponseEntity<List<TripDto>>(availableTrips, HttpStatus.OK);
     }
 
-    @GetMapping("/trip/{tripId}")
+    @GetMapping("/{tripId}")
     public ResponseEntity<TripDto> getTripByTripId(@PathVariable UUID tripId) {
 
         Optional<TripDto> trip =tripService.getTripById(tripId);
@@ -41,7 +41,7 @@ public class TripController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/trip/create")
+    @PostMapping("/create")
     public ResponseEntity<?> postTrip(TripDto tripDto) {
 
         Optional<TripDto> createRes = tripService.createTrip(tripDto);
