@@ -28,7 +28,6 @@ public class KakaoPayService {
     private final UserMileageRepository userMileageRepository;
 
     public KakaoReadyResponse kakaoPayReady(String userId, String price) {
-//        partnerUserId = userId;
 
         // 카카오페이 요청 양식
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -85,9 +84,18 @@ public class KakaoPayService {
                 requestEntity,
                 KakaoApproveResponse.class);
         System.out.println(approveResponse);
-        UserMileage userMileage = null;
-        ChargeRecord chargeRecord = null;
+
         if (approveResponse != null) {
+            ChargeRecord chargeRecord = null;
+            UserMileage userMileage = userMileageRepository.findById(userId).get();
+            /*
+                todo
+                    프론트에서 넘겨준 마일리지와 db에 저장된 마일리지 비교 필요
+             */
+            int new_mileage = userMileage.getMileage() + approveResponse.getAmount().getTotal();
+            userMileage.setMileage(new_mileage);
+            userMileageRepository.save(userMileage);
+
             chargeRecord = ChargeRecord.builder()
                     .tid(approveResponse.getTid())
                     .aid(approveResponse.getAid())
