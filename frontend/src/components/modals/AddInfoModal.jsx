@@ -1,15 +1,17 @@
 import { useRef } from "react";
+import Select from "react-select";
 
 const AddInfoModal = (props) => {
   const modalBG = useRef("");
-  const positionList = ["1", "2", "3", "4", "5", "6"];
-  const positionSelect = ["false", "false", "false", "false", "false"];
-  const selectPosition = [[], [], []];
+  const positionList = [
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+    { value: "4", label: "4" },
+  ];
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    positionSelect[name] = true;
-    console.log(name, value);
+  const Check = (e) => {
+    console.log(e);
   };
 
   return (
@@ -30,14 +32,13 @@ const AddInfoModal = (props) => {
             x
           </button>
           <h3>추가 정보작성</h3>
-          <form>
+          <form onSubmit={Check}>
             <div className="flex">
               <label>닉네임 :</label>
               <input
                 type="text"
                 name="nickname"
                 id="nickname"
-                autoComplete="nickname"
                 className="flex-1 py-1.5 pl-1 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
                 placeholder="..."
               />
@@ -47,9 +48,8 @@ const AddInfoModal = (props) => {
               <label>S N S : </label>
               <input
                 type="text"
-                name="nickname"
-                id="nickname"
-                autoComplete="nickname"
+                name="sns"
+                id="sns"
                 className="flex-1 py-1.5 pl-1 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
                 placeholder="..."
               />
@@ -57,24 +57,13 @@ const AddInfoModal = (props) => {
 
             <div className="flex-col">
               <label>선호 포지션</label>
-              {selectPosition.map((select, index) => (
-                <div key={index}>
-                  <label>{index + 1} 순위</label>
-                  <select
-                    name={index}
-                    value={select[index]}
-                    onChange={onChange}
-                    className="w-5/6 p-1.5 border border-stone-200 bg-stone-0  text-gray-900 text-xs"
-                  >
-                    <option value="..." selected disabled hidden />
-                    {positionList.map((option, index) => (
-                      <option key={index} id={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ))}
+              <Select
+                isMulti
+                name="positions"
+                options={positionList}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              ></Select>
             </div>
 
             <div className="flex-col">
@@ -87,6 +76,8 @@ const AddInfoModal = (props) => {
                 defaultValue={""}
               />
             </div>
+
+            <button type="submit">수정하기</button>
           </form>
         </div>
       </div>

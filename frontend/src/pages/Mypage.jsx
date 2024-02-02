@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
 import SmallPlan from "../components/Mypage/SmallPlan";
 import Mileage from "../components/Mypage/Mileage";
+import MyBadge from "../components/Mypage/MyBadge";
 
 const Mypage = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -36,8 +37,7 @@ const Mypage = () => {
         <SmallPlan dates={[startDate, endDate]} />
         <div className="w-2/5 flex flex-col">
           <Mileage />
-          뱃지 보여주기
-          <div className="h-2/3 shadow-xl p-3 border-black rounded-lg"></div>
+          <MyBadge />
         </div>
       </div>
     </div>
