@@ -1,6 +1,19 @@
 spring:
   application:
     name: payment-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://i10a701.p.ssafy.io:3306/narangdb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
+    password: ssafy
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true #만들어진 sql 보여줌
+        format_sql: true #sql 가독성 좋게 보여줌
+    hibernate:
+      ddl-auto: create #db 초기화 전략. 기존 테이블 삭제 후 생성
+    database-platform: org.hibernate.dialect.MySQLDialect
 server:
   port: 8082
 
