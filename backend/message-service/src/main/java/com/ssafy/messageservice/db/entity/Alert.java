@@ -32,7 +32,7 @@ public class Alert {
     @Column(length = 50)
     private String receiverId;
 
-    @Column(length = 50)
+    @Column
     private List<String> position;
 
     @Column
