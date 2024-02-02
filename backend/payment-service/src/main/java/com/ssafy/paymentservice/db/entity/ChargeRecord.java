@@ -1,4 +1,4 @@
-package com.ssafy.paymentservice.entity;
+package com.ssafy.paymentservice.db.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Getter
-@Setter
+//@Setter
 public class ChargeRecord {
     @Id
     private String aid; // 요청 고유 번호
@@ -23,6 +23,8 @@ public class ChargeRecord {
     private String payment_method_type; // 결제 수단
     @Column
     private int price;
+    @Column
+    private int balance; // 충전 후 잔액
     @Column
     private String created_at; // 요청 시간
     @Column
