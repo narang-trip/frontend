@@ -1,8 +1,10 @@
 package com.ssafy.paymentservice.service;
 
+import com.ssafy.paymentservice.entity.ChargeRecord;
 import com.ssafy.paymentservice.entity.KakaoApproveResponse;
 import com.ssafy.paymentservice.entity.KakaoCancelResponse;
 import com.ssafy.paymentservice.entity.KakaoReadyResponse;
+import com.ssafy.paymentservice.repository.ChargeRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +22,7 @@ public class KakaoPayService {
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
     static final String admin_Key = "723e374a012b3d38c33794bedbd3d451"; // 공개 조심! 본인 애플리케이션의 어드민 키를 넣어주세요
     private KakaoReadyResponse kakaoReady;
-
+    private final ChargeRecordRepository chargeRecordRepository;
 //    private String partnerUserId;
 
     public KakaoReadyResponse kakaoPayReady(String userId, String price) {
@@ -81,6 +83,21 @@ public class KakaoPayService {
                 "https://kapi.kakao.com/v1/payment/approve",
                 requestEntity,
                 KakaoApproveResponse.class);
+        System.out.println(approveResponse);
+
+        ChargeRecord chargeRecord = null;
+        if (approveResponse != null) {
+            chargeRecord = ChargeRecord.builder()
+                    .tid(approveResponse.getTid())
+                    .aid(approveResponse.getAid())
+                    .user_id(approveResponse.getPartner_user_id())
+                    .payment_method_type(approveResponse.getPayment_method_type())
+                    .price(approveResponse.getAmount().getTotal())
+                    .approved_at(approveResponse.getApproved_at())
+                    .created_at(approveResponse.getCreated_at())
+                    .build();
+            chargeRecordRepository.save(chargeRecord);
+        }
 
         return approveResponse;
     }
