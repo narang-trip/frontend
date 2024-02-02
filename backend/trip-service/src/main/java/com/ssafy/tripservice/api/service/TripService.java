@@ -1,15 +1,16 @@
 package com.ssafy.tripservice.api.service;
 
-import com.ssafy.tripservice.db.repository.TripRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.ssafy.tripservice.db.entity.Trip;
 
-@Service
-public class TripService {
-    private final TripRepository tripRepository;
+import java.util.List;
 
-    @Autowired
-    public TripService(TripRepository tripRepository){
-        this.tripRepository = tripRepository;
-    }
+public interface TripService {
+    /*
+        Trip 생성
+     */
+    Trip createTrip(Trip trip);
+    /*
+        현재 기준 참가 가능한 Trip
+     */
+    List<Trip> getAvailableTrips();
 }
