@@ -25,6 +25,10 @@ const AddInfoModal = (props) => {
         }}
       >
         <div>
+          {/* 추가정보작성 닫기 버튼 추가 */}
+          <button className="" onClick={props.onClose}>
+            x
+          </button>
           <h3>추가 정보작성</h3>
           <form>
             <div className="flex">

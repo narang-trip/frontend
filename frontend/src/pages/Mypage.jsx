@@ -4,6 +4,7 @@ import UserInfo from "../components/Mypage/UserInfo";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
 import SmallPlan from "../components/Mypage/SmallPlan";
+import Mileage from "../components/Mypage/Mileage";
 
 const Mypage = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -34,8 +35,7 @@ const Mypage = () => {
       <div className="h-3/5 p-4 flex flex-row space-x-2">
         <SmallPlan dates={[startDate, endDate]} />
         <div className="w-2/5 flex flex-col">
-          보유 마일리지
-          <div className="h-1/3 shadow-xl p-3 border-black rounded-lg"></div>
+          <Mileage />
           뱃지 보여주기
           <div className="h-2/3 shadow-xl p-3 border-black rounded-lg"></div>
         </div>
