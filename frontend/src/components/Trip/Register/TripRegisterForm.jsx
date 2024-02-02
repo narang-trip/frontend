@@ -21,6 +21,7 @@ export default function TripWriteForm() {
     plan: "",
     description: "",
     gender: "",
+    cost: 0,
   });
   const [isOpen, setIsOpen] = useState(false);
 
@@ -89,11 +90,9 @@ export default function TripWriteForm() {
               </div>
               <div className="flex flex-col justify-between col-span-2">
                 <TitleInput value={board.title} onChange={handleChange} />
+
                 <ConceptSelect value={board.concept} onChange={handleChange} />
-                <DateRangePicker
-                  dateRange={dateRange}
-                  onChange={handleDateChange}
-                />
+                <DateRangePicker dateRange={dateRange} />
                 <div className="w-full my-2">
                   <label className="mr-10 text-sm font-medium">여행 장소</label>
                   <input
@@ -115,11 +114,21 @@ export default function TripWriteForm() {
                   <input
                     type="number"
                     name="count"
-                    placeholder="모집 인원을 입력해주세요"
+                    placeholder=""
                     value={board.count}
                     onChange={handleChange}
                     required
-                    className="border border-stone-200 bg-stone-0 p-1.5 w-2/3 text-gray-900 placeholder:text-gray-300 text-xs"
+                    className="border border-stone-200 bg-stone-0 p-1.5 w-1/6 text-gray-900 placeholder:text-gray-300 text-xs mr-7"
+                  />
+                  <label className="mr-10 text-sm font-medium">예약금</label>
+                  <input
+                    type="number"
+                    name="cost"
+                    placeholder="&#8361; 20,000"
+                    value={board.cost}
+                    onChange={handleChange}
+                    required
+                    className="border border-stone-200 bg-stone-0 p-1.5 w-1/3 text-gray-900 placeholder:text-gray-300 text-xs"
                   />
                 </div>
                 <GenderRadio value={board.gender} onChange={handleChange} />
