@@ -52,6 +52,7 @@ public class StompRabbitController {
         template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatRequest);
     }
 
+    // 메시지 전송
     @MessageMapping("chat.message.{chatRoomId}")
     public void send(ChatSendRequest chatSendRequest, @DestinationVariable String chatRoomId) {
         ChatRequest chatRequest = new ChatRequest(
