@@ -1,23 +1,14 @@
 package com.ssafy.messageservice.api.service;
 
-import com.ssafy.messageservice.api.response.ChatDto;
 import com.ssafy.messageservice.api.response.ChatListResponse;
-import com.ssafy.messageservice.api.response.ChatroomListMidResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.db.entity.Chat;
-import com.ssafy.messageservice.db.entity.Chatroom;
 import com.ssafy.messageservice.db.repository.ChatRepository;
 import com.ssafy.messageservice.db.repository.ChatRepositoryCustom;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
