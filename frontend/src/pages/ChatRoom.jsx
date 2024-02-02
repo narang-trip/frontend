@@ -33,7 +33,7 @@ const ChatRoomPage = () => {
     
     console.log("sockJS 실행 후");
     const stompClient = Stomp.over(sockJS);
-    console.log("stomClient 만들었어용");
+    console.log("stompClient 만들었어용");
     
     stompClient.connect(
       {
