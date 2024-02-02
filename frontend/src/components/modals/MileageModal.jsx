@@ -28,7 +28,6 @@ const MileageModal = (props) => {
           마일리지
           <button onClick={() => Change("use")}>사용내역</button>
           <button onClick={() => Change("get")}>획득내역</button>
-          {option === "use" ? }
         </>
       </div>
     </div>
