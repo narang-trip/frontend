@@ -23,7 +23,7 @@ public class Trip extends BaseEntity{
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
     private String tripChat;
-    private String tripPlanId;
+    private UUID tripPlanId;
     private List<Integer> tripAges;
     private List<Participant> participants;
     // plan_id : json, java.
@@ -32,7 +32,7 @@ public class Trip extends BaseEntity{
     @Data
     public static class Participant {
         private String role;
-        private String participantId;
+        private UUID participantId;
         private LocalDateTime enrollmentDate;
     }
 }
