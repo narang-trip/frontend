@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name="Alert")
 public class Alert {
     @Id
-    @Column(length = 50)
+    @Column(length = 100)
     private String alertId;
 
     @Column(length = 50)

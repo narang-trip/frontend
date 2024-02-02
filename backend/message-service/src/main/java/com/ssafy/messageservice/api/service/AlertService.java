@@ -6,6 +6,8 @@ import com.ssafy.messageservice.db.entity.Alert;
 import com.ssafy.messageservice.db.repository.AlertRepository;
 import com.ssafy.messageservice.db.repository.EmitterRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -78,32 +80,39 @@ public class AlertService {
     }
 
     // 알림 보내는 메소드
-    public boolean send(AlertAttendRequest alertAttendRequest) {
+    public ResponseEntity<?> send(AlertAttendRequest alertAttendRequest) {
         try{
-            // DB Alert 테이블에 데이터 저장하기
-            Alert alert = new Alert(UUID.randomUUID().toString(),
-                    alertAttendRequest.getTripId(),
-                    alertAttendRequest.getTripName(),
-                    alertAttendRequest.getSenderId(),
-                    alertAttendRequest.getReceiverId(),
-                    alertAttendRequest.getPosition(),
-                    alertAttendRequest.getAspiration(),
-                    alertAttendRequest.getAlertType(),
-                    alertAttendRequest.isRead());
-            alertRepository.save(alert);
-            String receiver = alertAttendRequest.getReceiverId();
-            String eventId = receiver + "_" + System.currentTimeMillis();
-            Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
-            emitters.forEach(
-                    (key, emitter) -> {
-                        emitterRepository.saveEventCache(key, alert);
-                        sendAlert(emitter, eventId, key, "success");
-                    }
-            );
-            return true;
+            boolean exists = alertRepository.existsByTripIdAndSenderId(alertAttendRequest.getTripId(), alertAttendRequest.getSenderId());
+            if(!exists){
+                // DB Alert 테이블에 데이터 저장하기
+                Alert alert = new Alert(UUID.randomUUID().toString(),
+                        alertAttendRequest.getTripId(),
+                        alertAttendRequest.getTripName(),
+                        alertAttendRequest.getSenderId(),
+                        alertAttendRequest.getReceiverId(),
+                        alertAttendRequest.getPosition(),
+                        alertAttendRequest.getAspiration(),
+                        alertAttendRequest.getAlertType(),
+                        alertAttendRequest.isRead());
+                alertRepository.save(alert);
+                String receiver = alertAttendRequest.getReceiverId();
+                String eventId = receiver + "_" + System.currentTimeMillis();
+                Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
+                emitters.forEach(
+                        (key, emitter) -> {
+                            emitterRepository.saveEventCache(key, alert);
+                            sendAlert(emitter, eventId, key, "success");
+                        }
+                );
+                return ResponseEntity.ok().body("Alert sent successfully"); // 성공 응답
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Data already exists");
+            }
+
         }catch (Exception e){
             System.out.println("알림 보내기를 실패했습니다.");
-            return false;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send alert");
         }
     }
 
@@ -111,7 +120,12 @@ public class AlertService {
     // 알림 리스트 보내기
     public List<AlertListResponse.AlertResponse> getAlertsByReceiverId(String receiverId) {
         List<Alert> alerts = alertRepository.findByReceiverId(receiverId);
-        return mapAlertsToAlertResponses(alerts);
+        if(alerts.isEmpty()){
+            return null;
+        }
+        else{
+            return mapAlertsToAlertResponses(alerts);
+        }
     }
 
     private List<AlertListResponse.AlertResponse> mapAlertsToAlertResponses(List<Alert> alerts) {
