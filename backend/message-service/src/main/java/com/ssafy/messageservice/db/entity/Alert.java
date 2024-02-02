@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.data.domain.Auditable;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,8 +32,8 @@ public class Alert {
     @Column(length = 50)
     private String receiverId;
 
-    @Column(length = 50)
-    private String position;
+    @Column
+    private List<String> position;
 
     @Column
     private String aspiration;
