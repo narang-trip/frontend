@@ -1,19 +1,10 @@
 import { useRef } from "react";
-import {
-  kakaoApiKey,
-  kakaoRedirectUrl,
-  naverApikey,
-  naverRedirectUrl,
-  naverState,
-} from "../../../public/apikey";
 import axios from "axios";
 
 const LoginModal = (props) => {
   const modalBG = useRef(null);
-  const kakaoLoginURL2 =
-    "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
-  const kakaoLoginURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoApiKey}&redirect_uri=${kakaoRedirectUrl}&response_type=code`;
-  const naverLoginURL = `https://nid.naver.com/oauth2.0/authorize?client_id=${naverApikey}&response_type=code&redirect_uri=${naverRedirectUrl}&state=${naverState}`;
+  const kakaoLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
+  const naverLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
 
   const Login = () => {
     axios({
@@ -49,7 +40,7 @@ const LoginModal = (props) => {
           </button>
           <h3 className="">로 그 인</h3>
           <div className="flex flex-col" onClick={Login}>
-            <a href={kakaoLoginURL2}>
+            <a href={kakaoLoginURL}>
               <img
                 className="object-cover h-16 w-36 rounded-xl"
                 src="assets/kakao_login.png"
