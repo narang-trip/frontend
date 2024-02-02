@@ -18,7 +18,15 @@ spring:
       hibernate:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-    
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          socket:
+            messaging: DEBUG
+
 server:
   port: 8084
 
