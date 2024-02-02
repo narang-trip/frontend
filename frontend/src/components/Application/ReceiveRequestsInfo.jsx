@@ -3,10 +3,9 @@ import { Fragment } from "react";
 export default function ReceiveRequestsInfo() {
   return (
     <Fragment>
-      
       <div className="flex justify-center w-full">
-        <div className="flex flex-row justify-around w-10/12 m-2">
-          <div className="w-8/12 h-24 p-2 border rounded-lg border-stone-400">
+        <div className="flex flex-row justify-around w-9/12 m-2">
+          <div className="w-7/12 h-24 p-2 border rounded-lg border-stone-400">
             <div className="flex items-center justify-between mx-4 mb-2">
               <div>
                 <img

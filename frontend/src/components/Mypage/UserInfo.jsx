@@ -36,7 +36,7 @@ const UserInfo = () => {
   }, [isExitOpen, isModifyOpen]);
 
   return (
-    <div className="w-2/5 shadow-xl p-3 border-black rounded-lg relative justify-center">
+    <div className="relative justify-center w-2/5 p-3 border-black rounded-lg shadow-xl">
       <img className="rounded-full" alt="프로필 이미지" src="" />
       <table className="table-fixed">
         <tbody>
