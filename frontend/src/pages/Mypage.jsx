@@ -1,5 +1,5 @@
 import MypageCalendar from "../components/Mypage/MypageCalendar";
-import { useState } from "react";
+import { useState,Fragment } from "react";
 import UserInfo from "../components/Mypage/UserInfo";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
@@ -16,8 +16,9 @@ const Mypage = () => {
     setEndDate(end);
   };
   return (
-    <div className="flex flex-col h-full">
-      <div className="h-2/5 p-4 flex flex-row space-x-2">
+    <Fragment>
+    <div className="flex flex-col w-full h-screen">
+      <div className="flex flex-row p-4 space-x-2 h-2/5">
         {/* <MypageCalendar /> */}
         <div className="w-3/5">
           <DatePicker
@@ -33,14 +34,15 @@ const Mypage = () => {
         </div>
         <UserInfo />
       </div>
-      <div className="h-3/5 p-4 flex flex-row space-x-2">
+      <div className="flex flex-row p-4 space-x-2 h-3/5">
         <SmallPlan dates={[startDate, endDate]} />
-        <div className="w-2/5 flex flex-col">
+        <div className="flex flex-col w-2/5">
           <Mileage />
           <MyBadge />
         </div>
       </div>
     </div>
+    </Fragment>
   );
 };
 

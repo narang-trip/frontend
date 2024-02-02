@@ -109,6 +109,8 @@ const ApplicationModal = (props) => {
                   />
                 </div>
               </div>
+              <div className="mx-4 my-4">
+                💰 보유 마일리지 : 200,000</div>
               <div className="flex justify-end">
                 <button
                   onClick={handleSubmit}
