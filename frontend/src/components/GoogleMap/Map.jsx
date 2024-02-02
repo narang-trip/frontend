@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, Fragment } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import SearchBox from "./SearchBox";
 import Directions from "./Directions";
@@ -206,7 +206,7 @@ const Map = () => {
   };
 
   return isLoaded ? (
-    <Fragment>
+    <div className="flex-col w-1/4 h-full">
       <h1>Google Map</h1>
       <SearchBox map={map} onPlaceSelected={handlePlaceSelected} />
       <hr />
@@ -224,7 +224,7 @@ const Map = () => {
       >
         <Markers markers={sortedMarkers} />
         {sortedMarkers.length >= 2 && (
-          <Fragment>
+          <>
             {sortedMarkers.slice(0, -1).map((marker, index) => (
               <Directions
                 key={index}
@@ -234,7 +234,7 @@ const Map = () => {
                 onDirectionsInfoUpdate={handleDirectionsInfoUpdate}
               />
             ))}
-          </Fragment>
+          </>
         )}
       </GoogleMap>
       <hr></hr>
@@ -251,7 +251,7 @@ const Map = () => {
           ))}
         </div>
       )}
-    </Fragment>
+    </div>
   ) : null;
 };
 

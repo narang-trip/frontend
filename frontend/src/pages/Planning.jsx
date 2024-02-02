@@ -13,13 +13,14 @@ export default function PlanningPage() {
   console.log(card);
 
   const onDragEnd = ({ source, destination }) => {
+    console.log(card[source.index].formattedAddress);
     if (!destination) return;
     const idx = Number(destination.droppableId.substr(4));
-    const schedule = {
-      img: card[source.index].photo,
-      title: card[source.index].name,
-    };
     if (source.droppableId === "PlaceCard") {
+      const schedule = {
+        img: card[source.index].photo,
+        title: card[source.index].name,
+      };
       dispatch(scheduleActions.addSchedule([schedule, source.index, idx]));
       console.log("추가");
     } else {
@@ -35,12 +36,14 @@ export default function PlanningPage() {
   };
 
   return (
-    <>
+    <div className="h-full">
       <div className="text-2xl text-gray">계획짜는 페이지</div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Plan />
-        <Map />
+        <div className="flex h-full">
+          <Plan />
+          <Map />
+        </div>
       </DragDropContext>
-    </>
+    </div>
   );
 }

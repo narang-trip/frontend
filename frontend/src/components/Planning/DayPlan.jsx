@@ -3,7 +3,7 @@ import { Draggable } from "react-beautiful-dnd";
 
 const DayPlan = (props) => {
   return (
-    <div className="bg-slate-400">
+    <div className="bg-slate-400 h-full w-60 rounded-xl p-2">
       {props.data.index} 일
       {props.data.list.map((data, index) => (
         <Draggable
