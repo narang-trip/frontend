@@ -9,7 +9,7 @@ spring:
       host: mongo
       username: root
       password: ssafy
-      uri: mongodb://mongo
+      uri: mongodb://mongo-container
       port: 27017
       database: narang-trip
       uuid-representation: standard
