@@ -67,7 +67,6 @@ const Plan = () => {
       ))}
       <button onClick={add}>날짜추가</button>
     </div>
-    </div>
   );
 };
 
