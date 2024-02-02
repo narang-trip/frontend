@@ -27,8 +27,8 @@ public class PaymentController {
      * 결제요청
      */
     @PostMapping("/ready")
-    public ResponseEntity readyToKakaoPay() {
-        KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady();
+    public ResponseEntity readyToKakaoPay(@RequestParam("user_id") String userId, @RequestParam("price") String price) {
+        KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(userId, price);
 
         return new ResponseEntity<>(kakaoReady, HttpStatus.OK);
     }
@@ -37,9 +37,9 @@ public class PaymentController {
      * 결제 성공
      */
     @GetMapping("/success")
-    public ResponseEntity afterPayRequest(@RequestParam("pg_token") String pgToken) {
+    public ResponseEntity afterPayRequest(@RequestParam("pg_token") String pgToken, @RequestParam("user_id") String userId) {
 
-        KakaoApproveResponse kakaoApprove = kakaoPayService.approveResponse(pgToken);
+        KakaoApproveResponse kakaoApprove = kakaoPayService.approveResponse(pgToken, userId);
 
         return new ResponseEntity<>(kakaoApprove, HttpStatus.OK);
     }
@@ -48,9 +48,10 @@ public class PaymentController {
      * 결제 진행 중 취소
      */
     @GetMapping("/cancel")
-    public ResponseEntity cancel(@RequestParam("t_id") String tid, @RequestParam("cancel_amount") int cancelAmount, @RequestParam("tax_free") int taxFree) {
+    public ResponseEntity cancel(@RequestParam("t_id") String tid, @RequestParam("cancel_amount") int cancelAmount,
+                                 @RequestParam("tax_free") int taxFree, @RequestParam("user_id") String userId) {
         System.out.println("cancel");
-        KakaoCancelResponse kakaoCancel = kakaoPayService.cancelResponse(tid, cancelAmount, taxFree);
+        KakaoCancelResponse kakaoCancel = kakaoPayService.cancelResponse(tid, cancelAmount, taxFree, userId);
         return new ResponseEntity<>(kakaoCancel, HttpStatus.OK);
     }
 
