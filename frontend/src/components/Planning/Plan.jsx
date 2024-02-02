@@ -49,10 +49,9 @@ const Plan = () => {
   };
 
   return (
-    <div>
-    <div style={{ display: "flex" }}>
+    <div className="w-3/4 flex overflow-auto scroll-auto gap-1 m-1">
       {list.map((data, index) => (
-        <div style={{ flexDirection: "column" }} key={index}>
+        <div className="flex" key={index}>
           <Droppable droppableId={`list${index}`}>
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
