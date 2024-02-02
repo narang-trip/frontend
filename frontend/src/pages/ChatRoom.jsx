@@ -29,6 +29,8 @@ const ChatRoomPage = () => {
     // const sockJS = new SockJS(
     //   "http://rabbitmq:61613/stomp/chat"
     // );
+    // const sockJS = new WebSocket("wss://i10a701.p.ssafy.io/rabbitmq/stomp/chat")
+    
     console.log("sockJS 실행 후");
     const stompClient = Stomp.over(sockJS);
     console.log("stomClient 만들었어용");
