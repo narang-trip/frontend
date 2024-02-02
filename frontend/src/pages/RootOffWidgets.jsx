@@ -13,7 +13,7 @@ function RootLayout() {
         <div className="w-1/12 mr-8">
         <MainNavigation className="fixed top-0 h-screen"/>
         </div>
-        <main className="w-10/12 h-screen bg-slate-200">
+        <main className="w-10/12 h-screen bg-stone-100">
           <Outlet />
         </main>
       </div>
