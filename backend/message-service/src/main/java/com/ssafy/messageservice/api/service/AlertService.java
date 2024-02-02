@@ -70,7 +70,7 @@ public class AlertService {
         return !lastEventId.isEmpty();
     }
 
-    private void sendLostData(String lastEventId, String userId, String emitterId, SseEmitter emitter) { // (6)
+    private void sendLostData(String lastEventId, String userId, String emitterId, SseEmitter emitter) {
         Map<String, Object> eventCaches = emitterRepository.findAllEventCacheStartWithByUserId(String.valueOf(userId));
         eventCaches.entrySet().stream()
                 .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
