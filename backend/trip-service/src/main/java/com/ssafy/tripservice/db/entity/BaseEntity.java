@@ -14,5 +14,5 @@ import java.util.UUID;
 public class BaseEntity {
 
     @MongoId
-    private String _id;
+    private UUID _id;
 }
