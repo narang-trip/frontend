@@ -1,32 +1,14 @@
 package com.ssafy.userservice.api.controller;
 
-import com.ssafy.userservice.api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 @CrossOrigin("*")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
-    private final UserService userService;
-//    @GetMapping("oauth2/authorize/{provider}")
-//    public RedirectView redirectToOAuth2Provider(@PathVariable(name = "provider") String provider) {
-//        System.out.println("hey hey!");
-////        String url = "http://localhost:8081/oauth2/authorization/" + provider;
-//        String url = "https://i10a701.p.ssafy.io/oauth2/authorization/" + provider;
-//        return new RedirectView(url);
-//    }
-//
-//    @GetMapping("oauth2/authorize/kakao")
-//    public RedirectView redirectToOAuth2Kakao() {
-//        System.out.println("hey hey!2222222222");
-////        String url = "http://localhost:8081/oauth2/authorization/kakao";
-//        String url = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
-//        return new RedirectView(url);
-//    }
 
     @GetMapping
     public String index(){
