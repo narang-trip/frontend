@@ -49,6 +49,7 @@ const Plan = () => {
   };
 
   return (
+    <div>
     <div style={{ display: "flex" }}>
       {list.map((data, index) => (
         <div style={{ flexDirection: "column" }} key={index}>
@@ -66,6 +67,7 @@ const Plan = () => {
         </div>
       ))}
       <button onClick={add}>날짜추가</button>
+    </div>
     </div>
   );
 };

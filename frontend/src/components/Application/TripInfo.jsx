@@ -26,7 +26,7 @@ export default function TripInfo() {
         <ul>
           <button
             onClick={handleViewClick}
-            className="w-9/12 px-4 py-4 mx-auto my-2 border rounded-3xl bg-stone-200 border-stone-400"
+            className="w-8/12 px-4 py-4 mx-auto my-2 border rounded-3xl bg-stone-200 border-stone-400"
           >
             <div className="grid grid-cols-3 gap-6">
               <div className="col-span-1">

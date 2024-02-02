@@ -8,10 +8,9 @@ import DateRangePicker from "./DateRangePicker.jsx";
 import FileUploadBox from "./FileUploadBox.jsx";
 import PositionCheck from "./PositionCheck.jsx";
 import LocationModal from "../../modals/LocationModal.jsx";
+import GenderRadio from "./GenderRadio.jsx";
 
 export default function TripWriteForm() {
-
-  
   const [board, setBoard] = useState({
     title: "",
     concept: "",
@@ -21,6 +20,7 @@ export default function TripWriteForm() {
     position: [],
     plan: "",
     description: "",
+    gender: "",
   });
   const [isOpen, setIsOpen] = useState(false);
 
@@ -80,7 +80,7 @@ export default function TripWriteForm() {
     <Fragment>
       <div className="text-left">
         <form onSubmit={handleSubmit}>
-          <div className="px-8 py-4 mx-auto border rounded-3xl bg-stone-100 border-stone-200">
+          <div className="px-8 py-4 mx-auto border rounded-xl bg-stone-100 border-stone-200">
             <div className="grid grid-cols-3 gap-6 px-4">
               <div className="col-span-3">
                 <p className="my-2 text-2xl font-bold text-center">
@@ -122,6 +122,7 @@ export default function TripWriteForm() {
                     className="border border-stone-200 bg-stone-0 p-1.5 w-2/3 text-gray-900 placeholder:text-gray-300 text-xs"
                   />
                 </div>
+                <GenderRadio value={board.gender} onChange={handleChange} />
                 <PositionCheck
                   value={board.position}
                   onChange={(positions) =>
