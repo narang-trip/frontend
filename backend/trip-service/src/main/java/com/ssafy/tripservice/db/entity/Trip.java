@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,11 +20,11 @@ public class Trip extends BaseEntity{
     private String tripDesc;
     private String tripRecruitDate;
     private String destination;
-    private String tripAges;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
     private String tripChat;
-    private String tripPlan;
+    private UUID tripPlanId;
+    private List<Integer> tripAges;
     private List<Participant> participants;
     // plan_id : json, java.
     // trip_Age : json
