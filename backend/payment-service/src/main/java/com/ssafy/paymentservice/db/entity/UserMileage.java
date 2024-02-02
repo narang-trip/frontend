@@ -10,6 +10,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 public class UserMileage {
     @Id
     private String id;
