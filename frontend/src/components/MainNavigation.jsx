@@ -6,7 +6,7 @@ import Tooltip from "./ToolTip";
 
 function MainNavigation() {
   return (
-    <div className="fixed flex flex-col items-center h-screen justify-evenly bg-stone-200 rounded-[4.5rem]">
+    <div className="fixed top-24 left-10  flex flex-col items-center h-screen justify-evenly bg-stone-100 rounded-[2rem]">
       <nav>
         <ul className="flex flex-col items-center justify-between h-screen py-20 mx-auto list-none">
           <li>
