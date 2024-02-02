@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+    tools {nodejs "nodejs-21.6.1"}
+
+    environment {
+        releaseServerAccount = 'ubuntu'
+        releaseServerUri = 'i10a701.p.ssafy.io'
+    }
+    stages {
+        stage('Example') {
+            steps {
+                sh 'npm version'
+            }
+        }
+        stage('Checkout') {
+            steps {
+                // 소스 코드 체크아웃
+                checkout scm
+            }
+        }
+        stage('node Build') {
+            steps {
+                script {
+                    // npm 이용 frontend 프로젝트 빌드
+                    dir("frontend/") {
+                        sh "npm install"
+                        // package.json 기반 필요 모듈 설치
+                        sh "npm run build"
+                        // 빌드
+                    }
+
+                }
+            }
+        }
+        stage('Docker Image Build') {
+            steps {
+                // 빌드된 frontend 파일 도커 이미지로 생성 
+                
+                sh('(docker ps -a | grep "3000" | awk \'{print $1}\') | xargs docker stop || true' )
+
+                sh('chmod +x ./jenkins/port-refresh-frontend.sh')
+
+                // echo 'No trip-service running . . . About to Build a image . . .'
+                sh 'docker build -t frontend -f ./frontend/Dockerfile .'
+                // 배포 스크립트 실행 (예: Docker 컨테이너에 배포)
+                sh 'docker run -p 3000:3716 -d frontend'
+            }
+        }
+    }
+}

@@ -3,6 +3,8 @@ package com.ssafy.messageservice.db.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Table(name="ChatroomUser")
@@ -11,6 +13,9 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatroomUser {
     @Id
+    @Column(length = 50)
+    private String id = UUID.randomUUID().toString();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroomId", referencedColumnName = "chatroomId")
     private Chatroom chatroom;

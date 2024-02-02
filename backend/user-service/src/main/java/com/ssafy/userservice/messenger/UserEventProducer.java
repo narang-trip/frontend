@@ -1,6 +1,6 @@
 package com.ssafy.userservice.messenger;
 
-import org.springframework.kafka.core.KafkaTemplate;
+//import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 

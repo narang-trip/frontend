@@ -1,11 +1,14 @@
 package com.ssafy.messageservice.api.controller;
 
-import com.ssafy.messageservice.api.response.ChatDto;
-import com.ssafy.messageservice.api.service.ChatServiceImpl;
+import com.ssafy.messageservice.api.request.ChatRequest;
+import com.ssafy.messageservice.api.request.ChatSendRequest;
+import com.ssafy.messageservice.api.service.ChatService;
 import com.ssafy.messageservice.db.entity.Chat;
 import com.ssafy.messageservice.db.entity.Chatroom;
+import com.ssafy.messageservice.db.entity.ChatroomUser;
 import com.ssafy.messageservice.db.repository.ChatRepository;
 import com.ssafy.messageservice.db.repository.ChatroomRepository;
+import com.ssafy.messageservice.db.repository.ChatroomUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -15,54 +18,62 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
+@CrossOrigin("*")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
 public class StompRabbitController {
     private final RabbitTemplate template;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatService.class);
 
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final static String CHAT_QUEUE_NAME = "chat.queue";
     private final ChatRepository chatRepository;
     private final ChatroomRepository chatroomRepository;
+    private final ChatroomUserRepository chatroomUserRepository;
 
+    // 여행 참여 요청에 대한 수락 이후 해당 메소드 호출!
     @MessageMapping("chat.enter.{chatRoomId}")
-    public void enter(ChatDto chatDto, @DestinationVariable String chatRoomId) {
-
+    public void enter(String userId, @DestinationVariable String chatRoomId) {
         LOGGER.info(String.format("입장 !!!! 확인!!!!! -> %s", chatRoomId));
-        chatDto.setMessage("입장하셨습니다.");
-        chatDto.setRegDate(LocalDateTime.now());
-
-        // exchange
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatDto);
-        // template.convertAndSend("room." + chatRoomId, chat); //queue
-        // template.convertAndSend("amq.topic", "room." + chatRoomId, chat); //topic
+        ChatRequest chatRequest = new ChatRequest();
+        chatRequest.setChatroomId(chatRoomId);
+        chatRequest.setUserId(userId);
+        chatRequest.setSendTime(LocalDateTime.now());
+        chatRequest.setContent("입장하셨습니다.");
+        Chatroom chatroom = chatroomRepository.findById(chatRoomId).orElse(null);
+        ChatroomUser invite = new ChatroomUser(UUID.randomUUID().toString(),chatroom, userId);
+        chatroomUserRepository.save(invite);
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatRequest);
     }
 
-
     @MessageMapping("chat.message.{chatRoomId}")
-    public void send(ChatDto chatDto, @DestinationVariable String chatRoomId) {
-        chatDto.setRegDate(LocalDateTime.now());
+    public void send(ChatSendRequest chatSendRequest, @DestinationVariable String chatRoomId) {
+        ChatRequest chatRequest = new ChatRequest(
+                chatSendRequest.getChatroomId(),
+                chatSendRequest.getSenderId(),
+                LocalDateTime.now(),
+                chatSendRequest.getContent());
         LOGGER.info(String.format("보낸다 !!!! 확인!!!!! -> %s", chatRoomId));
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId.toString(), chatDto);
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatRequest);
     }
 
     @RabbitListener(queues = CHAT_QUEUE_NAME)
-    public void receive(ChatDto chatDto) {
-        LOGGER.info(String.format("받는다 !!!! 확인!!!!! -> %s", chatDto));
-        String chatRoomId = chatDto.getChatRoomId();
-        Chatroom chatroom = chatroomRepository.findById("1").orElse(null);
-        Chat chat = new Chat("test22",
+    public void receive(ChatRequest chatRequest) {
+        LOGGER.info(String.format("받는다 !!!! 확인!!!!! -> %s", chatRequest));
+        String chatRoomId = chatRequest.getChatroomId();
+        Chatroom chatroom = chatroomRepository.findById(chatRoomId).orElse(null);
+        Chat chat = new Chat(UUID.randomUUID().toString(),
                 chatroom,
-                chatDto.getMessage(),
-                chatDto.getRegDate(),
-                chatDto.getMemberId());
+                chatRequest.getContent(),
+                chatRequest.getSendTime(),
+                chatRequest.getUserId());
         LOGGER.info(String.format("Message receive -> %s", chat));
         chatRepository.save(chat);
-
     }
 }
