@@ -1,20 +1,30 @@
 import { useState, useEffect } from "react";
 import { ModalPortal } from "../modals/ModalPortal";
 import AddInfoModal from "../modals/AddInfoModal";
+import LeaveUserModal from "../modals/LeaveUserModal";
 
 const UserInfo = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModifyOpen, setIsModifyOpen] = useState(false);
+  const [isExitOpen, setIsExitOpen] = useState(false);
   const Openmodify = () => {
-    setIsOpen(true);
+    setIsModifyOpen(true);
   };
 
   const Closemodify = () => {
-    setIsOpen(false);
+    setIsModifyOpen(false);
+  };
+
+  const OpenExit = () => {
+    setIsExitOpen(true);
+  };
+
+  const CloseExit = () => {
+    setIsExitOpen(false);
   };
 
   useEffect(() => {
     // 모달이 열렸을 때 스크롤 막기 위함
-    if (isOpen) {
+    if (isModifyOpen || isExitOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -23,7 +33,7 @@ const UserInfo = () => {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isOpen]);
+  }, [isExitOpen, isModifyOpen]);
 
   return (
     <div className="w-2/5 shadow-xl p-3 border-black rounded-lg relative justify-center">
@@ -51,11 +61,16 @@ const UserInfo = () => {
       </article>
       <div className="absolute bottom-0 right-0 ">
         <button onClick={Openmodify}>정보 수정</button>
-        <button>회원 탈퇴</button>
+        <button onClick={OpenExit}>회원 탈퇴</button>
       </div>
-      {isOpen && (
+      {isModifyOpen && (
         <ModalPortal>
           <AddInfoModal onClose={Closemodify} />
+        </ModalPortal>
+      )}
+      {isExitOpen && (
+        <ModalPortal>
+          <LeaveUserModal onClose={CloseExit} />
         </ModalPortal>
       )}
     </div>
