@@ -12,8 +12,5 @@ public interface TripService {
     /*
         현재 기준 참가 가능한 Trip
      */
-    List<Trip> getAvailableTrips(Trip);
-
-
-
+    List<Trip> getAvailableTrips();
 }

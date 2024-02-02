@@ -16,7 +16,7 @@ public class MongoDBConfig {
     }
 
     @Bean
-    public MongoTemplate mongoTripTemplate() {
-        return new MongoTemplate(mongoClient(), "narang-trip");
+    public MongoTemplate mongoTemplate() {
+        return new MongoTemplate(mongoClient(), "-mongo-narang");
     }
 }
