@@ -6,8 +6,8 @@ Object.assign(global, { WebSocket: SockJS });
 
 import Button from "../ui/Button";
 
-const sockjsEndpoint = 'https://i10a701.p.ssafy.io/api/message/chat/';
-const stompEndpoint = 'wss://i10a701.p.ssafy.io/api/message/chat/';
+const sockjsEndpoint = 'https://i10a701.p.ssafy.io/api/message/chat';
+const stompEndpoint = 'wss://i10a701.p.ssafy.io/api/message/chat';
 
 const ChatRoomPage = () => {
   const params = useParams();
@@ -45,7 +45,7 @@ const ChatRoomPage = () => {
   useEffect(() => {
     // 컴포넌트 마운트 시 연결
     const socket = new SockJS(sockjsEndpoint); // 백엔드 SockJS 엔드포인트로 변경하세요.
-    const stompClient = Stomp.over(() => socket);
+    const stompClient = Stomp.over(() => new WebSocket(stompEndpoint));
     stompClient.connect({}, (frame) => {
       console.log('Connected:' +  frame);
       // stompClient.subscribe('/topic/greetings', (message) => {
