@@ -27,35 +27,8 @@ const ChatRoomPage = () => {
       "/api/message/stomp/chat"
     );
     // const sockJS = new WebSocket("wss://i10a701.p.ssafy.io/api/message/chat")
-    
+
     const stompClient = StompJs.over(sockJS);
-
-    // const client = new StompJs.Client({
-    //   brokerURL: 'wss://i10a701.p.ssafy.io/api/message/chat',
-    //   connectHeaders: {
-    //     login: 'user',
-    //     passcode: 'password',
-    //   },
-    //   debug: function (str) {
-    //     console.log(str);
-    //   },
-    //   reconnectDelay: 5000, //자동 재 연결
-    //   heartbeatIncoming: 4000,
-    //   heartbeatOutgoing: 4000,
-    // });
-   
-    // client.onConnect = function (frame) {
-    //   console.log("스톰프 연결 완료")
-    // };
-
-    // client.onStompError = function (frame) {
-    //   console.log('Broker reported error: ' + frame.headers['message']);
-    //   console.log('Additional details: ' + frame.body);
-    // };
-
-    // client.activate();
-
-
 
 
     stompClient.connect(
@@ -80,6 +53,7 @@ const ChatRoomPage = () => {
             console.error("Stomp connection error", error);
           }
         );
+      });
 
     //     //입장 메세지 전송
     //     stompClient.send(
@@ -97,53 +71,53 @@ const ChatRoomPage = () => {
     // setStomp(stompClient);
   }, [chatRoomId, nickname]);
 
-  const submitHandler = (event) => {
-    event.preventDefault();
+const submitHandler = (event) => {
+  event.preventDefault();
 
-    // stomp.send(
-    //   "/pub/chat.message.1",
-    //   {},
-    //   JSON.stringify({
-    //     message: inputRef.current,
-    //     memberId: 1,
-    //     nickname: "YourNickname",
-    //   })
-    // );
-    // inputRef.current.valueOf("");
-    setInputMsg("");
-  };
-
-  return (
-    <Fragment>
-      <h1>Chat Room</h1>
-      <h2>Room.No. {chatRoomId}</h2>
-      <h2>안녕하세요 {nickname}님</h2>
-      <div>
-        <form onSubmit={submitHandler}>
-          <label htmlFor="message">Message:</label>
-          <input
-            type="text"
-            id="message"
-            ref={inputRef}
-            value={inputMsg}
-            onChange={(e) => setInputMsg(e.target.value)}
-            className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <Button type="submit">전송</Button>
-        </form>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <div className="w-64 h-80 bg-gray-300 p-4 rounded-md shadow-md">
-          <h1>채팅방 입장</h1>
-          <div id="chatArea">
-            {chats.map((msg) => (
-              <li key={msg.message}>{`${msg.nickname} : ${msg.message}`}</li>
-            ))}
-          </div>
-        </div>
-      </div>
-    </Fragment>
-  );
+  // stomp.send(
+  //   "/pub/chat.message.1",
+  //   {}, 
+  //   JSON.stringify({
+  //     message: inputRef.current,
+  //     memberId: 1,
+  //     nickname: "YourNickname",
+  //   })
+  // );
+  // inputRef.current.valueOf("");
+  setInputMsg("");
 };
 
-export default ChatRoomPage;
+return (
+  <Fragment>
+    <h1>Chat Room</h1>
+    <h2>Room.No. {chatRoomId}</h2>
+    <h2>안녕하세요 {nickname}님</h2>
+    <div>
+      <form onSubmit={submitHandler}>
+        <label htmlFor="message">Message:</label>
+        <input
+          type="text"
+          id="message"
+          ref={inputRef}
+          value={inputMsg}
+          onChange={(e) => setInputMsg(e.target.value)}
+          className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+        <Button type="submit">전송</Button>
+      </form>
+    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="w-64 h-80 bg-gray-300 p-4 rounded-md shadow-md">
+        <h1>채팅방 입장</h1>
+        <div id="chatArea">
+          {chats.map((msg) => (
+            <li key={msg.message}>{`${msg.nickname} : ${msg.message}`}</li>
+          ))}
+        </div>
+      </div>
+    </div>
+  </Fragment>
+);
+          }
+
+export default ChatRoomPage
