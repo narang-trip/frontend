@@ -39,6 +39,8 @@ const ChatRoomPage = () => {
       // stompClient.subcribe();
     })
 
+    stompClient.activate();
+
 
 
     // stompClient.connect(
