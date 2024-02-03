@@ -1,8 +1,7 @@
 import { Fragment, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
-import { Stomp} from "@stomp/stompjs";
-Object.assign(global, { WebSocket: SockJS }); 
+import { Client, Stomp} from "@stomp/stompjs";
 
 import Button from "../ui/Button";
 
