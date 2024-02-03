@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
-import { Stomp } from "@stomp/stompjs";
+import StompJs from "@stomp/stompjs";
 
 import Button from "../ui/Button";
 
@@ -23,32 +23,43 @@ const ChatRoomPage = () => {
     console.log("또 실행되면 나옴 유즈이펙트 안에 있음");
     // inputRef.current.focus();
     console.log("sockJS 실행 전");
-    const sockJS = new SockJS(
-      "/api/message/chat/"
-    );
+    // const sockJS = new SockJS(
+    //   "/api/message/chat/"
+    // );
     // const sockJS = new SockJS(
     //   "http://rabbitmq:61613/stomp/chat"
     // );
     // const sockJS = new WebSocket("wss://i10a701.p.ssafy.io/api/message/chat")
     
-    console.log("sockJS 실행 후");
-    const stompClient = Stomp.over(sockJS);
-    console.log("stompClient 만들었어용");
-    
-    stompClient.connect(
-      {
-        login: "yoonjae", // RabbitMQ 및 STOMP 브로커에 사용되는 로그인 정보를 동일하게 설정
-        passcode: "dbswoWkd",
+    // const stompClient = StompJs.over(sockJS);
+
+    const client = new StompJs.Client({
+      brokerURL: 'wss://i10a701.p.ssafy.io/api/message/chat',
+      connectHeaders: {
+        login: 'user',
+        passcode: 'password',
       },
-      () => {
-        // 연결이 성공하면 원하는 작업을 수행
-        console.log("Connected to STOMP broker");
-        // Subscribe, Send 등의 작업 수행
+      debug: function (str) {
+        console.log(str);
       },
-      (error) => {
-        console.error("Error connecting to STOMP broker:", error);
-      }
-    );
+      reconnectDelay: 5000, //자동 재 연결
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+    });
+   
+    client.onConnect = function (frame) {
+      console.log("스톰프 연결 완료")
+    };
+
+    client.onStompError = function (frame) {
+      console.log('Broker reported error: ' + frame.headers['message']);
+      console.log('Additional details: ' + frame.body);
+    };
+
+    client.activate();
+
+
+
 
     // stompClient.connect(
     //   "yoonjae",
