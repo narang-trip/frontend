@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
-import {Client} from "@stomp/stompjs";
+import { Stomp} from "@stomp/stompjs";
 Object.assign(global, { WebSocket: SockJS }); 
 
 import Button from "../ui/Button";
@@ -23,65 +23,43 @@ const ChatRoomPage = () => {
     console.log("에러 남");
   };
 
-  useEffect(() => {
-    console.log("또 실행되면 나옴 유즈이펙트 안에 있음");
-    // inputRef.current.focus();
-    const sockJS = new SockJS(sockjsEndpoint)
+  // useEffect(() => {
+  //   console.log("또 실행되면 나옴 유즈이펙트 안에 있음");
+  //   // inputRef.current.focus();
+  //   const sockJS = new SockJS(sockjsEndpoint)
     
-    const stompClient = new Client({ webSocketFactory: () => new sockJS(sockjsEndpoint), debug: (str) => console.log(str) });
+  //   const stompClient = new Client({ webSocketFactory: () => new sockJS(sockjsEndpoint), debug: (str) => console.log(str) });
 
-    stompClient.configure({
-      brokerURL: stompEndpoint,
-      onConnect: () => {
-        console.log('Connected to STOMP');
+  //   stompClient.configure({
+  //     brokerURL: stompEndpoint,
+  //     onConnect: () => {
+  //       console.log('Connected to STOMP');
+  //     }
+
+  //     // stompClient.subcribe();
+  //   })
+
+  //   stompClient.activate();
+
+  // }, [chatRoomId, nickname]);
+  useEffect(() => {
+    // 컴포넌트 마운트 시 연결
+    const socket = new SockJS(sockjsEndpoint); // 백엔드 SockJS 엔드포인트로 변경하세요.
+    const stompClient = Stomp.over(socket);
+    stompClient.connect({}, () => {
+      // stompClient.subscribe('/topic/greetings', (message) => {
+      //   alert(JSON.parse(message.body).content);
+      // });
+    });
+    setStomp(stompClient);
+
+    // 컴포넌트 언마운트 시 연결 해제
+    return () => {
+      if (stompClient) {
+        stompClient.disconnect();
       }
-
-      // stompClient.subcribe();
-    })
-
-    stompClient.activate();
-
-
-
-    // stompClient.connect(
-    //   "yoonjae",
-    //   "dbswoWkd",
-    //   function (frame) {
-    //     console.log("Connected to Stomp");
-
-    //     stompClient.subscribe(
-    //       `/exchange/chat.exchange/room.${chatRoomId}`,
-    //       function (message) {
-    //         const chatDto = JSON.parse(message.body);
-
-    //         setChats((prevData) => [
-    //           ...prevData,
-    //           {
-    //             [chatDto.nickname]: chatDto.message,
-    //           },
-    //         ]);
-    //       },
-    //       function (error) {
-    //         console.error("Stomp connection error", error);
-    //       }
-    //     );
-    //   });
-
-    //     //입장 메세지 전송
-    //     stompClient.send(
-    //       `/pub/chat.enter.${chatRoomId}`,
-    //       {},
-    //       JSON.stringify({
-    //         memberId: 1,
-    //         nickname: nickname,
-    //       })
-    //     );
-    //   },
-    //   onError,
-    //   "/"
-    // );
-    // setStomp(stompClient);
-  }, [chatRoomId, nickname]);
+    };
+  }, []);
 
   const submitHandler = (event) => {
     event.preventDefault();
