@@ -5,7 +5,7 @@ import { Client, Stomp} from "@stomp/stompjs";
 
 import Button from "../ui/Button";
 
-const sockjsEndpoint = 'https://i10a701.p.ssafy.io/api/message/chat';
+const sockjsEndpoint = 'https://i10a701.p.ssafy.io/api/message/api/message/chat';
 const stompEndpoint = 'wss://i10a701.p.ssafy.io/api/message/chat';
 
 const ChatRoomPage = () => {
@@ -85,7 +85,7 @@ const ChatRoomPage = () => {
     });
 
     // 웹소켓 연결 활성화
-    stompClient.activate;
+    stompClient.activate();
 
     // 컴포넌트 언마운트 시 연결 종료
     return () => {

@@ -27,6 +27,35 @@ const ChatPage = () => {
         console.error('Error with SSE connection:', error);
         eventSource.close();  // 에러 발생 시 연결 종료
     };
+    useEffect(() => {
+      // SockJS와 Stomp 설정
+      const socket = new SockJS(sockjsEndpoint);
+      const stompClient = new Client({
+        webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 웹소켓 연결
+        onConnect: () => {
+          console.log('Connected');
+          
+          // 서버로부터 메시지를 받을 구독 설정
+          stompClient.subscribe('/sub', message => {
+            console.log(`Received: ${message.body}`);
+          });
+  
+          // 서버로 메시지 전송
+          stompClient.publish({
+            destination: '/pub',
+            body: 'First Message',
+          });
+        },
+      });
+  
+      // 웹소켓 연결 활성화
+      stompClient.activate();
+  
+      // 컴포넌트 언마운트 시 연결 종료
+      return () => {
+        stompClient.deactivate();
+      };
+    }, []);
 
   return (
     <div className="">
