@@ -21,11 +21,12 @@ spring:
 
 logging:
   level:
-    org:
-      springframework:
-        web:
-          socket:
-            messaging: DEBUG
+    root: DEBUG
+    # org:
+    #   springframework:
+    #     web:
+    #       socket:
+    #         messaging: DEBUG
 
 server:
   port: 8084
