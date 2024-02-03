@@ -44,7 +44,7 @@ const ChatRoomPage = () => {
   // }, [chatRoomId, nickname]);
   useEffect(() => {
     // 컴포넌트 마운트 시 연결
-    const socket = new SockJS(sockjsEndpoint); // 백엔드 SockJS 엔드포인트로 변경하세요.
+    const socket = new WebSocket(stompEndpoint); // 백엔드 SockJS 엔드포인트로 변경하세요.
     const stompClient = Stomp.over(() => socket);
     stompClient.connect({}, (frame) => {
       console.log('Connected:' +  frame);
