@@ -19,7 +19,7 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/api/message/chat")
+        registry.addEndpoint("/chat")
                 .setAllowedOriginPatterns("*").withSockJS();
         System.out.println("stomp 연결!!!!!!");
         //https://i10a701.p.ssafy.io"
