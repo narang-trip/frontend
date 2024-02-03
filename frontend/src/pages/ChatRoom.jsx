@@ -25,7 +25,6 @@ const ChatRoomPage = () => {
   useEffect(() => {
     console.log("또 실행되면 나옴 유즈이펙트 안에 있음");
     // inputRef.current.focus();
-    console.log("sockJS 실행 전");
     const sockJS = new SockJS(sockjsEndpoint)
     
     const stompClient = new Client({ webSocketFactory: () => new WebSocket(stompEndpoint), debug: (str) => console.log(str) });
