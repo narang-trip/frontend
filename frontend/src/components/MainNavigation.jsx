@@ -2,64 +2,58 @@ import { NavLink } from "react-router-dom";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { GoHome, GoPersonAdd, GoSearch } from "react-icons/go";
 import { LiaCalendarDaySolid } from "react-icons/lia";
-import Tooltip from "./ToolTip";
 
 function MainNavigation() {
+
   return (
-    <div className="fixed top-24 left-10  flex flex-col items-center h-screen justify-evenly bg-stone-100 rounded-[2rem]">
+    <div className="fixed left-0 flex flex-col items-center w-[12rem] h-screen top-19">
       <nav>
-        <ul className="flex flex-col items-center justify-between h-screen py-20 mx-auto list-none">
-          <li>
-            <Tooltip text="메인화면">
-              <div>
-                <NavLink
-                  to="/"
-                  className="flex items-center justify-center w-16 h-16 rounded-l-full hover:bg-stone-100 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30"
-                >
-                  <GoHome className="w-[2rem] h-[2rem] mx-auto" />
-                </NavLink>
-              </div>
-            </Tooltip>
+        <ul className="flex flex-col items-start h-screen py-10 mx-auto list-none justify-normal">
+          <li className="duration-300 py-7">
+            <NavLink
+              to="/"
+              tabIndex="0"
+              className="flex items-center justify-center hover:text-amber-500 hover:font-bold focus:font-bold focus:text-amber-500"
+            >
+              <GoHome className="w-6 h-6 ml-0 mr-3" />
+              <span className="text-base text-nowrap ">홈</span>
+            </NavLink>
           </li>
-          <li>
-            <Tooltip text="동행모집작성">
-              <NavLink
-                to="/register"
-                className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30"
-              >
-                <PencilSquareIcon className="w-[2rem] h-[2rem] mx-auto" />
-              </NavLink>
-            </Tooltip>
+          <li className="transition-all duration-300 py-7">
+            <NavLink
+              to="/register"
+              className="flex items-center justify-center hover:text-amber-500 hover:font-bold focus:font-bold focus:text-amber-500"
+            >
+              <PencilSquareIcon className="w-6 h-6 ml-0 mr-3" />
+              <span className="text-base text-nowrap">동행 작성</span>
+            </NavLink>
           </li>
-          <li>
-            <Tooltip text="동행모집검색">
-              <NavLink
-                to="/search"
-                className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30"
-              >
-                <GoSearch className="w-[2rem] h-[2rem] mx-auto" />
-              </NavLink>
-            </Tooltip>
+          <li className="transition-all duration-300 py-7">
+            <NavLink
+              to="/search"
+              className="flex items-center justify-center hover:text-amber-500 hover:font-bold focus:font-bold focus:text-amber-500"
+            >
+              <GoSearch className="w-6 h-6 ml-0 mr-3" />
+              <span className="text-base text-nowrap">동행 검색</span>
+            </NavLink>
           </li>
-          <li>
-            <Tooltip text="신청현황">
-              <NavLink
-                to="/applicantList"
-                className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30"
-              >
-                <GoPersonAdd className="w-[2rem] h-[2rem] mx-auto" />
-              </NavLink>
-            </Tooltip>
+          <li className="transition-all duration-300 py-7">
+            <NavLink
+              to="/applicantList"
+              className="flex items-center hover:text-amber-500 hover:font-bold focus:font-bold focus:text-amber-500"
+            >
+              <GoPersonAdd className="w-6 h-6 ml-0 mr-3" />
+              <span className="text-base text-nowrap">신청 현황</span>
+            </NavLink>
           </li>
-          <li>
-            <Tooltip text="여행일정생성">
-              <NavLink
-                to="/planning"
-                className="flex items-center justify-center w-16 h-16 rounded-lg hover:bg-stone-100 hover:bg-opacity-30 focus:bg-stone-100 focus:bg-opacity-30 active:bg-stone-100 active:bg-opacity-30"
-              >
-                <LiaCalendarDaySolid className="w-[2rem] h-[2rem] mx-auto" />
-              </NavLink>
-            </Tooltip>
+          <li className="transition-all duration-300 py-7">
+            <NavLink
+              to="/planning"
+              className="flex items-center hover:text-amber-500 hover:font-bold focus:font-bold focus:text-amber-500"
+            >
+              <LiaCalendarDaySolid className="w-6 h-6 ml-0 mr-3" />
+              <span className="text-base text-nowrap">여행 계획</span>
+            </NavLink>
           </li>
           <li>
             <NavLink to="/chatRoomTest">ChatroomTest</NavLink>
