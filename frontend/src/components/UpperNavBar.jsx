@@ -36,7 +36,7 @@ export default function UpperNavbar() {
   }, [isOpen]);
 
   return (
-    <header className="sticky top-0 flex items-center justify-between w-full p-4 bg-stone-100">
+    <header className="sticky top-0 z-10 flex items-center justify-between w-full p-4 bg-stone-100">
       <div className='ml-5'>
         <img src="../public/narang_logo.png" className="w-11 h-11" />
       </div>
