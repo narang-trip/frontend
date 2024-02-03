@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import {Client} from "@stomp/stompjs";
+Object.assign(global, { WebSocket: SockJS }); 
 
 import Button from "../ui/Button";
 
@@ -27,7 +28,7 @@ const ChatRoomPage = () => {
     // inputRef.current.focus();
     const sockJS = new SockJS(sockjsEndpoint)
     
-    const stompClient = new Client({ webSocketFactory: () => new WebSocket(stompEndpoint), debug: (str) => console.log(str) });
+    const stompClient = new Client({ webSocketFactory: () => new sockJS(sockjsEndpoint), debug: (str) => console.log(str) });
 
     stompClient.configure({
       brokerURL: stompEndpoint,
