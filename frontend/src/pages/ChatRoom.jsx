@@ -45,7 +45,7 @@ const ChatRoomPage = () => {
   useEffect(() => {
     // 컴포넌트 마운트 시 연결
     const socket = new SockJS(sockjsEndpoint); // 백엔드 SockJS 엔드포인트로 변경하세요.
-    const stompClient = Stomp.over(() => new WebSocket(stompEndpoint));
+    const stompClient = Stomp.over(() => socket);
     stompClient.connect({}, (frame) => {
       console.log('Connected:' +  frame);
       // stompClient.subscribe('/topic/greetings', (message) => {
