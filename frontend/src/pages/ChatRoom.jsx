@@ -42,25 +42,55 @@ const ChatRoomPage = () => {
   //   stompClient.activate();
 
   // }, [chatRoomId, nickname]);
-  useEffect(() => {
-    // 컴포넌트 마운트 시 연결
-    const socket = new SockJS(sockjsEndpoint); // 백엔드 SockJS 엔드포인트로 변경하세요.
-    const stompClient = Stomp.over(socket);
-    stompClient.connect({}, (frame) => {
-      console.log('Connected:' +  frame);
-      // stompClient.subscribe('/topic/greetings', (message) => {
-      //   alert(JSON.parse(message.body).content);
-      // });
-    }, (error) => {
-      console.error('Connection error: ' + error)
-    });
-    setStomp(stompClient);
+  // useEffect(() => {
+  //   // 컴포넌트 마운트 시 연결
+  //   const socket = new SockJS(sockjsEndpoint); // 백엔드 SockJS 엔드포인트로 변경하세요.
+  //   const stompClient = Stomp.over(socket);
+  //   stompClient.connect({}, (frame) => {
+  //     console.log('Connected:' +  frame);
+  //     // stompClient.subscribe('/topic/greetings', (message) => {
+  //     //   alert(JSON.parse(message.body).content);
+  //     // });
+  //   }, (error) => {
+  //     console.error('Connection error: ' + error)
+  //   });
+  //   setStomp(stompClient);
 
-    // 컴포넌트 언마운트 시 연결 해제
+  //   // 컴포넌트 언마운트 시 연결 해제
+  //   return () => {
+  //     if (stompClient) {
+  //       stompClient.disconnect();
+  //     }
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    // SockJS와 Stomp 설정
+    const socket = new SockJS(sockjsEndpoint);
+    const stompClient = new Client({
+      webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 웹소켓 연결
+      onConnect: () => {
+        console.log('Connected');
+        
+        // 서버로부터 메시지를 받을 구독 설정
+        stompClient.subscribe('/sub', message => {
+          console.log(`Received: ${message.body}`);
+        });
+
+        // 서버로 메시지 전송
+        stompClient.publish({
+          destination: '/pub',
+          body: 'First Message',
+        });
+      },
+    });
+
+    // 웹소켓 연결 활성화
+    stompClient.activate();
+
+    // 컴포넌트 언마운트 시 연결 종료
     return () => {
-      if (stompClient) {
-        stompClient.disconnect();
-      }
+      stompClient.deactivate();
     };
   }, []);
 
