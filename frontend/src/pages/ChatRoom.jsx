@@ -6,7 +6,7 @@ import {Client} from "@stomp/stompjs";
 import Button from "../ui/Button";
 
 const sockjsEndpoint = 'https://i10a701.p.ssafy.io/api/message/stomp/chat';
-const stompEndpoint = 'https://i10a701.p.ssafy.io/api/message/stomp/chat';
+const stompEndpoint = 'wss://i10a701.p.ssafy.io/api/message/stomp/chat';
 
 const ChatRoomPage = () => {
   const params = useParams();
