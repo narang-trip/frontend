@@ -6,8 +6,8 @@ Object.assign(global, { WebSocket: SockJS });
 
 import Button from "../ui/Button";
 
-const sockjsEndpoint = 'https://i10a701.p.ssafy.io/api/message/chat';
-const stompEndpoint = 'wss://i10a701.p.ssafy.io/api/message/chat';
+const sockjsEndpoint = 'https://i10a701.p.ssafy.io/api/message/chat/';
+const stompEndpoint = 'wss://i10a701.p.ssafy.io/api/message/chat/';
 
 const ChatRoomPage = () => {
   const params = useParams();
