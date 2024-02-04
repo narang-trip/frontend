@@ -25,8 +25,8 @@ public class Trip extends BaseEntity{
     private LocalDateTime returnDate;
     private UUID tripChatId;
     private UUID tripPlanId;
-    private int tripAgeUpperBound;
-    private int tripAgeLowerBound;
+    private Integer tripAgeUpperBound;
+    private Integer tripAgeLowerBound;
     private List<Participant> participants;
 
     public TripResponse toTripResponse() {
