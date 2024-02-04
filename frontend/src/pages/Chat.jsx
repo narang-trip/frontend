@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
-
+import SockJS from "sockjs-client";
+import { Client, Stomp} from "@stomp/stompjs";
 const userId = "조예진"
 
 const ChatPage = () => {
