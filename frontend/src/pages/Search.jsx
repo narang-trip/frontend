@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { useInView, InView } from "react-intersection-observer";
+import BoardList from "../components/Trip/Read/BoardList";
 
 const SearchPage = () => {
   const { ref, inView, entry } = useInView({
@@ -18,6 +19,7 @@ const SearchPage = () => {
         <h2>
           Plain children are always rendered. Use onChange to monitor state.
         </h2>
+        <BoardList></BoardList>
       </InView>
     </Fragment>
   );

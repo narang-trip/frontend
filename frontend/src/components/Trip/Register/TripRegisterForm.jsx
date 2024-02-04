@@ -81,7 +81,7 @@ export default function TripWriteForm() {
     <Fragment>
       <div className="text-left">
         <form onSubmit={handleSubmit}>
-          <div className="px-8 py-4 mx-auto border rounded-xl bg-stone-100 border-stone-200">
+          <div className="w-9/12 px-8 py-4 mx-auto border rounded-xl bg-stone-100 border-stone-200">
             <div className="grid grid-cols-3 gap-6 px-4">
               <div className="col-span-3">
                 <p className="my-2 text-2xl font-bold text-center">
