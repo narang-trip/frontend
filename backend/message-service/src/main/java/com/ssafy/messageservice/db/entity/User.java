@@ -2,6 +2,7 @@ package com.ssafy.messageservice.db.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,7 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-public class User {
-    @Id
-    private String id;
-    @Column(length = 20)
+public class User extends BaseEntity{
+    @Column(name = "nickname")
     private String nickname;
 }
