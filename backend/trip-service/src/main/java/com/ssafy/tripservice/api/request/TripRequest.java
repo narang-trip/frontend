@@ -16,7 +16,7 @@ public class TripRequest {
     private UUID tripId;
     private String tripName;
     private String tripDesc;
-    private LocalDateTime tripRecruitDate;
+    private LocalDateTime recruitDate;
     private String destination;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
@@ -30,7 +30,7 @@ public class TripRequest {
         return Trip.builder()
                 .tripName(this.tripName)
                 .tripDesc(this.tripDesc)
-                .tripRecruitDate(this.tripRecruitDate)
+                .recruitDate(this.recruitDate)
                 .destination(this.destination)
                 .departureDate(this.departureDate)
                 .returnDate(this.returnDate)

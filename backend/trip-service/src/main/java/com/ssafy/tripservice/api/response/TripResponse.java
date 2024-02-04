@@ -15,7 +15,7 @@ public class TripResponse {
     private UUID tripId;
     private String tripName;
     private String tripDesc;
-    private LocalDateTime tripRecruitDate;
+    private LocalDateTime recruitDate;
     private String destination;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
