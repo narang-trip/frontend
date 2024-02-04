@@ -22,8 +22,8 @@ public class TripRequest {
     private LocalDateTime returnDate;
     private UUID tripChatId;
     private UUID tripPlanId;
-    private int tripAgeUpperBound;
-    private int tripAgeLowerBound;
+    private Integer tripAgeUpperBound;
+    private Integer tripAgeLowerBound;
     private List<Trip.Participant> participants;
 
     public Trip toEntity() {
