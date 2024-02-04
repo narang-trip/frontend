@@ -20,7 +20,7 @@ public class TripRequest {
     private String destination;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
-    private String tripChat;
+    private UUID tripChatId;
     private UUID tripPlanId;
     private int tripAgeUpperBound;
     private int tripAgeLowerBound;
@@ -34,7 +34,7 @@ public class TripRequest {
                 .destination(this.destination)
                 .departureDate(this.departureDate)
                 .returnDate(this.returnDate)
-                .tripChat(this.tripChat)
+                .tripChatId(this.tripChatId)
                 .tripPlanId(this.tripPlanId)
                 .tripAgeUpperBound(this.tripAgeUpperBound)
                 .tripAgeLowerBound(this.tripAgeLowerBound)
