@@ -3,17 +3,15 @@ spring:
     name: trip-service
   # MongoDB 추가
 
-
   data:
     mongodb:
-      host: mongo-container
-      username: root
-      password: ssafy
-      uri: mongodb://mongo-container
-      port: 27017
-      database: narang-trip
-      uuid-representation: standard
-
+      username: ${MONGO_INITDB_ROOT_USERNAME}
+      password: ${MONGO_INITDB_ROOT_PASSWORD}
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 5MB
 
 server:
   port: 8081
@@ -23,3 +21,11 @@ springdoc:
     path: /api/trip/v3/api-docs
   swagger-ui:
     path: /api/trip/swagger-ui.html
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_S3_ACCESSKEY}
+      secret-key: ${AWS_S3_SECRETKEY}
+    s3:
+      bucket: ${AWS_S3_BUCKETNAME}
