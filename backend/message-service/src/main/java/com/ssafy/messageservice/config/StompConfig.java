@@ -21,15 +21,12 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/api/message/chat")
                 .setAllowedOriginPatterns("*").withSockJS();
-        System.out.println("stomp 연결!!!!!!");
-        //https://i10a701.p.ssafy.io"
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/pub");
         registry.enableSimpleBroker("/sub");
-        System.out.println("stomp 연결????????");
 //        registry.setPathMatcher(new AntPathMatcher("."));  // url을 chat/room/3 -> chat.room.3으로 참조하기 위한 설정
 //        registry.setApplicationDestinationPrefixes("/pub");
 //

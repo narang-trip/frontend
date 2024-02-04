@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -20,6 +21,7 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
     private final ChatroomUserRepository chatroomUserRepository;
+    private final UserRepository userRepository;
 
     // 채팅방 리스트
     @Override
@@ -53,19 +55,19 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
                 .fetchFirst();
 
         // 해당 채팅방에 있는 모든 userId를 가져온다.
-        List<String> userList = chatroomUserRepository.findUserIdsByChatroomId(chatroomId);
-        if(userList != null){
-            // todo: 여기서 User 서버에게 UserInfo 달라고 요청을 보낸다
-
+        List<String> userIds = chatroomUserRepository.findUserIdsByChatroomId(chatroomId);
+        List<User> userList = null;
+        if(userIds != null){
+            // user 테이블에 접근해서 채팅방에 있는 모든 user에 대한 정보 가져오기
+            userList = userRepository.findAllByIdIn(userIds);
         }
         if (latestMessage != null) {
             // 최근 메시지가 있을 경우
-            return mapToChatroomResponse(latestMessage);
+            return mapToChatroomResponse(latestMessage, userList);
         }
-
         return null; // 최근 메시지가 없는 경우 null 반환
     }
-    private ChatroomListResponse.ChatroomResponse mapToChatroomResponse(Chat chat) {
+    private ChatroomListResponse.ChatroomResponse mapToChatroomResponse(Chat chat, List<User> users) {
         if (chat == null) {
             // 채팅이 없는 경우 처리
             return new ChatroomListResponse.ChatroomResponse(
@@ -76,16 +78,18 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
         }
 
         // 임의로 넣어둠
-        ChatroomListResponse.ChatroomResponse.UserResponse a1 = new ChatroomListResponse.ChatroomResponse.UserResponse("조예진", "진코");
-        ChatroomListResponse.ChatroomResponse.UserResponse a2 = new ChatroomListResponse.ChatroomResponse.UserResponse("구본승", "rootwin");
-        List<ChatroomListResponse.ChatroomResponse.UserResponse> users = List.of(a1, a2);
+//        ChatroomListResponse.ChatroomResponse.UserResponse a1 = new ChatroomListResponse.ChatroomResponse.UserResponse("조예진", "진코");
+//        ChatroomListResponse.ChatroomResponse.UserResponse a2 = new ChatroomListResponse.ChatroomResponse.UserResponse("구본승", "rootwin");
+//        List<ChatroomListResponse.ChatroomResponse.UserResponse> users = List.of(a1, a2);
 
+        // user 테이블에 접근해서 sender에 대한 정보 가져오기
+        Optional<User> senderInfo = userRepository.findById(chat.getUserId());
         return new ChatroomListResponse.ChatroomResponse(
                 chat.getChatroom().getChatroomId(),
                 chat.getChatroom().getChatroomName(),
                 new ChatroomListResponse.ChatroomResponse.ChatResponse(
                         chat.getUserId(),
-                        "받아",
+                        senderInfo.get().getNickname(),
                         chat.getContent(),
                         chat.getSendTime()
                 ),users
