@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Trip extends BaseEntity{
     private String tripName;
     private String tripDesc;
-    private LocalDateTime tripRecruitDate;
+    private LocalDateTime recruitDate;
     private String destination;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
@@ -34,7 +34,7 @@ public class Trip extends BaseEntity{
                 .tripId(this.get_id())
                 .tripName(this.tripName)
                 .tripDesc(this.tripDesc)
-                .tripRecruitDate(this.tripRecruitDate)
+                .recruitDate(this.recruitDate)
                 .destination(this.destination)
                 .departureDate(this.departureDate)
                 .returnDate(this.returnDate)
