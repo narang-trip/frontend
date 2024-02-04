@@ -87,7 +87,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="font-spoqa">
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </div>
   );
 }
