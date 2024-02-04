@@ -25,7 +25,7 @@ public class MongoDBConfig {
                 .uuidRepresentation(UuidRepresentation.STANDARD)
                 .applyConnectionString(new ConnectionString(
                         "mongodb://" + username + ":" + password
-                        +"mongo-container@:27017/mongo-narang?authSource=admin"))
+                        +"@mongo-container:27017/mongo-narang?authSource=admin"))
                 .build();
     }
 
