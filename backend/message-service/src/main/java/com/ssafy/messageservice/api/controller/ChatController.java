@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api/message/chat")
 public class ChatController {
     private final ChatService chatService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatController.class);
 
     // 채팅방 리스트
     @GetMapping("/list/{userId}")
