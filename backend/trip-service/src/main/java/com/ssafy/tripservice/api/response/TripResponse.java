@@ -19,7 +19,7 @@ public class TripResponse {
     private String destination;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
-    private String tripChat;
+    private UUID tripChatId;
     private UUID tripPlanId;
     private int tripAgeUpperBound;
     private int tripAgeLowerBound;
