@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 //@EnableDiscoveryClient
-@OpenAPIDefinition(servers = {@Server(url = "https://i10a701.p.ssafy.io", description = "default url")})
 @SpringBootApplication
 public class TripServiceApplication {
 
