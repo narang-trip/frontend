@@ -1,22 +1,19 @@
-package com.ssafy.tripservice.db.entity;
+package com.ssafy.tripservice.api.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ssafy.tripservice.api.request.TripRequest;
-import com.ssafy.tripservice.api.response.TripResponse;
+import com.ssafy.tripservice.db.entity.Trip;
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Getter
+@Setter
 @Builder
-@EqualsAndHashCode(callSuper = true)
-@Document(collection = "narang-trip")
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Trip extends BaseEntity{
+@ToString
+public class TripRequest {
+
+    private UUID tripId;
     private String tripName;
     private String tripDesc;
     private String tripRecruitDate;
@@ -27,11 +24,10 @@ public class Trip extends BaseEntity{
     private UUID tripPlanId;
     private int tripAgeUpperBound;
     private int tripAgeLowerBound;
-    private List<Participant> participants;
+    private List<Trip.Participant> participants;
 
-    public TripResponse toTripResponse() {
-        return TripResponse.builder()
-                .tripId(this.get_id())
+    public Trip toEntity() {
+        return Trip.builder()
                 .tripName(this.tripName)
                 .tripDesc(this.tripDesc)
                 .tripRecruitDate(this.tripRecruitDate)
@@ -44,14 +40,5 @@ public class Trip extends BaseEntity{
                 .tripAgeLowerBound(this.tripAgeLowerBound)
                 .participants(this.participants)
                 .build();
-    }
-    // plan_id : json, java.
-    // trip_Age : json
-
-    @Data
-    public static class Participant {
-        private String role;
-        private UUID participantId;
-        private LocalDateTime enrollmentDate;
     }
 }

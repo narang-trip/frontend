@@ -1,21 +1,18 @@
-package com.ssafy.tripservice.api.dto;
+package com.ssafy.tripservice.api.response;
 
 import com.ssafy.tripservice.db.entity.Trip;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-
 @Getter
 @Setter
-@RequiredArgsConstructor
-public class TripDto {
+@Builder
+public class TripResponse {
 
+    private UUID tripId;
     private String tripName;
     private String tripDesc;
     private String tripRecruitDate;
@@ -24,6 +21,7 @@ public class TripDto {
     private LocalDateTime returnDate;
     private String tripChat;
     private UUID tripPlanId;
-    private List<Integer> tripAges;
+    private int tripAgeUpperBound;
+    private int tripAgeLowerBound;
     private List<Trip.Participant> participants;
 }

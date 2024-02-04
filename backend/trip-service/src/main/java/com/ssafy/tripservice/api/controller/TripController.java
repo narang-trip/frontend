@@ -1,15 +1,19 @@
 package com.ssafy.tripservice.api.controller;
 
-import com.ssafy.tripservice.api.dto.TripDto;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.ssafy.tripservice.api.request.TripRequest;
+import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.api.service.TripService;
-import com.ssafy.tripservice.db.entity.Trip;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -21,48 +25,52 @@ import java.util.UUID;
 @AllArgsConstructor
 public class TripController {
 
+    private final AmazonS3Client amazonS3Client;
     private final TripService tripService;
 
     @GetMapping("/available")
-    public ResponseEntity<List<TripDto>> getTripsAvailable() {
+    public ResponseEntity<List<TripResponse>> getTripsAvailable() {
 
-        List<TripDto> availableTrips = tripService.getAvailableTrips(LocalDateTime.now());
+        List<TripResponse> availableTrips = tripService.getAvailableTrips(LocalDateTime.now());
 
-        return new ResponseEntity<List<TripDto>>(availableTrips, HttpStatus.OK);
+        return new ResponseEntity<List<TripResponse>>(availableTrips, HttpStatus.OK);
     }
 
     @GetMapping("/{tripId}")
-    public ResponseEntity<TripDto> getTripByTripId(@PathVariable UUID tripId) {
+    public ResponseEntity<TripResponse> getTripByTripId(@PathVariable UUID tripId) {
 
-        Optional<TripDto> trip =tripService.getTripById(tripId);
+        Optional<TripResponse> trip =tripService.getTripById(tripId);
 
         // map : return Empty Optional it t is null
         return trip.map(t -> new ResponseEntity<>(t, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> postTrip(TripDto tripDto) {
+    public ResponseEntity<?> postTrip(@RequestBody TripRequest tripRequest) {
 
-        Optional<TripDto> createRes = tripService.createTrip(tripDto);
+        Optional<TripResponse> createRes = tripService.createTrip(tripRequest);
 
         return createRes.map(r -> new ResponseEntity<>(r, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+                .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
 
-//    @GetMapping("/publishAsync")
-//    public void publish(String topic, String message) {
-//        // Topic + Message
-//        CompletableFuture<?> futureResult = tripEventProducer.request(topic, message);
-//
-//        futureResult.whenComplete((result, exception) -> {
-//            if (exception != null) {
-//                exception.printStackTrace();
-//            }
-//            else {
-//                System.out.println("DONE WELL");
-//                System.out.println(futureResult);
-//            }
-//        });
-//    }
+    @PostMapping(value = "/imgUploadTest", consumes = {"multipart/form-data"})
+    public ResponseEntity<String> uploadFile(@RequestParam("img") MultipartFile img) {
+
+        String bucket="youngkimi-bucket-01";
+
+        try {
+            String fileName = img.getOriginalFilename();
+            String fileUrl = "https://" + bucket + "/test" + fileName;
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(img.getContentType());
+            metadata.setContentLength(img.getSize());
+            amazonS3Client.putObject(bucket, fileName, img.getInputStream(), metadata);
+            return ResponseEntity.ok(fileUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
