@@ -3,8 +3,10 @@ package com.ssafy.messageservice.api.service;
 import com.ssafy.messageservice.api.request.AlertAttendRequest;
 import com.ssafy.messageservice.api.response.AlertListResponse;
 import com.ssafy.messageservice.db.entity.Alert;
+import com.ssafy.messageservice.db.entity.User;
 import com.ssafy.messageservice.db.repository.AlertRepository;
 import com.ssafy.messageservice.db.repository.EmitterRepository;
+import com.ssafy.messageservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,7 @@ public class AlertService {
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
     private final EmitterRepository emitterRepository;
     private final AlertRepository alertRepository;
+    private final UserRepository userRepository;
 
     /**
      * 클라이언트가 구독을 위해 호출하는 메서드 -> 로그인할 때 모든 user들이 구독하도록 한다
@@ -34,14 +38,12 @@ public class AlertService {
     public SseEmitter subscribe(String userId, String lastEventId) {
         String emitterId = userId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
-        System.out.println("구독합니다! "+userId);
 
         // Emitter가 완료될 때(모든 데이터가 성공적으로 전송된 상태) Emitter를 삭제
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
         // Emitter가 타임아웃 되었을 때(지정된 시간동안 어떠한 이벤트도 전송되지 않았을 때) Emitter를 삭제
         emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
 
-        System.out.println("구독합니다????? "+userId);
         String eventId = userId + "_" + System.currentTimeMillis();
         // 503 에러를 방지하기 위한 더미 이벤트 전송
         sendAlert(emitter, eventId, emitterId, "EventStream Created. [userId=" + userId + "]");
@@ -62,7 +64,7 @@ public class AlertService {
                     .name("sse")
                     .data(data)
             );
-            System.out.println("구독합니다?ㅋㅋㅋㅋㅋㅋ" );
+            System.out.println("sse ! 구독합니다 !");
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
         }
@@ -145,8 +147,8 @@ public class AlertService {
     }
 
     private String getSenderName(String senderId) {
-        // todo : senderId 값을 바탕으로 senderName 받아오기
-        return "Sample Sender Name 예진";
+        Optional<User> sender = userRepository.findById(senderId);
+        return sender.get().getNickname();
     }
 
 
