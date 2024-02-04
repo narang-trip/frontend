@@ -16,7 +16,7 @@ public class TripRequest {
     private UUID tripId;
     private String tripName;
     private String tripDesc;
-    private String tripRecruitDate;
+    private LocalDateTime tripRecruitDate;
     private String destination;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
