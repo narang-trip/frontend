@@ -41,7 +41,6 @@ springdoc:
 grpc:
   client:
 #      address: 'static://user-service:9090'
-#      negotiationtype: plaintext
     user-service:
       address: 'static://user-service:9090'
 
