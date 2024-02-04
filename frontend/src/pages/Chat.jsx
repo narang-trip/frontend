@@ -66,7 +66,7 @@ const ChatPage = () => {
       webSocket.send('클라이언트에서 서버로 답장을 보냅니다');
     };
     const stompClient = new Client({
-      webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 웹소켓 연결
+      webSocketFactory: () => webSocket, // SockJS 인스턴스를 사용하여 웹소켓 연결
       onConnect: () => {
         console.log('Connected');
 
