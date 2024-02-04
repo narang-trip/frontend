@@ -1,4 +1,5 @@
-import { useNavigate, useEffect } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../ui/Button";
 
 const userId = "조예진"
