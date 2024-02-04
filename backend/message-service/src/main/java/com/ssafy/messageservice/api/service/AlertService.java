@@ -8,6 +8,8 @@ import com.ssafy.messageservice.db.repository.AlertRepository;
 import com.ssafy.messageservice.db.repository.EmitterRepository;
 import com.ssafy.messageservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ public class AlertService {
     private final EmitterRepository emitterRepository;
     private final AlertRepository alertRepository;
     private final UserRepository userRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AlertService.class);
 
     /**
      * 클라이언트가 구독을 위해 호출하는 메서드 -> 로그인할 때 모든 user들이 구독하도록 한다
@@ -66,6 +69,7 @@ public class AlertService {
             );
             System.out.println("sse ! 구독합니다 !");
         } catch (IOException exception) {
+            System.out.println("연결 오류");
             emitterRepository.deleteById(emitterId);
         }
     }
@@ -100,10 +104,22 @@ public class AlertService {
                 String receiver = alertAttendRequest.getReceiverId();
                 String eventId = receiver + "_" + System.currentTimeMillis();
                 Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
+                // 알림을 보내는 response 값 데이터 넣어주기
+                AlertListResponse.AlertResponse alertResponse = new AlertListResponse.AlertResponse(alert.getAlertId(),
+                        alertAttendRequest.getTripId(),
+                        alertAttendRequest.getTripName(),
+                        alertAttendRequest.getSenderId(),
+                        getSenderName(alertAttendRequest.getSenderId()),
+                        alertAttendRequest.getPosition(),
+                        alertAttendRequest.getAspiration(),
+                        alertAttendRequest.getAlertType(),
+                        alertAttendRequest.isRead());
                 emitters.forEach(
                         (key, emitter) -> {
-                            emitterRepository.saveEventCache(key, alert);
-                            sendAlert(emitter, eventId, key, "success");
+                            // 데이터 캐시 저장
+                            emitterRepository.saveEventCache(key, alertResponse);
+                            // 데이터 전송
+                            sendAlert(emitter, eventId, key, alertResponse);
                         }
                 );
                 return ResponseEntity.ok().body("Alert sent successfully"); // 성공 응답
@@ -117,7 +133,6 @@ public class AlertService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send alert");
         }
     }
-
 
     // 알림 리스트 보내기
     public List<AlertListResponse.AlertResponse> getAlertsByReceiverId(String receiverId) {
@@ -175,13 +190,5 @@ public class AlertService {
 //        );
 //    }
 
-//    private Alert createNotification(Member receiver, Notify.NotificationType notificationType, String content, String url) {
-//        return Alert.builder()
-//                .receiver(receiver)
-//                .notificationType(notificationType)
-//                .content(content)
-//                .url(url)
-//                .isRead(false)
-//                .build();
-//    }
+//
 }
