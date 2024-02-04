@@ -129,6 +129,7 @@ public class AlertService {
             }
 
         }catch (Exception e){
+            // DB에 저장된 senderId를 사용해야 함
             System.out.println("알림 보내기를 실패했습니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send alert");
         }
