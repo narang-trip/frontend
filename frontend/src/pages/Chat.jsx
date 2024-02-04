@@ -9,7 +9,7 @@ const sockjsEndpoint = 'https://i10a701.p.ssafy.io/api/message/chat';
 const stompEndpoint = 'wss://i10a701.p.ssafy.io/api/message/chat';
 
 const ChatPage = () => {
-  
+
 
   // 구독 관련 코드 잠시 useEffect관련정보처리 위해 꺼놈
   // const eventSource = new EventSource(`https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`);
@@ -57,6 +57,14 @@ const ChatPage = () => {
   useEffect(() => {
     // SockJS와 Stomp 설정
     const socket = new SockJS(sockjsEndpoint);
+    const webSocket = new WebSocket(stompEndpoint);
+    webSocket.onopen = function () {
+      console.log('서버와 웹소켓 연결 성공!');
+    };
+    webSocket.onmessage = function (event) {
+      console.log(event.data);
+      webSocket.send('클라이언트에서 서버로 답장을 보냅니다');
+    };
     const stompClient = new Client({
       webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 웹소켓 연결
       onConnect: () => {
