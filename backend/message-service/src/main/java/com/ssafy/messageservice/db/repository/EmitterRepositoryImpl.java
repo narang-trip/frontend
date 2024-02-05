@@ -14,6 +14,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     private final Map<String, Object> eventCache = new ConcurrentHashMap<>();
 
     // emitter 저장
+    // 새로운 사용자가 접속할 때마다 save 메소드를 호출하여 해당 사용자에 대한 SseEmitter를 저장
     @Override
     public SseEmitter save(String id, SseEmitter sseEmitter) {
         emitters.put(id, sseEmitter);
@@ -21,6 +22,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     }
 
     // 이벤트를 저장
+    // 서버에서 발생한 특정 이벤트의 데이터를 저장하고, 나중에 해당 이벤트 데이터를 사용하여 클라이언트에게 알림을 보낼 때 활용
     @Override
     public void saveEventCache(String eventCacheId, Object event) {
         eventCache.put(eventCacheId, event);

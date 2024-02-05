@@ -30,7 +30,7 @@ import java.util.UUID;
 @Slf4j
 public class StompRabbitController {
     private final SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StompRabbitController.class);
     private final ChatRepository chatRepository;
     private final ChatroomRepository chatroomRepository;
     private final ChatroomUserRepository chatroomUserRepository;
@@ -48,7 +48,7 @@ public class StompRabbitController {
         template.convertAndSend("/sub/chat/room/" + chatroomId, chatRequest);
     }
 
-    @MessageMapping(value = "/chat/message")
+    @MessageMapping(value = "/chat/send")
     public void message(ChatSendRequest chatSendRequest){
         ChatRequest chatRequest = new ChatRequest(
                 chatSendRequest.getChatroomId(),

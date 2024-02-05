@@ -9,17 +9,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
-
-    @GetMapping
-    public String index(){
-        System.out.println("indexxxxxxxxxxxxxxx");
-        return "index";
-    }
-
     @GetMapping("/loginForm")
     public String home() {
         System.out.println("loginForm111111111111111111");
-        return "loginForm";
+        return "index";
     }
     /**
      *
@@ -34,13 +27,4 @@ public class UserController {
         return "signup";
     }
 
-//    @GetMapping("/oauth2/authorization/naver")
-//    public String naverLogin() {
-//        return "redirect:/oauth2/authorization/naver";
-//    }
-//
-//    @GetMapping("/oauth2/authorization/kakao")
-//    public String kakaoLogin() {
-//        return "redirect:/oauth2/authorization/kakao";
-//    }
 }
