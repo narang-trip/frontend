@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 
 const userId = "구본승";
@@ -28,6 +28,9 @@ const SubscribeTestPage = () => {
       console.log("SSE CLOSED");
     };
   }, []);
+  return <Fragment>
+    <h1>서브스크라이브 테스트 중 제대로 되면 로그에 무언가 떠야합니다.</h1>
+  </Fragment>
 }
 
 export default SubscribeTestPage
