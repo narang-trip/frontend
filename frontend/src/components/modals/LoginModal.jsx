@@ -1,26 +1,9 @@
 import { useRef } from "react";
-import axios from "axios";
 
 const LoginModal = (props) => {
   const modalBG = useRef(null);
   const kakaoLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
   const naverLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
-
-  const Login = () => {
-    axios({
-      url: "70.12.247.172",
-      method: "post",
-      data: {
-        name: "veneas",
-      },
-    })
-      .then(function a(response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
 
   return (
     <div
@@ -39,7 +22,7 @@ const LoginModal = (props) => {
             x
           </button>
           <h3 className="">로 그 인</h3>
-          <div className="flex flex-col" onClick={Login}>
+          <div className="flex flex-col">
             <a href={kakaoLoginURL}>
               <img
                 className="object-cover h-16 w-36 rounded-xl"

@@ -19,9 +19,14 @@ const scheduleSlice = createSlice({
     // 임시로 날짜 추가하기
     tmpAddDay: (state) => {
       state.push([]);
+      for (var i = 0; i < 170; i++) {
+        state[state.length - 1].push([]);
+      }
     },
     // 저장된 계획 불러오기
-    setSchedule: (state, action) => {},
+    setSchedule: (state, action) => {
+      state = action.payload;
+    },
   },
 });
 
