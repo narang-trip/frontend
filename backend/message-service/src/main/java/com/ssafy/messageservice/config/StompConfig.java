@@ -19,7 +19,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Configuration
 @EnableWebSocketMessageBroker
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class StompConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
