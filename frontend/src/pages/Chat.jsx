@@ -1,11 +1,22 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import Button from "../ui/Button";
 import { Client, Stomp } from "@stomp/stompjs";
 
 const userId = "조예진";
-const sockJSEndPoint = "https://i10a701.p.ssafy.io/api/message/chat"
+const dummyData = {
+  tripId: 133,
+  tripName: "여행가요 같이",
+  senderId: "구본승",
+  receiverId: userId,
+  position: ["몰라"],
+  aspiration: "여행 뿌셔",
+  alertType: "REQUEST",
+  isRead: false,
+};
+const sockJSEndPoint = "https://i10a701.p.ssafy.io/api/message/chat";
 const stompEndpoint = "wss://i10a701.p.ssafy.io/api/message/chat";
 const ChatPage = () => {
   useEffect(() => {
@@ -61,51 +72,21 @@ const ChatPage = () => {
   //   };
   // }, []);
 
-
-
-  //스톰프 용 잠시 꺼놈
-  //   const stompClient = new Client({
-  //     webSocketFactory: () => webSocket, // SockJS 인스턴스를 사용하여 웹소켓 연결
-  //     onConnect: () => {
-  //       console.log('Connected');
-
-  //       // 서버로부터 메시지를 받을 구독 설정
-  //       stompClient.subscribe('/sub', message => {
-  //         console.log(`Received: ${message.body}`);
-  //       });
-
-  //       // 서버로 메시지 전송
-  //       stompClient.publish({
-  //         destination: '/pub',
-  //         body: 'First Message',
-  //       });
-  //     },
-  //     // 오류 처리
-  //     onStompError: (frame) => {
-  //       // STOMP 오류 처리
-  //       console.error('Broker reported error: ' + frame.headers['message']);
-  //       console.error('Additional details: ' + frame.body);
-  //     },
-  //     onWebSocketError: (evt) => {
-  //       // 웹소켓 오류 처리
-  //       console.error('WebSocket error', evt);
-  //     },
-  //   });
-
-  //   // 웹소켓 연결 활성화
-  //   stompClient.activate();
-
-  //   // 컴포넌트 언마운트 시 연결 종료
-  //   return () => {
-  //     stompClient.deactivate();
-  //   };
-  // }, []);
+  const clickHandler = async () => {
+    try {
+      const response = await axios.post('https://i10a701.p.ssafy.io/api/message/alert/attend', dummyData);
+      console.log("요청 보냈어요", response.data)
+    } catch (error) {
+      console.error('Error', error.response)
+    }   
+  };
 
   return (
     <div className="">
       <div className="">
         <label>
           <b>채팅방</b>
+          <button onClick={clickHandler}>이거 누르면 알림 가요</button>
         </label>
       </div>
     </div>
