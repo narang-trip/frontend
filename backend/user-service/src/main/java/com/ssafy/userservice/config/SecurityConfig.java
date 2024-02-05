@@ -72,8 +72,8 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
                         .defaultSuccessUrl("/api/user/loginForm") //OAuth 로그인이 성공하면 이동할 uri 설정
-//                        .successHandler(oAuth2LoginSuccessHandler)
-//                        .failureHandler(oAuth2LoginFailureHandler)
+                        .successHandler(oAuth2LoginSuccessHandler)
+                        .failureHandler(oAuth2LoginFailureHandler)
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                 .userService(userService)
                         )
