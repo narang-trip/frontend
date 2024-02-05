@@ -1,4 +1,4 @@
-import TripDetail from "../Trip/TripDetail";
+import TripDetail from "../Trip/Read/TripDetail";
 
 const SmallPlan = (props) => {
   const dates = props.dates;
@@ -10,7 +10,7 @@ const SmallPlan = (props) => {
   console.log(plans);
   // 날짜 포함하면
   return (
-    <div className="w-3/5 rounded-lg shadow-xl border-black p-2 overflow-auto scroll-auto">
+    <div className="w-3/5 p-2 overflow-auto border-black rounded-lg shadow-xl scroll-auto">
       {plans.map((paln, index) => (
         <div key={index}>
           <TripDetail />
