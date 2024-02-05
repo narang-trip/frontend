@@ -16,6 +16,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -87,7 +90,10 @@ public class KakaoPayService {
 
         if (approveResponse != null) {
             ChargeRecord chargeRecord = null;
-            UserMileage userMileage = userMileageRepository.findById(userId).get();
+
+            UserMileage userMileage = userMileageRepository.findById(userId)
+                    .orElseThrow(() -> new NoSuchElementException("user not found"));
+
             /*
                 todo
                     프론트에서 넘겨준 마일리지와 db에 저장된 마일리지 비교 필요
