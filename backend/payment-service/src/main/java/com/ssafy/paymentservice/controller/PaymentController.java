@@ -1,11 +1,13 @@
 package com.ssafy.paymentservice.controller;
 
+import com.ssafy.paymentservice.db.entity.UsageRecord;
 import com.ssafy.paymentservice.entity.KakaoApproveResponse;
 import com.ssafy.paymentservice.entity.KakaoCancelResponse;
 import com.ssafy.paymentservice.entity.KakaoReadyResponse;
 import com.ssafy.paymentservice.exception.BusinessLogicException;
 import com.ssafy.paymentservice.exception.ExceptionCode;
 import com.ssafy.paymentservice.service.KakaoPayService;
+import com.ssafy.paymentservice.service.MileageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PaymentController {
     private final KakaoPayService kakaoPayService;
+    private final MileageService mileageService;
     @GetMapping("/payment")
     public String getWelcome() {
         System.out.println("payment");
@@ -62,5 +65,11 @@ public class PaymentController {
     public void fail() {
         System.out.println("fail");
         throw new BusinessLogicException(ExceptionCode.PAY_FAILED);
+    }
+
+    @PostMapping("/use")
+    public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") int price) {
+        UsageRecord usageRecord = mileageService.useMileage(userId, price);
+        return new ResponseEntity<>(usageRecord, HttpStatus.OK);
     }
 }

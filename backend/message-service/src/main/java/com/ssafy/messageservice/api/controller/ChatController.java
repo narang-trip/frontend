@@ -34,7 +34,7 @@ public class ChatController {
     }
 
     // 채팅방 생성
-    @PostMapping()
+    @PostMapping("/create")
     public ResponseEntity<String> postChatroom(@RequestBody ChatroomRequest chatroomRequest) {
         return ResponseEntity.ok(chatService.postChatroom(chatroomRequest));
     }
