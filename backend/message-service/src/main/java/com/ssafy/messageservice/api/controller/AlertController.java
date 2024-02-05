@@ -47,7 +47,7 @@ public class AlertController {
 
     // userId의 지금까지의 알림 리스트 보내주기
     @GetMapping(value = "/list/{userId}")
-    public ResponseEntity<AlertListResponse> subscribe(@PathVariable String userId) {
+    public ResponseEntity<AlertListResponse> getAlertList(@PathVariable String userId) {
         List<AlertListResponse.AlertResponse> alertResponses = alertService.getAlertsByReceiverId(userId);
         if(alertResponses == null){
             AlertListResponse response = new AlertListResponse();

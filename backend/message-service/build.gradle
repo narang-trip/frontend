@@ -29,10 +29,13 @@ ext {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// Web Socket & Stomp
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'org.webjars:stomp-websocket:2.3.4'
 	implementation 'org.webjars:sockjs-client:1.5.1'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	// aws s3
+//	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	/*
 		Swagger (OpenAPI 3.0)
@@ -52,8 +55,8 @@ dependencies {
 	/*
 		gRPC
 	 */
-	implementation 'net.devh:grpc-client-spring-boot-starter:2.15.0.RELEASE'
-	implementation files('libs/GrpcInterface-1.0-SNAPSHOT.jar')
+//	implementation 'net.devh:grpc-client-spring-boot-starter:2.15.0.RELEASE'
+//	implementation files('libs/GrpcInterface-1.0-SNAPSHOT.jar')
 //	implementation 'io.grpc:grpc-netty-shaded:1.61.0'
 //	implementation 'io.grpc:grpc-protobuf:1.61.0'
 //	implementation 'io.grpc:grpc-stub:1.61.0'

@@ -1,7 +1,7 @@
 package com.ssafy.tripservice.api.service;
 
-import com.ssafy.tripservice.api.dto.TripDto;
-import com.ssafy.tripservice.db.entity.Trip;
+import com.ssafy.tripservice.api.request.TripRequest;
+import com.ssafy.tripservice.api.response.TripResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,11 +12,11 @@ public interface TripService {
     /*
         Trip 생성
      */
-    Optional<TripDto> createTrip(TripDto tripDto);
+    Optional<TripResponse> createTrip(TripRequest tripRequest);
     /*
         현재 기준 참가 가능한 Trip
      */
-    List<TripDto> getAvailableTrips(LocalDateTime currentTime);
+    List<TripResponse> getAvailableTrips(LocalDateTime currentTime);
 
-    Optional<TripDto> getTripById(UUID tripId);
+    Optional<TripResponse> getTripById(UUID tripId);
 }
