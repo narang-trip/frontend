@@ -19,13 +19,13 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Configuration
 @EnableWebSocketMessageBroker
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class StompConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/api/message/chat")
-                .setAllowedOriginPatterns("*");
+                .setAllowedOriginPatterns("*").withSockJS();
     }
 
     @Override
