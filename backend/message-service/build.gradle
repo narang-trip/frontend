@@ -36,7 +36,7 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	// aws s3
 //	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-//	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	/*
 		Swagger (OpenAPI 3.0)
 	 */
