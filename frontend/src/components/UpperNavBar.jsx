@@ -38,7 +38,7 @@ export default function UpperNavbar() {
   return (
     <header className="sticky top-0 z-10 flex items-center justify-between w-full p-4 bg-stone-100">
       <div className='ml-5'>
-        <img src="../public/narang_logo.png" className="w-11 h-11" />
+        <img src="/narang_logo.png" className="w-11 h-11" />
       </div>
       {code === "" && <button onClick={OpenLoginModal} className="mr-5 hover:font-semibold" >Login</button>}
       {code !== "" && (
