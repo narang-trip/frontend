@@ -21,45 +21,14 @@ const ChatPage = () => {
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const eventSource = new EventSource(`https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`);
 
-    eventSource.addEventListener('connect', (event) => {
+    eventSource.addEventListener('sse', (event) => {
       const { data: receivedConnectData } = event;
+      console.log(receivedConnectData);
       if (receivedConnectData === 'SSE 연결이 완료되었습니다.') { // "SSE connection has been completed."
         console.log('SSE CONNECTED');
       } else {
         console.log(event);
       }
-    });
-
-    eventSource.addEventListener('newNotice', (event) => {
-      const newNoticeInfo = JSON.parse(event.data);
-      setNewNotice(newNoticeInfo);
-      // Invalidate queries to update data
-      queryClient.invalidateQueries('noticeCnt');
-      queryClient.invalidateQueries('noticeList');
-      queryClient.invalidateQueries(['unreadReceiveList', 0]);
-    });
-
-    eventSource.addEventListener('statusChange', (event) => {
-      const newStatusInfo = JSON.parse(event.data);
-      setStatus(newStatusInfo);
-      // Invalidate queries to update data
-      queryClient.invalidateQueries('noticeCnt');
-      queryClient.invalidateQueries('noticeList');
-      queryClient.invalidateQueries(['unreadReceiveList']);
-      queryClient.invalidateQueries('apiCount');
-      queryClient.invalidateQueries('apiStatuslist 전체');
-      queryClient.invalidateQueries(['apiStatus']);
-    });
-
-    eventSource.addEventListener('newApply', (event) => {
-      const newApplyInfo = JSON.parse(event.data);
-      setNewApply(newApplyInfo);
-      // Invalidate queries to update data
-      queryClient.invalidateQueries('noticeCnt');
-      queryClient.invalidateQueries('noticeList');
-      queryClient.invalidateQueries(['unreadReceiveList']);
-      queryClient.invalidateQueries(['provideApplyList']);
-      queryClient.invalidateQueries(['useApplyList']);
     });
 
     return () => {
