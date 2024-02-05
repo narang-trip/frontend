@@ -27,41 +27,24 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns("*");
     }
 
-    // 그냥 stomp용
-//    @Override
-//    public void configureMessageBroker(MessageBrokerRegistry registry) {
-//        registry.setApplicationDestinationPrefixes("/pub");
-//        registry.enableSimpleBroker("/sub");
-//    }
-
-
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/pub");
         registry.enableSimpleBroker("/sub");
-//        registry.setPathMatcher(new AntPathMatcher("."));  // url을 chat/room/3 -> chat.room.3으로 참조하기 위한 설정
-        registry.setApplicationDestinationPrefixes("/pub");
-
-        //registry.enableSimpleBroker("/sub");
-        registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue")
-                .setRelayHost("rabbitmq")  // Docker 컨테이너명을 relay host로 사용
-                .setRelayPort(61613)
-                .setClientLogin("guest")  // RabbitMQ 및 STOMP 브로커에 사용되는 로그인 정보를 동일하게 설정
-                .setClientPasscode("guest");
     }
 
 //    @Override
-//    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-//        registration.setMessageSizeLimit(50 * 1024 * 1024); // 메세지 크기 제한 오류 방지(이 코드가 없으면 byte code를 보낼때 소켓 연결이 끊길 수 있음)
-//    }
-//    @EventListener
-//    public void connectEvent(SessionConnectEvent sessionConnectEvent){
-//        System.out.println(sessionConnectEvent);
-//        System.out.println("연결 성공 감지!_!");
-//    }
-//    @EventListener
-//    public void onDisconnectEvent(SessionDisconnectEvent sessionDisconnectEvent) {
-//        System.out.println(sessionDisconnectEvent.getSessionId());
-//        System.out.println("연결 끊어짐 감지!!!!!!!!!");
+//    public void configureMessageBroker(MessageBrokerRegistry registry) {
+//        registry.setApplicationDestinationPrefixes("/pub");
+//        registry.enableSimpleBroker("/sub");
+//        registry.setPathMatcher(new AntPathMatcher("."));  // url을 chat/room/3 -> chat.room.3으로 참조하기 위한 설정
+//        registry.setApplicationDestinationPrefixes("/pub");
+//
+//        //registry.enableSimpleBroker("/sub");
+//        registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue")
+//                .setRelayHost("rabbitmq")  // Docker 컨테이너명을 relay host로 사용
+//                .setRelayPort(61613)
+//                .setClientLogin("guest")  // RabbitMQ 및 STOMP 브로커에 사용되는 로그인 정보를 동일하게 설정
+//                .setClientPasscode("guest");
 //    }
 }
