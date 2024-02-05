@@ -54,9 +54,9 @@ public class AlertController {
     }
 
     // sse 알림 삭제
-    @DeleteMapping("/{alertId}")
-    public ResponseEntity<?> deleteAlert(@PathVariable String alertId) {
-        return alertService.deleteAlert(alertId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAlert(@PathVariable String id) {
+        return alertService.deleteAlert(id);
     }
 
     // 여행 참여 수락 시 stomp 통신을 통해 동행자 초대
