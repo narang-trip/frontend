@@ -1,11 +1,12 @@
 package com.ssafy.paymentservice.db.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 //@Setter
 public class UsageRecord {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     @Column
     private String user_id;
@@ -20,15 +22,13 @@ public class UsageRecord {
     private int price;
     @Column
     private int balance; // 사용 후 잔액
-    @Column
-    private String created_at; // 요청 시간
-//    @Column
-//    private String approved_at; // 승인 시간
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime regDate; // 요청 시간
     @Builder
-    public UsageRecord(String id, String user_id, int price, String created_at ){
-        this.id = id;
+    public UsageRecord(String user_id, int price, int balance ){
         this.user_id = user_id;
         this.price = price;
-        this. created_at = created_at;
+        this.balance = balance;
     }
 }

@@ -68,7 +68,7 @@ public class PaymentController {
     }
 
     @PostMapping("/use")
-    public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") String price) {
+    public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") int price) {
         UsageRecord usageRecord = mileageService.useMileage(userId, price);
         return new ResponseEntity<>(usageRecord, HttpStatus.OK);
     }
