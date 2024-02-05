@@ -52,16 +52,6 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-	/*
-		gRPC
-	 */
-//	implementation 'net.devh:grpc-client-spring-boot-starter:2.15.0.RELEASE'
-//	implementation files('libs/GrpcInterface-1.0-SNAPSHOT.jar')
-//	implementation 'io.grpc:grpc-netty-shaded:1.61.0'
-//	implementation 'io.grpc:grpc-protobuf:1.61.0'
-//	implementation 'io.grpc:grpc-stub:1.61.0'
-//	implementation 'javax.annotation:javax.annotation-api:1.3.2'
-
 	implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
 	implementation 'org.hibernate:hibernate-core:6.4.2.Final'
 //	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
@@ -83,26 +73,6 @@ dependencyManagement {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-//protobuf {
-//	protoc {
-//		artifact = 'com.google.protobuf:protoc:3.17.3'
-//	}
-//
-//	plugins {
-//		grpc {
-//			artifact = 'io.grpc:protoc-gen-grpc-java:1.61.0'
-//		}
-//	}
-//
-//	generateProtoTasks {
-//		all()*.plugins {
-//			grpc {}
-//		}
-//	}
-//
-//	generatedFilesBaseDir = "$projectDir/src/generated"
-//}
 
 def querydslDir = "$buildDir/generated/querydsl"
 

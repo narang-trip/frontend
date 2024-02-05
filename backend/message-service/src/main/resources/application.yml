@@ -38,13 +38,6 @@ springdoc:
   swagger-ui:
     path: /api/message/swagger-ui.html
 
-# grpc를 위해 추가
-#grpc:
-#  client:
-##      address: 'static://user-service:9090'
-#    user-service:
-#      address: 'static://user-service:9090'
-
 eureka:
   client:
     service-url:
