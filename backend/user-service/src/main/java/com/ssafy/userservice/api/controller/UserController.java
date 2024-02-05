@@ -19,7 +19,7 @@ public class UserController {
     @GetMapping("/loginForm")
     public String home() {
         System.out.println("loginForm111111111111111111");
-        return "loginForm";
+        return "index";
     }
     /**
      *
