@@ -16,6 +16,8 @@ import lombok.Setter;
 public class UserMileage {
     @Id
     private String id;
+//    @Column
+//    private int mileage;
     @Column
-    private int mileage;
+    private String encryptedMileage;
 }
