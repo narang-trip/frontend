@@ -17,7 +17,6 @@ import java.util.Optional;
 @Primary
 @RequiredArgsConstructor
 public class ChatRepositoryImpl implements ChatRepositoryCustom {
-
     private final JPAQueryFactory queryFactory;
     private final ChatroomUserRepository chatroomUserRepository;
     private final UserRepository userRepository;
