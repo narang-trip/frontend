@@ -23,7 +23,7 @@ const BuyMileageModal = (props) => {
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-0 flex items-center justify-center bg-gray-500 bg-opacity-70"
+      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-500 bg-opacity-70"
       onClick={props.onClose}
       ref={modalBG}
     >
@@ -47,7 +47,7 @@ const BuyMileageModal = (props) => {
                   id="1000"
                   name="1000"
                   type="radio"
-                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600"
                 />
                 <label
                   htmlFor="push-everything"
@@ -61,7 +61,7 @@ const BuyMileageModal = (props) => {
                   id="5000"
                   name="5000"
                   type="radio"
-                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600"
                 />
                 <label
                   htmlFor="push-email"
@@ -75,7 +75,7 @@ const BuyMileageModal = (props) => {
                   id="10000"
                   name="10000"
                   type="radio"
-                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600"
                 />
                 <label
                   htmlFor="push-nothing"
