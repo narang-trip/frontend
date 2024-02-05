@@ -92,7 +92,10 @@ public class KakaoPayService {
             ChargeRecord chargeRecord = null;
 
             UserMileage userMileage = userMileageRepository.findById(userId)
-                    .orElseThrow(() -> new NoSuchElementException("user not found"));
+                    .orElseGet(() -> {
+                        UserMileage newUserMileage = new UserMileage(userId, 0);
+                        return userMileageRepository.save(newUserMileage);
+                    });
 
             /*
                 todo
