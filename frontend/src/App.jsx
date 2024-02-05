@@ -10,8 +10,6 @@ import ApplicantList from "./pages/ApplicantList";
 import TripRegisterPage from "./pages/TripResgister";
 import TripDetailPage from "./pages/TripDetail";
 import ChatPage from "./pages/Chat";
-import PracticePage from "./pages/PracticeInfinite";
-import ChatRoomPage from "./pages/ChatRoom";
 import Login from "./pages/Login";
 import Mypage from "./pages/Mypage";
 import SubscribePage from "./pages/SubScribeTestPage";
@@ -63,14 +61,6 @@ const router = createBrowserRouter([
       {
         path: "chatRoomTest",
         element: <ChatPage />,
-      },
-      {
-        path: "chatRoomTest/chat/:chatRoomId",
-        element: <ChatRoomPage />,
-      },
-      {
-        path: "practice",
-        element: <PracticePage />,
       },
       {
         path: "login/oauth2/code/kakao",
