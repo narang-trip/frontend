@@ -37,8 +37,8 @@ const ChatPage = () => {
     const socket = new WebSocket(stompEndpoint);
     const stompClient = new Client({
       webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 웹소켓 연결
-      onConnect: () => {
-        console.log('Connected');
+      onConnect: (frame) => {
+        console.log('Connected', frame);
 
         // 서버로부터 메시지를 받을 구독 설정
         stompClient.subscribe('/sub', message => {
