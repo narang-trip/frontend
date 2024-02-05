@@ -3,6 +3,7 @@ import DayPlan from "./DayPlan";
 import { Droppable } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
 import { scheduleActions } from "../../store/scheduleSlice";
+import TimeLine from "./TimeLine";
 
 // import * as Y from "yjs";
 // import { WebrtcProvider } from "y-webrtc";
@@ -32,7 +33,9 @@ import { scheduleActions } from "../../store/scheduleSlice";
 
 const Plan = () => {
   const list = useSelector((state) => state.schedule);
+  const day = useSelector((state) => state.time);
   const dispatch = useDispatch();
+  console.log(day);
 
   // ydoc.on("afterTransaction", () => {
   //   setList(Array.from(ymap.get("list")));
@@ -49,7 +52,7 @@ const Plan = () => {
   };
 
   return (
-    <div className="w-3/4 flex overflow-auto scroll-auto gap-1 m-1">
+    <div className="relative w-full flex overflow-auto scroll-auto gap-1 m-1">
       {list.map((data, index) => (
         <div className="flex" key={index}>
           <Droppable droppableId={`list${index}`}>
@@ -66,6 +69,10 @@ const Plan = () => {
         </div>
       ))}
       <button onClick={add}>날짜추가</button>
+
+      <div className="absolute pointer-events-none top-0 left-0 h-full w-full">
+        <TimeLine Time={day} />
+      </div>
     </div>
   );
 };
