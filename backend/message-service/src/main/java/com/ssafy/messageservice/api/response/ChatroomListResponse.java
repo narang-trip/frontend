@@ -1,6 +1,7 @@
 package com.ssafy.messageservice.api.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ssafy.messageservice.db.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -22,7 +23,7 @@ public class ChatroomListResponse {
         private String chatroomName;
         private ChatResponse chat;
         // 이 코드 추가
-        private List<UserResponse> userList;
+        private List<User> userList;
         // 여기까지
 
         @Override
@@ -47,12 +48,12 @@ public class ChatroomListResponse {
             }
         }
 
-        @Getter
-        @AllArgsConstructor
-        public static class UserResponse {
-            private String userId;
-            private String nickname;
-        }
+//        @Getter
+//        @AllArgsConstructor
+//        public static class UserResponse {
+//            private String userId;
+//            private String nickname;
+//        }
     }
 
     @Getter

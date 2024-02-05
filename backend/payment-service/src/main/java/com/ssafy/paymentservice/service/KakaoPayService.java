@@ -1,10 +1,12 @@
 package com.ssafy.paymentservice.service;
 
-import com.ssafy.paymentservice.entity.ChargeRecord;
+import com.ssafy.paymentservice.db.entity.ChargeRecord;
+import com.ssafy.paymentservice.db.entity.UserMileage;
+import com.ssafy.paymentservice.db.repository.UserMileageRepository;
 import com.ssafy.paymentservice.entity.KakaoApproveResponse;
 import com.ssafy.paymentservice.entity.KakaoCancelResponse;
 import com.ssafy.paymentservice.entity.KakaoReadyResponse;
-import com.ssafy.paymentservice.repository.ChargeRecordRepository;
+import com.ssafy.paymentservice.db.repository.ChargeRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,10 +25,9 @@ public class KakaoPayService {
     static final String admin_Key = "723e374a012b3d38c33794bedbd3d451"; // 공개 조심! 본인 애플리케이션의 어드민 키를 넣어주세요
     private KakaoReadyResponse kakaoReady;
     private final ChargeRecordRepository chargeRecordRepository;
-//    private String partnerUserId;
+    private final UserMileageRepository userMileageRepository;
 
     public KakaoReadyResponse kakaoPayReady(String userId, String price) {
-//        partnerUserId = userId;
 
         // 카카오페이 요청 양식
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -72,7 +73,6 @@ public class KakaoPayService {
         parameters.add("partner_order_id", "가맹점 주문 번호");
         parameters.add("partner_user_id", userId);
         parameters.add("pg_token", pgToken);
-        System.out.println("===========" + kakaoReady.getTid() + "===========");
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
 
@@ -85,8 +85,17 @@ public class KakaoPayService {
                 KakaoApproveResponse.class);
         System.out.println(approveResponse);
 
-        ChargeRecord chargeRecord = null;
         if (approveResponse != null) {
+            ChargeRecord chargeRecord = null;
+            UserMileage userMileage = userMileageRepository.findById(userId).get();
+            /*
+                todo
+                    프론트에서 넘겨준 마일리지와 db에 저장된 마일리지 비교 필요
+             */
+            int new_mileage = userMileage.getMileage() + approveResponse.getAmount().getTotal();
+            userMileage.setMileage(new_mileage);
+            userMileageRepository.save(userMileage);
+
             chargeRecord = ChargeRecord.builder()
                     .tid(approveResponse.getTid())
                     .aid(approveResponse.getAid())
