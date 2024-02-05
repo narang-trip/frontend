@@ -19,19 +19,24 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Configuration
 @EnableWebSocketMessageBroker
-//@RequiredArgsConstructor
 public class StompConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/api/message/chat")
-                .setAllowedOriginPatterns("*").withSockJS();
+                .setAllowedOriginPatterns("*");
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/pub");
         registry.enableSimpleBroker("/sub");
+    }
+
+//    @Override
+//    public void configureMessageBroker(MessageBrokerRegistry registry) {
+//        registry.setApplicationDestinationPrefixes("/pub");
+//        registry.enableSimpleBroker("/sub");
 //        registry.setPathMatcher(new AntPathMatcher("."));  // url을 chat/room/3 -> chat.room.3으로 참조하기 위한 설정
 //        registry.setApplicationDestinationPrefixes("/pub");
 //
@@ -41,13 +46,6 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
 //                .setRelayPort(61613)
 //                .setClientLogin("guest")  // RabbitMQ 및 STOMP 브로커에 사용되는 로그인 정보를 동일하게 설정
 //                .setClientPasscode("guest");
-    }
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/api/message/chat")
-//                .allowedOrigins("https://i10a701.p.ssafy.io") // 프론트엔드 서버 주소
-//                .allowedMethods("GET", "POST", "PUT", "DELETE")
-//                .allowedHeaders("*")
-//                .allowCredentials(true);
 //    }
 
 //    @Override
