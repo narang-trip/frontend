@@ -7,7 +7,7 @@ const BuyMileageModal = (props) => {
   const pay = () => {
     axios
       .post(
-        "http://70.12.247.172:8082/api/payment/ready",
+        "/api/payment/ready",
         new URLSearchParams({
           user_id: "1234",
           price: "12345678",

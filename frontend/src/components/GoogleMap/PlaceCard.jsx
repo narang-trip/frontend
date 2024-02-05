@@ -1,9 +1,4 @@
 import { useSelector } from "react-redux";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 
 const PlaceCard = () => {
@@ -26,28 +21,15 @@ const PlaceCard = () => {
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
                 >
-                  <Card key={index} sx={{ maxWidth: 200 }}>
-                    <CardMedia
-                      sx={{ height: 200 }}
-                      image={place.photo}
-                      title={place.name}
-                    />
-                    <CardContent>
-                      <Avatar src={place.icon} />
-                      <Typography gutterBottom variant="h5" component="div">
-                        {place.name}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {place.businessStatus}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {place.formattedAddress}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {place.rating}
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                  <div className="flex rounded-lg overflow-hidden bg-white">
+                    <img className="w-20 h-20" src={place.photo} />
+                    <div className="flex-col">
+                      <h4>{place.name}</h4>
+                      <p>{place.businessStatus}</p>
+                      <p>{place.formattedAddress}</p>
+                      <p>{place.rating}</p>
+                    </div>
+                  </div>
                 </div>
               )}
             </Draggable>
