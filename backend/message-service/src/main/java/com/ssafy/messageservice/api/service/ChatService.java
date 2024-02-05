@@ -1,8 +1,11 @@
 package com.ssafy.messageservice.api.service;
 
+import com.ssafy.messageservice.api.request.ChatroomRequest;
 import com.ssafy.messageservice.api.response.ChatListResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.db.entity.Chat;
+import com.ssafy.messageservice.db.entity.Chatroom;
+import com.ssafy.messageservice.db.entity.ChatroomUser;
 import com.ssafy.messageservice.db.repository.ChatRepository;
 import com.ssafy.messageservice.db.repository.ChatRepositoryCustom;
 import com.ssafy.messageservice.db.repository.ChatroomRepository;
@@ -11,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 
 @RequiredArgsConstructor
@@ -48,5 +53,15 @@ public class ChatService {
                 chatPage.isFirst(),
                 chatPage.getNumberOfElements()
         );
+    }
+
+    public String postChatroom(ChatroomRequest chatroomRequest){
+        Chatroom room = new Chatroom(UUID.randomUUID().toString(), chatroomRequest.getChatroomName());
+        chatroomRepository.save(room);
+
+        ChatroomUser user = new ChatroomUser(UUID.randomUUID().toString(), room, chatroomRequest.getUserId());
+        chatroomUserRepository.save(user);
+
+        return "success";
     }
 }
