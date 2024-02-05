@@ -46,7 +46,7 @@ const ChatPage = () => {
         // 서버로 메시지 전송
         stompClient.publish({
           destination: '/pub/chat/send',
-          body: { chatroomId : "room1", senderId : "조예진", content : "이제 해방이다"},
+          body: JSON.stringify({ chatroomId : "room1", senderId : "조예진", content : "이제 해방이다"}),
         });
       },
     });
