@@ -45,7 +45,7 @@ public class StompRabbitController {
                 userId,
                 LocalDateTime.now(),
                 "채팅방에 참여하였습니다.");
-        template.convertAndSend("/api/message/sub/chat/room/" + chatroomId, chatRequest);
+        template.convertAndSend("/sub/chat/room/" + chatroomId, chatRequest);
     }
 
     @MessageMapping(value = "/chat/send")
@@ -55,7 +55,7 @@ public class StompRabbitController {
                 chatSendRequest.getSenderId(),
                 LocalDateTime.now(),
                 chatSendRequest.getContent());
-        template.convertAndSend("/api/message/sub/chat/room/" + chatSendRequest.getChatroomId(), chatRequest);
+        template.convertAndSend("/sub/chat/room/" + chatSendRequest.getChatroomId(), chatRequest);
 
         // Chat 테이블에 데이터 저장하기
         Chatroom chatroom = chatroomRepository.findById(chatSendRequest.getChatroomId()).orElse(null);
