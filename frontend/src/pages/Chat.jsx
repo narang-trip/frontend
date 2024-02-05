@@ -6,7 +6,7 @@ import Button from "../ui/Button";
 import { Client, Stomp } from "@stomp/stompjs";
 
 const userId = "조예진";
-const dummyData = {
+let dummyData = {
   tripId: "143",
   tripName: "여행가요 같이",
   senderId: "구본승",
@@ -77,6 +77,7 @@ const ChatPage = () => {
   // }, []);
 
   const clickHandler = async () => {
+    dummyData = {...dummyData, tripId : tripId}
     try {
       const response = await axios.post(
         "https://i10a701.p.ssafy.io/api/message/alert/attend",
