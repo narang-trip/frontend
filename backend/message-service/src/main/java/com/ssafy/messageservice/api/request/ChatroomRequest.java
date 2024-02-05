@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ChatroomRequest {
-    private String chatroomId;
     private String chatroomName;
     private String userId;
 }

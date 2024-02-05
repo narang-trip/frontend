@@ -38,24 +38,24 @@ public class StompRabbitController {
     //Client가 SEND할 수 있는 경로
     //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
     //"/pub/chat/enter"
-    @MessageMapping(value = "/api/message/chat/enter")
+    @MessageMapping(value = "/chat/enter")
     public void enter(String userId, String chatroomId){
         ChatRequest chatRequest = new ChatRequest(
                 chatroomId,
                 userId,
                 LocalDateTime.now(),
                 "채팅방에 참여하였습니다.");
-        template.convertAndSend("/sub/chat/room/" + chatroomId, chatRequest);
+        template.convertAndSend("/api/message/sub/chat/room/" + chatroomId, chatRequest);
     }
 
-    @MessageMapping(value = "/api/message/chat/send")
+    @MessageMapping(value = "/chat/send")
     public void message(ChatSendRequest chatSendRequest){
         ChatRequest chatRequest = new ChatRequest(
                 chatSendRequest.getChatroomId(),
                 chatSendRequest.getSenderId(),
                 LocalDateTime.now(),
                 chatSendRequest.getContent());
-        template.convertAndSend("/sub/chat/room/" + chatSendRequest.getChatroomId(), chatRequest);
+        template.convertAndSend("/api/message/sub/chat/room/" + chatSendRequest.getChatroomId(), chatRequest);
 
         // Chat 테이블에 데이터 저장하기
         Chatroom chatroom = chatroomRepository.findById(chatSendRequest.getChatroomId()).orElse(null);
