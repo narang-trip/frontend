@@ -151,10 +151,12 @@ const Map = () => {
         rating: "",
         weekdayText: [],
         url: "",
+        loca: [],
       };
 
       placesService.getDetails(request, (result, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          console.log(result.geometry.location);
           placeResult.name = result.name;
           placeResult.photo =
             result.photos && result.photos.length > 0
@@ -166,6 +168,10 @@ const Map = () => {
           placeResult.rating = result.rating;
           placeResult.icon = result.icon;
           placeResult.url = result.url;
+          placeResult.loca = [
+            result.geometry.location.lat(),
+            result.geometry.location.lng(),
+          ];
 
           if (result.opening_hours && result.opening_hours.weekday_text) {
             placeResult.weekdayText = result.opening_hours.weekday_text;

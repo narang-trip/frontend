@@ -5,7 +5,17 @@ const placesSlice = createSlice({
   initialState: [],
   reducers: {
     setSearchResults: (state, action) => {
-      const {  name, photo, businessStatus, formattedAddress, icon, rating, weekdayText, url } = action.payload;
+      const {
+        name,
+        photo,
+        businessStatus,
+        formattedAddress,
+        icon,
+        rating,
+        weekdayText,
+        url,
+        loca,
+      } = action.payload;
       return [
         ...state,
         {
@@ -17,7 +27,8 @@ const placesSlice = createSlice({
           rating: rating,
           weedayText: weekdayText,
           url: url,
-        }
+          loca: loca,
+        },
       ];
     },
   },
