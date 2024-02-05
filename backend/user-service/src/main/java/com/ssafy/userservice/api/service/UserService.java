@@ -3,9 +3,7 @@ package com.ssafy.userservice.api.service;
 import com.ssafy.userservice.api.oauth2.userinfo.KakaoUserInfo;
 import com.ssafy.userservice.api.oauth2.userinfo.NaverUserInfo;
 import com.ssafy.userservice.api.oauth2.userinfo.OAuth2UserInfo;
-import com.ssafy.userservice.db.entity.Auth;
-import com.ssafy.userservice.db.entity.PrincipalDetails;
-import com.ssafy.userservice.db.entity.User;
+import com.ssafy.userservice.db.entity.*;
 import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +53,6 @@ public class UserService extends DefaultOAuth2UserService {
         String id = uuid.toString();
         String username = userInfo.getName();
         String email = userInfo.getEmail();
-        String role = "ROLE_USER"; //일반 유저
         String profileUrl = userInfo.getProfileUrl();
         String gender = userInfo.getGender();
         int ageRange = userInfo.getAgeRange();
@@ -80,7 +77,7 @@ public class UserService extends DefaultOAuth2UserService {
                     .name(username)
                     .provider(provider)
                     .providerId(providerId)
-                    .role(role)
+                    .role(Role.USER)
                     .build();
             authRepository.save(auth);
         }
