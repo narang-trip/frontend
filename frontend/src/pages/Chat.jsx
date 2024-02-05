@@ -81,7 +81,11 @@ const ChatPage = () => {
     try {
       const response = await axios.post(
         "https://i10a701.p.ssafy.io/api/message/alert/attend",
-        dummyData
+        dummyData, {
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
+          },
+        }
       );
       console.log("요청 보냈어요", response.data);
     } catch (error) {
