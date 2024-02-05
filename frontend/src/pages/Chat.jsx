@@ -6,10 +6,10 @@ import { Client, Stomp } from "@stomp/stompjs";
 
 const userId = "조예진";
 let dummyData = {
-  tripId: "143",
+  tripId: "고잉고잉",
   tripName: "여행가요 같이",
-  senderId: "구본승",
-  receiverId: userId,
+  senderId: userId,
+  receiverId: "구본승",
   position: ["몰라"],
   aspiration: "여행 뿌셔",
   alertType: "REQUEST",
