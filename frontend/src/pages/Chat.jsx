@@ -6,7 +6,7 @@ import SockJS from "sockjs-client";
 import { Client, Stomp } from "@stomp/stompjs";
 
 const userId = "조예진";
-const stompEndpoint = `wss://i10a701.p.ssafy.io/api/message/chat`
+const stompEndpoint = "wss://i10a701.p.ssafy.io/api/message/chat";
 const ChatPage = () => {
   // useEffect(() => {
   //   const EventSource = EventSourcePolyfill || NativeEventSource;
