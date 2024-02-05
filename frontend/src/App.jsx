@@ -18,7 +18,7 @@ const router = createBrowserRouter([
   {
     path: "",
     element: <RootLayoutOffWidgets />,
-    errorElement: <ErrorPage />,
+    // errorElement: <ErrorPage />,
     children: [
       {
         path: "/applicantList",
