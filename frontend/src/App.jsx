@@ -12,7 +12,7 @@ import TripDetailPage from "./pages/TripDetail";
 import ChatPage from "./pages/Chat";
 import Login from "./pages/Login";
 import Mypage from "./pages/Mypage";
-import SubscribePage from "./pages/SubScribeTestPage";
+import SubscribeTestPage from "./pages/SubscribeTest";
 
 const router = createBrowserRouter([
   {
@@ -46,9 +46,10 @@ const router = createBrowserRouter([
         element: <SearchPage />,
       },
       {
-        path: "/SubscribeTest",
-        element: <SubscribePage />,
+        path: "/sub",
+        element: <SubscribeTestPage />
       }
+      
     ],
   },
 
