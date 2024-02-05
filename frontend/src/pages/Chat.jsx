@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import Button from "../ui/Button";
 import { Client, Stomp } from "@stomp/stompjs";
 
@@ -19,32 +18,7 @@ let dummyData = {
 const sockJSEndPoint = "https://i10a701.p.ssafy.io/api/message/chat";
 const stompEndpoint = "wss://i10a701.p.ssafy.io/api/message/chat";
 const ChatPage = () => {
-  const [tripId, setTripId] =  useState("143");
-  useEffect(() => {
-    const EventSource = EventSourcePolyfill || NativeEventSource;
-    const eventSource = new EventSource(
-      `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`,
-      {
-        heartbeatTimeout: 3600000,
-      }
-    );
-
-    eventSource.addEventListener("sse", (event) => {
-      const { data: receivedConnectData } = event;
-      console.log(receivedConnectData);
-      if (receivedConnectData === "SSE 연결이 완료되었습니다.") {
-        // "SSE connection has been completed."
-        console.log("SSE CONNECTED");
-      } else {
-        console.log(event);
-      }
-    });
-
-    return () => {
-      eventSource.close();
-      console.log("SSE CLOSED");
-    };
-  }, []);
+  const [tripId, setTripId] = useState("143");
 
   // useEffect(() => {
   //   // SockJS와 Stomp 설정
@@ -77,13 +51,14 @@ const ChatPage = () => {
   // }, []);
 
   const clickHandler = async () => {
-    dummyData = {...dummyData, tripId : tripId}
+    dummyData = { ...dummyData, tripId: tripId };
     try {
       const response = await axios.post(
         "https://i10a701.p.ssafy.io/api/message/alert/attend",
-        dummyData, {
+        dummyData,
+        {
           headers: {
-            'Content-Type': 'application/json;charset=UTF-8'
+            "Content-Type": "application/json;charset=UTF-8",
           },
         }
       );
@@ -98,15 +73,20 @@ const ChatPage = () => {
     clickHandler();
   };
 
-
   return (
     <div className="">
       <div className="">
         <label>
           <b>채팅방</b>
           <form onSubmit={submitHandler}>
-            <input placeholder="여기 tripid써주세요" value={tripId} onChange={(e) => setTripId(e.target.value)}/>
-            <button type="submit" className="border border-solid bg-blue">이거 누르면 알림 가요</button>
+            <input
+              placeholder="여기 tripid써주세요"
+              value={tripId}
+              onChange={(e) => setTripId(e.target.value)}
+            />
+            <button type="submit" className="border border-solid bg-blue">
+              이거 누르면 알림 가요
+            </button>
           </form>
         </label>
       </div>
