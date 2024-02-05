@@ -5,7 +5,7 @@ import TripList from "../components/TripList";
 export default function HomePage() {
   return (
     <div>
-      RabiitMq 테스트 중
+      sse 테스트 중
       <img
         src="/assets/travelBanner.jpg"
         className="object-cover w-full h-40"
