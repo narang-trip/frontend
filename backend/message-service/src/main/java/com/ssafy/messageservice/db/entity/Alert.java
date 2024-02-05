@@ -18,7 +18,7 @@ import java.util.List;
 public class Alert {
     @Id
     @Column(length = 100)
-    private String alertId;
+    private String id;
 
     @Column(length = 50)
     private String tripId;

@@ -105,7 +105,7 @@ public class AlertService {
                 String eventId = receiver + "_" + System.currentTimeMillis();
                 Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
                 // 알림을 보내는 response 값 데이터 넣어주기
-                AlertListResponse.AlertResponse alertResponse = new AlertListResponse.AlertResponse(alert.getAlertId(),
+                AlertListResponse.AlertResponse alertResponse = new AlertListResponse.AlertResponse(alert.getId(),
                         alertAttendRequest.getTripId(),
                         alertAttendRequest.getTripName(),
                         alertAttendRequest.getSenderId(),
@@ -149,7 +149,7 @@ public class AlertService {
     private List<AlertListResponse.AlertResponse> mapAlertsToAlertResponses(List<Alert> alerts) {
         return alerts.stream()
                 .map(alert -> new AlertListResponse.AlertResponse(
-                        alert.getAlertId(),
+                        alert.getId(),
                         alert.getTripId(),
                         alert.getTripName(),
                         alert.getSenderId(),
@@ -168,8 +168,8 @@ public class AlertService {
     }
 
     // sse 알림 삭제
-    public ResponseEntity<?> deleteAlert(String alertId){
-        alertRepository.deleteByAlertId(alertId);
+    public ResponseEntity<?> deleteAlert(String id){
+        alertRepository.deleteById(id);
         return ResponseEntity.ok().body("Delete successfully");
     }
 }
