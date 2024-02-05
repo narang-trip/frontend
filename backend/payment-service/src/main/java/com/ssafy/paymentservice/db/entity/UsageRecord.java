@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class UsageRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
     @Column
     private String user_id;
     @Column
