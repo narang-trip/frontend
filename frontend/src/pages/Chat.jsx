@@ -39,14 +39,14 @@ const ChatPage = () => {
         console.log('Connected', frame);
 
         // 서버로부터 메시지를 받을 구독 설정
-        stompClient.subscribe('/sub', message => {
+        stompClient.subscribe('/sub/chat/room/room1', message => {
           console.log(`Received: ${message.body}`);
         });
 
         // 서버로 메시지 전송
         stompClient.publish({
-          destination: '/pub',
-          body: 'First Message',
+          destination: '/pub/chat/send',
+          body: { chatroomId : "room1", senderId : "조예진", content : "이제 해방이다"},
         });
       },
     });
