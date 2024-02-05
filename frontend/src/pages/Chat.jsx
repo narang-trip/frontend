@@ -22,7 +22,9 @@ const ChatPage = () => {
   useEffect(() => {
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const eventSource = new EventSource(
-      `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`
+      `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}` , {
+        heartbeatTimeout : 3600000,
+      }
     );
 
     eventSource.addEventListener("sse", (event) => {
