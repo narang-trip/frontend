@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import TripDetail from "../components/Trip/TripDetail";
+import TripDetail from "../components/Trip/Read/TripDetail";
 
 export default function TripRegisterPage() {
   return (
