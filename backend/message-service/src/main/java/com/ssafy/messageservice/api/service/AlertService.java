@@ -174,7 +174,6 @@ public class AlertService {
             return ResponseEntity.ok().body("Delete successfully");
         } catch (Exception e) {
             e.printStackTrace(); // 또는 로깅 프레임워크를 사용하여 로그 기록
-            System.out.println();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during deletion");
         }
     }
