@@ -7,8 +7,7 @@ import ConceptSelect from "./ConceptSelect.jsx";
 import DateRangePicker from "./DateRangePicker.jsx";
 import FileUploadBox from "./FileUploadBox.jsx";
 import PositionCheck from "./PositionCheck.jsx";
-import LocationModal from "../../modals/LocationModal.jsx";
-import GenderRadio from "./GenderRadio.jsx";
+import ContinentModal from "../../modals/ContinentModal.jsx";
 
 export default function TripWriteForm() {
   const [board, setBoard] = useState({
@@ -16,8 +15,10 @@ export default function TripWriteForm() {
     concept: "",
     img: "",
     location: "",
+    continent: "",
     count: 0,
-    position: [],
+    myPosition: [],
+    recruitPosition: [],
     plan: "",
     description: "",
     gender: "",
@@ -45,8 +46,23 @@ export default function TripWriteForm() {
     }));
   };
 
+  // 선택된 나라 정보 업데이트 함수
+  const handleLocationChange = (selectedLocation) => {
+    setBoard((board) => ({
+      ...board,
+      location: board.location ? `${board.location}:${selectedLocation}` : selectedLocation,
+    }));
+    console.log(selectedLocation);
+  };
+
   // 모달 open
   const OpenLocaitonModal = () => {
+    // claer 해주고
+    setBoard((board) => ({
+      ...board,
+      location: "",
+    }));
+
     setIsOpen(true);
   };
 
@@ -92,7 +108,10 @@ export default function TripWriteForm() {
                 <TitleInput value={board.title} onChange={handleChange} />
 
                 <ConceptSelect value={board.concept} onChange={handleChange} />
-                <DateRangePicker dateRange={dateRange} />
+                <DateRangePicker
+                  dateRange={dateRange}
+                  onChange={handleDateChange}
+                />
                 <div className="w-full my-2">
                   <label className="mr-10 text-sm font-medium">여행 장소</label>
                   <input
@@ -102,10 +121,14 @@ export default function TripWriteForm() {
                     value={board.location}
                     onClick={OpenLocaitonModal}
                     className="border border-stone-200 bg-stone-0 p-1.5 w-2/3 text-gray-900 placeholder:text-gray-300 text-xs"
+                    readOnly
                   ></input>
                   {isOpen && (
                     <ModalPortal>
-                      <LocationModal onClose={CloseLocationModal} />
+                      <ContinentModal
+                        onClose={CloseLocationModal}
+                        onSelectedLocation={handleLocationChange}
+                      />
                     </ModalPortal>
                   )}
                 </div>
@@ -118,7 +141,8 @@ export default function TripWriteForm() {
                     value={board.count}
                     onChange={handleChange}
                     required
-                    className="border border-stone-200 bg-stone-0 p-1.5 w-1/6 text-gray-900 placeholder:text-gray-300 text-xs mr-7"
+                    className="border border-stone-200 bg-stone-0 p-1.5 w-1/6 text-gray-900 placeholder:text-gray-300 text-xs mr-10"
+                    max={12}
                   />
                   <label className="mr-10 text-sm font-medium">예약금</label>
                   <input
@@ -128,14 +152,21 @@ export default function TripWriteForm() {
                     value={board.cost}
                     onChange={handleChange}
                     required
-                    className="border border-stone-200 bg-stone-0 p-1.5 w-1/3 text-gray-900 placeholder:text-gray-300 text-xs"
+                    className="border border-stone-200 bg-stone-0 p-1.5 w-1/4 text-gray-900 placeholder:text-gray-300 text-xs"
                   />
                 </div>
-                <GenderRadio value={board.gender} onChange={handleChange} />
+                <label className="text-sm">내 포지션</label>
                 <PositionCheck
-                  value={board.position}
+                  value={board.myPosition}
                   onChange={(positions) =>
-                    setBoard((prev) => ({ ...prev, position: positions }))
+                    setBoard((prev) => ({ ...prev, myPosition: positions }))
+                  }
+                />
+                <label className="text-sm">모집 포지션</label>
+                <PositionCheck
+                  value={board.recruitPosition}
+                  onChange={(positions) =>
+                    setBoard((prev) => ({ ...prev, recruitPosition: positions }))
                   }
                 />
                 <div className="w-full my-2">

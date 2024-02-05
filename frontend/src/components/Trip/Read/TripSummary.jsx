@@ -1,64 +1,85 @@
-import { Fragment, useState } from "react";
-import { SlCalender, SlLocationPin, SlPeople, SlBadge } from "react-icons/sl";
+import { Fragment, useState, useEffect } from "react";
+import {
+  SlCalender,
+  SlLocationPin,
+  SlInfo,
+  SlPeople,
+  SlEye,
+} from "react-icons/sl";
+import { useNavigate } from "react-router-dom";
+import DateFormatter from "../../DateFormatter";
 
-const TripSummary = ({trip}) => {
+const TripSummary = ({ trip }) => {
+  const [departureDate, setDepartureDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
 
-  const [positions, setPositions] = useState([
-    "역할1",
-    "역할2",
-    "역할3",
-    "역할4",
-  ]);
+  const navigate = useNavigate();
 
   const handleViewClick = () => {
-    setViewOpen(!viewOpen);
+    navigate(`/detail/${trip.tripId}`);
   };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  useEffect(() => {
+    setDepartureDate(DateFormatter({ dateString: trip.departureDate }));
+    setReturnDate(DateFormatter({ dateString: trip.returnDate }));
+  }, [trip.departureDate, trip.returnDate]);
 
   return (
     <Fragment>
-      <div className="w-3/12 text-center rounded-l">
-          <button
-            onClick={handleViewClick}
-            className="px-3 py-4 mx-3 my-3 border rounded-3xl bg-stone-200 border-stone-400"
-          >
-            <div className="grid" >
-              <div>
-                <img src={`assets/airplain.jpg`} className="rounded-3xl" />
-              </div>
-              <div >
-                <p className="my-1.5 text-sm font-bold text-center">
-                 {trip.tripName}
-                </p>
-                <div className="flex flex-row items-center my-1.5 text-sm">
-                  <SlCalender className="mx-3 " size="24" />
-                  <p className="text-xs"> {trip.departureDate} </p>
-                </div>
-                <div className="flex flex-row items-center my-1.5 text-sm">
-                  <SlLocationPin className="mx-3 " size="24" />
-                  <p className="text-xs">{trip.destination}</p>
-                </div>
-                <div className="flex flex-row items-center my-1.5 text-sm">
-                  <SlPeople className="mx-3" size="24" />
-                  <p className="text-xs"> 2 / 4 </p>
-                </div>
-                <div className="flex flex-row items-center my-1.5 text-sm">
-                  <SlBadge className="mx-3 " size="24" />
-                  <div className="flex flex-wrap justify-between">
-                    {positions.map((position, index) => (
-                      <p
-                        key={index}
-                        className="inline-flex items-center px-2 py-1 m-0.5 text-xs font-medium rounded-full bg-stone-100 ring-1 ring-inset ring-stone-500"
-                      >
-                        {position}
-                      </p>
-                    ))}
+      <div className="w-4/12 rounded-l">
+        <button
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={handleViewClick}
+          className="px-3 py-4 mx-3 my-4 border h-[24rem] flex align-top rounded-3xl bg-stone-200 border-stone-400"
+        >
+          <div className="grid">
+            <div className="relative overflow-hidden group rounded-3xl">
+              <img
+                src={`assets/airplain.jpg`}
+                alt="tripThumbnail"
+                className="mb-2 transition-transform duration-300 ease-in-out transform scale-100 rounded-3xl group-hover:scale-125"
+              />
+              {isHovered && (
+                <div className="absolute inset-0 flex flex-col items-end justify-end bg-black text-neutral-800 bg-opacity-20">
+                  <div className="flex flex-row items-center my-3 mr-4 text-sm font-semibold">
+                    <SlPeople className="mx-3" size="16" />
+                    <p className="text-sm">2 / 4</p>
+                    <SlEye className="mx-3" size="16" />
+                    <p className="text-sm">30</p>
                   </div>
                 </div>
+              )}
+            </div>
+            <div>
+              <div className="flex flex-row items-center my-1.5 text-sm">
+                <SlCalender className="mx-2 " size="24" />
+                <p className="text-xs">
+                  {departureDate} ~ {returnDate}
+                </p>
+              </div>
+              <div className="flex flex-row items-center my-1.5 text-sm">
+                <SlLocationPin className="mx-2 " size="24" />
+                <p className="text-xs">{trip.destination}</p>
+              </div>
+              <div className="flex flex-row items-center my-1.5 text-sm">
+                <SlInfo className="mx-2 " size="24" />
+                <p className="text-xs">{trip.tripDesc}</p>
               </div>
             </div>
-          </button>
+          </div>
+        </button>
       </div>
     </Fragment>
   );
-}
+};
 export default TripSummary;
