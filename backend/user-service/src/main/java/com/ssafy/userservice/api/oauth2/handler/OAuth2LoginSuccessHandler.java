@@ -30,7 +30,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             String accessToken = jwtService.createAccessToken(oAuth2User.getAuth().getEmail());
             response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
             System.out.println("my =================> OAuth2LoginSuccessHandler -> onAuthenticationSuccess");
-            response.sendRedirect("loginForm"); // 가입 화면으로 보내기
+            response.sendRedirect("/api/user/loginForm"); // 가입 화면으로 보내기
 
             jwtService.sendAccessAndRefreshToken(response, accessToken, null);
         } else {
