@@ -13,5 +13,4 @@ import java.util.List;
 public interface AlertRepository extends JpaRepository<Alert, String> {
     List<Alert> findByReceiverId(String receiverId);
     boolean existsByTripIdAndSenderId(String tripId, String senderId);
-    void deleteByAlertId(String alertId);
 }

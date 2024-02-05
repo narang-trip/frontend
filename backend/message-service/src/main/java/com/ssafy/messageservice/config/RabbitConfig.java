@@ -1,5 +1,5 @@
-package com.ssafy.messageservice.config;
-
+//package com.ssafy.messageservice.config;
+//
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.fasterxml.jackson.databind.SerializationFeature;
 //import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -15,11 +15,11 @@ package com.ssafy.messageservice.config;
 //import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
-
+//
 //@Configuration
 //@EnableRabbit
 //public class RabbitConfig {
-
+//
 //    private static final String CHAT_QUEUE_NAME = "chat.queue";
 //    private static final String CHAT_EXCHANGE_NAME = "chat.exchange";
 //    private static final String ROUTING_KEY = "room.*";
