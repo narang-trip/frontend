@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import Button from "../ui/Button";
-import SockJS from 'sockjs-client'
 import { Client, Stomp } from "@stomp/stompjs";
 
 const userId = "조예진";
