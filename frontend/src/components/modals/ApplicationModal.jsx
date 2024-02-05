@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { ModalPortal } from "./ModalPortal";
 import SuccessModal from "./SuccessModal";
+import { IoMdClose } from "react-icons/io";
 
 const ApplicationModal = (props) => {
   // 지원한 포지션리스트 저장
@@ -50,7 +51,7 @@ const ApplicationModal = (props) => {
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-0 flex items-center justify-center bg-gray-500 bg-opacity-70"
+      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-500 bg-opacity-70"
       onClick={props.onClose}
       ref={modalBG}
     >
@@ -63,10 +64,10 @@ const ApplicationModal = (props) => {
         <div className=" font-spoqa">
           <div className="flex justify-end">
             <button
-              className="mb-4 text-xl font-semibold"
+              className="mb-4 text-xl font-semibold hover:text-red-600"
               onClick={props.onClose}
             >
-              X
+              <IoMdClose />
             </button>
           </div>
           {isApplicationSuccess ? (
@@ -109,8 +110,7 @@ const ApplicationModal = (props) => {
                   />
                 </div>
               </div>
-              <div className="mx-4 my-4">
-                💰 보유 마일리지 : 200,000</div>
+              <div className="mx-4 my-4">💰 보유 마일리지 : 200,000</div>
               <div className="flex justify-end">
                 <button
                   onClick={handleSubmit}
