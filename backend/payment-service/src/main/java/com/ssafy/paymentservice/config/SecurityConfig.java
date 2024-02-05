@@ -10,7 +10,7 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
 public class SecurityConfig {
     // 암호화 키로 ENCRYPTION_KEY 사용
     // 솔트는 필요에 따라 변경 가능
-    @Value("${encrypt.key}")
+    @Value("${spring.encrypt.key}")
     private String encryptionKey;
     private String salt = "your-salt";
 
