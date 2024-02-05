@@ -15,7 +15,6 @@ let dummyData = {
   alertType: "REQUEST",
   isRead: false,
 };
-const sockJSEndPoint = "https://i10a701.p.ssafy.io/api/message/chat";
 const stompEndpoint = "wss://i10a701.p.ssafy.io/api/message/chat";
 const ChatPage = () => {
   const stompClientRef = useRef(null) 
@@ -24,7 +23,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     // SockJS와 Stomp 설정
-    const socket = new WebSocket(sockJSEndPoint);
+    const socket = new WebSocket(stompEndpoint);
     
     const stompClient = new Client({
       webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 웹소켓 연결
@@ -40,7 +39,7 @@ const ChatPage = () => {
         // 서버로 메시지 전송
         stompClient.publish({
           destination: '/pub/chat/send',
-          body: JSON.stringify({ chatroomId : "room1", senderId : "조예진", content : "이제 해방이다"}),
+          body: JSON.stringify({ chatroomId : "room1", senderId : "조예진", content : "예진아 가지마 ㅠㅠ"}),
         });
       },
     });
@@ -68,7 +67,7 @@ const ChatPage = () => {
           },
         }
       );
-      console.log("요청 보냈어요", response.data);
+      console.log("SSE 요청 입니다", response.data);
     } catch (error) {
       console.error("Error", error.response);
     }
