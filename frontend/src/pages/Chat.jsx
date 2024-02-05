@@ -7,7 +7,7 @@ import { Client, Stomp } from "@stomp/stompjs";
 
 const userId = "조예진";
 const dummyData = {
-  tripId: 133,
+  tripId: "133",
   tripName: "여행가요 같이",
   senderId: "구본승",
   receiverId: userId,
