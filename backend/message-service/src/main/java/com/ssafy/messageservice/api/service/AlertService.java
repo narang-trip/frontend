@@ -169,7 +169,12 @@ public class AlertService {
 
     // sse 알림 삭제
     public ResponseEntity<?> deleteAlert(String id){
-        alertRepository.deleteById(id);
-        return ResponseEntity.ok().body("Delete successfully");
+        try {
+            alertRepository.deleteById(id);
+            return ResponseEntity.ok().body("Delete successfully");
+        } catch (Exception e) {
+            e.printStackTrace(); // 또는 로깅 프레임워크를 사용하여 로그 기록
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during deletion");
+        }
     }
 }
