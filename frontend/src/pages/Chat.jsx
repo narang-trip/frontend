@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import Button from "../ui/Button";
+import SockJS from 'sockjs-client'
 import { Client, Stomp } from "@stomp/stompjs";
 
 const userId = "조예진";
+const sockJSEndPoint = "https://i10a701.p.ssafy.io/api/message/chat"
 const stompEndpoint = "wss://i10a701.p.ssafy.io/api/message/chat";
 const ChatPage = () => {
   // useEffect(() => {
@@ -32,7 +34,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     // SockJS와 Stomp 설정
-    const socket = new WebSocket(stompEndpoint);
+    const socket = new SockJS(sockJSEndPoint);
     const stompClient = new Client({
       webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 웹소켓 연결
       onConnect: (frame) => {
