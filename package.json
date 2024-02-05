@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "event-source-polyfill": "^1.0.31",
-    "react-query": "^3.39.3"
-  }
-}
