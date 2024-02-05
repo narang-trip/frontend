@@ -17,17 +17,14 @@ let dummyData = {
 };
 const stompEndpoint = "wss://i10a701.p.ssafy.io/api/message/chat";
 const ChatPage = () => {
-  const stompClientRef = useRef(null) 
   const [tripId, setTripId] = useState("143");
-  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     // SockJS와 Stomp 설정
     const socket = new WebSocket(stompEndpoint);
     
     const stompClient = new Client({
-      webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 웹소켓 연결
-      
+      webSocketFactory: () => socket, // websocket 웹소켓 연결
       onConnect: (frame) => {
         console.log('Connected', frame);
 
@@ -95,9 +92,6 @@ const ChatPage = () => {
           </form>
         </label>
       </div>
-      {messages.map((msg, index) => (
-          <div key={index}>{msg.content}</div>
-        ))}
     </div>
   );
 };
