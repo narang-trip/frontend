@@ -45,6 +45,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
     runtimeOnly 'com.mysql:mysql-connector-j'// necessary for Java 9+
+
+    /*
+        Security
+     */
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 dependencyManagement {
