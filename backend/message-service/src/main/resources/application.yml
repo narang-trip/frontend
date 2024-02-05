@@ -4,6 +4,7 @@ spring:
   #database
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/narangdb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     url: jdbc:mysql://i10a701.p.ssafy.io:3306/narangdb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: root
     password: ssafy
@@ -19,12 +20,14 @@ spring:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 
-#  rabbitmq:
-#    port: 5672
-#    username: yoonjae
-#    password: dbswoWkd
-#    addresses: i10a701.p.ssafy.io:5672
-#    host: i10a701.p.ssafy.io
+logging:
+  level:
+    root: DEBUG
+    # org:
+    #   springframework:
+    #     web:
+    #       socket:
+    #         messaging: DEBUG
 
 server:
   port: 8084
@@ -36,12 +39,11 @@ springdoc:
     path: /api/message/swagger-ui.html
 
 # grpc를 위해 추가
-grpc:
-  client:
+#grpc:
+#  client:
+##      address: 'static://user-service:9090'
+#    user-service:
 #      address: 'static://user-service:9090'
-#      negotiationtype: plaintext
-    user-service:
-      address: 'static://user-service:9090'
 
 eureka:
   client:

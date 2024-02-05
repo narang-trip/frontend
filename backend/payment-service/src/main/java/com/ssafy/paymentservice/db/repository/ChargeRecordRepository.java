@@ -1,6 +1,6 @@
-package com.ssafy.paymentservice.repository;
+package com.ssafy.paymentservice.db.repository;
 
-import com.ssafy.paymentservice.entity.ChargeRecord;
+import com.ssafy.paymentservice.db.entity.ChargeRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
