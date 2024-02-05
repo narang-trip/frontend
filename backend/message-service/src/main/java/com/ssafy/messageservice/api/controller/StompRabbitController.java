@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-//@CrossOrigin("*")
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -35,9 +34,9 @@ public class StompRabbitController {
     private final ChatroomRepository chatroomRepository;
     private final ChatroomUserRepository chatroomUserRepository;
 
-    //Client가 SEND할 수 있는 경로
-    //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
-    //"/pub/chat/enter"
+    // Client가 SEND할 수 있는 경로
+    // stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
+    // "/pub/chat/enter"
     @MessageMapping(value = "/chat/enter")
     public void enter(String userId, String chatroomId){
         ChatRequest chatRequest = new ChatRequest(

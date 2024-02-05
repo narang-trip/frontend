@@ -67,7 +67,7 @@ public class AlertService {
                     .name("sse")
                     .data(data)
             );
-            System.out.println("sse ! 구독합니다 !");
+            System.out.println("sse!" + data);
         } catch (IOException exception) {
             System.out.println("연결 오류");
             emitterRepository.deleteById(emitterId);
@@ -167,29 +167,9 @@ public class AlertService {
         return sender.get().getNickname();
     }
 
-
-//    public void send(AlertAttendRequest alertAttendRequest) {
-//        // DB Alert 테이블에 데이터 저장하기
-//        Alert alert = new Alert(UUID.randomUUID().toString(),
-//                alertAttendRequest.getTripId(),
-//                alertAttendRequest.getTripName(),
-//                alertAttendRequest.getSenderId(),
-//                alertAttendRequest.getReceiverId(),
-//                alertAttendRequest.getPosition(),
-//                alertAttendRequest.getAspiration(),
-//                alertAttendRequest.getAlertType(),
-//                alertAttendRequest.isRead());
-//        alertRepository.save(alert);
-//        String receiver = alertAttendRequest.getReceiverId();
-//        String eventId = receiver + "_" + System.currentTimeMillis();
-//        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
-//        emitters.forEach(
-//                (key, emitter) -> {
-//                    emitterRepository.saveEventCache(key, alert);
-//                    sendAlert(emitter, eventId, key, "success");
-//                }
-//        );
-//    }
-
-//
+    // sse 알림 삭제
+    public ResponseEntity<?> deleteAlert(String alertId){
+        alertRepository.deleteByAlertId(alertId);
+        return ResponseEntity.ok().body("Delete successfully");
+    }
 }
