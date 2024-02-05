@@ -22,6 +22,9 @@ const SubscribeTestPage = () => {
         console.log(event);
       }
     });
+    eventSource.onerror = function(event) {
+      console.error("SSE 에러 발생:", event);
+    };
 
     return () => {
       eventSource.close();
