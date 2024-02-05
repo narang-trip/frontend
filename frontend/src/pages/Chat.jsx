@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient} from 'react-query';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import Button from "../ui/Button";
 import SockJS from "sockjs-client";
@@ -11,11 +10,7 @@ const sockjsEndpoint = 'https://i10a701.p.ssafy.io/api/message/chat';
 const stompEndpoint = 'wss://i10a701.p.ssafy.io/api/message/chat';
 
 const ChatPage = () => {
-  const queryClient = useQueryClient();
 
-  const [newNotice, setNewNotice] = useState();
-  const [newStatus, setStatus] = useState();
-  const [newApply, setNewApply] = useState();
   
   useEffect(() => {
     const EventSource = EventSourcePolyfill || NativeEventSource;
@@ -67,7 +62,7 @@ const ChatPage = () => {
   //     stompClient.deactivate();
   //   };
   // }, []);
-  useEffect(() => {
+  // useEffect(() => {
 
     // SockJS와 Stomp 설정
     // webSocket.onopen = function () {
