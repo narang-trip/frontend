@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 
-const userId = "조예진";
+const userId = "구본승";
 const SubscribeTestPage = () => {
   useEffect(() => {
     const EventSource = EventSourcePolyfill || NativeEventSource;
