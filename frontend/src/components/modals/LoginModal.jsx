@@ -1,27 +1,36 @@
 import { useRef } from "react";
 import axios from "axios";
+
 const LoginModal = (props) => {
   const modalBG = useRef(null);
   const kakaoLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
   const naverLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
 
+  const kakaoLogin = () => {
+    window.open(kakaoLoginURL);
+  };
+
+  const naverLogin = () => {
+    window.open(naverLoginURL);
+  };
+
   // axios.defaults.withCredentials = true;
 
-  const params = new URL(document.URL).searchParams;
-  const code = params.get("code");
+  // const params = new URL(document.URL).searchParams;
+  // const code = params.get("code");
 
-  const kakaoLogin = async () => {
-    const payload = {
-      grant_type: "authorization_code",
-      code: code,
-    };
-    try {
-      const res = await axios.post(kakaoLoginURL, payload);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const kakaoLogin = async () => {
+  //   const payload = {
+  //     grant_type: "authorization_code",
+  //     code: code,
+  //   };
+  //   try {
+  //     const res = await axios.post(kakaoLoginURL, payload);
+  //     console.log(res);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   // const kakaoLogin = () => {
   //   axios
@@ -34,16 +43,16 @@ const LoginModal = (props) => {
   //     });
   // };
 
-  const naverLogin = () => {
-    axios
-      .get(naverLoginURL)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const naverLogin = () => {
+  //   axios
+  //     .get(naverLoginURL)
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   return (
     <div
