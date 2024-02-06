@@ -6,6 +6,7 @@ import com.ssafy.tripservice.api.response.TripResponse;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +25,9 @@ public interface TripService {
 
     Optional<TripResponse> getTripById(UUID tripId);
 
-    Optional<Integer> getTripParticipantsSize(UUID tripId);
-
     Optional<TripResponse> joinTrip(UserRequest userRequest);
 
-    Optional<TripResponse> leaveTrip(UserRequest userRequest);
+    boolean leaveTrip(UserRequest userRequest);
+
+    boolean deleteTrip(UserRequest userRequest);
 }

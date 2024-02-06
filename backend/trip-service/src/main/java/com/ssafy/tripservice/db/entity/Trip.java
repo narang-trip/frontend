@@ -37,7 +37,7 @@ public class Trip extends BaseEntity{
     private Integer tripDeposit;
     private Integer tripAgeUpperBound;
     private Integer tripAgeLowerBound;
-    private List<String> tripConcepts;
+    private String tripConcepts;
     private List<String> tripRoles;
     private List<Participant> participants;
 
@@ -69,7 +69,6 @@ public class Trip extends BaseEntity{
     @Data
     public static class Participant {
         private List<String> userRoles;
-        private String deposited;
         private UUID participantId;
         private LocalDateTime enrollmentDate;
     }
