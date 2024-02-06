@@ -107,7 +107,7 @@ public class UserService extends DefaultOAuth2UserService {
     // User 정보 조회
     public ResponseEntity<User> getUser(String id){
         Optional<User> findUser = userRepository.findById(id);
-        User user = findUser.get();
+        User user = findUser;
         return ResponseEntity.ok().body(user);
     }
 
