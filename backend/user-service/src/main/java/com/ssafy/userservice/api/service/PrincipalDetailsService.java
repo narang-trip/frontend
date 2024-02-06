@@ -24,7 +24,6 @@ public class PrincipalDetailsService implements UserDetailsService {
 
         Optional<Auth> member = authRepository.findByName(username);
         if (member.isPresent()) {
-            System.out.println("member = " + member.get());
             return new PrincipalDetails(member.get());
         }
         return null;

@@ -1,14 +1,45 @@
 package com.ssafy.userservice.api.controller;
 
+import com.ssafy.userservice.api.request.UserInfoRequest;
+import com.ssafy.userservice.api.service.UserService;
+import com.ssafy.userservice.db.entity.User;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+
+import java.io.IOException;
 
 @CrossOrigin("*")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
+    private final UserService userService;
+
+    @GetMapping("/oauth2/authorization/{provider}")
+    public RedirectView redirectToOAuth2Provider(@AuthenticationPrincipal OAuth2User principal,
+                                                 @PathVariable String provider,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws IOException {
+
+        // 이전 요청이 있다면 해당 URL로 리다이렉션, 없으면 기본 URL 사용
+        RequestCache requestCache = new HttpSessionRequestCache();
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+        String redirectUri = (savedRequest != null) ? savedRequest.getRedirectUrl() : "/";
+
+        // OAuth2 로그인을 위한 엔드포인트로 리다이렉션
+        return new RedirectView("https://i10a701.p.ssafy.io/oauth2/authorization/" + provider + "?redirect_uri=" + redirectUri);
+    }
 
     @GetMapping
     public String index(){

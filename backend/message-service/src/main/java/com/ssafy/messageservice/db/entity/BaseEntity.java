@@ -11,5 +11,4 @@ import lombok.Setter;
 public class BaseEntity {
     @Id
     private String id;
-
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/plan/")
 public class PlanController {
 
-
     @GetMapping("/plan")
     public String getWelcome() {
         System.out.println("plan");
