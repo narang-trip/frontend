@@ -1,13 +1,16 @@
 import { useState } from "react";
+import Button from "../ui/Button";
 
-const conceptImage = [0, 1, 2, 3, 4, 5, 6];
+const conceptList = ["낭만", "건축", "모험", "자유", "쇼핑", "휴양", "핫플"];
 
 export default function Concept() {
   const [concept, setConcept] = useState(0);
   console.log(concept);
   return <div className="flex">
-    {conceptImage.map((value) => {
-      return <img onClick={() => setConcept(value)} className="m-1 rounded-full" src={`concept/${value}.jpg`} key={value} width="12.5%" height="auto"/>
+    {conceptList.map((value) => {
+      return <Button onClick={() => setConcept(value)} className="m-1 w-[12.5%] h-auto rounded-lg" src={`concept/1.jpg`} key={value} height="auto">
+        {value}
+      </Button>
     })}
     
   </div>

@@ -22,7 +22,6 @@ export default function HomePage() {
 
   return (
     <div>
-      sse 테스트 중
       <img
         src="/assets/travelBanner.jpg"
         className="object-cover w-full h-40"
