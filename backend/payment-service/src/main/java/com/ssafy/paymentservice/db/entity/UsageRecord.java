@@ -26,9 +26,10 @@ public class UsageRecord {
     @Column(updatable = false)
     private LocalDateTime regDate; // 요청 시간
     @Builder
-    public UsageRecord(String user_id, int price, int balance ){
+    public UsageRecord(String user_id, int price, int balance){
         this.user_id = user_id;
         this.price = price;
         this.balance = balance;
+        this.regDate = LocalDateTime.now();
     }
 }

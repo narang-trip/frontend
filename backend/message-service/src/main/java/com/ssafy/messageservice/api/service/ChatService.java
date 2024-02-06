@@ -32,7 +32,7 @@ public class ChatService {
 
     public ChatListResponse getChatMessagesByChatroomId(String chatroomId, int page) {
         // 페이지 번호는 0부터 시작하므로, PageRequest.of(page, 20)로 페이지를 가져온다 -> size는 변경 가능
-        Page<Chat> chatPage = chatRepository.findByChatroomChatroomIdOrderBySendTimeDesc(chatroomId, PageRequest.of(page, 10));
+        Page<Chat> chatPage = chatRepository.findByChatroomChatroomIdOrderBySendTimeDesc(chatroomId, PageRequest.of(page, 20));
 
         return new ChatListResponse(
                 chatPage.map(chat -> new ChatListResponse.ChatsResponse(
