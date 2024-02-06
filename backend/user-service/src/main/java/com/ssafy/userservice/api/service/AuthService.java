@@ -1,18 +1,16 @@
 package com.ssafy.userservice.api.service;
 
-//package com.ssafy.togeball.domain.auth.service;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.userservice.api.oauth2.exception.InvalidSocialTypeException;
+import com.ssafy.userservice.api.oauth2.exception.AuthNotFoundException;
+import com.ssafy.userservice.api.oauth2.exception.UserNotFoundException;
 import com.ssafy.userservice.db.entity.Auth;
-//import com.ssafy.togeball.domain.auth.entity.SocialType;
-//import com.ssafy.togeball.domain.auth.exception.AuthNotFoundException;
-//import com.ssafy.togeball.domain.auth.exception.InvalidSocialTypeException;
 //import com.ssafy.togeball.domain.auth.exception.InvalidTokenException;
+import com.ssafy.userservice.db.entity.SocialType;
 import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.security.jwt.JwtService;
 import com.ssafy.userservice.db.entity.User;
-//import com.ssafy.togeball.domain.user.exception.UserNotFoundException;
 //import com.ssafy.togeball.domain.user.oauth2.OAuthAttributes;
 import com.ssafy.userservice.db.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -76,20 +74,20 @@ public class AuthService implements UserDetailsService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    public Integer oauth2Login(String provider, String authorizationCode, HttpServletResponse response) {
+    public String oauth2Login(String provider, String authorizationCode, HttpServletResponse response) {
         String accessToken = switch (provider) {
 //            case "google" -> getAccessTokenForGoogle(authorizationCode);
             case "kakao" -> getAccessTokenForKakao(authorizationCode);
             default -> throw new InvalidSocialTypeException();
         };
 
-        User user = getUserInfo(provider, accessToken);
-        log.info("userInfo : {}", user.getEmail());
-        setTokensForUser(user.getId(), response);
-        return user.getId();
+        Auth auth = getUserInfo(provider, accessToken);
+        log.info("userInfo : {}", auth.getEmail());
+        setTokensForUser(auth.getId(), response);
+        return auth.getId();
     }
 
-    public User getUserInfo(String provider, String accessToken) {
+    public Auth getUserInfo(String provider, String accessToken) {
         return switch (provider) {
             case "naver" -> getUserInfoForNaver(accessToken);
             case "kakao" -> getUserInfoForKakao(accessToken);
@@ -97,7 +95,7 @@ public class AuthService implements UserDetailsService {
         };
     }
 
-    public User getUserInfoForNaver(String accessToken) {
+    public Auth getUserInfoForNaver(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -116,11 +114,11 @@ public class AuthService implements UserDetailsService {
             throw new RuntimeException(e);
         }
 
-        OAuthAttributes extractAttributes = OAuthAttributes.of(SocialType.GOOGLE, "email", userInfo);
-        return getUser(extractAttributes, SocialType.GOOGLE);
+        OAuthAttributes extractAttributes = OAuthAttributes.of(SocialType.NAVER, "email", userInfo);
+        return getAuth(extractAttributes, SocialType.NAVER);
     }
 
-    public User getUserInfoForKakao(String accessToken) {
+    public Auth getUserInfoForKakao(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -140,7 +138,7 @@ public class AuthService implements UserDetailsService {
         }
 
         OAuthAttributes extractAttributes = OAuthAttributes.of(SocialType.KAKAO, "email", userInfo);
-        return getUser(extractAttributes, SocialType.KAKAO);
+        return getAuth(extractAttributes, SocialType.KAKAO);
     }
 
     private String getAccessTokenForGoogle(String authorizationCode) {
@@ -242,8 +240,8 @@ public class AuthService implements UserDetailsService {
         }
     }
 
-    public void setTokensForUser(Integer userId, HttpServletResponse response) {
-        Auth auth = authRepository.findByUserId(userId).orElseThrow(AuthNotFoundException::new);
+    public void setTokensForUser(String userId, HttpServletResponse response) {
+        Auth auth = authRepository.findById(userId).orElseThrow(AuthNotFoundException::new);
         Integer id = auth.getUserId();
 
         String accessToken = jwtService.createAccessToken(id);
@@ -263,7 +261,7 @@ public class AuthService implements UserDetailsService {
         authRepository.save(auth);
     }
 
-    private User getUser(OAuthAttributes attributes, SocialType socialType) {
+    private Auth getAuth(OAuthAttributes attributes, SocialType socialType) {
         Auth find = authRepository.findBySocialTypeAndSocialId(socialType,
                 attributes.getOAuth2UserInfo().getId()).orElse(null);
 
@@ -272,7 +270,7 @@ public class AuthService implements UserDetailsService {
             find = saveAuth(attributes, socialType, user.getId());
         }
 
-        return userRepository.findById(find.getUserId()).orElseThrow(UserNotFoundException::new);
+        return authRepository.findById(find.getId()).orElseThrow(UserNotFoundException::new);
     }
 
     private User saveUser(OAuthAttributes attributes) {
@@ -281,7 +279,7 @@ public class AuthService implements UserDetailsService {
         return userRepository.save(createdUser);
     }
 
-    private Auth saveAuth(OAuthAttributes attributes, SocialType socialType, Integer userId) {
+    private Auth saveAuth(OAuthAttributes attributes, SocialType socialType, String userId) {
         Auth createdAuth = attributes.toAuthEntity(socialType, userId, attributes.getOAuth2UserInfo());
         return authRepository.save(createdAuth);
     }
