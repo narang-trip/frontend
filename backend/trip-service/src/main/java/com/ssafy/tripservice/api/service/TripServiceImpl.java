@@ -52,6 +52,18 @@ public class TripServiceImpl implements TripService {
             Saving Trip to mongoDB
          */
         tripRequest.setTripImgUrl(uploadTripImgRes.get());
+
+        Trip.Participant initialParticipant
+                = Trip.Participant.builder()
+                .userRoles(tripRequest.getLeaderRoles())
+                .deposited("leader")
+                .participantId(tripRequest.getTripLeaderId())
+                .enrollmentDate(LocalDateTime.now())
+                .build();
+
+        List<Trip.Participant> initialParty = List.of(initialParticipant);
+
+        tripRequest.setParticipants(initialParty);
         Trip trip = tripRequest.toEntity();
 
         /*
@@ -93,7 +105,7 @@ public class TripServiceImpl implements TripService {
         Query query = new Query(Criteria.where("_id").is(tripId));
         Update update = new Update();
 
-        update.inc("viewCnt", 1);
+        update.inc("view_cnt", 1);
 
         mongoTemplate.updateFirst(query, update, Trip.class);
 

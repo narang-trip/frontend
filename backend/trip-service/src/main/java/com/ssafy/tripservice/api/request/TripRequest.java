@@ -29,6 +29,7 @@ public class TripRequest {
     private Integer tripDeposit;
     private Integer tripAgeUpperBound;
     private Integer tripAgeLowerBound;
+    private List<String> leaderRoles;
     private List<String> tripConcepts;
     private List<String> tripRoles;
     private List<Trip.Participant> participants;
