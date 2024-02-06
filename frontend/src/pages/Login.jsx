@@ -10,6 +10,8 @@ const Login = () => {
   const dispatch = useDispatch();
   dispatch(authAction.Login(code));
 
+  console.log("test");
+
   useEffect(() => {
     console.log("여기 왔다감");
     navigate("/");
