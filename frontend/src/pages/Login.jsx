@@ -8,13 +8,13 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect( () => {
     const params = new URL(document.URL).searchParams;
     const code = params.get("code");
     console.log(code);
     console.log("test");
-    try {
-      const res = axios.post(
+    async() => try {
+      const res = await axios.post(
         "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
         { code: code }
       );
