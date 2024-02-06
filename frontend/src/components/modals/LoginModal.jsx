@@ -10,7 +10,7 @@ const LoginModal = (props) => {
 
   const kakaoLogin = () => {
     axios
-      .post(kakaoLoginURL)
+      .get(kakaoLoginURL)
       .then((response) => {
         console.log(response);
       })
@@ -21,7 +21,7 @@ const LoginModal = (props) => {
 
   const naverLogin = () => {
     axios
-      .post(naverLoginURL)
+      .get(naverLoginURL)
       .then((response) => {
         console.log(response);
       })
