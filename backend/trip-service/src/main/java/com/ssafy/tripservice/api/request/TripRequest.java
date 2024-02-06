@@ -30,7 +30,7 @@ public class TripRequest {
     private Integer tripAgeUpperBound;
     private Integer tripAgeLowerBound;
     private List<String> leaderRoles;
-    private List<String> tripConcepts;
+    private String tripConcepts;
     private List<String> tripRoles;
     private List<Trip.Participant> participants;
 

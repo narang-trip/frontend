@@ -2,6 +2,8 @@ package com.ssafy.tripservice.api.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
 import com.ssafy.tripservice.api.response.TripResponse;
@@ -12,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Unwrapped;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Transactional
@@ -56,7 +60,6 @@ public class TripServiceImpl implements TripService {
         Trip.Participant initialParticipant
                 = Trip.Participant.builder()
                 .userRoles(tripRequest.getLeaderRoles())
-                .deposited("leader")
                 .participantId(tripRequest.getTripLeaderId())
                 .enrollmentDate(LocalDateTime.now())
                 .build();
@@ -105,38 +108,103 @@ public class TripServiceImpl implements TripService {
         Query query = new Query(Criteria.where("_id").is(tripId));
         Update update = new Update();
 
-        update.inc("view_cnt", 1);
+        update.inc("viewCnt", 1);
 
         mongoTemplate.updateFirst(query, update, Trip.class);
 
-        return tripRepository.findById(tripId)
+        return Optional.ofNullable(mongoTemplate.findById(tripId, Trip.class))
                 .map(Trip::toTripResponse);
     }
 
     @Override
-    public Optional<Integer> getTripParticipantsSize(UUID tripId) {
-        return Optional.empty();
-    }
-
-
-    @Override
     public Optional<TripResponse> joinTrip(UserRequest userRequest) {
+
+        Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripID()));
+
         Optional<Trip> trip = tripRepository.findById(userRequest.getTripID());
 
         if (trip.isEmpty()) {
+            System.out.println("파티 못 찾음");
+            return Optional.empty();
+        }
+        if (trip.get().getParticipants().size() >= trip.get().getTripParticipantsSize()) {
+            System.out.println("파티 꽉 참");
+            return Optional.empty();
+        }
+        if (trip.get().getParticipants().stream()
+                .anyMatch(participant -> participant.getParticipantId().equals(userRequest.getUserId()))) {
+            System.out.println("파티 이미 가입함");
             return Optional.empty();
         }
 
-        return Optional.empty();
+        Query query = new Query(Criteria.where("_id").is(userRequest.getTripID()));
+
+        Trip.Participant participant
+                = Trip.Participant.builder()
+                .userRoles(userRequest.getUserRoles())
+                .participantId(userRequest.getUserId())
+                .enrollmentDate(LocalDateTime.now())
+                .build();
+
+        Update update = new Update().addToSet("participants", participant);
+
+        UpdateResult res = mongoTemplate.updateFirst(query, update, Trip.class);
+
+        return Optional.ofNullable(mongoTemplate.findById(userRequest.getTripID(), Trip.class))
+                .map(Trip::toTripResponse);
     }
 
     @Override
-    public Optional<TripResponse> leaveTrip(UserRequest userRequest) {
+    public boolean leaveTrip(UserRequest userRequest) {
 
+        Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripID()));
 
+        Optional<Trip> trip = tripRepository.findById(userRequest.getTripID());
 
+        if (trip.isEmpty()) {
+            System.out.println("파티 못 찾음");
+            return false;
+        }
+        if (trip.get().getTripLeaderId().equals(userRequest.getUserId())) {
+            System.out.println("너가 리더 잖아");
+            return false;
+        }
+        if (trip.get().getParticipants().stream()
+                .noneMatch(participant -> participant.getParticipantId().equals(userRequest.getUserId()))) {
 
-        return Optional.empty();
+            for (Trip.Participant p : trip.get().getParticipants())
+                System.out.println(p);
+
+            System.out.println("파티 이미 나갔음");
+            return false;
+        }
+
+        Query query = new Query(
+                Criteria.where("_id").is(userRequest.getTripID()));
+
+        List<Trip.Participant> participants = trip.get().getParticipants().stream()
+                .filter(participant -> !participant.getParticipantId().equals(userRequest.getUserId()))
+                .toList();
+
+        Update update = new Update();
+
+        update.set("participants", participants);
+
+        UpdateResult res = mongoTemplate.upsert(query, update, Trip.class);
+
+        return res.getModifiedCount() != 0;
+    }
+
+   @Override
+    public boolean deleteTrip(UserRequest userRequest) {
+        Query query = new Query(Criteria.where("_id").is(userRequest.getTripID()))
+                .addCriteria(Criteria.where("tripLeaderId").is(userRequest.getUserId()));
+
+        DeleteResult res = mongoTemplate.remove(query, Trip.class);
+
+        if (res.getDeletedCount() == 0)
+            System.out.println("그런 파티 없어요");
+        return res.getDeletedCount() != 0;
     }
 
     public Optional<String> uploadFile(MultipartFile img) {

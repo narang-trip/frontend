@@ -6,6 +6,7 @@ import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.api.service.TripService;
+import com.ssafy.tripservice.db.entity.Trip;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -62,16 +63,19 @@ public class TripController {
 
     @PatchMapping("/join")
     public ResponseEntity<?> patchTripJoin(@RequestBody UserRequest userRequest) {
+        ;
+        Optional<TripResponse> joinRes = tripService.joinTrip(userRequest);
 
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return joinRes.map(j -> new ResponseEntity<>(j, HttpStatus.OK))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/leave")
     public ResponseEntity<?> patchTripLeave(@RequestBody UserRequest userRequest) {
 
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (tripService.leaveTrip(userRequest))
+            return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
     }
 
     /*
@@ -95,5 +99,11 @@ public class TripController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @DeleteMapping("/{tripId}")
+    public ResponseEntity<Void> deleteTrip(@RequestBody UserRequest userRequest) {
+        return tripService.deleteTrip(userRequest) ?
+                ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }
