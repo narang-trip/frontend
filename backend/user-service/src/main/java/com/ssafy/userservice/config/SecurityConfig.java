@@ -1,8 +1,17 @@
 package com.ssafy.userservice.config;
 
+import com.ssafy.userservice.api.oauth2.handler.LoginFailureHandler;
+import com.ssafy.userservice.api.oauth2.handler.LoginSuccessHandler;
 import com.ssafy.userservice.api.oauth2.handler.OAuth2LoginFailureHandler;
 import com.ssafy.userservice.api.oauth2.handler.OAuth2LoginSuccessHandler;
+import com.ssafy.userservice.api.service.LoginService;
+import com.ssafy.userservice.api.service.PrincipalDetailsService;
 import com.ssafy.userservice.api.service.UserService;
+import com.ssafy.userservice.db.repository.AuthRepository;
+import com.ssafy.userservice.db.repository.UserRepository;
+import com.ssafy.userservice.security.filter.CustomJsonUsernamePasswordAuthenticationFilter;
+import com.ssafy.userservice.security.filter.JwtAuthenticationProcessingFilter;
+import com.ssafy.userservice.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,23 +19,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 
@@ -34,55 +34,72 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
-    private final UserService userService;
+    private final LoginService loginService;
+    private final ObjectMapper objectMapper;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
-
+    private final UserService customOAuth2UserService;
+    private final JwtService jwtService;
+    private final AuthRepository authRepository;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-//        return httpSecurity
-//                .httpBasic().disable()
-//                .csrf().disable()
-//                .cors().and()
-//                .authorizeRequests()
-////                .requestMatchers("/private/**").authenticated() //private로 시작하는 uri는 로그인 필수
-////                .requestMatchers("/admin/**").access("hasRole('ROLE_ADMIN')") //admin으로 시작하는 uri는 관릴자 계정만 접근 가능
-//                .anyRequest().permitAll() //나머지 uri는 모든 접근 허용
-////                .anyRequest().authenticated()
-//                .and()
-//                .formLogin() // form login 관련 설정
-//                .loginPage("/api/user/loginForm")
-////                .usernameParameter("name") // Member가 username이라는 파라미터 갖고 있으면 안 적어도 됨.
-//                .loginProcessingUrl("/api/user/loginForm3") // 로그인 요청 받는 url
-////                .defaultSuccessUrl("/loginForm") // 로그인 성공 후 이동할 url
-//                .and().oauth2Login()//oauth2 관련 설정
-//                .loginPage("/api/user/loginForm4") //로그인이 필요한데 로그인을 하지 않았다면 이동할 uri 설정
-//                .defaultSuccessUrl("/api/user/loginForm2") //OAuth 로그인이 성공하면 이동할 uri 설정
-//                .userInfoEndpoint()//로그인 완료 후 회원 정보 받기
-//                .userService(userService).and().and().build(); //
-        httpSecurity
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(AbstractHttpConfigurer::disable) // 개발 단계에서만 사용하기!
                 .authorizeHttpRequests((auth) -> auth
-                        .anyRequest().permitAll() //나머지 uri는 모든 접근 허용
-//                                .requestMatchers("/", "/api/user/*", "/api/user/oauth2/**", "/login/**").permitAll()
-//                                .anyRequest().authenticated()
-                )
+                        .requestMatchers("/", "/oauth2/**", "/login/**", "/api/user/**", "/h2-console/**", "/sign-up").permitAll()
+                        .anyRequest().authenticated())
                 .oauth2Login(oauth2Login -> oauth2Login
-                        .defaultSuccessUrl("/api/user/loginForm") //OAuth 로그인이 성공하면 이동할 uri 설정
-//                        .successHandler(oAuth2LoginSuccessHandler)
-//                        .failureHandler(oAuth2LoginFailureHandler)
+                        .successHandler(oAuth2LoginSuccessHandler)
+                        .failureHandler(oAuth2LoginFailureHandler)
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                                .userService(userService)
-                        )
-                )
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/api/user/loginForm")
-                        .permitAll()
-                );
-        return httpSecurity.build();
+                                .userService(customOAuth2UserService)
+                        ));
 
+        http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
+        http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(loginService);
+        return new ProviderManager(provider);
+    }
+
+    @Bean
+    public LoginSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler(jwtService, authRepository);
+    }
+
+    @Bean
+    public LoginFailureHandler loginFailureHandler() {
+        return new LoginFailureHandler();
+    }
+
+    @Bean
+    public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() {
+        CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordLoginFilter
+                = new CustomJsonUsernamePasswordAuthenticationFilter(objectMapper);
+        customJsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
+        customJsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
+        customJsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
+        return customJsonUsernamePasswordLoginFilter;
+    }
+
+    @Bean
+    public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
+        return new JwtAuthenticationProcessingFilter(jwtService, authRepository);
+    }
+
 }

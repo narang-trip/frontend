@@ -1,6 +1,10 @@
 package com.ssafy.userservice.api.controller;
 
+import com.ssafy.userservice.api.request.UserInfoRequest;
+import com.ssafy.userservice.api.service.UserService;
+import com.ssafy.userservice.db.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
+    private final UserService userService;
 
     @GetMapping
     public String index(){

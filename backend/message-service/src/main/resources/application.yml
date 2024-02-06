@@ -20,9 +20,9 @@ spring:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 
-logging:
-  level:
-    root: DEBUG
+#logging:
+#  level:
+#    root: DEBUG
     # org:
     #   springframework:
     #     web:
@@ -37,13 +37,6 @@ springdoc:
     path: /api/message/v3/api-docs
   swagger-ui:
     path: /api/message/swagger-ui.html
-
-# grpc를 위해 추가
-#grpc:
-#  client:
-##      address: 'static://user-service:9090'
-#    user-service:
-#      address: 'static://user-service:9090'
 
 eureka:
   client:

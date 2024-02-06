@@ -3,12 +3,15 @@ package com.ssafy.userservice.api.service;
 import com.ssafy.userservice.api.oauth2.userinfo.KakaoUserInfo;
 import com.ssafy.userservice.api.oauth2.userinfo.NaverUserInfo;
 import com.ssafy.userservice.api.oauth2.userinfo.OAuth2UserInfo;
+import com.ssafy.userservice.db.entity.*;
+import com.ssafy.userservice.api.request.UserInfoRequest;
 import com.ssafy.userservice.db.entity.Auth;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
-import com.ssafy.userservice.db.entity.User;
 import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -55,7 +58,6 @@ public class UserService extends DefaultOAuth2UserService {
         String id = uuid.toString();
         String username = userInfo.getName();
         String email = userInfo.getEmail();
-        String role = "ROLE_USER"; //일반 유저
         String profileUrl = userInfo.getProfileUrl();
         String gender = userInfo.getGender();
         int ageRange = userInfo.getAgeRange();
@@ -80,7 +82,7 @@ public class UserService extends DefaultOAuth2UserService {
                     .name(username)
                     .provider(provider)
                     .providerId(providerId)
-                    .role(role)
+                    .role(Role.USER)
                     .build();
             authRepository.save(auth);
         }
@@ -88,5 +90,45 @@ public class UserService extends DefaultOAuth2UserService {
             auth =findAuth.get();
         }
         return new PrincipalDetails(auth, oAuth2User.getAttributes());
+    }
+
+    // User 탈퇴
+    public ResponseEntity<?> deleteUser(String id){
+        Optional<User> findUser = userRepository.findById(id);
+        if (findUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during deletion");
+        }
+        else{
+            userRepository.deleteById(id);
+            return ResponseEntity.ok().body("Delete successfully");
+        }
+    }
+
+    // User 정보 조회
+    public ResponseEntity<User> getUser(String id){
+        Optional<User> findUser = userRepository.findById(id);
+        User user = findUser.get();
+        return ResponseEntity.ok().body(user);
+    }
+
+    // User 정보 수정
+    public ResponseEntity<?> patchUser(String id, UserInfoRequest userInfoRequest){
+        Optional<User> findUser = userRepository.findById(id);
+        User user = null;
+        // user를 찾지 못했다면
+        if (findUser.isEmpty()) {
+            user = User.builder()
+                    .id(id)
+                    .nickname(userInfoRequest.getNickname())
+                    .gender(userInfoRequest.getGender())
+                    .ageRange(userInfoRequest.getAgeRange())
+                    .profile_url(userInfoRequest.getProfile_url())
+                    .build();
+            userRepository.save(user);
+            return ResponseEntity.ok().body("UserInfo modify successfully");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during modification");
+        }
     }
 }
