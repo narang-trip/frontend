@@ -3,8 +3,7 @@ import axios from "axios";
 
 const LoginModal = (props) => {
   const modalBG = useRef(null);
-  const kakaoLoginURL =
-    "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
+  const kakaoLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
   const naverLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
 
   return (
