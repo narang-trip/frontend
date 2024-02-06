@@ -38,6 +38,7 @@ public class ChatController {
     public ResponseEntity<String> postChatroom(@RequestBody ChatroomRequest chatroomRequest) {
         return ResponseEntity.ok(chatService.postChatroom(chatroomRequest));
     }
+
     // 채팅 생성 -> stomp으로 처리
 //    @PostMapping("/{chatroomId}/chat")
 //    public ResponseEntity<String> postChatMessageByChatroomId(@PathVariable String chatroomId) {
