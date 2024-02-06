@@ -16,7 +16,7 @@ const Login = () => {
     try {
       const res = axios.post(
         "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
-        { code: code }
+        { provider: code }
       );
       console.log(res);
     } catch (error) {
