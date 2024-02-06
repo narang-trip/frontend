@@ -13,6 +13,7 @@ const Login = () => {
     const code = params.get("code");
     console.log(code);
     console.log("test");
+<<<<<<< HEAD
     (async () => {
       try {
         const res = await axios.post(
@@ -25,6 +26,21 @@ const Login = () => {
       dispatch(authAction.Login(code));
     })();
   });
+=======
+   (async () => {
+    try {
+      const res = await axios.post(
+        "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
+        { provider: code }
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+    dispatch(authAction.Login(code));
+  })();
+})
+>>>>>>> f304613d987e3f0bd13d26fbdc51a5d4034def38
 
   return <>뭔가 뭔가 무언가의 페이지</>;
 };
