@@ -4,6 +4,8 @@ import { Droppable } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
 import { scheduleActions } from "../../store/scheduleSlice";
 import TimeLine from "./TimeLine";
+import { useEffect } from "react";
+import { useState } from "react";
 
 // import * as Y from "yjs";
 // import { WebrtcProvider } from "y-webrtc";
@@ -35,7 +37,13 @@ const Plan = () => {
   const list = useSelector((state) => state.schedule);
   const day = useSelector((state) => state.time);
   const dispatch = useDispatch();
-  console.log(day);
+  console.log(day.day);
+
+  useEffect(() => {
+    for (var i = 0; i < day.day; i++) {
+      dispatch(scheduleActions.tmpAddDay());
+    }
+  }, [day.day, dispatch]);
 
   // ydoc.on("afterTransaction", () => {
   //   setList(Array.from(ymap.get("list")));
