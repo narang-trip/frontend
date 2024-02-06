@@ -6,7 +6,7 @@ const LoginModal = (props) => {
   const kakaoLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
   const naverLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
 
-  axios.defaults.withCredentials = true;
+  // axios.defaults.withCredentials = true;
 
   const kakaoLogin = () => {
     axios
