@@ -25,21 +25,21 @@ import java.io.IOException;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/oauth2/authorization/{provider}")
-    public RedirectView redirectToOAuth2Provider(@AuthenticationPrincipal OAuth2User principal,
-                                                 @PathVariable String provider,
-                                                 HttpServletRequest request,
-                                                 HttpServletResponse response) throws IOException {
-
-        // 이전 요청이 있다면 해당 URL로 리다이렉션, 없으면 기본 URL 사용
-        RequestCache requestCache = new HttpSessionRequestCache();
-        SavedRequest savedRequest = requestCache.getRequest(request, response);
-
-        String redirectUri = (savedRequest != null) ? savedRequest.getRedirectUrl() : "/";
-
-        // OAuth2 로그인을 위한 엔드포인트로 리다이렉션
-        return new RedirectView("https://i10a701.p.ssafy.io/oauth2/authorization/" + provider + "?redirect_uri=" + redirectUri);
-    }
+//    @GetMapping("/oauth2/authorization/{provider}")
+//    public RedirectView redirectToOAuth2Provider(@AuthenticationPrincipal OAuth2User principal,
+//                                                 @PathVariable String provider,
+//                                                 HttpServletRequest request,
+//                                                 HttpServletResponse response) throws IOException {
+//
+//        // 이전 요청이 있다면 해당 URL로 리다이렉션, 없으면 기본 URL 사용
+//        RequestCache requestCache = new HttpSessionRequestCache();
+//        SavedRequest savedRequest = requestCache.getRequest(request, response);
+//
+//        String redirectUri = (savedRequest != null) ? savedRequest.getRedirectUrl() : "/";
+//
+//        // OAuth2 로그인을 위한 엔드포인트로 리다이렉션
+//        return new RedirectView("https://i10a701.p.ssafy.io/oauth2/authorization/" + provider + "?redirect_uri=" + redirectUri);
+//    }
 
     @GetMapping
     public String index(){
