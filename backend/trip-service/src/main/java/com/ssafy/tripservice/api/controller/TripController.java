@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
+import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.api.service.TripService;
 import com.ssafy.tripservice.db.entity.Trip;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -105,5 +107,10 @@ public class TripController {
     public ResponseEntity<Void> deleteTrip(@RequestBody UserRequest userRequest) {
         return tripService.deleteTrip(userRequest) ?
                 ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/page/{pageNo}")
+    public ResponseEntity<Page<TripPageResponse>> getAvailableTripsPageable(@RequestParam("pageNo") int pageNo) {
+        return new ResponseEntity<>(tripService.getAvailableTripPages(pageNo), HttpStatus.OK);
     }
 }

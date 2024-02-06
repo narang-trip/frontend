@@ -2,7 +2,10 @@ package com.ssafy.tripservice.api.service;
 
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
+import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
+import com.ssafy.tripservice.db.entity.Trip;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,4 +33,6 @@ public interface TripService {
     boolean leaveTrip(UserRequest userRequest);
 
     boolean deleteTrip(UserRequest userRequest);
+
+    public Page<TripPageResponse> getAvailableTripPages(int pageNo);
 }
