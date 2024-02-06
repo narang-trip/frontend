@@ -17,9 +17,10 @@ const scheduleSlice = createSlice({
       state[action.payload[1][0]].splice(action.payload[1][1], 0, ...data);
     },
     // 임시로 날짜 추가하기
-    tmpAddDay: (state) => {
+    tmpAddDay: (state, action) => {
+      console.log(action.payload);
       state.push([]);
-      for (var i = 0; i < 170; i++) {
+      for (var i = 0; i < action.payload * 6; i++) {
         state[state.length - 1].push([]);
       }
     },

@@ -3,9 +3,7 @@ import DayPlan from "./DayPlan";
 import { Droppable } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
 import { scheduleActions } from "../../store/scheduleSlice";
-import TimeLine from "./TimeLine";
 import { useEffect } from "react";
-import { useState } from "react";
 
 // import * as Y from "yjs";
 // import { WebrtcProvider } from "y-webrtc";
@@ -38,12 +36,15 @@ const Plan = () => {
   const day = useSelector((state) => state.time);
   const dispatch = useDispatch();
   console.log(day.day);
+  const lineCnt =
+    (Number(day.endHour) - Number(day.startHour)) * 2 +
+    (Number(day.endMinute) - Number(day.startMinute)) / 30;
 
   useEffect(() => {
     for (var i = 0; i < day.day; i++) {
-      dispatch(scheduleActions.tmpAddDay());
+      dispatch(scheduleActions.tmpAddDay(lineCnt));
     }
-  }, [day.day, dispatch]);
+  }, [day.day, dispatch, lineCnt]);
 
   // ydoc.on("afterTransaction", () => {
   //   setList(Array.from(ymap.get("list")));
@@ -56,7 +57,7 @@ const Plan = () => {
   const update = () => {};
 
   const add = () => {
-    dispatch(scheduleActions.tmpAddDay());
+    dispatch(scheduleActions.tmpAddDay(lineCnt));
   };
 
   return (
@@ -77,10 +78,6 @@ const Plan = () => {
         </div>
       ))}
       <button onClick={add}>날짜추가</button>
-
-      <div className="absolute pointer-events-none top-0 left-0 h-full w-full">
-        <TimeLine Time={day} />
-      </div>
     </div>
   );
 };
