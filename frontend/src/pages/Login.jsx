@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { authAction } from "../store/auth-slice";
+import { authAction } from "../store/authSlice";
 import { useEffect } from "react";
 
 const Login = () => {
