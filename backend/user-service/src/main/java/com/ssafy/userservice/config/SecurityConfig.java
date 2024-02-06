@@ -48,7 +48,7 @@ public class SecurityConfig {
 //                .cors().and()
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .headers(AbstractHttpConfigurer::disable) // 개발 단계에서만 사용하기!
+//                .headers(AbstractHttpConfigurer::disable) // 개발 단계에서만 사용하기!
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/", "/api/user/**", "/h2-console/**", "/sign-up").permitAll()
                         .anyRequest().authenticated())

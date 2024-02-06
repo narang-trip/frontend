@@ -4,6 +4,7 @@ import com.ssafy.userservice.api.request.UserInfoRequest;
 import com.ssafy.userservice.api.service.UserService;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserRestController {
     private final UserService userService;
+
+    @GetMapping("/login/oauth/{provider}")
+    public void login(@PathVariable String provider, HttpServletRequest request){
+        String code = request.getParameter("code");
+        System.out.println(code);
+        System.out.println(provider);
+        System.out.println("Test");
+    }
 
     @GetMapping("/welcome")
     public String getWelcome(Authentication authentication) {
