@@ -1,7 +1,5 @@
 import { useRef } from "react";
 import axios from "axios";
-import qs from "qs";
-
 const LoginModal = (props) => {
   const modalBG = useRef(null);
   const kakaoLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
@@ -13,10 +11,10 @@ const LoginModal = (props) => {
   const code = params.get("code");
 
   const kakaoLogin = async () => {
-    const payload = qs.stringify({
+    const payload = {
       grant_type: "authorization_code",
       code: code,
-    });
+    };
     try {
       const res = await axios.post(kakaoLoginURL, payload);
       console.log(res);
