@@ -5,9 +5,10 @@ import { ModalPortal } from "../../modals/ModalPortal.jsx";
 import TitleInput from "./TitleInput.jsx";
 import ConceptSelect from "./ConceptSelect.jsx";
 import DateRangePicker from "./DateRangePicker.jsx";
-import FileUploadBox from "./FileUploadBox.jsx";
 import PositionCheck from "./PositionCheck.jsx";
 import ContinentModal from "../../modals/ContinentModal.jsx";
+
+import axios from "axios";
 
 export default function TripWriteForm() {
   const [board, setBoard] = useState({
@@ -15,15 +16,19 @@ export default function TripWriteForm() {
     concept: "",
     img: "",
     location: "",
-    continent: "",
+    startDate: "",
+    endDate: "",
+    dateRange: "",
     count: 0,
     myPosition: [],
     recruitPosition: [],
-    plan: "",
+    planId: "",
     description: "",
-    gender: "",
-    cost: 0,
+    deposit: 0,
   });
+
+  const [imgUrl, setImgUrl] = useState("");
+
   const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -31,7 +36,7 @@ export default function TripWriteForm() {
   // 값이 변할 때 추적하기 위한 함수
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBoard((board) => ({ ...board, [name]: value }));
+    setBoard((prevBoard) => ({ ...prevBoard, [name]: value }));
   };
 
   const [dateRange, setDateRange] = useState([null, null]);
@@ -50,9 +55,22 @@ export default function TripWriteForm() {
   const handleLocationChange = (selectedLocation) => {
     setBoard((board) => ({
       ...board,
-      location: board.location ? `${board.location}:${selectedLocation}` : selectedLocation,
+      location: board.location
+        ? `${board.location}:${selectedLocation}`
+        : selectedLocation,
     }));
     console.log(selectedLocation);
+  };
+
+  // 이미지 input이 변경될 때 호출되는 함수
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setBoard((board) => ({
+      ...board,
+      img: file,
+    }));
+
+    setImgUrl(URL.createObjectURL(file));
   };
 
   // 모달 open
@@ -71,14 +89,57 @@ export default function TripWriteForm() {
     setIsOpen(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 데이터 저장 또는 데이터 저장을 위한 액션 디스패치
-    console.log("데이터 저장 중:", board);
 
-    // 저장 후 이동할 페이지로 이동
-    navigate("/detail");
-  }; // handleSubmit 끝
+    const formData = new FormData();
+
+    const requestData = {
+      tripName: board.title,
+      tripDesc: board.description,
+      destination: board.location,
+      tripParticipantsSize: board.count,
+      tripDeposit: board.deposit,
+      leaderRoles: board.myPosition,
+      tripConcepts: board.concept,
+      tripRoles: board.recruitPosition,
+      departureDate: board.startDate,
+      returnDate: board.endDate,
+      participants: [],
+    };
+    try {
+      // 이미지 파일이 선택되었을 경우에만 추가
+      if (board.img) {
+        formData.append("tripImg", board.img);
+      }
+
+      // 나머지 데이터 추가
+      formData.append(
+        "tripRequest",
+        new Blob([JSON.stringify(requestData)], {
+          type: "application/json",
+        })
+      );
+
+      // 데이터를 서버로 전송
+      const response = await axios.post(
+        "https://i10a701.p.ssafy.io/api/trip/create",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("서버 응답:", response.data);
+
+      // 저장 후 이동할 페이지로 이동
+      navigate(`/detail/${response.data.tripId}`);
+    } catch (error) {
+      console.error("서버 응답 에러", error);
+    }
+  };
 
   useEffect(() => {
     // 모달이 열렸을 때 스크롤 막기 위함
@@ -97,7 +158,7 @@ export default function TripWriteForm() {
     <Fragment>
       <div className="text-left">
         <form onSubmit={handleSubmit}>
-          <div className="w-9/12 px-8 py-4 mx-auto border rounded-xl bg-stone-100 border-stone-200">
+          <div className="w-9/12 px-8 py-4 mx-auto border rounded-xl border-stone-200">
             <div className="grid grid-cols-3 gap-6 px-4">
               <div className="col-span-3">
                 <p className="my-2 text-2xl font-bold text-center">
@@ -106,21 +167,22 @@ export default function TripWriteForm() {
               </div>
               <div className="flex flex-col justify-between col-span-2">
                 <TitleInput value={board.title} onChange={handleChange} />
-
                 <ConceptSelect value={board.concept} onChange={handleChange} />
                 <DateRangePicker
                   dateRange={dateRange}
                   onChange={handleDateChange}
                 />
                 <div className="w-full my-2">
-                  <label className="mr-10 text-sm font-medium">여행 장소</label>
+                  <label className="mr-10 text-base font-medium">
+                    여행 장소
+                  </label>
                   <input
                     type="text"
                     name="location"
                     placeholder="장소를 선택해주세요"
                     value={board.location}
                     onClick={OpenLocaitonModal}
-                    className="border border-stone-200 bg-stone-0 p-1.5 w-2/3 text-gray-900 placeholder:text-gray-300 text-xs"
+                    className="border rounded-sm border-neutral-300  p-1.5 w-2/3 text-neutral-700 placeholder:text-neutral-300 text-sm"
                     readOnly
                   ></input>
                   {isOpen && (
@@ -133,52 +195,87 @@ export default function TripWriteForm() {
                   )}
                 </div>
                 <div className="w-full my-2">
-                  <label className="mr-10 text-sm font-medium">모집 인원</label>
+                  <label className="mr-10 text-base font-medium">
+                    모집 연령
+                  </label>
+                  <input
+                    type="range"
+                    min="20"
+                    max="70"
+                    step="10"
+                    className="w-2/3 "
+                  />
+                </div>
+                <div className="w-full my-2">
+                  <label className="mr-10 text-base font-medium">
+                    모집 인원
+                  </label>
                   <input
                     type="number"
                     name="count"
-                    placeholder=""
                     value={board.count}
                     onChange={handleChange}
                     required
-                    className="border border-stone-200 bg-stone-0 p-1.5 w-1/6 text-gray-900 placeholder:text-gray-300 text-xs mr-10"
+                    className="border rounded-sm border-neutral-300 p-1.5 w-1/6 text-neutral-700 placeholder:text-neutral-300 text-sm mr-10"
                     max={12}
                   />
-                  <label className="mr-10 text-sm font-medium">예약금</label>
+                  <label className="mr-10 text-base font-medium">예약금</label>
                   <input
                     type="number"
-                    name="cost"
+                    name="deposit"
                     placeholder="&#8361; 20,000"
-                    value={board.cost}
+                    value={board.deposit}
                     onChange={handleChange}
                     required
-                    className="border border-stone-200 bg-stone-0 p-1.5 w-1/4 text-gray-900 placeholder:text-gray-300 text-xs"
+                    className="border rounded-sm border-neutral-300 p-1.5 w-1/4 text-neutral-700 placeholder:text-neutral-300 text-sm"
                   />
                 </div>
-                <label className="text-sm">내 포지션</label>
+                <label className="text-base">내 포지션</label>
                 <PositionCheck
                   value={board.myPosition}
                   onChange={(positions) =>
                     setBoard((prev) => ({ ...prev, myPosition: positions }))
                   }
                 />
-                <label className="text-sm">모집 포지션</label>
+                <label className="text-base">모집 포지션</label>
                 <PositionCheck
                   value={board.recruitPosition}
                   onChange={(positions) =>
-                    setBoard((prev) => ({ ...prev, recruitPosition: positions }))
+                    setBoard((prev) => ({
+                      ...prev,
+                      recruitPosition: positions,
+                    }))
                   }
                 />
                 <div className="w-full my-2">
-                  <label className="mr-10 text-sm font-medium">
+                  <label className="mr-10 text-base font-medium">
                     여행 계획표
                   </label>
                 </div>
               </div>
               <div className="flex flex-col justify-between col-span-1">
                 <div className="h-2/5">
-                  <img src={`assets/airplain.jpg`} className="my-1 h-3/4" />
-                  <input type="file" className="text-xs" />
+                  {imgUrl ? (
+                    <img
+                      src={imgUrl}
+                      className="my-1 h-3/4"
+                      alt="Selected Image"
+                    />
+                  ) : (
+                    <img
+                      src="assets/airplain.jpg"
+                      className="my-1 h-3/4"
+                      alt="Default Image"
+                    />
+                  )}
+                  <label className="text-sm font-medium">여행 이미지</label>
+                  <br />
+                  <input
+                    type="file"
+                    onChange={handleImageChange}
+                    className="text-xs"
+                    accept="image/*" // 이미지 파일만 허용
+                  />
                 </div>
                 <div className="h-3/5">
                   <label className="text-sm font-medium">여행 설명</label>
@@ -186,7 +283,7 @@ export default function TripWriteForm() {
                   <textarea
                     value={board.description}
                     onChange={handleChange}
-                    className="w-full text-xs resize-none h-4/5 p-1.5"
+                    className="w-full text-xs  rounded-sm resize-none h-4/5 p-1.5 border border-neutral-300 ext-neutral-700"
                     name="description"
                   />
                 </div>
