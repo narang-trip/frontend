@@ -1,4 +1,5 @@
 import { Draggable } from "react-beautiful-dnd";
+import { useSelector } from "react-redux";
 
 const Schedule = (props) => {
   const index = props.data[1];
@@ -11,6 +12,12 @@ const Schedule = (props) => {
     loca: [card.loca],
     p: card.padding - 135,
   };
+
+  const time = useSelector((state) => state.time);
+  console.log(time);
+  const height = time.blackHeight.toString();
+  console.log(height);
+  const CSS = `bg-black h-[${height}px]`;
 
   return (
     <>
@@ -61,7 +68,7 @@ const Schedule = (props) => {
               {...provided.draggableProps}
               {...provided.dragHandleProps}
             >
-              <div className="bg-black h-1"></div>
+              <div className={CSS}></div>
             </div>
           )}
         </Draggable>
