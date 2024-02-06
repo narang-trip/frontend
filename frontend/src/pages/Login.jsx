@@ -12,21 +12,17 @@ const Login = () => {
 
   console.log(code);
 
-  try {
-    const res = axios.get("api/user/login/oauth/kakao");
-    console.log(res);
-  } catch (error) {
-    console.log(error);
-  }
+  useEffect(() => {
+    console.log("test");
+    try {
+      const res = axios.get("api/user/login/oauth/kakao");
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  });
 
   dispatch(authAction.Login(code));
-
-  console.log("test");
-
-  useEffect(() => {
-    console.log("여기 왔다감");
-    // navigate("/");
-  });
 
   return <>뭔가 뭔가 무언가의 페이지</>;
 };
