@@ -1,9 +1,11 @@
 package com.ssafy.userservice.api.controller;
 
+import com.ssafy.userservice.api.request.UserInfoRequest;
 import com.ssafy.userservice.api.service.UserService;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,15 +31,21 @@ public class UserRestController {
         return user; // 로그인 성공시 uuid 리턴
     }
 
+    // User 탈퇴
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+        return userService.deleteUser(id);
+    }
 
+    // User 정보 조회
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<User> getUser(@PathVariable String id){
+        return userService.getUser(id);
+    }
 
-//    @GetMapping("/oauth2/authorization/naver")
-//    public String naverLogin() {
-//        return "redirect:/oauth2/authorization/naver";
-//    }
-//
-//    @GetMapping("/oauth2/authorization/kakao")
-//    public String kakaoLogin() {
-//        return "redirect:/oauth2/authorization/kakao";
-//    }
+    // User 정보 수정
+    @PatchMapping("/profile/{id}")
+    public ResponseEntity<?> patchUser(@PathVariable String id, @RequestBody UserInfoRequest userInfoRequest){
+        return userService.patchUser(id, userInfoRequest);
+    }
 }

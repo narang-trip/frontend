@@ -8,13 +8,18 @@ import com.ssafy.paymentservice.entity.KakaoCancelResponse;
 import com.ssafy.paymentservice.entity.KakaoReadyResponse;
 import com.ssafy.paymentservice.db.repository.ChargeRecordRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +31,8 @@ public class KakaoPayService {
     private KakaoReadyResponse kakaoReady;
     private final ChargeRecordRepository chargeRecordRepository;
     private final UserMileageRepository userMileageRepository;
+    @Autowired
+    private TextEncryptor textEncryptor;
 
     public KakaoReadyResponse kakaoPayReady(String userId, String price) {
 
@@ -87,13 +94,26 @@ public class KakaoPayService {
 
         if (approveResponse != null) {
             ChargeRecord chargeRecord = null;
-            UserMileage userMileage = userMileageRepository.findById(userId).get();
+
+            UserMileage userMileage = userMileageRepository.findById(userId)
+                    .orElseGet(() -> {
+                        UserMileage newUserMileage = new UserMileage(userId, textEncryptor.encrypt(String.valueOf(0)));
+                        return userMileageRepository.save(newUserMileage);
+                    });
+
             /*
                 todo
                     프론트에서 넘겨준 마일리지와 db에 저장된 마일리지 비교 필요
              */
-            int new_mileage = userMileage.getMileage() + approveResponse.getAmount().getTotal();
-            userMileage.setMileage(new_mileage);
+
+            String encryptedMileage = userMileage.getEncryptedMileage();
+            // 암호화된 마일리지 복호화
+            int current_mileage = Integer.parseInt(textEncryptor.decrypt(encryptedMileage));
+            int new_mileage = current_mileage + approveResponse.getAmount().getTotal();
+
+            String newEncryptedMileage = textEncryptor.encrypt(String.valueOf(new_mileage));
+            userMileage.setEncryptedMileage(newEncryptedMileage);
+
             userMileageRepository.save(userMileage);
 
             chargeRecord = ChargeRecord.builder()

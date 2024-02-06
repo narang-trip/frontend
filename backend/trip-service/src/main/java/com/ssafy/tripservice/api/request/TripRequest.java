@@ -16,28 +16,42 @@ public class TripRequest {
     private UUID tripId;
     private String tripName;
     private String tripDesc;
-    private String tripRecruitDate;
+    private String tripImgUrl;
+    private LocalDateTime recruitDate;
     private String destination;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
-    private String tripChat;
+    private UUID tripLeaderId;
+    private UUID tripChatId;
     private UUID tripPlanId;
-    private int tripAgeUpperBound;
-    private int tripAgeLowerBound;
+    private Integer view_cnt;
+    private Integer tripParticipantsSize;
+    private Integer tripDeposit;
+    private Integer tripAgeUpperBound;
+    private Integer tripAgeLowerBound;
+    private List<String> tripConcepts;
+    private List<String> tripRoles;
     private List<Trip.Participant> participants;
 
     public Trip toEntity() {
         return Trip.builder()
                 .tripName(this.tripName)
                 .tripDesc(this.tripDesc)
-                .tripRecruitDate(this.tripRecruitDate)
+                .tripImgUrl(this.tripImgUrl)
+                .recruitDate(this.recruitDate)
                 .destination(this.destination)
                 .departureDate(this.departureDate)
                 .returnDate(this.returnDate)
-                .tripChat(this.tripChat)
+                .tripLeaderId(this.tripLeaderId)
+                .tripChatId(this.tripChatId)
                 .tripPlanId(this.tripPlanId)
+                .view_cnt(this.view_cnt)
+                .tripParticipantsSize(this.tripParticipantsSize)
+                .tripDeposit(this.tripDeposit)
                 .tripAgeUpperBound(this.tripAgeUpperBound)
                 .tripAgeLowerBound(this.tripAgeLowerBound)
+                .tripConcepts(this.tripConcepts)
+                .tripRoles(this.tripRoles)
                 .participants(this.participants)
                 .build();
     }
