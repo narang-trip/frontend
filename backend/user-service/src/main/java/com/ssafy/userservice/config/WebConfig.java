@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*") // 또는 특정 도메인을 지정
+                .allowedOrigins("https://i10a701.p.ssafy.io") // 또는 특정 도메인을 지정
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("Content-Type")
                 .allowCredentials(true);
