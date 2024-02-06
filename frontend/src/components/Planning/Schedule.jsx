@@ -16,14 +16,13 @@ const Schedule = (props) => {
 
   const time = useSelector((state) => state.time);
   // console.log(time);
-  const [height, setHeight] = useState();
+  const [height, setHeight] = useState(time.blackHeight);
+  const [CSS, setCSS] = useState("");
 
   useEffect(() => {
-    setHeight(time.blackHeight);
     console.log(height);
-  }, height);
-
-  const CSS = `bg-black h-[${height}px]`;
+    setCSS(`bg-black h-[${height}px]`);
+  }, [height]);
 
   return (
     <>

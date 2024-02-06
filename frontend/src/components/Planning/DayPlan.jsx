@@ -17,7 +17,7 @@ const DayPlan = (props) => {
     const blackHeight = (divRef.current.scrollHeight - 32) / (lineCnt * 6);
     console.log(blackHeight);
     dispatch(timeActions.setHeight(blackHeight));
-  }, divRef);
+  }, [dispatch, lineCnt]);
 
   return (
     <div
