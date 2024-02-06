@@ -24,8 +24,29 @@ export default function TripDetail() {
     setIsOpen(false);
   };
 
+  // useEffect (여행 상세 정보 로딩)
   useEffect(() => {
-    // 모달이 열렸을 때 스크롤 막기 위함
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://i10a701.p.ssafy.io/api/trip/${tripId}`
+        );
+
+        setTripDetails(response.data);
+        setDepartureDate(
+          DateFormatter({ dateString: response.data.departureDate })
+        );
+        setReturnDate(DateFormatter({ dateString: response.data.returnDate }));
+      } catch (error) {
+        console.error("게시판 상세정보를 가져오는 중 에러 발생:", error);
+      }
+    };
+
+    fetchData();
+  }, [tripId]);
+
+  // useEffect (모달 열렸을 때 스크롤 막기)
+  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -37,27 +58,6 @@ export default function TripDetail() {
     };
   }, [isOpen]);
 
-  useEffect(() => {
-    const fetchTripDetails = async () => {
-      try {
-        const response = await axios.get(
-          `https://i10a701.p.ssafy.io/api/trip/${tripId}`
-        );
-        setTripDetails(response.data);
-        console.log(response.data);
-
-        setDepartureDate(
-          DateFormatter({ dateString: response.data.departureDate })
-        );
-        setReturnDate(DateFormatter({ dateString: response.data.returnDate }));
-      } catch (error) {
-        console.error("게시판 상세정보를 가져오는 중 에러 발생:", error);
-      }
-    };
-
-    fetchTripDetails();
-  }, [tripId]);
-
   return (
     <Fragment>
       <div className="grid grid-cols-3">
@@ -66,7 +66,7 @@ export default function TripDetail() {
             {tripDetails ? (
               <div>
                 <img
-                  src={`../assets/airplain.jpg`}
+                  src={tripDetails.tripImgUrl}
                   className="my-1 w-full h-[15rem]"
                 />
                 <p className="my-5 text-lg font-bold text-left">
@@ -74,7 +74,7 @@ export default function TripDetail() {
                 </p>
                 <div>
                   <div className="mr-10 text-sm font-medium text-right text-stone-700">
-                    조회수 : 0
+                    조회수 : {tripDetails.viewCnt}
                   </div>
                 </div>
                 <div>
@@ -99,21 +99,22 @@ export default function TripDetail() {
                     </div>
                     <div className="flex flex-row items-center my-3 text-sm">
                       <SlPeople className="mx-3 text-neutral-400" size="24" />
-                      <div className="text-neutral-700"> 2 / 4 </div>
+                      <div className="text-neutral-700">
+                        {" "}
+                        2 / {tripDetails.tripParticipantsSize}{" "}
+                      </div>
                     </div>
                     <div className="flex flex-row items-center my-3 text-sm">
                       <SlBadge className="mx-3 text-neutral-400" size="24" />
                       <div className="flex flex-wrap justify-between">
-                        {tripDetails.participants
-                          .filter((participant) => participant.role !== null)
-                          .map((participant, index) => (
-                            <span
-                              key={index}
-                              className="inline-flex items-center px-2 py-1 m-0.5 text-sm font-medium rounded-full text-neutral-700 bg-stone-100 ring-1 ring-inset ring-stone-500"
-                            >
-                              {participant.role}
-                            </span>
-                          ))}
+                        {tripDetails.tripRoles.map((role, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2 py-1 m-0.5 text-sm font-medium rounded-full text-neutral-700 bg-stone-100 ring-1 ring-inset ring-stone-500"
+                          >
+                            {role}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -130,7 +131,10 @@ export default function TripDetail() {
             ) : (
               <div>Loading...</div>
             )}
-            <button className="inline-flex px-3 py-2 text-sm font-medium text-indigo-700 rounded-md bg-indigo-50 ring-1 ring-inset ring-indigo-700/10" onClick={OpenApplicationModal}>
+            <button
+              className="inline-flex px-3 py-2 text-sm font-medium text-indigo-700 rounded-md bg-indigo-50 ring-1 ring-inset ring-indigo-700/10"
+              onClick={OpenApplicationModal}
+            >
               신청하기
             </button>
             {isOpen && (

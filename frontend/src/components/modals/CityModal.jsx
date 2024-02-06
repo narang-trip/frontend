@@ -92,14 +92,14 @@ const CityModal = ({
               <IoMdClose />
             </button>
           </div>
-          <p className="m-3 text-base font-bold text-center">
+          <p className="m-3 text-lg font-bold text-center">
             도시🗽를 선택해주세요!
           </p>
           <div className="inline-block mb-4 align-middle">
             <div className="flex flex-wrap justify-center">
               {cityData[selectedCountry].map((city) => (
                 <button
-                  className="w-[10rem] h-[4.5rem] m-3 text-xs rounded-xl bg-stone-100 hover:bg-amber-200"
+                className="w-[10rem] h-[4.5rem] m-3 text-base rounded-xl bg-stone-100 hover:bg-amber-200"
                   key={city}
                   onClick={() => handleCountrySelect(city)}
                 >
