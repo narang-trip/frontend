@@ -32,7 +32,7 @@ public class Trip extends BaseEntity{
     private UUID tripLeaderId;
     private UUID tripChatId;
     private UUID tripPlanId;
-    private Integer view_cnt;
+    private Integer viewCnt;
     private Integer tripParticipantsSize;
     private Integer tripDeposit;
     private Integer tripAgeUpperBound;
@@ -54,7 +54,7 @@ public class Trip extends BaseEntity{
                 .tripLeaderId(this.tripLeaderId)
                 .tripChatId(this.tripChatId)
                 .tripPlanId(this.tripPlanId)
-                .view_cnt(this.view_cnt)
+                .viewCnt(this.viewCnt)
                 .tripParticipantsSize(this.tripParticipantsSize)
                 .tripDeposit(this.tripDeposit)
                 .tripAgeUpperBound(this.tripAgeUpperBound)
