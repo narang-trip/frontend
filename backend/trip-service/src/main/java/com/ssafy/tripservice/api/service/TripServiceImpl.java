@@ -6,22 +6,30 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
+import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.db.entity.QTrip;
 import com.ssafy.tripservice.db.entity.Trip;
 import com.ssafy.tripservice.db.repository.TripRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.core.Local;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Unwrapped;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Pageable;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -100,6 +108,26 @@ public class TripServiceImpl implements TripService {
         }
 
         return tripResponses;
+    }
+
+    public Page<TripPageResponse> getAvailableTripPages(int pageNo) {
+        final int pageSize = 9;
+
+        PageRequest pageRequest = PageRequest.of(pageSize,pageNo, Sort.by("departureDate").ascending());
+
+        Query query = new Query()
+                .with(pageRequest)
+                .skip((long) pageRequest.getPageSize() * pageRequest.getPageNumber())
+                .limit(pageSize);
+
+        query.addCriteria(Criteria.where("departureDate").gt(LocalDateTime.now()));
+
+        List<Trip> availableTrips = mongoTemplate.find(query, Trip.class);
+
+        return PageableExecutionUtils
+                .getPage(availableTrips, pageRequest,
+                        () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
+                .map(p -> p.toTripPageResponse(pageNo));
     }
 
     @Override
