@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { ModalPortal } from "./modals/ModalPortal";
-import LoginModal from "./modals/LoginModal";
 import { useDispatch, useSelector } from "react-redux";
-import { authAction } from "../store/auth-slice";
+import { authAction } from "../store/authSlice";
+
+import LoginModal from "./modals/LoginModal";
 import Dropdown from "./UpNavDropdown";
 
-export default function UpperNavbar() {
+const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const code = useSelector((state) => state.auth.code);
   console.log(code);
@@ -37,10 +38,14 @@ export default function UpperNavbar() {
 
   return (
     <header className="sticky top-0 z-10 flex items-center justify-between w-full p-4 bg-stone-100">
-      <div className='ml-5'>
-        <img src="/narang_logo.png" className="w-11 h-11" />
+      <div className="ml-5">
+        <img src="/narang_logo.png" alt="나랑 이미지" className="w-11 h-11" />
       </div>
-      {code === "" && <button onClick={OpenLoginModal} className="mr-5 hover:font-semibold" >Login</button>}
+      {code === "" && (
+        <button onClick={OpenLoginModal} className="mr-5 hover:font-semibold">
+          Login
+        </button>
+      )}
       {code !== "" && (
         <div className="flex justify-between space-x-4">
           <div>🔔</div>
@@ -55,4 +60,6 @@ export default function UpperNavbar() {
       )}
     </header>
   );
-}
+};
+
+export default UpperNavbar;
