@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
@@ -36,7 +35,7 @@ public class ChargeRecord {
         this.user_id = user_id;
         this.payment_method_type = payment_method_type;
         this.price = price;
-        this. created_at = created_at;
+        this.created_at = created_at;
         this.approved_at = approved_at;
     }
 }

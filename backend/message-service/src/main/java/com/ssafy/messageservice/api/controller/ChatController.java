@@ -1,17 +1,15 @@
 package com.ssafy.messageservice.api.controller;
 
+import com.ssafy.messageservice.api.request.AlertAttendRequest;
+import com.ssafy.messageservice.api.request.ChatroomRequest;
 import com.ssafy.messageservice.api.response.ChatListResponse;
-import com.ssafy.messageservice.api.response.ChatroomListMidResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.api.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin("*")
 @RequiredArgsConstructor
@@ -35,6 +33,11 @@ public class ChatController {
         return ResponseEntity.ok(chatPage);
     }
 
+    // 채팅방 생성
+    @PostMapping("/create")
+    public ResponseEntity<String> postChatroom(@RequestBody ChatroomRequest chatroomRequest) {
+        return ResponseEntity.ok(chatService.postChatroom(chatroomRequest));
+    }
     // 채팅 생성 -> stomp으로 처리
 //    @PostMapping("/{chatroomId}/chat")
 //    public ResponseEntity<String> postChatMessageByChatroomId(@PathVariable String chatroomId) {

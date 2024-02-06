@@ -2,7 +2,6 @@ package com.ssafy.messageservice.db.repository;
 
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.messageservice.api.response.ChatroomListMidResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.db.entity.*;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import java.util.Optional;
 @Primary
 @RequiredArgsConstructor
 public class ChatRepositoryImpl implements ChatRepositoryCustom {
-
     private final JPAQueryFactory queryFactory;
     private final ChatroomUserRepository chatroomUserRepository;
     private final UserRepository userRepository;

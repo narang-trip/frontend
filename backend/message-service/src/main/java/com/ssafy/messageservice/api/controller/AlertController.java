@@ -1,6 +1,7 @@
 package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.request.AlertAttendRequest;
+import com.ssafy.messageservice.api.request.ChatroomRequest;
 import com.ssafy.messageservice.api.response.AlertListResponse;
 import com.ssafy.messageservice.api.service.AlertService;
 import lombok.RequiredArgsConstructor;
@@ -35,14 +36,6 @@ public class AlertController {
     @PostMapping("/attend")
     public ResponseEntity<?> postAttendAlert(@RequestBody AlertAttendRequest alertAttendRequest) {
         return alertService.send(alertAttendRequest);
-//        // 여기서 만약 alertType이 ACCEPT일 경우 프론트 측에서 stomp 통신해야 함
-//        if (isAlertSent.getStatusCode().is2xxSuccessful()) {
-//            // 성공적인 응답 반환
-//            return isAlertSent;
-//        } else {
-//            // 실패 시 응답 반환
-//            return new ResponseEntity<>("Failed to send alert", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
     }
 
     // userId의 지금까지의 알림 리스트 보내주기
@@ -59,4 +52,12 @@ public class AlertController {
             return ResponseEntity.ok(alertListResponse);
         }
     }
+
+    // sse 알림 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAlert(@PathVariable String id) {
+        return alertService.deleteAlert(id);
+    }
+
+    // 여행 참여 수락 시 stomp 통신을 통해 동행자 초대
 }
