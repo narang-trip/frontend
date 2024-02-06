@@ -1,9 +1,10 @@
 import { useRef } from "react";
-import axios from "axios";
 
 const LoginModal = (props) => {
   const modalBG = useRef(null);
-  const kakaoLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
+  const kakaoClientId = import.meta.env.KAKAO_CLIENT_ID;
+  const kakaoRedirectUri = import.meta.env.KAKAO_REDIRECT_URI;
+  const kakaoLoginURL = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectUri}&response_type=code&prompt=login`;
   const naverLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
 
   return (
