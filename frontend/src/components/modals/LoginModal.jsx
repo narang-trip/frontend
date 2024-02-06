@@ -6,13 +6,13 @@ const LoginModal = (props) => {
   const kakaoLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
   const naverLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
 
-  const kakaoLogin = () => {
-    window.open(kakaoLoginURL);
-  };
+  // const kakaoLogin = () => {
+  //   window.open(kakaoLoginURL);
+  // };
 
-  const naverLogin = () => {
-    window.open(naverLoginURL);
-  };
+  // const naverLogin = () => {
+  //   window.open(naverLoginURL);
+  // };
 
   // axios.defaults.withCredentials = true;
 
@@ -72,16 +72,18 @@ const LoginModal = (props) => {
           </button>
           <h3 className="">로 그 인</h3>
           <div className="flex flex-col">
-            <img
-              className="object-cover h-16 w-36 rounded-xl"
-              src="assets/kakao_login.png"
-              onClick={kakaoLogin}
-            />
+            <a href={kakaoLoginURL}>
+              <img
+                className="object-cover h-16 w-36 rounded-xl"
+                src="assets/kakao_login.png"
+                // onClick={kakaoLogin}
+              />
+            </a>
             <button>
               <img
                 className="object-cover h-16 w-36 rounded-xl"
                 src="assets/naver_login.png"
-                onClick={naverLogin}
+                // onClick={naverLogin}
               />
             </button>
           </div>
