@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 
@@ -14,9 +15,14 @@ const Schedule = (props) => {
   };
 
   const time = useSelector((state) => state.time);
-  console.log(time);
-  const height = time.blackHeight.toString();
-  console.log(height);
+  // console.log(time);
+  const [height, setHeight] = useState();
+
+  useEffect(() => {
+    setHeight(time.blackHeight);
+    console.log(height);
+  }, height);
+
   const CSS = `bg-black h-[${height}px]`;
 
   return (
