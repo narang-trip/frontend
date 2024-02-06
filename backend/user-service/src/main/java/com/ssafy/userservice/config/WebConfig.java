@@ -15,6 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("https://i10a701.p.ssafy.io") // 또는 특정 도메인을 지정
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("Content-Type")
-                .allowCredentials(true);
+                .allowCredentials(true)
+                .exposedHeaders("Authorization", "Authorization-refresh");
     }
 }
