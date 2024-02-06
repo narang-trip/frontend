@@ -15,13 +15,20 @@ public class TripResponse {
     private UUID tripId;
     private String tripName;
     private String tripDesc;
+    private String tripImgUrl;
     private LocalDateTime recruitDate;
     private String destination;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
+    private UUID tripLeaderId;
     private UUID tripChatId;
     private UUID tripPlanId;
+    private Integer viewCnt;
+    private Integer tripParticipantsSize;
+    private Integer tripDeposit;
     private Integer tripAgeUpperBound;
     private Integer tripAgeLowerBound;
+    private String tripConcepts;
+    private List<String> tripRoles;
     private List<Trip.Participant> participants;
 }

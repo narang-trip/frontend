@@ -12,7 +12,8 @@ spring:
         show_sql: true #만들어진 sql 보여줌
         format_sql: true #sql 가독성 좋게 보여줌
     hibernate:
-      ddl-auto: create #db 초기화 전략. 기존 테이블 삭제 후 생성
+      ddl-auto: update
+#      ddl-auto: create #db 초기화 전략. 기존 테이블 삭제 후 생성
     database-platform: org.hibernate.dialect.MySQLDialect
   security: # OAuth2
     oauth2:
@@ -25,18 +26,14 @@ spring:
             client-name: Naver
             authorization-grant-type: authorization_code
 #            redirect-uri: http://localhost:8081/login/oauth2/code/naver
-#            redirect-uri: https://i10a701.p.ssafy.io/api/user/login/oauth2/code/naver
-            #            redirect-uri: http://i10a701.p.ssafy.io:3000/login/oauth2/code/naver
             redirect-uri: https://i10a701.p.ssafy.io/login/oauth2/code/naver
           kakao:
             client-id: ac9bb9c5ad229907446e706fe6cc47b9
             client-secret: DFC56KD19GIczjUukqSmaSZkIjWGF0J2
             client-name: kakao-login
             authorization-grant-type: authorization_code
-#            redirect-uri: https://i10a701.p.ssafy.io/api/user/login/oauth2/code/kakao
-            #            redirect-uri: http://i10a701.p.ssafy.io:3000/login/oauth2/code/kakao
-            redirect-uri: https://i10a701.p.ssafy.io/login/oauth2/code/kakao
 #            redirect-uri: http://localhost:8081/login/oauth2/code/kakao
+            redirect-uri: https://i10a701.p.ssafy.io/login/oauth2/code/kakao
             client-authentication-method: client_secret_post
         provider:
           naver:

@@ -21,12 +21,23 @@ public class MongoDBConfig {
 
     @Bean
     MongoClientSettings mongoClientSettings() {
-        return MongoClientSettings.builder()
-                .uuidRepresentation(UuidRepresentation.STANDARD)
-                .applyConnectionString(new ConnectionString(
-                        "mongodb://" + username + ":" + password
-                        +"@mongo-container:27017/mongo-narang?authSource=admin"))
-                .build();
+        /*
+               For Local Test
+         */
+//         return MongoClientSettings.builder()
+//                 .uuidRepresentation(UuidRepresentation.STANDARD)
+//                 .applyConnectionString(new ConnectionString(
+//                         "mongodb://root:ssafy@localhost:27017/mongo-narang?authSource=admin"))
+//                 .build();
+        /*
+               For Developments
+         */
+       return MongoClientSettings.builder()
+               .uuidRepresentation(UuidRepresentation.STANDARD)
+               .applyConnectionString(new ConnectionString(
+                       "mongodb://" + username + ":" + password
+                       +"@mongo-container:27017/mongo-narang?authSource=admin"))
+               .build();
     }
 
     @Bean
