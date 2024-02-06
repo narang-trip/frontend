@@ -3,10 +3,13 @@ package com.ssafy.tripservice.api.controller;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.ssafy.tripservice.api.request.TripRequest;
+import com.ssafy.tripservice.api.request.UserRequest;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.api.service.TripService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Encoding;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +34,7 @@ public class TripController {
     @GetMapping("/available")
     public ResponseEntity<List<TripResponse>> getTripsAvailable() {
 
-        List<TripResponse> availableTrips = tripService.getAvailableTrips(LocalDateTime.now());
+        List<TripResponse> availableTrips = tripService.getAvailableTrips();
 
         return new ResponseEntity<List<TripResponse>>(availableTrips, HttpStatus.OK);
     }
@@ -46,16 +49,36 @@ public class TripController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> postTrip(@RequestBody TripRequest tripRequest) {
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @io.swagger.v3.oas.annotations.parameters.RequestBody (content = @Content(encoding = @Encoding(name = "tripRequest", contentType = MediaType.APPLICATION_JSON_VALUE)))
+    public ResponseEntity<?> postTrip(@RequestPart TripRequest tripRequest,
+                                      @RequestPart(required = false) MultipartFile tripImg) {
 
-        Optional<TripResponse> createRes = tripService.createTrip(tripRequest);
+        Optional<TripResponse> createRes = tripService.createTrip(tripRequest, tripImg);
 
         return createRes.map(r -> new ResponseEntity<>(r, HttpStatus.OK))
                 .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
 
-    @PostMapping(value = "/imgUploadTest", consumes = {"multipart/form-data"})
+    @PatchMapping("/join")
+    public ResponseEntity<?> patchTripJoin(@RequestBody UserRequest userRequest) {
+
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping("/leave")
+    public ResponseEntity<?> patchTripLeave(@RequestBody UserRequest userRequest) {
+
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    /*
+        Just For Test
+
+     */
+    @PostMapping(value = "/imgUploadTest", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> uploadFile(@RequestParam("img") MultipartFile img) {
 
         String bucket="youngkimi-bucket-01";
