@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserRestController {
     private final UserService userService;
 
-    @GetMapping("/login/oauth/{provider}")
+    @PostMapping("/login/oauth/{provider}")
     public void login(@PathVariable String provider, HttpServletRequest request){
         String code = request.getParameter("code");
         System.out.println(code);
