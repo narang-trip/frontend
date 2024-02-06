@@ -117,6 +117,9 @@ public class UserService extends DefaultOAuth2UserService {
         User user = null;
         // user를 찾지 못했다면
         if (findUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during modification");
+        }
+        else{
             user = User.builder()
                     .id(id)
                     .nickname(userInfoRequest.getNickname())
@@ -126,9 +129,6 @@ public class UserService extends DefaultOAuth2UserService {
                     .build();
             userRepository.save(user);
             return ResponseEntity.ok().body("UserInfo modify successfully");
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during modification");
         }
     }
 }
