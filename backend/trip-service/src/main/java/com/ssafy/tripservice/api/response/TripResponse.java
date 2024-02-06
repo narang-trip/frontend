@@ -23,7 +23,7 @@ public class TripResponse {
     private UUID tripLeaderId;
     private UUID tripChatId;
     private UUID tripPlanId;
-    private Integer view_cnt;
+    private Integer viewCnt;
     private Integer tripParticipantsSize;
     private Integer tripDeposit;
     private Integer tripAgeUpperBound;
