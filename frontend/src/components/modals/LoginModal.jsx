@@ -3,8 +3,8 @@ import { useRef } from "react";
 const LoginModal = (props) => {
   const modalBG = useRef(null);
   const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
-  console.log(import.meta.env);
   const kakaoRedirectURI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+  console.log(kakaoRedirectURI);
   const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
   const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
 
