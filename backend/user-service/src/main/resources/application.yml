@@ -69,6 +69,7 @@ eureka:
 
 logging:
   level:
+    root: DEBUG
     org:
       springframework:
         security=DEBUG:
