@@ -65,6 +65,7 @@ public class Trip extends BaseEntity{
                 .build();
     }
 
+    @Builder
     @Data
     public static class Participant {
         private List<String> userRoles;
