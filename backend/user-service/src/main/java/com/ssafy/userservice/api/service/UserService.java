@@ -94,12 +94,13 @@ public class UserService extends DefaultOAuth2UserService {
 
     // User 탈퇴
     public ResponseEntity<?> deleteUser(String id){
-        try {
+        Optional<User> findUser = userRepository.findById(id);
+        if (findUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during deletion");
+        }
+        else{
             userRepository.deleteById(id);
             return ResponseEntity.ok().body("Delete successfully");
-        } catch (Exception e) {
-            e.printStackTrace(); // 또는 로깅 프레임워크를 사용하여 로그 기록
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during deletion");
         }
     }
 
