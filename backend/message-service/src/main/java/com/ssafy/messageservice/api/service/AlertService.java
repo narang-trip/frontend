@@ -164,17 +164,23 @@ public class AlertService {
 
     private String getSenderName(String senderId) {
         Optional<User> sender = userRepository.findById(senderId);
-        return sender.get().getNickname();
+        if (sender.isEmpty()){
+            return "No Data";
+        }
+        else{
+            return sender.get().getNickname();
+        }
     }
 
     // sse 알림 삭제
     public ResponseEntity<?> deleteAlert(String id){
-        try {
+        Optional<Alert> findAlert = alertRepository.findById(id);
+        if (findAlert.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during deletion");
+        }
+        else{
             alertRepository.deleteById(id);
             return ResponseEntity.ok().body("Delete successfully");
-        } catch (Exception e) {
-            e.printStackTrace(); // 또는 로깅 프레임워크를 사용하여 로그 기록
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during deletion");
         }
     }
 }
