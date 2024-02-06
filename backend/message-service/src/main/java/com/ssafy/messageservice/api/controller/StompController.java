@@ -2,7 +2,6 @@ package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.request.ChatRequest;
 import com.ssafy.messageservice.api.request.ChatSendRequest;
-import com.ssafy.messageservice.api.service.ChatService;
 import com.ssafy.messageservice.db.entity.Chat;
 import com.ssafy.messageservice.db.entity.Chatroom;
 import com.ssafy.messageservice.db.entity.ChatroomUser;
@@ -13,13 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -27,9 +22,9 @@ import java.util.UUID;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class StompRabbitController {
+public class StompController {
     private final SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
-    private static final Logger LOGGER = LoggerFactory.getLogger(StompRabbitController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StompController.class);
     private final ChatRepository chatRepository;
     private final ChatroomRepository chatroomRepository;
     private final ChatroomUserRepository chatroomUserRepository;
@@ -44,6 +39,12 @@ public class StompRabbitController {
                 userId,
                 LocalDateTime.now(),
                 "채팅방에 참여하였습니다.");
+
+        // ChatroomUser 테이블에 데이터 저장하기 -> 채팅방 입장
+        Chatroom chatroom = chatroomRepository.findById(chatroomId).orElse(null);
+        ChatroomUser user = new ChatroomUser(UUID.randomUUID().toString(), chatroom, userId);
+        chatroomUserRepository.save(user);
+
         template.convertAndSend("/sub/chat/room/" + chatroomId, chatRequest);
     }
 
