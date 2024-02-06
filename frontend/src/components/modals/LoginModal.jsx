@@ -3,7 +3,8 @@ import axios from "axios";
 
 const LoginModal = (props) => {
   const modalBG = useRef(null);
-  const kakaoLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
+  const kakaoLoginURL =
+    "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
   const naverLoginURL = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
 
   // const kakaoLogin = () => {
@@ -19,18 +20,14 @@ const LoginModal = (props) => {
   // const params = new URL(document.URL).searchParams;
   // const code = params.get("code");
 
-  // const kakaoLogin = async () => {
-  //   const payload = {
-  //     grant_type: "authorization_code",
-  //     code: code,
-  //   };
-  //   try {
-  //     const res = await axios.post(kakaoLoginURL, payload);
-  //     console.log(res);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const kakaoLogin = async () => {
+    try {
+      const res = await axios.get(kakaoLoginURL);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   // const kakaoLogin = () => {
   //   axios
@@ -72,13 +69,13 @@ const LoginModal = (props) => {
           </button>
           <h3 className="">로 그 인</h3>
           <div className="flex flex-col">
-            <a href={kakaoLoginURL}>
-              <img
-                className="object-cover h-16 w-36 rounded-xl"
-                src="assets/kakao_login.png"
-                // onClick={kakaoLogin}
-              />
-            </a>
+            {/* <a href={kakaoLoginURL}> */}
+            <img
+              className="object-cover h-16 w-36 rounded-xl"
+              src="assets/kakao_login.png"
+              onClick={kakaoLogin}
+            />
+            {/* </a> */}
             <button>
               <img
                 className="object-cover h-16 w-36 rounded-xl"
