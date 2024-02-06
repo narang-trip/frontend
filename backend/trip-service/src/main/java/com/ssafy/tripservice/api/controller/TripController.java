@@ -110,7 +110,14 @@ public class TripController {
     }
 
     @GetMapping("/page/{pageNo}")
-    public ResponseEntity<Page<TripPageResponse>> getAvailableTripsPageable(@RequestParam("pageNo") int pageNo) {
+    public ResponseEntity<Page<TripPageResponse>> getAvailableTripsPageable(@PathVariable("pageNo") int pageNo) {
         return new ResponseEntity<>(tripService.getAvailableTripPages(pageNo), HttpStatus.OK);
+    }
+
+    @GetMapping("/page/{tripConcept}")
+    public ResponseEntity<Page<TripPageResponse>> getBannerTrips(@PathVariable("tripConcept") String tripConcept) {
+
+
+        return ResponseEntity.ok().build();
     }
 }

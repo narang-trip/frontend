@@ -110,26 +110,6 @@ public class TripServiceImpl implements TripService {
         return tripResponses;
     }
 
-    public Page<TripPageResponse> getAvailableTripPages(int pageNo) {
-        final int pageSize = 9;
-
-        PageRequest pageRequest = PageRequest.of(pageSize,pageNo, Sort.by("departureDate").ascending());
-
-        Query query = new Query()
-                .with(pageRequest)
-                .skip((long) pageRequest.getPageSize() * pageRequest.getPageNumber())
-                .limit(pageSize);
-
-        query.addCriteria(Criteria.where("departureDate").gt(LocalDateTime.now()));
-
-        List<Trip> availableTrips = mongoTemplate.find(query, Trip.class);
-
-        return PageableExecutionUtils
-                .getPage(availableTrips, pageRequest,
-                        () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
-                .map(p -> p.toTripPageResponse(pageNo));
-    }
-
     @Override
     public Optional<TripResponse> getTripById(UUID tripId) {
 
@@ -235,6 +215,12 @@ public class TripServiceImpl implements TripService {
         return res.getDeletedCount() != 0;
     }
 
+//    @Override
+//    public List<TripPageResponse> getBannerTrips(String tripConcept) {
+//        Query query = Query(Criteria.where("tripConcepts")
+//                .elemMatch(Cri))
+//    }
+
     public Optional<String> uploadFile(MultipartFile img) {
 
         String bucket = "youngkimi-bucket-01";
@@ -252,5 +238,26 @@ public class TripServiceImpl implements TripService {
             e.printStackTrace();
             return Optional.empty();
         }
+    }
+
+
+    public Page<TripPageResponse> getAvailableTripPages(int pageNo) {
+        final int pageSize = 9;
+
+        PageRequest pageRequest = PageRequest.of(pageSize,pageNo, Sort.by("departureDate").ascending());
+
+        Query query = new Query()
+                .with(pageRequest)
+                .skip((long) pageRequest.getPageSize() * pageRequest.getPageNumber())
+                .limit(pageSize);
+
+        query.addCriteria(Criteria.where("departureDate").gt(LocalDateTime.now()));
+
+        List<Trip> availableTrips = mongoTemplate.find(query, Trip.class);
+
+        return PageableExecutionUtils
+                .getPage(availableTrips, pageRequest,
+                        () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
+                .map(p -> p.toTripPageResponse(pageNo));
     }
 }
