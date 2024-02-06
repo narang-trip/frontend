@@ -13,9 +13,7 @@ const Login = () => {
   console.log(code);
 
   try {
-    const res = axios.post("api/user/login/oauth/kakao", {
-      authorizationCode: code,
-    });
+    const res = axios.get("api/user/login/oauth/kakao");
     console.log(res);
   } catch (error) {
     console.log(error);
