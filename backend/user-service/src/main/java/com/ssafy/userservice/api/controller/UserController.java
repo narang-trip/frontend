@@ -1,6 +1,10 @@
 package com.ssafy.userservice.api.controller;
 
+import com.ssafy.userservice.api.request.UserInfoRequest;
+import com.ssafy.userservice.api.service.UserService;
+import com.ssafy.userservice.db.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
+    private final UserService userService;
 
     @GetMapping
     public String index(){
@@ -32,6 +37,24 @@ public class UserController {
     public String signup(@RequestBody String name) {
         System.out.println("sign@@@@@@@@@@@@@");
         return "signup";
+    }
+
+    // User 탈퇴
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+        return userService.deleteUser(id);
+    }
+
+    // User 정보 조회
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<User> getUser(@PathVariable String id){
+        return userService.getUser(id);
+    }
+
+    // User 정보 수정
+    @PatchMapping("/profile/{id}")
+    public ResponseEntity<?> patchUser(@PathVariable String id, @RequestBody UserInfoRequest userInfoRequest){
+        return userService.patchUser(id, userInfoRequest);
     }
 
 //    @GetMapping("/oauth2/authorization/naver")
