@@ -14,7 +14,10 @@ const Login = () => {
     console.log(code);
     console.log("test");
     try {
-      const res = axios.post("api/user/login/oauth/kakao", code);
+      const res = axios.post(
+        "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
+        code
+      );
       console.log(res);
     } catch (error) {
       console.log(error);
