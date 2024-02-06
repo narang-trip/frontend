@@ -29,16 +29,16 @@ const LoginModal = (props) => {
   //   }
   // };
 
-  // const kakaoLogin = () => {
-  //   axios
-  //     .get(kakaoLoginURL)
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
+  const kakaoLogin = () => {
+    axios
+      .get(kakaoLoginURL)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   // const naverLogin = () => {
   //   axios
@@ -69,13 +69,13 @@ const LoginModal = (props) => {
           </button>
           <h3 className="">로 그 인</h3>
           <div className="flex flex-col">
-            <a href={kakaoLoginURL}>
-              <img
-                className="object-cover h-16 w-36 rounded-xl"
-                src="assets/kakao_login.png"
-                // onClick={kakaoLogin}
-              />
-            </a>
+            {/* <a href={kakaoLoginURL}> */}
+            <img
+              className="object-cover h-16 w-36 rounded-xl"
+              src="assets/kakao_login.png"
+              onClick={kakaoLogin}
+            />
+            {/* </a> */}
             <button>
               <img
                 className="object-cover h-16 w-36 rounded-xl"
