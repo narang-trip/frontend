@@ -35,4 +35,6 @@ public interface TripService {
     boolean deleteTrip(UserRequest userRequest);
 
     public Page<TripPageResponse> getAvailableTripPages(int pageNo);
+
+    public List<TripPageResponse> getBannerTrips(String tripConcept);
 }
