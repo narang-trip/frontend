@@ -8,6 +8,9 @@ const DayPlan = (props) => {
   const day = useSelector((state) => state.time);
   const divRef = useRef(null);
   const dispatch = useDispatch();
+  const lineCnt =
+    (Number(day.endHour) - Number(day.startHour)) * 2 +
+    (Number(day.endMinute) - Number(day.startMinute)) / 30;
 
   useEffect(() => {
     console.log(divRef);
@@ -15,10 +18,6 @@ const DayPlan = (props) => {
     console.log(blackHeight);
     dispatch(timeActions.setHeight(blackHeight));
   }, divRef);
-
-  const lineCnt =
-    (Number(day.endHour) - Number(day.startHour)) * 2 +
-    (Number(day.endMinute) - Number(day.startMinute)) / 30;
 
   return (
     <div
