@@ -8,12 +8,13 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect( () => {
+  useEffect(() => {
     const params = new URL(document.URL).searchParams;
     const code = params.get("code");
     console.log(code);
     console.log("test");
-    async() => try {
+   (async () => {
+    try {
       const res = await axios.post(
         "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
         { code: code }
@@ -23,7 +24,8 @@ const Login = () => {
       console.log(error);
     }
     dispatch(authAction.Login(code));
-  });
+  })();
+})
 
   return <>뭔가 뭔가 무언가의 페이지</>;
 };
