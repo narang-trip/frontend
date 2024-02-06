@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import axios from "axios";
+import qs from "qs";
 
 const LoginModal = (props) => {
   const modalBG = useRef(null);
@@ -8,16 +9,32 @@ const LoginModal = (props) => {
 
   // axios.defaults.withCredentials = true;
 
-  const kakaoLogin = () => {
-    axios
-      .get(kakaoLoginURL)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const params = new URL(document.URL).searchParams;
+  const code = params.get("code");
+
+  const kakaoLogin = async () => {
+    const payload = qs.stringify({
+      grant_type: "authorization_code",
+      code: code,
+    });
+    try {
+      const res = await axios.post(kakaoLoginURL, payload);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  // const kakaoLogin = () => {
+  //   axios
+  //     .get(kakaoLoginURL)
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   const naverLogin = () => {
     axios
