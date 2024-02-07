@@ -1,26 +1,56 @@
-import { Fragment } from "react";
-import { useInView, InView } from "react-intersection-observer";
-import BoardList from "../components/Trip/Read/BoardList";
+import { Fragment, useState, useCallback, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import axios from "axios";
+
+import TripSummary from "../components/Trip/Read/TripSummary";
 
 const SearchPage = () => {
-  const { ref, inView, entry } = useInView({
-    /* Optional options */
-    threshold: 0.5,
+  const [pageNo, setPageNo] = useState(0);
+  const [tripData, setTripData] = useState([]);
+
+  const { ref, inView } = useInView({
+    threshold: 0, // div태그가 보일 때 inView가 true로 설정
   });
+
+  const getBoardList = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `https://i10a701.p.ssafy.io/api/trip/page/${pageNo}`
+      );
+
+      // 가져올 항목이 없으면 중단
+      if (response.data.content.length === 0) {
+        return;
+      }
+
+      // 새로운 데이터를 기존 데이터에 추가
+      setTripData((prevData) => [...prevData, ...response.data.content]);
+
+      // 페이지 번호 증가
+      setPageNo((prevPageNo) => prevPageNo + 1);
+      
+    } catch (error) {
+      console.error("여행 목록을 가져오는 중 에러 발생:", error);
+    }
+  }, [pageNo]);
+
+  // inView가 true일때 데이터를 가져옴
+  useEffect(() => {
+    if (inView) {
+      console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
+      getBoardList();
+    }
+  }, [inView]);
+
   return (
     <Fragment>
-      <div ref={ref} className="">
-        <h2>{`Header inside viewport ${inView}.`}</h2>
+      <h2>여행 목록</h2>
+      <div className="flex flex-wrap justify-center">
+        {tripData.map((trip, idx) => (
+          <TripSummary trip={trip} key={idx} />
+        ))}
       </div>
-      <InView
-        as="div"
-        onChange={(inView, entry) => console.log("Inview:", inView)}
-      >
-        <h2>
-          Plain children are always rendered. Use onChange to monitor state.
-        </h2>
-        <BoardList></BoardList>
-      </InView>
+        <div ref={ref}></div>
     </Fragment>
   );
 };
