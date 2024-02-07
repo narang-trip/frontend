@@ -1,8 +1,9 @@
-import MypageCalendar from "../components/Mypage/MypageCalendar";
 import { useState,Fragment } from "react";
-import UserInfo from "../components/Mypage/UserInfo";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
+
+import MypageCalendar from "../components/Mypage/MypageCalendar";
+import UserInfo from "../components/Mypage/UserInfo";
 import SmallPlan from "../components/Mypage/SmallPlan";
 import Mileage from "../components/Mypage/Mileage";
 import MyBadge from "../components/Mypage/MyBadge";
