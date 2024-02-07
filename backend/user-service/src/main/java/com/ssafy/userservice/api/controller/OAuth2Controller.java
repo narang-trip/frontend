@@ -3,9 +3,11 @@ package com.ssafy.userservice.api.controller;
 import com.ssafy.userservice.api.service.OAuth2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@CrossOrigin("*")
 @Controller
 @RequestMapping("/oauth2")
 public class OAuth2Controller {
