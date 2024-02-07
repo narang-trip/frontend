@@ -19,18 +19,6 @@ export default function HomePage() {
   //       console.log(error);
   //     });
   // };
-  (async () => {
-    try {
-      const res = await axios.post(
-        `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=355`
-      );
-      console.log(res.data);
-      // dispatch(authAction.Login(code));
-
-    } catch (error) {
-      console.log(error);
-    }
-  })();
 
   return (
     <div>
