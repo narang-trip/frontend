@@ -8,7 +8,7 @@ const PlaceCard = () => {
   return (
     <Droppable droppableId="PlaceCard">
       {(provided) => (
-        <div ref={provided.innerRef} {...provided.droppableProps}>
+        <div ref={provided.innerRef} {...provided.droppableProps} className="w-56">
           {searchResults.map((place, index) => (
             <Draggable draggableId={`draggable_${index}`} index={index} key={index}>
               {(provided) => (

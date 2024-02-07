@@ -33,23 +33,6 @@ const scheduleSlice = createSlice({
   name: "schedule",
   initialState,
   reducers: {
-    sortSchedule: (state) => {
-      let prevLoca = null;
-
-      for (var i = 0; i < state.list.length; i++) {
-        for (var j = 0; j < state.list[i].length; j++) {
-          if (state.list[i][j].title !== "") {
-            if (prevLoca !== null) {
-              <DirectionsService
-                options={{ origin, destination, travelMode: "TRANSIT" }}
-                callback={directionsCallback}
-              />;
-            }
-            prevLoca = state[i][j].loca;
-          }
-        }
-      }
-    },
     // 일정 추가하기
     addSchedule: (state, action) => {
       state.list[action.payload.day].splice(action.payload.index, 0, action.payload.schedule);
