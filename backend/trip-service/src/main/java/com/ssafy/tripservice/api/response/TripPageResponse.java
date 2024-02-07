@@ -25,7 +25,7 @@ public class TripPageResponse {
         private Integer tripParticipantsSize;
         private Integer tripAgeUpperBound;
         private Integer tripAgeLowerBound;
-        private String tripConcepts;
+        private String tripConcept;
         private List<String> tripRoles;
 }
 

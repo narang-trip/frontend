@@ -232,12 +232,6 @@ public class TripServiceImpl implements TripService {
         return res.getDeletedCount() != 0;
     }
 
-//    @Override
-//    public List<TripPageResponse> getBannerTrips(String tripConcept) {
-//        Query query = Query(Criteria.where("tripConcepts")
-//                .elemMatch(Cri))
-//    }
-
     public Optional<String> uploadFile(MultipartFile img) {
 
         String bucket = "youngkimi-bucket-01";
@@ -281,31 +275,45 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<TripResponse> getBannerTrips(String tripConcept) {
 
-//        List<TripResponse> trips = new LinkedList<>();
-//
-//        tripRepository.findAll(QTrip.trip.departureDate.gt(LocalDateTime.now()),
-//                QTrip.trip.tripConcepts.contains(tripConcept));
-//
-//        tripRepository.
-//
-//
-//
-//                tripConcepts.).forEach(
-//
-//                trip -> trips.add(trip.toTripResponse())
-//        );
+        Query query = new Query(
+                Criteria
+                .where("departureDate")
+                    .gt(LocalDateTime.now())).with(Sort.by("departureDate").ascending()).limit(24)
+                .addCriteria(
+                Criteria
+                    .where("tripConcept").is(tripConcept)
+                );
 
-        return tripRepository.findTripsByDepartureDateAfterAndTripConceptsIs(
-                LocalDateTime.now(), tripConcept
-        ).stream().map(Trip::toTripResponse).toList();
+        return mongoTemplate.find(query, Trip.class)
+                .stream().map(Trip::toTripResponse).toList();
     }
 
     @Override
-    public List<TripResponse> getMyTrips(UUID userId) {
+    public Page<TripPageResponse> getMyTrips(UUID userId, int pageNo) {
+
+        final int pageSize = 4;
+
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by("departureDate").descending());
+
+        Query query = new Query()
+                .with(pageRequest)
+                .skip((long) pageRequest.getPageSize() * pageRequest.getPageNumber())
+                .limit(pageSize);
 
 
-//        tripRepository.findAll(QTrip.trip.participants.any().eq());
+        query.addCriteria(
+                Criteria
+                        .where("participants")
+                        .elemMatch(
+                                Criteria.where("participantId")
+                                        .is(userId)
+                        ));
 
-        return null;
+        List<Trip> myTrips = mongoTemplate.find(query, Trip.class);
+
+        return PageableExecutionUtils
+                .getPage(myTrips, pageRequest,
+                        () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
+                .map(p -> p.toTripPageResponse(pageNo));
     }
 }

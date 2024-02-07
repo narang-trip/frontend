@@ -28,7 +28,7 @@ public class TripResponse {
     private Integer tripDeposit;
     private Integer tripAgeUpperBound;
     private Integer tripAgeLowerBound;
-    private String tripConcepts;
+    private String tripConcept;
     private List<String> tripRoles;
     private List<Trip.Participant> participants;
 }

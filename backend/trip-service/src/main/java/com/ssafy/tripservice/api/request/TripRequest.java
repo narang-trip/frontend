@@ -30,7 +30,7 @@ public class TripRequest {
     private Integer tripAgeUpperBound;
     private Integer tripAgeLowerBound;
     private List<String> leaderRoles;
-    private String tripConcepts;
+    private String tripConcept;
     private List<String> tripRoles;
     private List<Trip.Participant> participants;
 
@@ -51,7 +51,7 @@ public class TripRequest {
                 .tripDeposit(this.tripDeposit)
                 .tripAgeUpperBound(this.tripAgeUpperBound)
                 .tripAgeLowerBound(this.tripAgeLowerBound)
-                .tripConcepts(this.tripConcepts)
+                .tripConcept(this.tripConcept)
                 .tripRoles(this.tripRoles)
                 .participants(this.participants)
                 .build();
