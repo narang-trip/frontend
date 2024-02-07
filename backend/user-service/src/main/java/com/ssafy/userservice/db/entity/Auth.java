@@ -28,8 +28,6 @@ public class Auth extends BaseEntity {
     @Column
     private String refreshToken;
 
-    @Enumerated(EnumType.STRING)
-    private SocialType socialType; // KAKAO, GOOGLE
 
 
     public void passwordEncode(PasswordEncoder passwordEncoder) {
