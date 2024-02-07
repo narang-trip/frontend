@@ -10,7 +10,8 @@ import { useState, useEffect } from "react";
 export default function PlanningPage() {
   const list = useSelector((state) => state.schedule);
   const card = useSelector((state) => state.places);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isNewPlanOpen, setIsNewPlanOpen] = useState(false);
+  const [isSavePlanOpen, setIsSavePlanOpen] = useState(false);
   const dispatch = useDispatch();
 
   console.log(list);
@@ -43,16 +44,24 @@ export default function PlanningPage() {
   };
 
   const makePlan = () => {
-    setIsOpen(true);
+    setIsNewPlanOpen(true);
   };
 
   const CloseNewPlanModal = () => {
-    setIsOpen(false);
+    setIsNewPlanOpen(false);
+  };
+
+  const savePlan = () => {
+    setIsSavePlanOpen(true);
+  };
+
+  const CloseSavePlanModal = () => {
+    setIsSavePlanOpen(false);
   };
 
   useEffect(() => {
     // 모달이 열렸을 때 스크롤 막기 위함
-    if (isOpen) {
+    if (isNewPlanOpen || isSavePlanOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -61,7 +70,7 @@ export default function PlanningPage() {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isOpen]);
+  }, [isNewPlanOpen, isSavePlanOpen]);
 
   return (
     <div className="h-full">
@@ -72,11 +81,13 @@ export default function PlanningPage() {
           <Map />
         </div>
       </DragDropContext>
-      {isOpen && (
+      <button onClick={savePlan}>저장하기</button>
+      {isNewPlanOpen && (
         <ModalPortal>
           <NewPlan onClose={CloseNewPlanModal} />
         </ModalPortal>
       )}
+      {isSavePlanOpen && <ModalPortal></ModalPortal>}
     </div>
   );
 }
