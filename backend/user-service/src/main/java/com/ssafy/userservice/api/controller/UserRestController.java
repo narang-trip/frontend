@@ -1,6 +1,7 @@
 package com.ssafy.userservice.api.controller;
 
 import com.ssafy.userservice.api.request.UserInfoRequest;
+import com.ssafy.userservice.api.service.OAuth2Service;
 import com.ssafy.userservice.api.service.UserService;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
@@ -16,6 +17,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserRestController {
     private final UserService userService;
+    private final OAuth2Service oAuth2Service;
+
+    @GetMapping("/oauth2/authorization/kakao")
+    public String kakaoLogin() {
+        System.out.println("==========login controller 동작2345============");
+        return "redirect:" + oAuth2Service.getAuthorizationUrl("kakao");
+    }
 
     @PostMapping("/login/oauth/{provider}")
     public void login(@PathVariable String provider, HttpServletRequest request){

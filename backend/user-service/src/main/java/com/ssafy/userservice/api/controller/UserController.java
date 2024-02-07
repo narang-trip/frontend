@@ -26,8 +26,7 @@ import java.io.IOException;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
-    @Autowired
-    private final OAuth2Service oAuth2Service;
+
 //    @GetMapping("/oauth2/authorization/{provider}")
 //    public RedirectView redirectToOAuth2Provider(@AuthenticationPrincipal OAuth2User principal,
 //                                                 @PathVariable String provider,
@@ -44,13 +43,6 @@ public class UserController {
 //        return new RedirectView("https://i10a701.p.ssafy.io/oauth2/authorization/" + provider + "?redirect_uri=" + redirectUri);
 //    }
 
-
-
-    @GetMapping("/oauth2/authorization/kakao")
-    public String kakaoLogin() {
-        System.out.println("==========login controller 동작2345============");
-        return "redirect:" + oAuth2Service.getAuthorizationUrl("kakao");
-    }
 
 
     @GetMapping
