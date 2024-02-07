@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -22,7 +21,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Optional;
 
-@Order(1)
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
@@ -37,6 +35,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("doFilterInternal() 호출");
+        log.info("request.getRequestURI() : {}", request.getRequestURI());
         if (request.getRequestURI().equals(NO_CHECK_URL)) {
             filterChain.doFilter(request, response);
             return;
@@ -52,6 +52,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     }
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
+        log.info("checkRefreshTokenAndReIssueAccessToken() 호출");
         authRepository.findByRefreshToken(refreshToken)
                 .ifPresent(auth -> {
                     String reIssuedRefreshToken = reIssueRefreshToken(auth);
@@ -62,6 +63,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     }
 
     private void addCorsHeaders(HttpServletResponse response) {
+        log.info("addCorsHeaders() 호출");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -70,6 +72,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     }
 
     private String reIssueRefreshToken(Auth auth) {
+        log.info("reIssueRefreshToken() 호출");
         String reIssuedRefreshToken = jwtService.createRefreshToken();
         auth.updateRefreshToken(reIssuedRefreshToken);
         authRepository.saveAndFlush(auth);
@@ -119,6 +122,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     }
 
     public void saveAuthentication(Auth myUser) {
+        log.info("saveAuthentication() 호출");
         String password = myUser.getPassword();
         if (password == null) {
             password = PasswordUtil.generateRandomPassword();
