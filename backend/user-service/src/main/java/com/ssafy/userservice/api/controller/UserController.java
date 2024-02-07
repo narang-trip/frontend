@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
