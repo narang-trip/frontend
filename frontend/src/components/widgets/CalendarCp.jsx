@@ -37,7 +37,7 @@ const CalendarCp = () => {
 
   return (
     <div>
-      <h1>{`현재 표시된 날짜 : ${moment(value).format("YYYY-MM-DD")}`}</h1>
+      {/* <h1>{`현재 표시된 날짜 : ${moment(value).format("YYYY-MM-DD")}`}</h1> */}
       <Calendar
         calendarType="gregory"
         onChange={setValue}

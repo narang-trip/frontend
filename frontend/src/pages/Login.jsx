@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { authAction } from "../store/auth-slice";
+import { authActions } from "../store/auth-slice";
 import { useEffect } from "react";
 import axios from "axios";
 
@@ -18,7 +18,7 @@ const Login = () => {
           `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=${code}`
         );
         console.log(res.data);
-        dispatch(authAction.Login(code));
+        // dispatch(authActions.Login({code, userId}));
       } catch (error) {
         console.log(error);
       }
