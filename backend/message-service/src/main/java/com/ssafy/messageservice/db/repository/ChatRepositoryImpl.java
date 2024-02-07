@@ -77,15 +77,25 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
 
         // user 테이블에 접근해서 sender에 대한 정보 가져오기
         Optional<User> senderInfo = userRepository.findById(chat.getUserId());
-        return new ChatroomListResponse.ChatroomResponse(
-                chat.getChatroom().getChatroomId(),
-                chat.getChatroom().getChatroomName(),
-                new ChatroomListResponse.ChatroomResponse.ChatResponse(
-                        chat.getUserId(),
-                        senderInfo.get().getNickname(),
-                        chat.getContent(),
-                        chat.getSendTime()
-                ),users
-        );
+
+        if(senderInfo.isPresent()){
+            return new ChatroomListResponse.ChatroomResponse(
+                    chat.getChatroom().getChatroomId(),
+                    chat.getChatroom().getChatroomName(),
+                    new ChatroomListResponse.ChatroomResponse.ChatResponse(
+                            chat.getUserId(),
+                            senderInfo.get().getNickname(),
+                            chat.getContent(),
+                            chat.getSendTime()
+                    ),users
+            );
+        }
+        else{
+            return new ChatroomListResponse.ChatroomResponse(
+                    null,
+                    null,
+                    null, null
+            );
+        }
     }
 }
