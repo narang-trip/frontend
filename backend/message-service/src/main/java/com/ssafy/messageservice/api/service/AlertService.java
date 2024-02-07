@@ -135,9 +135,20 @@ public class AlertService {
         }
     }
 
-    // 알림 리스트 보내기
+    // userId별로 알림 리스트 보내기
     public List<AlertListResponse.AlertResponse> getAlertsByReceiverId(String receiverId) {
         List<Alert> alerts = alertRepository.findByReceiverId(receiverId);
+        if(alerts.isEmpty()){
+            return null;
+        }
+        else{
+            return mapAlertsToAlertResponses(alerts);
+        }
+    }
+
+    // tripId별로 알림 리스트 보내기
+    public List<AlertListResponse.AlertResponse> getAlertsByTripId(String tripId) {
+        List<Alert> alerts = alertRepository.findByTripIdAndAlertType(tripId, "REQUEST");
         if(alerts.isEmpty()){
             return null;
         }
