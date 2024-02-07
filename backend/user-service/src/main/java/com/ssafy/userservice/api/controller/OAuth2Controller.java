@@ -15,6 +15,7 @@ public class OAuth2Controller {
 
     @GetMapping("/authorization/kakao")
     public String kakaoLogin() {
+        System.out.println("==========login controller 동작============");
         return "redirect:" + oAuth2Service.getAuthorizationUrl("kakao");
     }
 }
