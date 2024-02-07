@@ -12,9 +12,11 @@ const DayPlan = (props) => {
     (Number(day.endHour) - Number(day.startHour)) * 2 +
     (Number(day.endMinute) - Number(day.startMinute)) / 30;
 
+  // console.log(props.data);
+
   useEffect(() => {
     console.log(divRef);
-    const blackHeight = (divRef.current.scrollHeight - 32) / (lineCnt * 6);
+    const blackHeight = (divRef.current.scrollHeight - 32) / (lineCnt * 3);
     console.log(blackHeight);
     dispatch(timeActions.setHeight(blackHeight));
   }, [dispatch, lineCnt]);
@@ -26,8 +28,7 @@ const DayPlan = (props) => {
     >
       {props.data.index} 일
       {props.data.list.map((data, index) => (
-        // eslint-disable-next-line react/jsx-key
-        <Schedule data={[data, index, props.data.index]} />
+        <Schedule data={[index, props.data.index]} key={index} />
       ))}
       <div className="absolute pointer-events-none top-0 left-0 h-full w-full">
         <TimeLine Time={day} />

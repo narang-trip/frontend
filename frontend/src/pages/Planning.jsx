@@ -13,7 +13,7 @@ export default function PlanningPage() {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
 
-  console.log(list);
+  // console.log(list);
 
   const onDragEnd = ({ source, destination }) => {
     console.log(source);
