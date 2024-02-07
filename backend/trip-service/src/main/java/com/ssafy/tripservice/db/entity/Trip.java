@@ -38,7 +38,7 @@ public class Trip extends BaseEntity{
     private Integer tripDeposit;
     private Integer tripAgeUpperBound;
     private Integer tripAgeLowerBound;
-    private String tripConcepts;
+    private String tripConcept;
     private List<String> tripRoles;
     private List<Participant> participants;
 
@@ -68,7 +68,7 @@ public class Trip extends BaseEntity{
                 .tripDeposit(this.tripDeposit)
                 .tripAgeUpperBound(this.tripAgeUpperBound)
                 .tripAgeLowerBound(this.tripAgeLowerBound)
-                .tripConcepts(this.tripConcepts)
+                .tripConcept(this.tripConcept)
                 .tripRoles(this.tripRoles)
                 .participants(this.participants)
                 .build();
@@ -89,7 +89,7 @@ public class Trip extends BaseEntity{
                 .tripParticipantsSize(this.tripParticipantsSize)
                 .tripAgeLowerBound(this.tripAgeLowerBound)
                 .tripAgeUpperBound(this.tripAgeUpperBound)
-                .tripConcepts(this.tripConcepts)
+                .tripConcept(this.tripConcept)
                 .tripRoles(this.tripRoles)
                 .build();
     }
