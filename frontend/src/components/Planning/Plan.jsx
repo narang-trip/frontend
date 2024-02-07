@@ -61,7 +61,7 @@ const Plan = () => {
   };
 
   return (
-    <div className="relative w-full flex overflow-auto scroll-auto gap-1 m-1">
+    <div className="relative w-full flex overflow-scroll overflow-y:hidden scroll-auto gap-1 m-1">
       {list.map((data, index) => (
         <div className="flex" key={index}>
           <Droppable droppableId={`list${index}`}>

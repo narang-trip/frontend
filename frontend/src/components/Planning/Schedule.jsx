@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 
@@ -14,10 +14,19 @@ const Schedule = (props) => {
     p: card.padding - 135,
   };
 
-  const time = useSelector((state) => state.time);
-  // console.log(time);
-  const [CSS, setCSS] = useState();
-  setCSS(`bg-black h-[${time.blackHeight.toString()}px]`);
+  const blackHeight = useSelector((state) => state.time).blackHeight;
+  const blackCSS = { height: `${blackHeight}px` };
+  const [t, setT] = useState(240);
+  let scheduleCSS;
+
+  const change = (e) => {
+    setT(e.target.value);
+  };
+
+  useMemo(() => {
+    const sh = (blackHeight * t) / 10;
+    scheduleCSS = { height: `${sh}px` };
+  });
 
   return (
     <>
@@ -33,16 +42,29 @@ const Schedule = (props) => {
               {...provided.draggableProps}
               {...provided.dragHandleProps}
             >
-              <div className="flex flex-col bg-white w-56 h-24 rounded-xl overflow-hidden">
+              <div
+                style={scheduleCSS}
+                className="flex flex-col bg-white w-56 rounded-xl overflow-hidden"
+              >
                 <div className="flex">
                   <img
-                    className="w-24 h-24 rounded-xl"
+                    style={scheduleCSS}
+                    className="object-contain w-24 rounded-xl"
                     src={data.img}
                     alt="이미지"
                   />
                   <div>
                     <p>{data.title}</p>
-                    <p>{data.time} 분</p>
+                    <p>
+                      <input
+                        className="w-20"
+                        type="number"
+                        value={t}
+                        onChange={change}
+                        step="30"
+                      />
+                      분
+                    </p>
                     <textarea
                       className="resize-none w-32"
                       name="comment"
@@ -68,7 +90,7 @@ const Schedule = (props) => {
               {...provided.draggableProps}
               {...provided.dragHandleProps}
             >
-              <div className={CSS}></div>
+              <div style={blackCSS} className="bg-black"></div>
             </div>
           )}
         </Draggable>
