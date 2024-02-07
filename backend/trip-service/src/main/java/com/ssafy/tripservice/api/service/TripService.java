@@ -36,5 +36,6 @@ public interface TripService {
 
     public Page<TripPageResponse> getAvailableTripPages(int pageNo);
 
-    public List<TripPageResponse> getBannerTrips(String tripConcept);
+    public List<TripResponse> getBannerTrips(String tripConcept);
+    public List<TripResponse> getMyTrips(UUID userId);
 }

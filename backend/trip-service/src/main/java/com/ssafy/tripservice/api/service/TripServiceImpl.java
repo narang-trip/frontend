@@ -2,8 +2,14 @@ package com.ssafy.tripservice.api.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.mongodb.ClientSessionOptions;
+import com.mongodb.ReadPreference;
+import com.mongodb.client.ClientSession;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
+import com.querydsl.mongodb.document.AbstractMongodbQuery;
+import com.querydsl.mongodb.morphia.MorphiaQuery;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
 import com.ssafy.tripservice.api.response.TripPageResponse;
@@ -12,18 +18,28 @@ import com.ssafy.tripservice.db.entity.QTrip;
 import com.ssafy.tripservice.db.entity.Trip;
 import com.ssafy.tripservice.db.repository.TripRepository;
 import lombok.AllArgsConstructor;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.core.Local;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.domain.Window;
+import org.springframework.data.geo.GeoResults;
+import org.springframework.data.mongodb.MongoExpression;
+import org.springframework.data.mongodb.core.*;
+import org.springframework.data.mongodb.core.aggregation.AggregationPipeline;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.convert.MongoConverter;
+import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.mapping.Unwrapped;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.core.mapreduce.MapReduceOptions;
+import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
+import org.springframework.data.mongodb.core.query.*;
+import org.springframework.data.mongodb.repository.Aggregation;
+import org.springframework.data.mongodb.repository.support.SpringDataMongodbQuery;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,10 +48,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.print.Pageable;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
 @AllArgsConstructor
@@ -144,6 +157,10 @@ public class TripServiceImpl implements TripService {
             System.out.println("파티 이미 가입함");
             return Optional.empty();
         }
+        if (trip.get().getDepartureDate().isBefore(LocalDateTime.now())) {
+            System.out.println("파티 이미 출발함");
+            return Optional.empty();
+        }
 
         Query query = new Query(Criteria.where("_id").is(userRequest.getTripID()));
 
@@ -244,7 +261,7 @@ public class TripServiceImpl implements TripService {
     public Page<TripPageResponse> getAvailableTripPages(int pageNo) {
         final int pageSize = 9;
 
-        PageRequest pageRequest = PageRequest.of(pageSize,pageNo, Sort.by("departureDate").ascending());
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by("departureDate").ascending());
 
         Query query = new Query()
                 .with(pageRequest)
@@ -259,5 +276,36 @@ public class TripServiceImpl implements TripService {
                 .getPage(availableTrips, pageRequest,
                         () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
                 .map(p -> p.toTripPageResponse(pageNo));
+    }
+
+    @Override
+    public List<TripResponse> getBannerTrips(String tripConcept) {
+
+//        List<TripResponse> trips = new LinkedList<>();
+//
+//        tripRepository.findAll(QTrip.trip.departureDate.gt(LocalDateTime.now()),
+//                QTrip.trip.tripConcepts.contains(tripConcept));
+//
+//        tripRepository.
+//
+//
+//
+//                tripConcepts.).forEach(
+//
+//                trip -> trips.add(trip.toTripResponse())
+//        );
+
+        return tripRepository.findTripsByDepartureDateAfterAndTripConceptsIs(
+                LocalDateTime.now(), tripConcept
+        ).stream().map(Trip::toTripResponse).toList();
+    }
+
+    @Override
+    public List<TripResponse> getMyTrips(UUID userId) {
+
+
+//        tripRepository.findAll(QTrip.trip.participants.any().eq());
+
+        return null;
     }
 }
