@@ -105,7 +105,7 @@ public class JwtService {
      */
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(refreshHeader))
-                .filter(refreshToken -> refreshToken.startsWith(BEARER))
+                .filter(refreshToken -> refreshToken != null && refreshToken.startsWith(BEARER))
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
@@ -116,7 +116,7 @@ public class JwtService {
      */
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(accessHeader))
-                .filter(refreshToken -> refreshToken.startsWith(BEARER))
+                .filter(accessToken -> accessToken != null && accessToken.startsWith(BEARER))
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
@@ -136,7 +136,7 @@ public class JwtService {
                     .getClaim(EMAIL_CLAIM) // claim(Emial) 가져오기
                     .asString());
         } catch (Exception e) {
-            log.error("액세스 토큰이 유효하지 않습니다.");
+            log.error("액세스 토큰이 유효하지 않습니다. {}", e.getMessage());
             return Optional.empty();
         }
     }
