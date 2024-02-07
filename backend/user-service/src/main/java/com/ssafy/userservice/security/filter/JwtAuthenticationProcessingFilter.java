@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -76,11 +77,39 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
                                                   FilterChain filterChain) throws ServletException, IOException {
         log.info("checkAccessTokenAndAuthentication() 호출");
-        jwtService.extractAccessToken(request)
-                .filter(jwtService::isTokenValid)
-                .flatMap(jwtService::extractEmail)
-                .flatMap(authRepository::findByEmail)
+
+        // 1. AccessToken 추출
+        Optional<String> accessToken = jwtService.extractAccessToken(request);
+        if (!accessToken.isPresent()) {
+            log.error("AccessToken이 없거나 비정상적인 형식입니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 2. AccessToken 유효성 검사
+        if (!jwtService.isTokenValid(accessToken.get())) {
+            log.error("유효하지 않은 AccessToken입니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 3. AccessToken에서 이메일 추출
+        Optional<String> userEmail = jwtService.extractEmail(accessToken.get());
+        if (!userEmail.isPresent()) {
+            log.error("AccessToken에서 이메일을 추출할 수 없습니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 4. 추출한 이메일을 사용하여 사용자 정보 조회
+        authRepository.findByEmail(userEmail.get())
                 .ifPresent(this::saveAuthentication);
+
+//        jwtService.extractAccessToken(request)
+//                .filter(jwtService::isTokenValid)
+//                .flatMap(jwtService::extractEmail)
+//                .flatMap(authRepository::findByEmail)
+//                .ifPresent(this::saveAuthentication);
 
         filterChain.doFilter(request, response);
     }
