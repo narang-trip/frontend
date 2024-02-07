@@ -6,43 +6,54 @@ import { scheduleActions } from "../../store/scheduleSlice";
 const Schedule = (props) => {
   const list = useSelector((state) => state.schedule);
   const dispatch = useDispatch();
-  const day = props.data[1] - 1;
-  const dayList = list[day];
-  const index = props.data[0];
-  const card = dayList[index];
+  const dayList = list.list[props.dayIdx];
+  console.log(props.scheduleIdx);
+  const schedule = dayList[props.scheduleIdx];
+  // console.log(list);
+  // console.log(list.blackHeight);
+  // console.log(list.blackHeight / (list.time.lineCnt - 1) / 3);
 
-  const blackHeight = useSelector((state) => state.time).blackHeight;
-  const blackCSS = { height: `${blackHeight}px` };
+  const blackCSS = {
+    height: `${list.blackHeight / (list.time.lineCnt - 1) / 3}px`,
+  };
   const [t, setT] = useState();
   const [text, setText] = useState();
   useEffect(() => {
-    setT(card.time);
-    setText(card.comment);
+    setT(schedule.time);
+    setText(schedule.comment);
   });
   let scheduleCSS;
 
   const timeChange = (e) => {
     setT(e.target.value);
-    dispatch(scheduleActions.setTime([e.target.value, day, index]));
+    dispatch(
+      scheduleActions.setTime([e.target.value, props.dayIdx, props.scheduleIdx])
+    );
   };
 
   const textChange = (e) => {
     setText(e.target.value);
-    dispatch(scheduleActions.setComment([e.target.value, day, index]));
+    dispatch(
+      scheduleActions.setComment([
+        e.target.value,
+        props.dayIdx,
+        props.scheduleIdx,
+      ])
+    );
   };
 
   useMemo(() => {
-    const sh = (blackHeight * t) / 10;
+    const sh = (1 * t) / 10;
     scheduleCSS = { height: `${sh}px` };
   });
 
   return (
     <>
-      {card.title ? (
+      {schedule.title ? (
         <Draggable
-          draggableId={`${props.data[1]}list_item${index}`}
-          index={index}
-          key={index}
+          draggableId={`${props.dayIdx}list_item${props.scheduleIdx}`}
+          index={props.scheduleIdx}
+          key={props.scheduleIdx}
         >
           {(provided) => (
             <div
@@ -58,11 +69,11 @@ const Schedule = (props) => {
                   <img
                     style={scheduleCSS}
                     className="object-contain w-24 rounded-xl"
-                    src={card.img}
+                    src={schedule.img}
                     alt="이미지"
                   />
                   <div>
-                    <p>{card.title}</p>
+                    <p>{schedule.title}</p>
                     <p>
                       <input
                         className="w-20"
@@ -89,9 +100,9 @@ const Schedule = (props) => {
         </Draggable>
       ) : (
         <Draggable
-          draggableId={`${props.data[1]}list_item${index}`}
-          index={index}
-          key={index}
+          draggableId={`${props.dayIdx}list_item${props.scheduleIdx}`}
+          index={props.scheduleIdx}
+          key={props.scheduleIdx}
           isDragDisabled
         >
           {(provided) => (

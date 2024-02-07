@@ -1,11 +1,12 @@
-import Plan from "../components/Planning/Plan";
-import Map from "../components/GoogleMap/Map";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
 import { scheduleActions } from "../store/scheduleSlice";
 import { ModalPortal } from "../components/modals/ModalPortal";
-import NewPlan from "../components/modals/NewPlan";
 import { useState, useEffect } from "react";
+
+import Plan from "../components/Planning/Plan";
+import Map from "../components/GoogleMap/Map";
+import NewPlan from "../components/modals/NewPlan";
 import SavePlanModal from "../components/modals/SavePlanModal";
 
 export default function PlanningPage() {
@@ -21,9 +22,10 @@ export default function PlanningPage() {
     console.log(source);
     console.log(destination);
 
-    if (!destination) return;
+    if (!destination) return; // 범위밖일 때 드래그 취소
     const idx = Number(destination.droppableId.substr(4));
     if (source.droppableId === "PlaceCard") {
+      // 추가
       console.log(card[source.index]);
       const schedule = {
         img: card[source.index].photo,
@@ -34,6 +36,7 @@ export default function PlanningPage() {
       };
       dispatch(scheduleActions.addSchedule([schedule, destination.index, idx]));
     } else {
+      // 이동
       const idx2 = Number(source.droppableId.substr(4));
       dispatch(
         scheduleActions.moveSchedule([
@@ -43,19 +46,17 @@ export default function PlanningPage() {
       );
     }
   };
-
+  // 계획 만들기 모달
   const makePlan = () => {
     setIsNewPlanOpen(true);
   };
-
   const CloseNewPlanModal = () => {
     setIsNewPlanOpen(false);
   };
-
+  // 계획 저장하기 모달
   const savePlan = () => {
     setIsSavePlanOpen(true);
   };
-
   const CloseSavePlanModal = () => {
     setIsSavePlanOpen(false);
   };
