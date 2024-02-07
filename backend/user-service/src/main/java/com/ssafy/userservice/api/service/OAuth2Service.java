@@ -1,5 +1,6 @@
 package com.ssafy.userservice.api.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Service;
@@ -7,22 +8,23 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.beans.factory.annotation.Value;
 
 @Service
+@RequiredArgsConstructor
 public class OAuth2Service {
 
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-    private String kakaoClientId;
-
-    @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
-    private String kakaoClientSecret;
-
-    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
-    private String kakaoRedirectUri;
+//    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+//    private String kakaoClientId;
+//
+//    @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+//    private String kakaoClientSecret;
+//
+//    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
+//    private String kakaoRedirectUri;
 
     private final ClientRegistrationRepository clientRegistrationRepository;
 
-    public OAuth2Service(ClientRegistrationRepository clientRegistrationRepository) {
-        this.clientRegistrationRepository = clientRegistrationRepository;
-    }
+//    public OAuth2Service(ClientRegistrationRepository clientRegistrationRepository) {
+//        this.clientRegistrationRepository = clientRegistrationRepository;
+//    }
 
     public String getAuthorizationUrl(String registrationId) {
         ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(registrationId);
