@@ -1,49 +1,44 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { scheduleActions } from "../../store/scheduleSlice";
 
 const Schedule = (props) => {
   const list = useSelector((state) => state.schedule);
+  const dispatch = useDispatch();
+  const day = props.data[1] - 1;
+  const dayList = list[day];
   const index = props.data[0];
-  const card = list[index];
-  console.log(list);
-  let data = {
-    img: "",
-    title: "",
-    time: 0,
-    comment: "",
-    loca: "",
-  };
-  if (card !== "") {
-    data = {
-      img: card.img,
-      title: card.title,
-      time: card.time,
-      comment: card.comment,
-      loca: [card.loca],
-    };
-  }
-
-  // console.log(data);
+  const card = dayList[index];
 
   const blackHeight = useSelector((state) => state.time).blackHeight;
   const blackCSS = { height: `${blackHeight}px` };
-  const [t, setT] = useState(data.time);
+  const [t, setT] = useState();
+  const [text, setText] = useState();
+  useEffect(() => {
+    setT(card.time);
+    setText(card.comment);
+  });
   let scheduleCSS;
 
-  const change = (e) => {
+  const timeChange = (e) => {
     setT(e.target.value);
+    dispatch(scheduleActions.setTime([e.target.value, day, index]));
+  };
+
+  const textChange = (e) => {
+    setText(e.target.value);
+    dispatch(scheduleActions.setComment([e.target.value, day, index]));
   };
 
   useMemo(() => {
     const sh = (blackHeight * t) / 10;
-    data.time = t;
     scheduleCSS = { height: `${sh}px` };
   });
 
   return (
     <>
-      {data.title ? (
+      {card.title ? (
         <Draggable
           draggableId={`${props.data[1]}list_item${index}`}
           index={index}
@@ -63,17 +58,17 @@ const Schedule = (props) => {
                   <img
                     style={scheduleCSS}
                     className="object-contain w-24 rounded-xl"
-                    src={data.img}
+                    src={card.img}
                     alt="이미지"
                   />
                   <div>
-                    <p>{data.title}</p>
+                    <p>{card.title}</p>
                     <p>
                       <input
                         className="w-20"
                         type="number"
                         value={t}
-                        onChange={change}
+                        onChange={timeChange}
                         step="30"
                       />
                       분
@@ -83,7 +78,8 @@ const Schedule = (props) => {
                       name="comment"
                       id="comment"
                       placeholder="간단한 메모"
-                      value={data.comment}
+                      onChange={textChange}
+                      value={text}
                     />
                   </div>
                 </div>
