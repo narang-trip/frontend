@@ -36,7 +36,7 @@ const ChatPage = () => {
   const getChatList = async (chatroomId) => {
     try {
       const res = await axios.get(
-        `https://i10a701.p.ssafy.io/api/message/chat/${chatroomId}?page=0`
+        `https://i10a701.p.ssafy.io/api/message/chat/${chatroomId}?page=3`
       );
       console.log(res.data);
       setChatList(res.data.chatList);
@@ -80,28 +80,23 @@ const ChatPage = () => {
     };
   }, []);
 
-  const clickHandler = async () => {
-    dummyData = { ...dummyData, tripId: tripId };
-    try {
-      const response = await axios.post(
-        "https://i10a701.p.ssafy.io/api/message/alert/attend",
-        dummyData,
-        {
-          headers: {
-            "Content-Type": "application/json;charset=UTF-8",
-          },
-        }
-      );
-      console.log("SSE 요청 입니다", response.data);
-    } catch (error) {
-      console.error("Error", error.response);
-    }
-  };
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-    clickHandler();
-  };
+  // const clickHandler = async () => {
+  //   dummyData = { ...dummyData, tripId: tripId };
+  //   try {
+  //     const response = await axios.post(
+  //       "https://i10a701.p.ssafy.io/api/message/alert/attend",
+  //       dummyData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json;charset=UTF-8",
+  //         },
+  //       }
+  //     );
+  //     console.log("SSE 요청 입니다", response.data);
+  //   } catch (error) {
+  //     console.error("Error", error.response);
+  //   }
+  // };
 
   const enterChatroomHandler = (chatroomId) => {
     getChatList(chatroomId)
@@ -133,16 +128,6 @@ const ChatPage = () => {
         ))}
       </div>
       <div>chatRoom</div>
-      <hr />
-      <hr />
-      <hr />
-      {chatList.map((chat) => {
-        return (
-          <div key={chat.chatId}>
-            {chat.sendTime} : {chat.userId} : {chat.content}{" "}
-          </div>
-        );
-      })}
     </div>
   );
 };
