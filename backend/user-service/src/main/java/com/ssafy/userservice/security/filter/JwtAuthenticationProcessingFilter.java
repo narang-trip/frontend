@@ -41,14 +41,14 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        String refreshToken = jwtService.extractRefreshToken(request)
-                .filter(jwtService::isTokenValid)
-                .orElse(null);
-        if (refreshToken != null) {
-            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-            return;
-        }
-        checkAccessTokenAndAuthentication(request, response, filterChain);
+//        String refreshToken = jwtService.extractRefreshToken(request)
+//                .filter(jwtService::isTokenValid)
+//                .orElse(null);
+//        if (refreshToken != null) {
+//            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
+//            return;
+//        }
+//        checkAccessTokenAndAuthentication(request, response, filterChain);
     }
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
