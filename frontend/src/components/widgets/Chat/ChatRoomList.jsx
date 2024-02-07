@@ -10,7 +10,6 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
   useEffect(() => {
     if (userId) {
       getChatroomList(userId);
-      console.log(chatroomList)
     }
   }, [userId]);
 
@@ -20,6 +19,9 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
         `https://i10a701.p.ssafy.io/api/message/chat/list/${userId}`
       );
       setChatroomList(res.data);
+      console.log("res data", res.data)
+      console.log(chatroomList)
+
     } catch (error) {
       console.error(error);
     }
