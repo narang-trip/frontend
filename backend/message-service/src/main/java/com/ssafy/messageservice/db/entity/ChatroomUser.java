@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ChatroomUser {
     @Id
     @Column(length = 50)
-    private String id = UUID.randomUUID().toString();
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroomId", referencedColumnName = "chatroomId")
