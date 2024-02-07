@@ -32,10 +32,16 @@ public class AlertController {
         }
     }
 
-    // 여행 참여 요청 생성 + 수락/거절
+    // 여행 참여 요청 생성
     @PostMapping("/attend")
     public ResponseEntity<?> postAttendAlert(@RequestBody AlertAttendRequest alertAttendRequest) {
         return alertService.send(alertAttendRequest);
+    }
+
+    // 여행 참여 요청 수락/거절
+    @PatchMapping("/attend/{id}/{alertType}")
+    public ResponseEntity<?> patchAttendAlert(@PathVariable String id, @PathVariable String alertType) {
+        return alertService.patchAlert(id, alertType);
     }
 
     // userId의 지금까지의 알림 리스트 보내주기
@@ -53,7 +59,7 @@ public class AlertController {
         }
     }
 
-    // userId의 지금까지의 알림 리스트 보내주기
+    // tripId의 지금까지의 알림 리스트 보내주기
     @GetMapping(value = "/trip/{tripId}")
     public ResponseEntity<AlertListResponse> getAlertTripList(@PathVariable String tripId) {
         List<AlertListResponse.AlertResponse> alertResponses = alertService.getAlertsByTripId(tripId);
