@@ -47,6 +47,7 @@ const Plan = () => {
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 <DayPlan index={index} key={index} />
+                {provided.placeholder}
               </div>
             )}
           </Droppable>

@@ -58,10 +58,7 @@ const Schedule = (props) => {
         >
           {(provided) => (
             <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-              <div
-                style={scheduleCSS}
-                className="flex flex-col bg-white w-56 rounded-xl overflow-hidden"
-              >
+              <div style={scheduleCSS} className="flex flex-col bg-white w-56 rounded-xl">
                 <div className="flex">
                   <img
                     style={scheduleCSS}

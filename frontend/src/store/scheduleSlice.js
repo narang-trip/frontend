@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { DirectionsService } from "@react-google-maps/api";
 
 const initialState = {
   // 여행 계획표의 시간
@@ -35,11 +36,14 @@ const scheduleSlice = createSlice({
     sortSchedule: (state) => {
       let prevLoca = null;
 
-      for (var i = 0; i < state.length; i++) {
-        for (var j = 0; j < state[i].length; j++) {
-          if (state[i][j].title !== "") {
+      for (var i = 0; i < state.list.length; i++) {
+        for (var j = 0; j < state.list[i].length; j++) {
+          if (state.list[i][j].title !== "") {
             if (prevLoca !== null) {
-              //경로구하는 함수
+              <DirectionsService
+                options={{ origin, destination, travelMode: "TRANSIT" }}
+                callback={directionsCallback}
+              />;
             }
             prevLoca = state[i][j].loca;
           }
@@ -77,7 +81,6 @@ const scheduleSlice = createSlice({
     },
     // 일정 체류시간 변경
     setScheduleTime: (state, action) => {
-      console.log(action);
       state.list[action.payload.day][action.payload.index].time = action.payload.time;
     },
     // 일정 한마디
