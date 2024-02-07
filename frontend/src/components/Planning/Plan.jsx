@@ -55,10 +55,6 @@ const Plan = () => {
 
   const update = () => {};
 
-  const add = () => {
-    dispatch(scheduleActions.tmpAddDay(lineCnt));
-  };
-
   return (
     <div className="relative w-full flex overflow-x-scroll gap-1 m-1">
       {list.map((data, index) => (
