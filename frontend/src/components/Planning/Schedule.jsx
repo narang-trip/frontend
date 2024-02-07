@@ -7,13 +7,22 @@ const Schedule = (props) => {
   const index = props.data[0];
   const card = list[index];
   console.log(list);
-  const data = {
-    img: card.img,
-    title: card.title,
-    time: card.time,
-    comment: card.comment,
-    loca: [card.loca],
+  let data = {
+    img: "",
+    title: "",
+    time: 0,
+    comment: "",
+    loca: "",
   };
+  if (card !== "") {
+    data = {
+      img: card.img,
+      title: card.title,
+      time: card.time,
+      comment: card.comment,
+      loca: [card.loca],
+    };
+  }
 
   // console.log(data);
 
