@@ -25,6 +25,8 @@ const Chat = ({ chatroomId }) => {
             `/sub/chat/room/${chatroomId}`,
             (message) => {
               console.log(`Received: ${message.body}`);
+
+              setChats((prevChats) => [...prevChats, message.body]);
             }
           );
 
@@ -94,7 +96,12 @@ const Chat = ({ chatroomId }) => {
         );
       })}
       <form onSubmit={submitHandler}>
-        <input type="text" placeholder="메시지 입력해주세요" value={msg} onChange={(e) => setMsg(e.target.value)}/>
+        <input
+          type="text"
+          placeholder="메시지 입력해주세요"
+          value={msg}
+          onChange={(e) => setMsg(e.target.value)}
+        />
         <Button type="submit">전송</Button>
       </form>
     </Fragment>
