@@ -8,7 +8,7 @@ const LoginModal = (props) => {
   console.log(kakaoRedirectURI);
   const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
   const kakaoLoginURI2 =
-    "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
+    "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
   const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
 
   const kakaoLogin = async () => {
