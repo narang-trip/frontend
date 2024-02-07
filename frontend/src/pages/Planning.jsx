@@ -13,7 +13,7 @@ export default function PlanningPage() {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
 
-  // console.log(list);
+  console.log(list);
 
   const onDragEnd = ({ source, destination }) => {
     console.log(source);
@@ -27,7 +27,7 @@ export default function PlanningPage() {
         img: card[source.index].photo,
         title: card[source.index].name,
         loca: card[source.index].loca,
-        time: 120,
+        time: "120",
         comment: "",
       };
       dispatch(scheduleActions.addSchedule([schedule, destination.index, idx]));

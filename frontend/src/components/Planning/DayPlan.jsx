@@ -12,7 +12,7 @@ const DayPlan = (props) => {
     (Number(day.endHour) - Number(day.startHour)) * 2 +
     (Number(day.endMinute) - Number(day.startMinute)) / 30;
 
-  // console.log(props.data);
+  // console.log(props.data.list);
 
   useEffect(() => {
     console.log(divRef);

@@ -60,7 +60,7 @@ const Plan = () => {
   };
 
   return (
-    <div className="relative w-full flex overflow-scroll overflow-y:hidden scroll-auto gap-1 m-1">
+    <div className="relative w-full flex overflow-x-scroll gap-1 m-1">
       {list.map((data, index) => (
         <div className="flex" key={index}>
           <Droppable droppableId={`list${index}`}>
@@ -76,7 +76,7 @@ const Plan = () => {
           </Droppable>
         </div>
       ))}
-      <button onClick={add}>날짜추가</button>
+      {/* <button onClick={add}>날짜추가</button> */}
     </div>
   );
 };
