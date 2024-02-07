@@ -11,12 +11,11 @@ const Schedule = (props) => {
     time: card.time,
     comment: "",
     loca: [card.loca],
-    p: card.padding - 135,
   };
 
   const blackHeight = useSelector((state) => state.time).blackHeight;
   const blackCSS = { height: `${blackHeight}px` };
-  const [t, setT] = useState(240);
+  const [t, setT] = useState(120);
   let scheduleCSS;
 
   const change = (e) => {
@@ -24,7 +23,7 @@ const Schedule = (props) => {
   };
 
   useMemo(() => {
-    const sh = (blackHeight * t) / 10;
+    const sh = (blackHeight * t) / 5;
     scheduleCSS = { height: `${sh}px` };
   });
 
