@@ -34,15 +34,17 @@ export default function PlanningPage() {
         time: "120",
         comment: "",
       };
-      dispatch(scheduleActions.addSchedule([schedule, destination.index, idx]));
+      dispatch(
+        scheduleActions.addSchedule({ schedule: schedule, index: destination.index, day: idx })
+      );
     } else {
       // 이동
       const idx2 = Number(source.droppableId.substr(4));
       dispatch(
-        scheduleActions.moveSchedule([
-          [idx2, source.index],
-          [idx, destination.index],
-        ])
+        scheduleActions.moveSchedule({
+          start: { day: idx2, index: source.index },
+          end: { day: idx, index: destination.index },
+        })
       );
     }
   };

@@ -1,8 +1,8 @@
 // import { useState } from "react";
-import DayPlan from "./DayPlan";
 import { Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 
+import DayPlan from "./DayPlan";
 // import * as Y from "yjs";
 // import { WebrtcProvider } from "y-webrtc";
 
@@ -31,8 +31,6 @@ import { useSelector } from "react-redux";
 
 const Plan = () => {
   const list = useSelector((state) => state.schedule).list;
-  console.log(list);
-
   // ydoc.on("afterTransaction", () => {
   //   setList(Array.from(ymap.get("list")));
   // });
@@ -41,8 +39,6 @@ const Plan = () => {
   //   ymap.set("list", list);
   // }, [JSON.stringify(list)]);
 
-  const update = () => {};
-
   return (
     <div className="relative w-full flex overflow-x-scroll gap-1 m-1">
       {list.map((data, index) => (
@@ -50,13 +46,12 @@ const Plan = () => {
           <Droppable droppableId={`list${index}`}>
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                <DayPlan index={index} update={update} key={index} />
+                <DayPlan index={index} key={index} />
               </div>
             )}
           </Droppable>
         </div>
       ))}
-      {/* <button onClick={add}>날짜추가</button> */}
     </div>
   );
 };
