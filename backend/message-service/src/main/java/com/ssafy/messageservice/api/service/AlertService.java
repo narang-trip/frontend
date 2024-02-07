@@ -85,7 +85,7 @@ public class AlertService {
                 .forEach(entry -> sendAlert(emitter, entry.getKey(), emitterId, entry.getValue()));
     }
 
-    // 알림 보내는 메소드
+    // 요청 알림 보내는 메소드
     public ResponseEntity<?> send(AlertAttendRequest alertAttendRequest) {
         try{
             boolean exists = alertRepository.existsByTripIdAndSenderId(alertAttendRequest.getTripId(), alertAttendRequest.getSenderId());
@@ -126,6 +126,53 @@ public class AlertService {
             }
             else{
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Data already exists");
+            }
+
+        }catch (Exception e){
+            // DB에 저장된 senderId를 사용해야 함
+            System.out.println("알림 보내기를 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send alert");
+        }
+    }
+
+    // 수락/거절 알림 보내는 메소드
+    public ResponseEntity<?> patchAlert(String id, String alertType) {
+        try{
+            Optional<Alert> alertExists = alertRepository.findById(id);
+            // 해당 id를 가지고 있는 데이터가 존재하는지 확인하기
+            if(alertExists.isPresent()){
+                // alertType 변경 + sender와 receiver도 변경해야 함
+                Alert alert = alertExists.get();
+                alert.setAlertType(alertType);
+                alertRepository.save(alert);
+
+                // 이때 요청에 대한 답장 알림이기 때문에 sender,receiver 변경해줘야 함
+                String receiver = alert.getSenderId();
+                String eventId = receiver + "_" + System.currentTimeMillis();
+                Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
+
+                // 알림을 보내는 response 값 데이터 넣어주기
+                AlertListResponse.AlertResponse alertResponse = new AlertListResponse.AlertResponse(alert.getId(),
+                        alert.getTripId(),
+                        alert.getTripName(),
+                        alert.getReceiverId(),
+                        getSenderName(alert.getReceiverId()),
+                        alert.getPosition(),
+                        alert.getAspiration(),
+                        alert.getAlertType(),
+                        alert.isRead());
+                emitters.forEach(
+                        (key, emitter) -> {
+                            // 데이터 캐시 저장
+                            emitterRepository.saveEventCache(key, alertResponse);
+                            // 데이터 전송
+                            sendAlert(emitter, eventId, key, alertResponse);
+                        }
+                );
+                return ResponseEntity.ok().body("Alert sent successfully"); // 성공 응답
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Data not found");
             }
 
         }catch (Exception e){
