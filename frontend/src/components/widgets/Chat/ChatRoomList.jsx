@@ -10,6 +10,7 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
   useEffect(() => {
     if (userId) {
       getChatroomList(userId);
+      console.log(chatroomList)
     }
   }, [userId]);
 
