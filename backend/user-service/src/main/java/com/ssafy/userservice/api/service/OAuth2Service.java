@@ -19,6 +19,9 @@ public class OAuth2Service {
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String kakaoRedirectUri;
 
+    @Value("${spring.security.oauth2.client.provider.kakao.authorization-uri}")
+    private String kakaoAuthorizationUri;
+
     private final ClientRegistrationRepository clientRegistrationRepository;
 
     public OAuth2Service(ClientRegistrationRepository clientRegistrationRepository) {
@@ -35,6 +38,7 @@ public class OAuth2Service {
                 .redirectUri(kakaoRedirectUri)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .scope("profile", "email")
+                .authorizationUri(kakaoAuthorizationUri)
                 .build();
         System.out.println(clientRegistration.toString());
         UriComponentsBuilder builder = UriComponentsBuilder
