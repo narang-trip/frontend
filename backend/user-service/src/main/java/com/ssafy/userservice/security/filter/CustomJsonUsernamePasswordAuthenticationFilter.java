@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Slf4j
-@Order(1)
+@Order(2)
 public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final String DEFAULT_LOGIN_REQUEST_URL = "/login";

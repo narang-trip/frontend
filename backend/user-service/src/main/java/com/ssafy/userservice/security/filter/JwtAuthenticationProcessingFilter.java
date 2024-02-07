@@ -22,7 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Optional;
 
-@Order(2)
+@Order(1)
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
@@ -79,7 +79,9 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
                                                   FilterChain filterChain) throws ServletException, IOException {
         log.info("checkAccessTokenAndAuthentication() 호출");
-
+        log.info("리퀘스트 리스폰스 찍어보자");
+        log.error(request.toString());
+        log.error(response.toString());
         // 1. AccessToken 추출
         Optional<String> accessToken = jwtService.extractAccessToken(request);
         if (!accessToken.isPresent()) {
