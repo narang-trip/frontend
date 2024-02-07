@@ -60,7 +60,7 @@ const Schedule = (props) => {
             <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
               <div
                 style={scheduleCSS}
-                className="flex flex-col bg-white w-56 rounded-xl overflow-auto"
+                className="flex flex-col bg-white w-56 rounded-xl overflow-hidden"
               >
                 <div className="flex">
                   <img
@@ -104,7 +104,7 @@ const Schedule = (props) => {
         >
           {(provided) => (
             <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-              <div style={blackCSS} className="bg-black"></div>
+              <div style={blackCSS} className="bg-black opacity-5"></div>
             </div>
           )}
         </Draggable>

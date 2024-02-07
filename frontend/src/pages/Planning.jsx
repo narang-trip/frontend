@@ -20,14 +20,14 @@ export default function PlanningPage() {
   console.log(list);
 
   const onDragEnd = ({ source, destination }) => {
-    console.log(source);
-    console.log(destination);
+    // console.log(source);
+    // console.log(destination);
 
     if (!destination) return; // 범위밖일 때 드래그 취소
     const idx = Number(destination.droppableId.substr(4));
     if (source.droppableId === "PlaceCard") {
       // 추가
-      console.log(card[source.index]);
+      // console.log(card[source.index]);
       const schedule = {
         img: card[source.index].photo,
         title: card[source.index].name,
