@@ -21,7 +21,7 @@ public class AlertListResponse {
     @Setter
     @AllArgsConstructor
     public static class AlertResponse{
-        private String alertId;
+        private String id;
         private String tripId;
         private String tripName;
         private String senderId;
