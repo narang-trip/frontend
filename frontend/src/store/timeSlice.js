@@ -6,6 +6,7 @@ const initialState = {
   startMinute: 0,
   endHour: 0,
   endMinute: 0,
+  blackHeight: 0,
 };
 
 const timeSlice = createSlice({
@@ -19,6 +20,9 @@ const timeSlice = createSlice({
       state.startMinute = action.payload.startMinute;
       state.endHour = action.payload.endHour;
       state.endMinute = action.payload.endMinute;
+    },
+    setHeight: (state, action) => {
+      state.blackHeight = action.payload;
     },
   },
 });
