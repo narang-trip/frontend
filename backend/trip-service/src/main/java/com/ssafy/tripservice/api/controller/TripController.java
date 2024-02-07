@@ -173,4 +173,12 @@ public class TripController {
 
         return ResponseEntity.ok(tripService.getMyTrips(userId, pageNo));
     }
+
+    @DeleteMapping("/user")
+    public ResponseEntity<Long> deleteUserTrips (
+            @RequestParam("userId") UUID userId) {
+        System.out.println(userId);
+
+        return ResponseEntity.ok(tripService.eraseWithdrawalUser(userId));
+    }
 }

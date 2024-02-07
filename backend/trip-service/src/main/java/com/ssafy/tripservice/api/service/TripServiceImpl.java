@@ -6,6 +6,8 @@ import com.mongodb.ClientSessionOptions;
 import com.mongodb.ReadPreference;
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.UpdateManyModel;
+import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.querydsl.mongodb.document.AbstractMongodbQuery;
@@ -315,5 +317,26 @@ public class TripServiceImpl implements TripService {
                 .getPage(myTrips, pageRequest,
                         () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
                 .map(p -> p.toTripPageResponse(pageNo));
+    }
+
+    /*
+        탈퇴 회원 가입 파티 삭제
+        한개씩만 되는거 문제. 나머지 데이터 다 사라지는거 문제 : 해결 !
+     */
+    @Override
+    public long eraseWithdrawalUser(UUID userId) {
+
+        Query query = new Query(
+                Criteria
+                        .where("participants")
+                        .elemMatch(
+                                Criteria.where("participantId")
+                                        .is(userId)));
+
+        System.out.println(mongoTemplate.find(query, Trip.class).size());
+
+        Update update = new Update().pull("participants", Query.query(Criteria.where("participantId").is(userId)));
+
+        return mongoTemplate.updateMulti(query, update, Trip.class).getMatchedCount();
     }
 }
