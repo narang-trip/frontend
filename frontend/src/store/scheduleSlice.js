@@ -20,7 +20,7 @@ const scheduleSlice = createSlice({
     tmpAddDay: (state, action) => {
       console.log(action.payload);
       state.push([]);
-      for (var i = 0; i < action.payload * 6; i++) {
+      for (var i = 0; i < action.payload * 3; i++) {
         state[state.length - 1].push([]);
       }
     },

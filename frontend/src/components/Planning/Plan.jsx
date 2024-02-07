@@ -35,7 +35,6 @@ const Plan = () => {
   const list = useSelector((state) => state.schedule);
   const day = useSelector((state) => state.time);
   const dispatch = useDispatch();
-  console.log(day.day);
   const lineCnt =
     (Number(day.endHour) - Number(day.startHour)) * 2 +
     (Number(day.endMinute) - Number(day.startMinute)) / 30;

@@ -3,19 +3,23 @@ import { Draggable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 
 const Schedule = (props) => {
-  const index = props.data[1];
-  const card = props.data[0];
+  const list = useSelector((state) => state.schedule);
+  const index = props.data[0];
+  const card = list[index];
+  console.log(list);
   const data = {
     img: card.img,
     title: card.title,
     time: card.time,
-    comment: "",
+    comment: card.comment,
     loca: [card.loca],
   };
 
+  // console.log(data);
+
   const blackHeight = useSelector((state) => state.time).blackHeight;
   const blackCSS = { height: `${blackHeight}px` };
-  const [t, setT] = useState(120);
+  const [t, setT] = useState(data.time);
   let scheduleCSS;
 
   const change = (e) => {
@@ -23,7 +27,8 @@ const Schedule = (props) => {
   };
 
   useMemo(() => {
-    const sh = (blackHeight * t) / 5;
+    const sh = (blackHeight * t) / 10;
+    data.time = t;
     scheduleCSS = { height: `${sh}px` };
   });
 
@@ -31,7 +36,7 @@ const Schedule = (props) => {
     <>
       {data.title ? (
         <Draggable
-          draggableId={`${props.data[2]}list_item${index}`}
+          draggableId={`${props.data[1]}list_item${index}`}
           index={index}
           key={index}
         >
@@ -69,6 +74,7 @@ const Schedule = (props) => {
                       name="comment"
                       id="comment"
                       placeholder="간단한 메모"
+                      value={data.comment}
                     />
                   </div>
                 </div>
@@ -78,7 +84,7 @@ const Schedule = (props) => {
         </Draggable>
       ) : (
         <Draggable
-          draggableId={`${props.data[2]}list_item${index}`}
+          draggableId={`${props.data[1]}list_item${index}`}
           index={index}
           key={index}
           isDragDisabled
