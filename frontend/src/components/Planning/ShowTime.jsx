@@ -9,7 +9,7 @@ const ShowTime = () => {
   for (let i = 0; i < lineCnt; i++) {
     let time = `${h}:${m}`;
     if (h < 10) time = `0${h}:${m}`;
-    if (m === 0) time = `${h}:${m}`;
+    if (m === 0) time = `${h}:${m}0`;
     if (h < 10 && m === 0) time = `0${h}:${m}0`;
     timeList.push(time);
     m = m + 30;
@@ -20,9 +20,9 @@ const ShowTime = () => {
   }
 
   return (
-    <div className="absolute w-8 h-full grid grid-cols content-between pt-9">
+    <div className="absolute w-8 h-full grid grid-cols content-between pt-12">
       {[...Array(lineCnt)].map((_, index) => (
-        <div key={index} className={`border-b border-red-600 w-full`}>
+        <div key={index} className={`border-b border-red-600 w-full text-[9px]`}>
           {timeList[index]}
         </div>
       ))}
