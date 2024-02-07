@@ -45,12 +45,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .cors().and()
+                .cors().and()
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .headers(AbstractHttpConfigurer::disable) // 개발 단계에서만 사용하기!
+                .headers(AbstractHttpConfigurer::disable) // 개발 단계에서만 사용하기!
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/api/user/**", "/h2-console/**", "/sign-up").permitAll()
+                        .requestMatchers("/", "/api/user/**", "/oauth2/**", "/login/**", "/oauth/**",
+                                "/v2/**", "/h2-console/**", "/sign-up").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2Login -> oauth2Login
                         .successHandler(oAuth2LoginSuccessHandler)
