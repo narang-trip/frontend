@@ -15,8 +15,10 @@ import com.ssafy.userservice.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +31,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 
 @Configuration
@@ -44,14 +48,32 @@ public class SecurityConfig {
     private final AuthRepository authRepository;
 
     @Bean
+    public SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> securityConfigurerAdapter() {
+        return new SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
+            @Override
+            public void configure(HttpSecurity http) throws Exception {
+                http.cors().configurationSource(request -> {
+                    CorsConfiguration corsConfiguration = new CorsConfiguration();
+                    corsConfiguration.setAllowedOrigins(List.of("*"));
+                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
+                    corsConfiguration.setAllowedHeaders(List.of("*"));
+                    corsConfiguration.setExposedHeaders(List.of("Authorization", "Authorization-refresh"));
+                    corsConfiguration.setMaxAge(3600L);
+                    return corsConfiguration;
+                });
+            }
+        };
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors
-                        .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+//                .cors(cors -> cors
+//                        .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .headers(AbstractHttpConfigurer::disable) // 개발 단계에서만 사용하기!
-                .authorizeHttpRequests((auth) -> auth
+                .headers(headers -> headers.disable())
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/api/user/**", "/oauth2/**", "/login/**", "/oauth/**",
                                 "/v2/**", "/h2-console/**", "/sign-up").permitAll()
                         .anyRequest().authenticated())

@@ -25,17 +25,12 @@ public interface TripService {
         현재 기준 참가 가능한 Trip
      */
     List<TripResponse> getAvailableTrips();
-
     Optional<TripResponse> getTripById(UUID tripId);
-
     Optional<TripResponse> joinTrip(UserRequest userRequest);
-
     boolean leaveTrip(UserRequest userRequest);
-
     boolean deleteTrip(UserRequest userRequest);
-
     public Page<TripPageResponse> getAvailableTripPages(int pageNo);
-
     public List<TripResponse> getBannerTrips(String tripConcept);
     public Page<TripPageResponse> getMyTrips(UUID userId, int pageNo);
+    public long eraseWithdrawalUser(UUID userId);
 }
