@@ -29,10 +29,13 @@ export default function TripDetail() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://i10a701.p.ssafy.io/api/trip/${tripId}`
+          `https://i10a701.p.ssafy.io/api/trip/trip/${tripId}`
         );
 
+        // 상세 정보 저장
         setTripDetails(response.data);
+ 
+        // 날짜 포맷 설정
         setDepartureDate(
           DateFormatter({ dateString: response.data.departureDate })
         );
@@ -107,7 +110,7 @@ export default function TripDetail() {
                     <div className="flex flex-row items-center my-3 text-sm">
                       <SlBadge className="mx-3 text-neutral-400" size="24" />
                       <div className="flex flex-wrap justify-between">
-                        {tripDetails.tripRoles.map((role, index) => (
+                        {tripDetails.tripRoles && tripDetails.tripRoles.map((role, index) => (
                           <span
                             key={index}
                             className="inline-flex items-center px-2 py-1 m-0.5 text-sm font-medium rounded-full text-neutral-700 bg-stone-100 ring-1 ring-inset ring-stone-500"
@@ -141,11 +144,10 @@ export default function TripDetail() {
               <ModalPortal>
                 <ApplicationModal
                   onClose={CloseApplicationModal}
-                  positions={tripDetails.participants
-                    .filter((participant) => participant.role !== null)
-                    .map((participant, index) => (
-                      <span key={index}>{participant.role}</span>
+                  positions= {tripDetails.tripRoles.map((role, index) => (
+                      <span key={index}>{role}</span>
                     ))}
+                  deposit={tripDetails.tripD}
                 />
               </ModalPortal>
             )}
