@@ -10,14 +10,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserRestController {
     private final UserService userService;
+    private final OAuth2Service oAuth2Service;
 
+    @GetMapping("/oauth2/authorization/kakao")
+    public RedirectView kakaoLogin() {
+        System.out.println("==========login controller 동작2345============");
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl(oAuth2Service.getAuthorizationUrl("kakao"));
+        return redirectView;
+    }
 
     @PostMapping("/login/oauth/{provider}")
     public void login(@PathVariable String provider, HttpServletRequest request){
