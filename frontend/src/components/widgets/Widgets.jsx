@@ -19,7 +19,7 @@ export default function Widgets() {
       <CalendarCp />
       {!isLogin && (
         <div className="justify-center items-center">
-          로그인을 먼저 해주세요{" "}
+          로그인을 먼저 해주세요
         </div>
       )}
       {isLogin &&
