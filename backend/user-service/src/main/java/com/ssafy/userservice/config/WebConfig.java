@@ -10,9 +10,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-//                .allowedOrigins("https://i10a701.p.ssafy.io")
-                .allowedMethods("*");
+        registry.addMapping("/api/user/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH");
 //                .exposedHeaders("Authorization", "Authorization-refresh")
 //                .maxAge(3600);
     }
