@@ -48,22 +48,12 @@ const scheduleSlice = createSlice({
     },
     // 일정 추가하기
     addSchedule: (state, action) => {
-      // let dayTime = 0;
-      // for (var i = 0; i < state[action.payload[2]].length; i++) {
-      //   if (state[action.payload[2]][i].title !== "") dayTime += 1;
-      //   else dayTime += state[action.payload[2]][i].time;
-      // }
-      // if (dayTime > )
-      state[action.payload[2]].splice(action.payload[1], 0, action.payload[0]);
-      // if (state[action.payload[2]].length < action.payload[1] + 12)
-      //   state[action.payload[2]][action.payload[1]].time =
-      //     (state[action.payload[2]].length - action.payload[1] - 1) * 10;
+      state.list[action.payload.day].splice(action.payload.index, 0, action.payload.schedule);
     },
     // 일정 움직이기
     moveSchedule: (state, action) => {
-      const data = state[action.payload[0][0]].splice(action.payload[0][1], 1);
-      console.log(data);
-      state[action.payload[1][0]].splice(action.payload[1][1], 0, ...data);
+      const data = state.list[action.payload.start.day].splice(action.payload.start.index, 1);
+      state.list[action.payload.end.day].splice(action.payload.end.index, 0, ...data);
     },
     // 저장된 계획 불러오기
     setSchedule: (state, action) => {
@@ -71,15 +61,12 @@ const scheduleSlice = createSlice({
     },
     // 여행 계획표의 시간 설정
     setTime: (state, action) => {
-      console.log(action.payload);
       state.time = action.payload;
-      console.log(action.payload.totalTime);
       state.time.lineCnt = action.payload.totalTime / 30 + 1;
       // 설정한 날 만큼 빈칸으로 채워진 일정 생성
-      console.log(action.payload.totalDay);
       for (var i = 0; i < action.payload.totalDay; i++) {
         state.list.push([]);
-        for (var j = 0; j < action.payload.totalTime / 30 + 1; j++) {
+        for (var j = 0; j < action.payload.totalTime / 10; j++) {
           state.list[i].push([]);
         }
       }
@@ -90,11 +77,12 @@ const scheduleSlice = createSlice({
     },
     // 일정 체류시간 변경
     setScheduleTime: (state, action) => {
-      state[action.payload[1]][action.payload[2]].time = action.payload[0];
+      console.log(action);
+      state.list[action.payload.day][action.payload.index].time = action.payload.time;
     },
     // 일정 한마디
     setComment: (state, action) => {
-      state[action.payload[1]][action.payload[2]].comment = action.payload[0];
+      state.list[action.payload.day][action.payload.index].comment = action.payload.comment;
     },
   },
 });
