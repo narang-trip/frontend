@@ -6,6 +6,7 @@ import { scheduleActions } from "../store/scheduleSlice";
 import { ModalPortal } from "../components/modals/ModalPortal";
 import NewPlan from "../components/modals/NewPlan";
 import { useState, useEffect } from "react";
+import SavePlanModal from "../components/modals/SavePlanModal";
 
 export default function PlanningPage() {
   const list = useSelector((state) => state.schedule);
@@ -87,7 +88,11 @@ export default function PlanningPage() {
           <NewPlan onClose={CloseNewPlanModal} />
         </ModalPortal>
       )}
-      {isSavePlanOpen && <ModalPortal></ModalPortal>}
+      {isSavePlanOpen && (
+        <ModalPortal>
+          <SavePlanModal onClose={CloseSavePlanModal} />
+        </ModalPortal>
+      )}
     </div>
   );
 }
