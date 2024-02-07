@@ -27,6 +27,8 @@ export default function PlanningPage() {
         img: card[source.index].photo,
         title: card[source.index].name,
         loca: card[source.index].loca,
+        time: 120,
+        comment: "",
       };
       dispatch(scheduleActions.addSchedule([schedule, destination.index, idx]));
     } else {
