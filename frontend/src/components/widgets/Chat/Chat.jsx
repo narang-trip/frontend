@@ -25,8 +25,12 @@ const Chat = ({ chatroomId }) => {
             `/sub/chat/room/${chatroomId}`,
             (message) => {
               console.log(`Received: ${message.body}`);
-
-              setChats((prevChats) => [...prevChats, message.body]);
+              const chat = {
+                userId : userId,
+                sendTime : message.body.sendTime,
+                content : message.body.content
+              }
+              setChats((prevChats) => [...prevChats, chat]);
             }
           );
 
@@ -57,7 +61,9 @@ const Chat = ({ chatroomId }) => {
       const res = await axios.get(
         `https://i10a701.p.ssafy.io/api/message/chat/${chatroomId}?page=${page}`
       );
+  
       setChats(res.data.chatList);
+      console.log(chats)
     } catch (error) {
       console.error(error);
     }
