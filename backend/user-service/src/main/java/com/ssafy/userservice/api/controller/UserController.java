@@ -26,6 +26,7 @@ import java.io.IOException;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
+    @Autowired
     private final OAuth2Service oAuth2Service;
 //    @GetMapping("/oauth2/authorization/{provider}")
 //    public RedirectView redirectToOAuth2Provider(@AuthenticationPrincipal OAuth2User principal,
