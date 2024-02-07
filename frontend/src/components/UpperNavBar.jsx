@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import { useDispatch, useSelector } from "react-redux";
-import { authAction } from "../store/auth-slice";
+import { authActions } from "../store/auth-slice";
 
 import { ModalPortal } from "./modals/ModalPortal";
 import Dropdown from "./UpNavDropdown";
@@ -23,7 +23,7 @@ export default function UpperNavbar() {
   };
 
   const Logout = () => {
-    dispatch(authAction.Logout());
+    dispatch(authActions.Logout());
   };
   useEffect(() => {
     // 모달이 열렸을 때 스크롤 막기 위함
@@ -39,6 +39,7 @@ export default function UpperNavbar() {
   }, [isOpen]);
 
   const clickHandler = (name) => {
+    dispatch(authActions.Login({code, userId: name}))
     console.log(`${name} 로그인 됐습니다.`);
     console.log("---------------------------------");
     const EventSource = EventSourcePolyfill || NativeEventSource;
