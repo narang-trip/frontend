@@ -106,7 +106,9 @@ export default function TripWriteForm() {
       departureDate: board.startDate,
       returnDate: board.endDate,
       participants: [],
+      tripLeaderId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     };
+    
     try {
       // 이미지 파일이 선택되었을 경우에만 추가
       if (board.img) {
@@ -123,7 +125,7 @@ export default function TripWriteForm() {
 
       // 데이터를 서버로 전송
       const response = await axios.post(
-        "https://i10a701.p.ssafy.io/api/trip/create",
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/create`,
         formData,
         {
           headers: {

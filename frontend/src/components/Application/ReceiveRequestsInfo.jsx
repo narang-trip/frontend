@@ -1,11 +1,11 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 
-export default function ReceiveRequestsInfo() {
+export default function ReceiveRequestsInfo({ data }) {
   return (
     <Fragment>
-      <div className="flex justify-center w-full">
+      <div className="flex flex-wrap justify-center w-full">
         <div className="flex flex-row justify-around w-9/12 m-2">
-          <div className="w-7/12 h-24 p-2 border rounded-lg border-stone-400">
+          <div className="grid w-7/12 h-24 grid-rows-2 p-2 border rounded-lg border-stone-400">
             <div className="flex items-center justify-between mx-4 mb-2">
               <div>
                 <img
@@ -13,12 +13,15 @@ export default function ReceiveRequestsInfo() {
                   src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                   alt=""
                 />
-                <span className="mx-3 text-sm">user_1</span>
+                <span className="mx-3 text-sm">{data.senderId}</span>
               </div>
-              <div className="w-1/5 p-1.5 text-sm text-center border rounded-2xl border-slate-300">
-                역할1
+              <div className=" p-1.5 text-sm text-center flex ">
+                {data &&
+                  data.position.map((role, idx) => (
+                    <span className="p-1 border bg-neutral-100 rounded-xl border-neutral-100" key={idx}>{role} </span>
+                  ))}
               </div>
-              <div>
+              <div className="flex">
                 <span className="items-center px-1.5 py-2 mx-1 text-xs font-medium text-gray-700 rounded-full bg-gray-50 ring-2 ring-inset ring-gray-600/20">
                   뱃지1
                 </span>
@@ -31,7 +34,7 @@ export default function ReceiveRequestsInfo() {
               </div>
             </div>
             <div className="p-2 mx-5 text-sm border rounded-xl border-slate-300">
-              <p>신청자 설명입니다</p>
+              <p>{data.aspiration}</p>
             </div>
           </div>
 
