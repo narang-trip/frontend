@@ -7,7 +7,6 @@ import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   useEffect(() => {
     const params = new URL(document.URL).searchParams;
     const code = params.get("code");
@@ -19,8 +18,7 @@ const Login = () => {
           `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=${code}`
         );
         console.log(res.data);
-    dispatch(authAction.Login(code));
-
+        dispatch(authAction.Login(code));
       } catch (error) {
         console.log(error);
       }
@@ -31,4 +29,3 @@ const Login = () => {
 };
 
 export default Login;
-

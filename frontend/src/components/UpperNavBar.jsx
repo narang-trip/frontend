@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
-import { ModalPortal } from "./modals/ModalPortal";
-import LoginModal from "./modals/LoginModal";
+import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import { useDispatch, useSelector } from "react-redux";
 import { authAction } from "../store/auth-slice";
+
+import { ModalPortal } from "./modals/ModalPortal";
 import Dropdown from "./UpNavDropdown";
+import LoginModal from "./modals/LoginModal";
+import Button from '../ui/Button'
 
 export default function UpperNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,12 +38,45 @@ export default function UpperNavbar() {
     };
   }, [isOpen]);
 
+  const clickHandler = (name) => {
+    console.log(`${name} 로그인 됐습니다.`);
+    console.log("---------------------------------");
+    const EventSource = EventSourcePolyfill || NativeEventSource;
+    const eventSource = new EventSource(
+      `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${name}`,
+      {
+        heartbeatTimeout: 3600000,
+      }
+    );
+    
+    eventSource.addEventListener("sse", (event) => {
+      const { data: receivedConnectData } = event;
+      console.log(receivedConnectData);
+      if (receivedConnectData === "SSE 연결이 완료되었습니다.") {
+        // "SSE connection has been completed."
+        console.log("SSE CONNECTED");
+      } else {
+        console.log(event);
+      }
+    });
+    eventSource.onerror = function(event) {
+      console.error("SSE 에러 발생:", event);
+    };
+  };
+
   return (
     <header className="sticky top-0 z-10 flex items-center justify-between w-full p-4 bg-stone-100">
-      <div className='ml-5'>
+      <div className="ml-5">
         <img src="/narang_logo.png" className="w-11 h-11" />
       </div>
-      {code === "" && <button onClick={OpenLoginModal} className="mr-5 hover:font-semibold" >Login</button>}
+      <Button onClick={() => clickHandler("노세희")}>노세희 로그인</Button>
+      <Button onClick={() => clickHandler("조용환")}>조용환 로그인</Button>
+      {code === "" && (
+        <button onClick={OpenLoginModal} className="mr-5 hover:font-semibold">
+          Login
+        </button>
+      )}
+
       {code !== "" && (
         <div className="flex justify-between space-x-4">
           <div>🔔</div>
