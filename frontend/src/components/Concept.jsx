@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Button from "../ui/Button";
 import { conceptList, conceptColorObject } from "../data/concepts";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,7 +8,6 @@ export default function Concept() {
   const conceptColor = useSelector((state) => state.concept.color)
   const clickHandler = (value) => {
     dispatch(conceptActions.changeConcept({ concept: value }));
-    console.log(conceptColor);
   };
   
   return (
