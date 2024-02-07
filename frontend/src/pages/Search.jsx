@@ -15,7 +15,7 @@ const SearchPage = () => {
   const getBoardList = useCallback(async () => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/trip/page/${pageNo}`
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/page/${pageNo}`
       );
 
       // 가져올 항목이 없으면 중단
