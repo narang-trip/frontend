@@ -29,14 +29,14 @@ const Chat = ({ chatroomId }) => {
           );
 
           // 메시지 전송
-          stompClient.current.publish({
-            destination: "/pub/chat/send",
-            body: JSON.stringify({
-              chatroomId: chatroomId,
-              senderId: "관리자",
-              content: "누군가님이 입장했습니다.",
-            }),
-          });
+          // stompClient.current.publish({
+          //   destination: "/pub/chat/send",
+          //   body: JSON.stringify({
+          //     chatroomId: chatroomId,
+          //     senderId: "관리자",
+          //     content: "누군가님이 입장했습니다.",
+          //   }),
+          // });
         },
       });
       stompClient.current.activate(); // 웹소켓 연결 활성화
@@ -80,21 +80,33 @@ const Chat = ({ chatroomId }) => {
   };
   return (
     <Fragment>
-      {chats.map((chat) => {
-        const date = new Date(chat.sendTime);
+      <div className="pb-20">
+        {chats.map((chat) => {
+          // const date = new Date(chat.sendTime);
 
-        const formattedDate = `
-          ${date.getHours()}시 ${date.getMinutes()}분`;
-        return (
-          <div key={chat.chatId}>
-            {formattedDate}
-            <hr /> {chat.userId} : {chat.content}
-            <hr />
-          </div>
-        );
-      })}
-      <form onSubmit={submitHandler}>
-        <input type="text" placeholder="메시지 입력해주세요" value={msg} onChange={(e) => setMsg(e.target.value)}/>
+          // const formattedDate = `
+          //   ${date.getHours()}시 ${date.getMinutes()}분`;
+          return (
+            <div key={chat.chatId} className="text-sm">
+              <hr /> {chat.userId} : {chat.content}
+              <hr />
+            </div>
+          );
+        })}
+      </div>
+
+      <form
+        onSubmit={submitHandler}
+        className="absolute bottom-0 left-0 right-0 bg-white flex items-center"
+      >
+        <input
+          type="text"
+          placeholder="메시지 입력해주세요"
+          value={msg}
+          onChange={(e) => setMsg(e.target.value)}
+          className="flex-grow p-2 mr-2 border rounded focus:outline-none"
+          
+        />
         <Button type="submit">전송</Button>
       </form>
     </Fragment>
