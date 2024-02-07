@@ -1,6 +1,34 @@
 import { Fragment, useState, useEffect } from "react";
+import axios from "axios";
 
 export default function ReceiveRequestsInfo({ data }) {
+  const [isAccepted, setIsAccepted] = useState(false);
+  const [isRejected, setIsRejected] = useState(false);
+
+  const handleAccept = async () => {
+    try {
+      const response1 = await axios.patch(
+        `https://i10a701.p.ssafy.io/api/message/alert/attend/${data.id}/ACCEPT`
+      );
+
+      // 서버 응답을 이용해 필요한 작업 수행
+      console.log("서버 응답:", response1.data);
+
+      // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
+      setIsAccepted(true);
+      setIsRejected(false);
+    } catch (error) {
+      // 오류 처리
+      console.error("서버 응답 에러", error);
+    }
+  };
+
+  // useEffect를 사용하여 데이터가 갱신될 때마다 수락, 거절 상태 초기화
+  useEffect(() => {
+    setIsAccepted(false);
+    setIsRejected(false);
+  }, [data]);
+
   return (
     <Fragment>
       <div className="flex flex-wrap justify-center w-full">
@@ -18,7 +46,12 @@ export default function ReceiveRequestsInfo({ data }) {
               <div className=" p-1.5 text-sm text-center flex ">
                 {data &&
                   data.position.map((role, idx) => (
-                    <span className="p-1 border bg-neutral-100 rounded-xl border-neutral-100" key={idx}>{role} </span>
+                    <span
+                      className="p-1 border bg-neutral-100 rounded-xl border-neutral-100"
+                      key={idx}
+                    >
+                      {role}{" "}
+                    </span>
                   ))}
               </div>
               <div className="flex">
@@ -39,7 +72,10 @@ export default function ReceiveRequestsInfo({ data }) {
           </div>
 
           <div className="flex items-center">
-            <button className="items-center px-6 py-3 mx-2 text-xs font-medium text-green-700 rounded-md bg-green-50 ring-1 ring-inset ring-green-600/20">
+            <button
+              className="items-center px-6 py-3 mx-2 text-xs font-medium text-green-700 rounded-md bg-green-50 ring-1 ring-inset ring-green-600/20"
+              onClick={handleAccept}
+            >
               수락
             </button>
             <button className="items-center px-6 py-3 mx-2 text-xs font-medium text-red-700 rounded-md bg-red-50 ring-1 ring-inset ring-red-600/10">
