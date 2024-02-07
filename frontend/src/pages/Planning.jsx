@@ -8,6 +8,7 @@ import Plan from "../components/Planning/Plan";
 import Map from "../components/GoogleMap/Map";
 import NewPlan from "../components/modals/NewPlan";
 import SavePlanModal from "../components/modals/SavePlanModal";
+import ShowTime from "../components/Planning/ShowTime";
 
 export default function PlanningPage() {
   const list = useSelector((state) => state.schedule);
@@ -77,25 +78,28 @@ export default function PlanningPage() {
   }, [isNewPlanOpen, isSavePlanOpen]);
 
   return (
-    <div className="h-full">
-      <button onClick={makePlan}>계획만들기</button>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex h-full">
-          <Plan />
-          <Map />
-        </div>
-      </DragDropContext>
-      <button onClick={savePlan}>저장하기</button>
-      {isNewPlanOpen && (
-        <ModalPortal>
-          <NewPlan onClose={CloseNewPlanModal} />
-        </ModalPortal>
-      )}
-      {isSavePlanOpen && (
-        <ModalPortal>
-          <SavePlanModal onClose={CloseSavePlanModal} />
-        </ModalPortal>
-      )}
-    </div>
+    <>
+      <ShowTime />
+      <div className="h-full pl-10">
+        <button onClick={makePlan}>계획만들기</button>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className="flex h-full">
+            <Plan />
+            <Map />
+          </div>
+        </DragDropContext>
+        <button onClick={savePlan}>저장하기</button>
+        {isNewPlanOpen && (
+          <ModalPortal>
+            <NewPlan onClose={CloseNewPlanModal} />
+          </ModalPortal>
+        )}
+        {isSavePlanOpen && (
+          <ModalPortal>
+            <SavePlanModal onClose={CloseSavePlanModal} />
+          </ModalPortal>
+        )}
+      </div>
+    </>
   );
 }
