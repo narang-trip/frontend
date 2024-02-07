@@ -34,7 +34,7 @@ public class TripController {
     private final AmazonS3Client amazonS3Client;
     private final TripService tripService;
 
-    @GetMapping("/available")
+    @GetMapping("/trips/available")
     public ResponseEntity<List<TripResponse>> getTripsAvailable() {
 
         List<TripResponse> availableTrips = tripService.getAvailableTrips();
@@ -42,7 +42,7 @@ public class TripController {
         return new ResponseEntity<List<TripResponse>>(availableTrips, HttpStatus.OK);
     }
 
-    @GetMapping("/{tripId}")
+    @GetMapping("/trip/{tripId}")
     public ResponseEntity<TripResponse> getTripByTripId(@PathVariable UUID tripId) {
 
         Optional<TripResponse> trip =tripService.getTripById(tripId);
@@ -63,7 +63,7 @@ public class TripController {
                 .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
 
-    @PatchMapping("/join")
+    @PatchMapping("/trip/join")
     public ResponseEntity<?> patchTripJoin(@RequestBody UserRequest userRequest) {
         ;
         Optional<TripResponse> joinRes = tripService.joinTrip(userRequest);
@@ -72,7 +72,7 @@ public class TripController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PatchMapping("/leave")
+    @PatchMapping("/trip/leave")
     public ResponseEntity<?> patchTripLeave(@RequestBody UserRequest userRequest) {
 
         if (tripService.leaveTrip(userRequest))
@@ -103,14 +103,24 @@ public class TripController {
         }
     }
 
-    @DeleteMapping("/{tripId}")
+    @DeleteMapping("/trip/{tripId}")
     public ResponseEntity<Void> deleteTrip(@RequestBody UserRequest userRequest) {
         return tripService.deleteTrip(userRequest) ?
                 ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/page/{pageNo}")
-    public ResponseEntity<Page<TripPageResponse>> getAvailableTripsPageable(@RequestParam("pageNo") int pageNo) {
+    public ResponseEntity<Page<TripPageResponse>> getAvailableTripsPageable(@PathVariable("pageNo") int pageNo) {
         return new ResponseEntity<>(tripService.getAvailableTripPages(pageNo), HttpStatus.OK);
+    }
+
+
+    @ResponseBody
+    @GetMapping("/trips")
+    public ResponseEntity<List<TripResponse>> getBannerTrips(
+            @RequestParam("tripConcept") String tripConcept) {
+        System.out.println(tripConcept);
+
+        return ResponseEntity.ok(tripService.getBannerTrips(tripConcept));
     }
 }
