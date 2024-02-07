@@ -53,6 +53,21 @@ public class AlertController {
         }
     }
 
+    // userId의 지금까지의 알림 리스트 보내주기
+    @GetMapping(value = "/trip/{tripId}")
+    public ResponseEntity<AlertListResponse> getAlertTripList(@PathVariable String tripId) {
+        List<AlertListResponse.AlertResponse> alertResponses = alertService.getAlertsByTripId(tripId);
+        if(alertResponses == null){
+            AlertListResponse response = new AlertListResponse();
+            response.setAlertList(Collections.emptyList());
+            return ResponseEntity.ok(response);
+        }
+        else {
+            AlertListResponse alertListResponse = new AlertListResponse(alertResponses);
+            return ResponseEntity.ok(alertListResponse);
+        }
+    }
+
     // sse 알림 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAlert(@PathVariable String id) {
