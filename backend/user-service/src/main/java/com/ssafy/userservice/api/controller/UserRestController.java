@@ -7,12 +7,14 @@ import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-//@CrossOrigin("*")
+@Slf4j
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -22,7 +24,7 @@ public class UserRestController {
 
     @GetMapping("/oauth2/authorization/kakao")
     public RedirectView kakaoLogin() {
-        System.out.println("==========login controller 동작2345============");
+        log.info("==========login controller 동작2345============");
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl(oAuth2Service.getAuthorizationUrl("kakao"));
         return redirectView;

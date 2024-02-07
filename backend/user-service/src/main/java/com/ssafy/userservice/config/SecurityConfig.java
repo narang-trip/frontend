@@ -13,6 +13,7 @@ import com.ssafy.userservice.security.filter.CustomJsonUsernamePasswordAuthentic
 import com.ssafy.userservice.security.filter.JwtAuthenticationProcessingFilter;
 import com.ssafy.userservice.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -34,7 +35,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
-
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -49,6 +50,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> securityConfigurerAdapter() {
+        log.info("securityConfigurerAdapter() 호출");
         return new SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
             @Override
             public void configure(HttpSecurity http) throws Exception {
@@ -67,9 +69,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        log.info("SecurityFilterChain() 호출");
         http
-//                .cors(cors -> cors
-//                        .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+                .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.disable())
@@ -81,23 +83,24 @@ public class SecurityConfig {
                         .successHandler(oAuth2LoginSuccessHandler)
                         .failureHandler(oAuth2LoginFailureHandler)
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                                .userService(customOAuth2UserService)
-                        )
-    );
-
+                                .userService(customOAuth2UserService))
+                );
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        log.info("passwordEncoder() 호출");
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
     public AuthenticationManager authenticationManager() {
+        log.info("authenticationManager() 호출");
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(loginService);
@@ -106,16 +109,19 @@ public class SecurityConfig {
 
     @Bean
     public LoginSuccessHandler loginSuccessHandler() {
+        log.info("loginSuccessHandler() 호출");
         return new LoginSuccessHandler(jwtService, authRepository);
     }
 
     @Bean
     public LoginFailureHandler loginFailureHandler() {
+        log.info("loginFailureHandler() 호출");
         return new LoginFailureHandler();
     }
 
     @Bean
     public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() {
+        log.info("customJsonUsernamePasswordAuthenticationFilter() 호출");
         CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordLoginFilter
                 = new CustomJsonUsernamePasswordAuthenticationFilter(objectMapper);
         customJsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
@@ -126,6 +132,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
+        log.info("jwtAuthenticationProcessingFilter() 호출");
         return new JwtAuthenticationProcessingFilter(jwtService, authRepository);
     }
 

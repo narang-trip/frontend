@@ -29,10 +29,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         if (oAuth2User.getAuth().getRole() == Role.USER) {
             String accessToken = jwtService.createAccessToken(oAuth2User.getAuth().getEmail());
             response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-            System.out.println("my =================> OAuth2LoginSuccessHandler -> onAuthenticationSuccess");
+            log.info("my =================> OAuth2LoginSuccessHandler -> onAuthenticationSuccess");
             response.sendRedirect("https://i10a701.p.ssafy.io"); // 가입 화면으로 보내기
 
-            jwtService.sendAccessAndRefreshToken(response, accessToken, null);
+            // AccessToken만 추가
+            jwtService.setAccessTokenHeader(response, accessToken);
         } else {
             loginSuccess(response, oAuth2User);
         }
@@ -44,6 +45,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
         response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
+        // AccessToken과 RefreshToken 추가
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
         jwtService.updateRefreshToken(oAuth2User.getAuth().getEmail(), refreshToken);
     }
