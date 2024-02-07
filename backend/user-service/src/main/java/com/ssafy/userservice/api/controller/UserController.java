@@ -1,11 +1,13 @@
 package com.ssafy.userservice.api.controller;
 
 import com.ssafy.userservice.api.request.UserInfoRequest;
+import com.ssafy.userservice.api.service.OAuth2Service;
 import com.ssafy.userservice.api.service.UserService;
 import com.ssafy.userservice.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -40,6 +42,16 @@ public class UserController {
 //        // OAuth2 로그인을 위한 엔드포인트로 리다이렉션
 //        return new RedirectView("https://i10a701.p.ssafy.io/oauth2/authorization/" + provider + "?redirect_uri=" + redirectUri);
 //    }
+
+    @Autowired
+    private OAuth2Service oAuth2Service;
+
+    @GetMapping("/oauth2/authorization/kakao")
+    public String kakaoLogin() {
+        System.out.println("==========login controller 동작2345============");
+        return "redirect:" + oAuth2Service.getAuthorizationUrl("kakao");
+    }
+
 
     @GetMapping
     public String index(){
