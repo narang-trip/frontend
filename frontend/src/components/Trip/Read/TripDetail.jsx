@@ -1,10 +1,12 @@
 import { Fragment, useState, useEffect } from "react";
 import { SlCalender, SlLocationPin, SlPeople, SlBadge } from "react-icons/sl";
-import ApplicationModal from "../../modals/ApplicationModal";
-import { ModalPortal } from "../../modals/ModalPortal";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
+import ApplicationModal from "../../modals/ApplicationModal";
+import { ModalPortal } from "../../modals/ModalPortal";
 import DateFormatter from "../../DateFormatter";
+import TripParticipantsInfo from "./TripParticipantsInfo";
 
 export default function TripDetail() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +36,7 @@ export default function TripDetail() {
 
         // 상세 정보 저장
         setTripDetails(response.data);
- 
+        console.log(tripDetails);
         // 날짜 포맷 설정
         setDepartureDate(
           DateFormatter({ dateString: response.data.departureDate })
@@ -110,14 +112,15 @@ export default function TripDetail() {
                     <div className="flex flex-row items-center my-3 text-sm">
                       <SlBadge className="mx-3 text-neutral-400" size="24" />
                       <div className="flex flex-wrap justify-between">
-                        {tripDetails.tripRoles && tripDetails.tripRoles.map((role, index) => (
-                          <span
-                            key={index}
-                            className="inline-flex items-center px-2 py-1 m-0.5 text-sm font-medium rounded-full text-neutral-700 bg-stone-100 ring-1 ring-inset ring-stone-500"
-                          >
-                            {role}
-                          </span>
-                        ))}
+                        {tripDetails.tripRoles &&
+                          tripDetails.tripRoles.map((role, index) => (
+                            <span
+                              key={index}
+                              className="inline-flex items-center px-2 py-1 m-0.5 text-sm font-medium rounded-full text-neutral-700 bg-stone-100 ring-1 ring-inset ring-stone-500"
+                            >
+                              {role}
+                            </span>
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -144,16 +147,27 @@ export default function TripDetail() {
               <ModalPortal>
                 <ApplicationModal
                   onClose={CloseApplicationModal}
-                  positions= {tripDetails.tripRoles.map((role, index) => (
-                      <span key={index}>{role}</span>
-                    ))}
-                  deposit={tripDetails.tripD}
+                  positions={tripDetails.tripRoles.map((role, index) => (
+                    <span key={index}>{role}</span>
+                  ))}
+                  deposit={tripDetails.tripDeposit}
                 />
               </ModalPortal>
             )}
           </div>
         </div>
-        <div className="col-span-1"></div>
+        <div className="col-span-1">
+          {tripDetails ? (
+            <div>
+              <p className="mt-5 mb-3 text-base font-bold">일정 정보</p>
+
+              <p className="mb-3 text-base font-bold">여행 참여자 정보</p>
+              <TripParticipantsInfo participants={tripDetails.participants} />
+            </div>
+          ) : (
+            <div>loading 💦</div>
+          )}
+        </div>
       </div>
     </Fragment>
   );

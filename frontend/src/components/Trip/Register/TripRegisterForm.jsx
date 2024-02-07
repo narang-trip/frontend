@@ -64,7 +64,9 @@ export default function TripWriteForm() {
 
   // 이미지 input이 변경될 때 호출되는 함수
   const handleImageChange = (e) => {
+    console.log(e.target.files[0]);
     const file = e.target.files[0];
+  
     setBoard((board) => ({
       ...board,
       img: file,
@@ -101,7 +103,7 @@ export default function TripWriteForm() {
       tripParticipantsSize: board.count,
       tripDeposit: board.deposit,
       leaderRoles: board.myPosition,
-      tripConcepts: board.concept,
+      tripConcept: board.concept,
       tripRoles: board.recruitPosition,
       departureDate: board.startDate,
       returnDate: board.endDate,
@@ -276,7 +278,7 @@ export default function TripWriteForm() {
                     type="file"
                     onChange={handleImageChange}
                     className="text-xs"
-                    accept="image/*" // 이미지 파일만 허용
+                    accept="image/*"
                   />
                 </div>
                 <div className="h-3/5">
