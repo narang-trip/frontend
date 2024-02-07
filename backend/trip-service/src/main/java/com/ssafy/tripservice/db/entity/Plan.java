@@ -6,10 +6,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import lombok.*;
+import org.bson.types.Decimal128;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Entity
@@ -21,16 +23,27 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Plan extends BaseEntity {
     private String planName;
-    private String planRecruitDate;
-    private LocalDateTime departureDate;
-    private LocalDateTime returnDate;
+    private LocalDateTime lastModifiedDate;
     private List<DailyPlan> dailyPlans;
 
+    @Builder
+    @Data
     public static class DailyPlan {
         private String placeId;
         private String placeName;
         private String imageUrl;
         private LocalDateTime startDate;
+        private LocalDateTime endDate;
+    }
+
+    @Builder
+    @Data
+    public static class Destination {
+        private Double latitude;
+        private Double longitude;
+
+        private String destinationName;
+        private LocalDateTime sttTime;
         private LocalDateTime endDate;
     }
 }
