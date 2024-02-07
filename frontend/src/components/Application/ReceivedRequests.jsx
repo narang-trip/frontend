@@ -15,7 +15,7 @@ const ReceivedRequests = () => {
   const getMyList = useCallback(async () => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/trip/trips?userId=3fa85f64-5717-4562-b3fc-2c963f66a123&pageNo=${pageNo}`
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/trips?userId=3fa85f64-5717-4562-b3fc-2c963f66a123&pageNo=${pageNo}`
       );
 
       // 가져올 항목이 없으면 중단

@@ -125,7 +125,7 @@ export default function TripWriteForm() {
 
       // 데이터를 서버로 전송
       const response = await axios.post(
-        "https://i10a701.p.ssafy.io/api/trip/create",
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/create`,
         formData,
         {
           headers: {
