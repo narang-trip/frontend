@@ -6,15 +6,14 @@ import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.db.entity.Chat;
 import com.ssafy.messageservice.db.entity.Chatroom;
 import com.ssafy.messageservice.db.entity.ChatroomUser;
-import com.ssafy.messageservice.db.repository.ChatRepository;
-import com.ssafy.messageservice.db.repository.ChatRepositoryCustom;
-import com.ssafy.messageservice.db.repository.ChatroomRepository;
-import com.ssafy.messageservice.db.repository.ChatroomUserRepository;
+import com.ssafy.messageservice.db.entity.User;
+import com.ssafy.messageservice.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -25,6 +24,7 @@ public class ChatService {
     private final ChatRepository chatRepository;
     private final ChatroomRepository chatroomRepository;
     private final ChatroomUserRepository chatroomUserRepository;
+    private final UserRepository userRepository;
 
     public ChatroomListResponse getLatestChatsByUserId(String userId) {
         return chatRepositoryCustom.getLatestChatsByUserId(userId);
@@ -33,14 +33,15 @@ public class ChatService {
     public ChatListResponse getChatMessagesByChatroomId(String chatroomId, int page) {
         // 페이지 번호는 0부터 시작하므로, PageRequest.of(page, 20)로 페이지를 가져온다 -> size는 변경 가능
         Page<Chat> chatPage = chatRepository.findByChatroomChatroomIdOrderBySendTimeDesc(chatroomId, PageRequest.of(page, 20));
-
         return new ChatListResponse(
-                chatPage.map(chat -> new ChatListResponse.ChatsResponse(
+                chatPage.map(chat ->
+                        new ChatListResponse.ChatsResponse(
                         chat.getChatId(),
                         chat.getChatroom().getChatroomId(),
                         chat.getContent(),
                         chat.getSendTime(),
-                        chat.getUserId()
+                        chat.getUserId(),
+                        getName(chat.getUserId())
                 )).getContent(),
                 new ChatListResponse.PageResponse(
                         chatPage.getNumber(),
@@ -63,5 +64,15 @@ public class ChatService {
         chatroomUserRepository.save(user);
 
         return "success";
+    }
+
+    private String getName(String id) {
+        Optional<User> sender = userRepository.findById(id);
+        if (sender.isEmpty()){
+            return "No Data";
+        }
+        else{
+            return sender.get().getNickname();
+        }
     }
 }
