@@ -7,13 +7,18 @@ import { ModalPortal } from "./modals/ModalPortal";
 import Dropdown from "./UpNavDropdown";
 import LoginModal from "./modals/LoginModal";
 import Button from '../ui/Button'
+import { useNavigate } from "react-router";
 
 export default function UpperNavbar() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const code = useSelector((state) => state.auth.code);
   console.log(code);
   const dispatch = useDispatch();
 
+  const navigateHome = () => {
+    navigate('/');
+  }
   const OpenLoginModal = () => {
     setIsOpen(true);
   };
@@ -68,7 +73,7 @@ export default function UpperNavbar() {
   return (
     <header className="sticky top-0 z-10 flex items-center justify-between w-full p-4 bg-stone-100">
       <div className="ml-5">
-        <img src="/narang_logo.png" className="w-11 h-11" />
+        <img src="/narang_logo.png" className="w-11 h-11 hover:cursor-pointer" onClick={navigateHome} alt="Home" />
       </div>
       <Button onClick={() => clickHandler("노세희")}>노세희 로그인</Button>
       <Button onClick={() => clickHandler("조용환")}>조용환 로그인</Button>
