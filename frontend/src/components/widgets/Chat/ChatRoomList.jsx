@@ -31,13 +31,12 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
     onChatRoomSelect(chatroomId);
   };
   return (
-    <div>
+    <div className="w-auto">
       {chatroomList.chatroomList.map((chatroom) => (
         <div key={chatroom.chatroomId}>
-          <Button onClick={() => enterChatroomHandler(chatroom.chatroomId)}>
+          <Button onClick={() => enterChatroomHandler(chatroom.chatroomId)} className="w-[90%] m-1 bg-red-200 rounded-full">
             {chatroom.chatroomName}
           </Button>
-          <hr />
         </div>
       ))}
     </div>
