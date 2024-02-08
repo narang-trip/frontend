@@ -11,8 +11,10 @@
   const Chat = ({ chatroomId, navigateBack }) => {
     const [chats, setChats] = useState([]);
     const [msg, setMsg] = useState("");
+    const [loadingOlderMessages, setLoadingOlderMessages] = useState(false);
     const userId = useSelector((state) => state.auth.userId);
     const lastChatRef = useRef("");
+    const previousScrollHeightRef = useRef(0);
     const chatDivRef = useRef(null);
     let stompClient = useRef(null);
     const [pageNo, setPageNo] = useState(0);
@@ -59,7 +61,10 @@
     //   [chatroomId, pageNo]
     // );
     const getChatList = useCallback(async (chatroomId) => {
-      const previousScrollHeight = chatDivRef.current ? chatDivRef.current.scrollHeight : 0;
+      if (pageNo > 0) {
+        setLoadingOlderMessages(true); // 무한 스크롤 요청 시작
+        previousScrollHeightRef.current = chatDivRef.current ? chatDivRef.current.scrollHeight : 0;
+      }
     
       try {
         const response = await axios.get(`${import.meta.env.VITE_CHAT_REQUEST_URI}/${chatroomId}?page=${pageNo}`);
@@ -82,14 +87,11 @@
         setChats((prevData) => [...chatList, ...prevData]);
         setPageNo((prevPageNo) => prevPageNo + 1);
     
-        // 데이터 로딩 후 스크롤 조정
-        if (pageNo > 0 && chatDivRef.current) {
-          const currentScrollHeight = chatDivRef.current.scrollHeight;
-          const scrollOffset = currentScrollHeight - previousScrollHeight;
-          chatDivRef.current.scrollTop += scrollOffset;
-        }
       } catch (error) {
         console.error("채팅 목록 가져오는 중 에러 발생:", error);
+      }
+      if (pageNo > 0) {
+        setLoadingOlderMessages(false); // 무한 스크롤 요청 끝
       }
     }, [chatroomId, pageNo]);
 
@@ -101,13 +103,17 @@
     }, [inView, pageNo, getChatList]);
 
     useEffect(() => {
-      if (chatDivRef.current && pageNo === 1) {
-        chatDivRef.current.scrollTo({
-          top: chatDivRef.current.scrollHeight,
-          behavior: 'smooth'
-        });
+      if (!loadingOlderMessages && chatDivRef.current && pageNo > 0) {
+        const currentScrollHeight = chatDivRef.current.scrollHeight;
+        const scrollOffset = currentScrollHeight - previousScrollHeightRef.current;
+
+        if (scrollOffset > 0) {
+          chatDivRef.current.scrollTop += scrollOffset;
+
+        }  
       }
-    }, [chats]);
+    }, [chats, loadingOlderMessages]);
+   
 
     useEffect(() => {
       getChatList(chatroomId, 0);
