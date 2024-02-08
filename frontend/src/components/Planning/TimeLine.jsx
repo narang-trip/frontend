@@ -1,13 +1,27 @@
-const TimeLine = (props) => {
-  const lineCnt =
-    (Number(props.Time.endHour) - Number(props.Time.startHour)) * 2 +
-    (Number(props.Time.endMinute) - Number(props.Time.startMinute)) / 30 +
-    1;
+import { useSelector } from "react-redux";
+
+const TimeLine = () => {
+  const state = useSelector((state) => state.schedule);
+  const lineCnt = state.time.lineCnt;
+  let isOclock = [];
+
+  if (state.time.startMinute === 30) isOclock.push(false);
+  else isOclock.push(true);
+
+  for (let i = 1; i < lineCnt; i++) {
+    isOclock.push(!isOclock[i - 1]);
+  }
 
   return (
     <div className="absolute w-full h-full grid grid-cols content-between pt-8">
       {[...Array(lineCnt)].map((_, index) => (
-        <div key={index} className={`border-b border-red-600 w-full`}></div>
+        <>
+          {isOclock[index] ? (
+            <div key={index} className="border-b opacity-50 border-red-600 w-full"></div>
+          ) : (
+            <div key={index} className="border-b opacity-25 border-red-600 w-full"></div>
+          )}
+        </>
       ))}
     </div>
   );
