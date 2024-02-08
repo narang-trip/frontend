@@ -1,12 +1,14 @@
-import Plan from "../components/Planning/Plan";
-import Map from "../components/GoogleMap/Map";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
 import { scheduleActions } from "../store/scheduleSlice";
 import { ModalPortal } from "../components/modals/ModalPortal";
-import NewPlan from "../components/modals/NewPlan";
 import { useState, useEffect } from "react";
+
+import Plan from "../components/Planning/Plan";
+import Map from "../components/GoogleMap/Map";
+import NewPlan from "../components/modals/NewPlan";
 import SavePlanModal from "../components/modals/SavePlanModal";
+import ShowTime from "../components/Planning/ShowTime";
 
 export default function PlanningPage() {
   const list = useSelector((state) => state.schedule);
@@ -18,13 +20,14 @@ export default function PlanningPage() {
   console.log(list);
 
   const onDragEnd = ({ source, destination }) => {
-    console.log(source);
-    console.log(destination);
+    // console.log(source);
+    // console.log(destination);
 
-    if (!destination) return;
+    if (!destination) return; // 범위밖일 때 드래그 취소
     const idx = Number(destination.droppableId.substr(4));
     if (source.droppableId === "PlaceCard") {
-      console.log(card[source.index]);
+      // 추가
+      // console.log(card[source.index]);
       const schedule = {
         img: card[source.index].photo,
         title: card[source.index].name,
@@ -32,30 +35,31 @@ export default function PlanningPage() {
         time: "120",
         comment: "",
       };
-      dispatch(scheduleActions.addSchedule([schedule, destination.index, idx]));
+      dispatch(
+        scheduleActions.addSchedule({ schedule: schedule, index: destination.index, day: idx })
+      );
     } else {
+      // 이동
       const idx2 = Number(source.droppableId.substr(4));
       dispatch(
-        scheduleActions.moveSchedule([
-          [idx2, source.index],
-          [idx, destination.index],
-        ])
+        scheduleActions.moveSchedule({
+          start: { day: idx2, index: source.index },
+          end: { day: idx, index: destination.index },
+        })
       );
     }
   };
-
+  // 계획 만들기 모달
   const makePlan = () => {
     setIsNewPlanOpen(true);
   };
-
   const CloseNewPlanModal = () => {
     setIsNewPlanOpen(false);
   };
-
+  // 계획 저장하기 모달
   const savePlan = () => {
     setIsSavePlanOpen(true);
   };
-
   const CloseSavePlanModal = () => {
     setIsSavePlanOpen(false);
   };
@@ -74,25 +78,28 @@ export default function PlanningPage() {
   }, [isNewPlanOpen, isSavePlanOpen]);
 
   return (
-    <div className="h-full">
-      <button onClick={makePlan}>계획만들기</button>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex h-full">
-          <Plan />
-          <Map />
-        </div>
-      </DragDropContext>
-      <button onClick={savePlan}>저장하기</button>
-      {isNewPlanOpen && (
-        <ModalPortal>
-          <NewPlan onClose={CloseNewPlanModal} />
-        </ModalPortal>
-      )}
-      {isSavePlanOpen && (
-        <ModalPortal>
-          <SavePlanModal onClose={CloseSavePlanModal} />
-        </ModalPortal>
-      )}
-    </div>
+    <>
+      <ShowTime />
+      <div className="h-full pl-10">
+        <button onClick={makePlan}>계획만들기</button>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className="flex h-full">
+            <Plan />
+            <Map />
+          </div>
+        </DragDropContext>
+        <button onClick={savePlan}>저장하기</button>
+        {isNewPlanOpen && (
+          <ModalPortal>
+            <NewPlan onClose={CloseNewPlanModal} />
+          </ModalPortal>
+        )}
+        {isSavePlanOpen && (
+          <ModalPortal>
+            <SavePlanModal onClose={CloseSavePlanModal} />
+          </ModalPortal>
+        )}
+      </div>
+    </>
   );
 }

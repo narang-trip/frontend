@@ -1,10 +1,8 @@
 // import { useState } from "react";
-import DayPlan from "./DayPlan";
 import { Droppable } from "react-beautiful-dnd";
-import { useSelector, useDispatch } from "react-redux";
-import { scheduleActions } from "../../store/scheduleSlice";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
+import DayPlan from "./DayPlan";
 // import * as Y from "yjs";
 // import { WebrtcProvider } from "y-webrtc";
 
@@ -32,19 +30,7 @@ import { useEffect } from "react";
 // });
 
 const Plan = () => {
-  const list = useSelector((state) => state.schedule);
-  const day = useSelector((state) => state.time);
-  const dispatch = useDispatch();
-  const lineCnt =
-    (Number(day.endHour) - Number(day.startHour)) * 2 +
-    (Number(day.endMinute) - Number(day.startMinute)) / 30;
-
-  useEffect(() => {
-    for (var i = 0; i < day.day; i++) {
-      dispatch(scheduleActions.tmpAddDay(lineCnt));
-    }
-  }, [day.day, dispatch, lineCnt]);
-
+  const list = useSelector((state) => state.schedule).list;
   // ydoc.on("afterTransaction", () => {
   //   setList(Array.from(ymap.get("list")));
   // });
@@ -53,8 +39,6 @@ const Plan = () => {
   //   ymap.set("list", list);
   // }, [JSON.stringify(list)]);
 
-  const update = () => {};
-
   return (
     <div className="relative w-full flex overflow-x-scroll gap-1 m-1">
       {list.map((data, index) => (
@@ -62,17 +46,13 @@ const Plan = () => {
           <Droppable droppableId={`list${index}`}>
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                <DayPlan
-                  data={{ index: index + 1, list: list.at(index) }}
-                  update={update}
-                  key={index}
-                />
+                <DayPlan index={index} key={index} />
+                {provided.placeholder}
               </div>
             )}
           </Droppable>
         </div>
       ))}
-      {/* <button onClick={add}>날짜추가</button> */}
     </div>
   );
 };
