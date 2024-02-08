@@ -38,7 +38,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         log.info("doFilterInternal() 호출");
         log.info("request.getRequestURI() : {}", request.getRequestURI());
 //        filterChain.doFilter(request, response);
-        if (request.getRequestURI().equals(NO_CHECK_URL)) {
+        if (request.getRequestURI().startsWith(NO_CHECK_URL)) {
             filterChain.doFilter(request, response);
             return;
         }
