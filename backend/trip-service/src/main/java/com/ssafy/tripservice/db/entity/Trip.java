@@ -2,6 +2,7 @@ package com.ssafy.tripservice.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.querydsl.core.annotations.QueryEntity;
+import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -37,9 +38,17 @@ public class Trip extends BaseEntity{
     private Integer tripDeposit;
     private Integer tripAgeUpperBound;
     private Integer tripAgeLowerBound;
-    private String tripConcepts;
+    private String tripConcept;
     private List<String> tripRoles;
     private List<Participant> participants;
+
+    @Builder
+    @Data
+    public static class Participant {
+        private List<String> userRoles;
+        private UUID participantId;
+        private LocalDateTime enrollmentDate;
+    }
 
     public TripResponse toTripResponse() {
         return TripResponse.builder()
@@ -59,17 +68,29 @@ public class Trip extends BaseEntity{
                 .tripDeposit(this.tripDeposit)
                 .tripAgeUpperBound(this.tripAgeUpperBound)
                 .tripAgeLowerBound(this.tripAgeLowerBound)
-                .tripConcepts(this.tripConcepts)
+                .tripConcept(this.tripConcept)
                 .tripRoles(this.tripRoles)
                 .participants(this.participants)
                 .build();
     }
 
-    @Builder
-    @Data
-    public static class Participant {
-        private List<String> userRoles;
-        private UUID participantId;
-        private LocalDateTime enrollmentDate;
+    public TripPageResponse toTripPageResponse(Integer pageNo) {
+        return TripPageResponse.builder()
+                .pageNo(pageNo)
+                .tripId(this.get_id())
+                .tripName(this.tripName)
+                .tripDesc(this.tripDesc)
+                .tripImgUrl(this.tripImgUrl)
+                .destination(this.destination)
+                .departureDate(this.departureDate)
+                .returnDate(this.returnDate)
+                .tripLeaderId(this.tripLeaderId)
+                .viewCnt(this.viewCnt)
+                .tripParticipantsSize(this.tripParticipantsSize)
+                .tripAgeLowerBound(this.tripAgeLowerBound)
+                .tripAgeUpperBound(this.tripAgeUpperBound)
+                .tripConcept(this.tripConcept)
+                .tripRoles(this.tripRoles)
+                .build();
     }
 }

@@ -7,7 +7,6 @@ import java.util.UUID;
 public class UserResponse {
     private UUID tripID;
     private UUID userId;
-    private String deposited;
     private List<String> userRoles;
     private LocalDateTime enrollmentDate;
 }

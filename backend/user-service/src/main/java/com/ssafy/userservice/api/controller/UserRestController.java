@@ -1,29 +1,43 @@
 package com.ssafy.userservice.api.controller;
 
 import com.ssafy.userservice.api.request.UserInfoRequest;
+import com.ssafy.userservice.api.service.OAuth2Service;
 import com.ssafy.userservice.api.service.UserService;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
+@Slf4j
 @CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserRestController {
     private final UserService userService;
+    private final OAuth2Service oAuth2Service;
 
-    @PostMapping("/login/oauth/{provider}")
-    public void login(@PathVariable String provider, HttpServletRequest request){
-        String code = request.getParameter("code");
-        System.out.println(code);
-        System.out.println(provider);
-        System.out.println("Test");
+    @GetMapping("/oauth2/authorization/kakao")
+    public RedirectView kakaoLogin() {
+        log.info("==========login controller 동작2345============");
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl(oAuth2Service.getAuthorizationUrl("kakao"));
+        return redirectView;
     }
+
+//    @PostMapping("/login/oauth/{provider}")
+//    public void login(@PathVariable String provider, HttpServletRequest request){
+//        String code = request.getParameter("code");
+//        System.out.println(request.toString());
+//        System.out.println(code);
+//        System.out.println(provider);
+//        System.out.println("Test");
+//    }
 
     @GetMapping("/welcome")
     public String getWelcome(Authentication authentication) {
