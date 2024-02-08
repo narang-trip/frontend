@@ -13,6 +13,7 @@ import ChatPage from "./pages/Chat";
 import Login from "./pages/Login";
 import Mypage from "./pages/Mypage";
 import SubscribeTestPage from "./pages/SubscribeTest";
+import MyPlan from "./pages/MyPlan";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       },
       {
         path: "/planning",
+        element: <MyPlan />,
+      },
+      {
+        path: "/makeplan",
         element: <PlanningPage />,
       },
 
@@ -47,9 +52,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/sub",
-        element: <SubscribeTestPage />
-      }
-      
+        element: <SubscribeTestPage />,
+      },
     ],
   },
 

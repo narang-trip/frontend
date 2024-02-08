@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch } from "react-redux";
 import { scheduleActions } from "../../store/scheduleSlice";
+import { useNavigate } from "react-router-dom";
 
 const NewPlan = (props) => {
   const modalBG = useRef("");
@@ -9,6 +10,7 @@ const NewPlan = (props) => {
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const submit = () => {
     const Time = {
@@ -27,6 +29,7 @@ const NewPlan = (props) => {
     };
     dispatch(scheduleActions.setTime(Time));
     props.onClose();
+    navigate("/makeplan");
   };
 
   const change = (e) => {
