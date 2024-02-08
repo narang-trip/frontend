@@ -12,6 +12,7 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
       getChatroomList(userId);
     }
   }, [userId]);
+
   
 
   const getChatroomList = async (userId) => {
