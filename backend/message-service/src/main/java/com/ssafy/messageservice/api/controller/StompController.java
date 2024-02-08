@@ -55,6 +55,7 @@ public class StompController {
                 chatSendRequest.getSenderId(),
                 LocalDateTime.now(),
                 chatSendRequest.getContent());
+        LOGGER.info(String.format("메시지 시간 제발!! -> %s", chatRequest.getSendTime()));
         template.convertAndSend("/sub/chat/room/" + chatSendRequest.getChatroomId(), chatRequest);
 
         // Chat 테이블에 데이터 저장하기
@@ -64,7 +65,7 @@ public class StompController {
                 chatRequest.getContent(),
                 chatRequest.getSendTime(),
                 chatRequest.getUserId());
-        LOGGER.info(String.format("Message receive -> %s", chat));
+        LOGGER.info(String.format("Message receive -> %s", chat.getSendTime()));
         chatRepository.save(chat);
     }
 
