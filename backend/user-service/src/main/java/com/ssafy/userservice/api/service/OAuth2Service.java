@@ -3,6 +3,11 @@ package com.ssafy.userservice.api.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.userservice.api.oauth2.userinfo.KakaoUserInfo;
+import com.ssafy.userservice.db.entity.Auth;
+import com.ssafy.userservice.db.entity.Authority;
+import com.ssafy.userservice.db.entity.User;
+import com.ssafy.userservice.db.repository.AuthRepository;
+import com.ssafy.userservice.db.repository.UserRepository;
 import com.ssafy.userservice.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +24,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -26,6 +33,8 @@ import java.util.Map;
 public class OAuth2Service {
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final JwtService jwtService;
+    private final AuthRepository authRepository;
+    private final UserRepository userRepository;
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String kakaoClientId;
@@ -47,6 +56,9 @@ public class OAuth2Service {
 
 
     public String kakaoCallBack(String code){
+        /*
+            받은 코드로 토큰 가져오기
+         */
         // 카카오 API 호출을 위한 설정
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -72,10 +84,9 @@ public class OAuth2Service {
 
         log.info("kakaoCallBack에서 kakaoAccessToken {}", kakaoAccessToken);
 
-
-
-
-
+        /*
+            받은 토큰으로 유저 정보 갖고오기
+         */
 
         restTemplate = new RestTemplate();
 
@@ -112,9 +123,48 @@ public class OAuth2Service {
 //        log.info("kakaoCallBack에서 jwt accessToken {}", accessToken);
 
 
-        String accessToken2 = kakaoAccessToken; // 일단 임시로
+//        String accessToken2 = kakaoAccessToken; // 일단 임시로
 
-        return accessToken2;
+        /*
+            DB에 저장하기
+         */
+        String provider = kakaoUserInfo.getProvider();
+        String providerId = kakaoUserInfo.getProviderId();
+        UUID uuid = UUID.nameUUIDFromBytes(provider.getBytes());
+        String id = uuid.toString();
+        String username = kakaoUserInfo.getName();
+        String email = kakaoUserInfo.getEmail();
+        String profileUrl = kakaoUserInfo.getProfileUrl();
+        String gender = kakaoUserInfo.getGender();
+        int ageRange = kakaoUserInfo.getAgeRange();
+        String nickname = kakaoUserInfo.getNickName();
+
+        Optional<Auth> findAuth = authRepository.findById(id);
+        User user = null;
+        Auth auth = null;
+        if (findAuth.isEmpty()) { //찾지 못했다면
+            user = User.builder()
+                    .id(id)
+                    .nickname(nickname)
+                    .gender(gender)
+                    .ageRange(ageRange)
+                    .profile_url(profileUrl)
+                    .build();
+            userRepository.save(user);
+            auth = Auth.builder()
+                    .id(id)
+                    .email(email)
+                    .name(username)
+                    .provider(provider)
+                    .providerId(providerId)
+                    .authority(Authority.USER)
+                    .build();
+            authRepository.save(auth);
+        }
+        else{
+            auth =findAuth.get();
+        }
+        return accessToken;
     }
 
     public String getAuthorizationUrl(String registrationId) {
