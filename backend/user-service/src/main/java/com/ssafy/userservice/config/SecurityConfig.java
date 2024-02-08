@@ -9,7 +9,7 @@ import com.ssafy.userservice.api.service.PrincipalDetailsService;
 import com.ssafy.userservice.api.service.UserService;
 import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
-import com.ssafy.userservice.security.filter.CustomJsonUsernamePasswordAuthenticationFilter;
+//import com.ssafy.userservice.security.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import com.ssafy.userservice.security.filter.JwtAuthenticationProcessingFilter;
 import com.ssafy.userservice.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -85,8 +85,8 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                 );
-        http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
-        http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
+//        http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
+//        http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();
@@ -119,16 +119,16 @@ public class SecurityConfig {
         return new LoginFailureHandler();
     }
 
-    @Bean
-    public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() {
-        log.info("customJsonUsernamePasswordAuthenticationFilter() 호출");
-        CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordLoginFilter
-                = new CustomJsonUsernamePasswordAuthenticationFilter(objectMapper);
-        customJsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
-        customJsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
-        customJsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
-        return customJsonUsernamePasswordLoginFilter;
-    }
+//    @Bean
+//    public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() {
+//        log.info("customJsonUsernamePasswordAuthenticationFilter() 호출");
+//        CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordLoginFilter
+//                = new CustomJsonUsernamePasswordAuthenticationFilter(objectMapper);
+//        customJsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
+//        customJsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
+//        customJsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
+//        return customJsonUsernamePasswordLoginFilter;
+//    }
 
     @Bean
     public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
