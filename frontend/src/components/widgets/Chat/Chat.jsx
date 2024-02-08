@@ -152,11 +152,8 @@ const Chat = ({ chatroomId }) => {
           placeholder="메시지 입력해주세요"
           value={msg}
           onChange={(e) => setMsg(e.target.value)}
-<<<<<<< HEAD
-=======
           className="flex-grow p-2 mr-2 border rounded-lg focus:outline-none"
 
->>>>>>> feat_chatroom
         />
         <Button type="submit">전송</Button>
       </form>
