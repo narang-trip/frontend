@@ -14,7 +14,7 @@ const Login = () => {
     console.log("test");
     (async () => {
       try {
-        const res = await axios.post(
+        const res = await axios.get(
           `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=${code}`
           // "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
           // code
