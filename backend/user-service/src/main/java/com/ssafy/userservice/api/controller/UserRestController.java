@@ -30,14 +30,14 @@ public class UserRestController {
         return redirectView;
     }
 
-    @PostMapping("/login/oauth/{provider}")
-    public void login(@PathVariable String provider, HttpServletRequest request){
-        String code = request.getParameter("code");
-        System.out.println(request.toString());
-        System.out.println(code);
-        System.out.println(provider);
-        System.out.println("Test");
-    }
+//    @PostMapping("/login/oauth/{provider}")
+//    public void login(@PathVariable String provider, HttpServletRequest request){
+//        String code = request.getParameter("code");
+//        System.out.println(request.toString());
+//        System.out.println(code);
+//        System.out.println(provider);
+//        System.out.println("Test");
+//    }
 
     @GetMapping("/welcome")
     public String getWelcome(Authentication authentication) {

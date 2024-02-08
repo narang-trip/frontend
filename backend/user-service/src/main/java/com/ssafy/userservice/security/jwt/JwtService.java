@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -151,9 +152,17 @@ public class JwtService {
     /**
      * AccessToken 헤더 설정
      */
-    public void setAccessTokenHeader(HttpServletResponse response, String accessToken) {
+    public void setAccessTokenHeader(HttpServletResponse response, String accessToken)  {
         log.info("setAccessTokenHeader() 호출");
-        response.setHeader(accessHeader, accessToken);
+//        response.setHeader(accessHeader, accessToken);
+        try {
+            response.getWriter().write("{\"access_token\": \"" + accessToken + "\"}");
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("재발급된 Access Token : {}", accessToken);
     }
 
     /**
@@ -161,7 +170,14 @@ public class JwtService {
      */
     public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {
         log.info("setRefreshTokenHeader() 호출");
-        response.setHeader(refreshHeader, refreshToken);
+//        response.setHeader(refreshHeader, refreshToken);
+        try {
+            response.getWriter().write("{\"refresh_token\": \"" + refreshToken + "\"}");
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
