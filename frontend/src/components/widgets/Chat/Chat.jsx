@@ -29,6 +29,7 @@ const Chat = ({ chatroomId, navigateBack }) => {
     if (pageNo > 0) {
       setLoadingOlderMessages(true); // 무한 스크롤 요청 시작
       previousScrollHeightRef.current = chatDivRef.current ? chatDivRef.current.scrollHeight : 0;
+      
     }
 
     try {
@@ -117,6 +118,13 @@ const Chat = ({ chatroomId, navigateBack }) => {
       }
     };
   }, [chatroomId]);
+
+  useEffect(() => {
+    // Access scrollTop inside useEffect to ensure the DOM element is available
+    if (chatDivRef.current) {
+      chatDivRef.current.scrollTop = chatDivRef.current.scrollHeight
+    }
+  }, [chats]); 
 
   const submitHandler = (event) => {
     event.preventDefault();
