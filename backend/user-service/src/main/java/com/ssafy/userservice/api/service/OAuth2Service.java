@@ -1,5 +1,6 @@
 package com.ssafy.userservice.api.service;
 
+import com.ssafy.userservice.api.oauth2.userinfo.KakaoUserInfo;
 import com.ssafy.userservice.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,18 +69,22 @@ public class OAuth2Service {
         log.info("kakaoCallBack에서 kakaoAccessToken {}", kakaoAccessToken);
 
         // 액세스 토큰을 사용하여 사용자 정보 요청
-//        ResponseEntity<KakaoUserInfoResponse> userInfoResponseEntity = restTemplate.getForEntity(
-//                "https://kapi.kakao.com/v2/user/me", KakaoUserInfoResponse.class,
-//                kakaoAccessToken);
-//
-//        // 사용자 정보 얻기
-//        KakaoUserInfoResponse userInfo = userInfoResponseEntity.getBody();
-//
-//        // 사용자 정보를 기반으로 JWT 토큰 생성
-//        String accessToken = jwtService.createAccessToken(userInfo.getEmail());
-        String accessToken = kakaoAccessToken; // 일단 임시로
+        ResponseEntity<KakaoUserInfo> userInfoResponseEntity = restTemplate.getForEntity(
+                "https://kapi.kakao.com/v2/user/me", KakaoUserInfo.class,
+                kakaoAccessToken);
 
-        return accessToken;
+        // 사용자 정보 얻기
+        KakaoUserInfo userInfo = userInfoResponseEntity.getBody();
+        log.info("kakaoCallBack에서 userInfo {}", userInfo);
+        // 사용자 정보를 기반으로 JWT 토큰 생성
+        String accessToken = jwtService.createAccessToken(userInfo.getEmail());
+
+        log.info("kakaoCallBack에서 jwt accessToken {}", accessToken);
+
+
+        String accessToken2 = kakaoAccessToken; // 일단 임시로
+
+        return accessToken2;
     }
 
     public String getAuthorizationUrl(String registrationId) {
