@@ -39,7 +39,6 @@ public class StompController {
     public void enter(String userId, String chatroomId){
         Instant instant = Instant.now();
         ZonedDateTime seoulTime = instant.atZone(ZoneId.of("Asia/Seoul"));
-        LOGGER.info(String.format("메시지 시간 확인중 %s -> ", seoulTime));
         ChatRequest chatRequest = new ChatRequest(
                 chatroomId,
                 userId,
@@ -73,7 +72,7 @@ public class StompController {
                 chatRequest.getContent(),
                 chatRequest.getSendTime(),
                 chatRequest.getUserId());
-        LOGGER.info(String.format("Message receive -> %s",seoulTime));
+        LOGGER.info(String.format("Message receive -> %s",LocalDateTime.now()));
         chatRepository.save(chat);
     }
 
