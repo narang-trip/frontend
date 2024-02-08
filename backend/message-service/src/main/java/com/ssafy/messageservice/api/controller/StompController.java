@@ -56,7 +56,7 @@ public class StompController {
                 chatSendRequest.getSenderId(),
                 LocalDateTime.now(),
                 chatSendRequest.getContent());
-//        LOGGER.info(String.format("확인해야 하거든? -> %s", ZoneId.systemDefault()));
+        LOGGER.info(String.format("확인해야 하거든? -> %s", ZoneId.systemDefault()));
         template.convertAndSend("/sub/chat/room/" + chatSendRequest.getChatroomId(), chatRequest);
 
         // Chat 테이블에 데이터 저장하기
