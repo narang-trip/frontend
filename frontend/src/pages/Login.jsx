@@ -15,9 +15,9 @@ const Login = () => {
     (async () => {
       try {
         const res = await axios.post(
-          // `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=${code}`
-          "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
-          code
+          `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=${code}`
+          // "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
+          // code
         );
         console.log(res);
         // dispatch(authActions.Login({code, userId}));
