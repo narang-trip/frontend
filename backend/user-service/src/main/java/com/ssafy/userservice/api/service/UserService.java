@@ -82,7 +82,7 @@ public class UserService extends DefaultOAuth2UserService {
                     .name(username)
                     .provider(provider)
                     .providerId(providerId)
-                    .role(Role.USER)
+                    .authority(Authority.USER)
                     .build();
             authRepository.save(auth);
         }
@@ -109,6 +109,12 @@ public class UserService extends DefaultOAuth2UserService {
         Optional<User> findUser = userRepository.findById(id);
         User user = findUser.get();
         return ResponseEntity.ok().body(user);
+    }
+
+    public ResponseEntity<Auth> getAuth(String email){
+        Optional<Auth> findAuth = authRepository.findByEmail(email);
+        Auth auth = findAuth.get();
+        return ResponseEntity.ok().body(auth);
     }
 
     // User 정보 수정

@@ -31,8 +31,10 @@ public class ChatListResponse {
         private String chatId;
         private String chatroomId;
         private String content;
+//        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         private LocalDateTime sendTime;
         private String userId;
+        private String userName;
     }
 
     @Getter
