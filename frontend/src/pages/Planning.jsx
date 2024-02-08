@@ -19,6 +19,32 @@ export default function PlanningPage() {
 
   console.log(list);
 
+  // 현재 URL에서 Base64로 인코딩된 JSON 문자열 추출
+  let urlParams = new URL(document.URL).searchParams;
+  console.log(urlParams);
+  let base64EncodedString = urlParams.get("a");
+  if (base64EncodedString !== null) {
+    console.log(base64EncodedString);
+
+    // Base64 디코딩 후 UTF-8 디코딩하여 JSON 문자열 추출
+    let utf8EncodedString = atob(base64EncodedString);
+    console.log(utf8EncodedString);
+    let jsonString = decodeURIComponent(escape(utf8EncodedString));
+
+    // JSON 문자열을 JavaScript 객체로 변환
+    let getList = JSON.parse(jsonString);
+    console.log(getList);
+
+    dispatch(scheduleActions.setSchedule(getList));
+    console.log(list);
+  }
+
+  window.history.pushState(
+    {},
+    null,
+    "/makeplan/?a=" + btoa(unescape(encodeURIComponent(JSON.stringify(list))))
+  );
+
   const onDragEnd = ({ source, destination }) => {
     // console.log(source);
     // console.log(destination);
@@ -36,7 +62,11 @@ export default function PlanningPage() {
         comment: "",
       };
       dispatch(
-        scheduleActions.addSchedule({ schedule: schedule, index: destination.index, day: idx })
+        scheduleActions.addSchedule({
+          schedule: schedule,
+          index: destination.index,
+          day: idx,
+        })
       );
     } else {
       // 이동

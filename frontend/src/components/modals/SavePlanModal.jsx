@@ -1,7 +1,19 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 const SavePlanModal = (props) => {
   const modalBG = useRef(null);
+  const state = useSelector((state) => state.schedule);
+  const [title, setTitle] = useState();
+
+  const savePlan = () => {
+    console.log(title);
+    console.log(title, JSON.stringify(state));
+  };
+
+  const onChange = (e) => {
+    setTitle(e.target.value);
+  };
 
   return (
     <div
@@ -17,6 +29,16 @@ const SavePlanModal = (props) => {
       >
         <button className="" onClick={props.onClose}>
           x
+        </button>
+        <label>계획이름</label>
+        <input
+          type="text"
+          value={title}
+          onChange={onChange}
+          placeholder="..."
+        ></input>
+        <button className="" onClick={savePlan}>
+          저장하기
         </button>
       </div>
     </div>
