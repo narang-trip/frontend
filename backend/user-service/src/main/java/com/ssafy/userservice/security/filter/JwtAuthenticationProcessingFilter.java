@@ -37,19 +37,19 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("doFilterInternal() 호출");
         log.info("request.getRequestURI() : {}", request.getRequestURI());
-//        filterChain.doFilter(request, response);
-        if (request.getRequestURI().equals(NO_CHECK_URL)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        String refreshToken = jwtService.extractRefreshToken(request)
-                .filter(jwtService::isTokenValid)
-                .orElse(null);
-        if (refreshToken != null) {
-            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-            return;
-        }
-        checkAccessTokenAndAuthentication(request, response, filterChain);
+        filterChain.doFilter(request, response);
+//        if (request.getRequestURI().equals(NO_CHECK_URL)) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+//        String refreshToken = jwtService.extractRefreshToken(request)
+//                .filter(jwtService::isTokenValid)
+//                .orElse(null);
+//        if (refreshToken != null) {
+//            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
+//            return;
+//        }
+//        checkAccessTokenAndAuthentication(request, response, filterChain);
     }
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
