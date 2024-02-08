@@ -95,8 +95,9 @@ public class OAuth2Service {
             throw new RuntimeException(e);
         }
         log.info("kakaoCallBack에서 userInfo {}", userInfo);
-
-
+        KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(userInfo);
+        String accessToken = jwtService.createAccessToken(kakaoUserInfo.getEmail());
+        log.info("kakaoCallBack에서 jwt accessToken {}", accessToken);
         // 액세스 토큰을 사용하여 사용자 정보 요청
 //        ResponseEntity<Map> userInfoResponseEntity = restTemplate.getForEntity(
 //                "https://kapi.kakao.com/v2/user/me", Map.class,
