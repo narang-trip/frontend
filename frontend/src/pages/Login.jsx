@@ -35,7 +35,7 @@ const Login = () => {
   const test = async () => {
     console.log(test, token);
     try {
-      const res = await axios.post(
+      const res = await axios.get(
         `https://i10a701.p.ssafy.io/api/user/getuser`,
         {
           token: token,
