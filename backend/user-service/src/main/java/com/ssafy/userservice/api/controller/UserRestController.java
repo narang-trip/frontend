@@ -40,14 +40,13 @@ public class UserRestController {
         return redirectView;
     }
 
-//    @PostMapping("/login/oauth/{provider}")
-//    public void login(@PathVariable String provider, HttpServletRequest request){
-//        String code = request.getParameter("code");
-//        System.out.println(request.toString());
-//        System.out.println(code);
-//        System.out.println(provider);
-//        System.out.println("Test");
-//    }
+    @PostMapping("/login/oauth/kakao")
+    public ResponseEntity<String> handleKakaoCallback(@RequestParam("code") String code) {
+        String accessToken = oAuth2Service.kakaoCallBack(code);
+
+        // 생성된 토큰을 리액트에 전달
+        return ResponseEntity.ok(accessToken);
+    }
 
     @GetMapping("/welcome")
     public String getWelcome(Authentication authentication) {
