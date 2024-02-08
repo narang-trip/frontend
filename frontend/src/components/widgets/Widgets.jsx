@@ -4,7 +4,6 @@ import CalendarCp from "./CalendarCp";
 import ChatRoomList from "./Chat/ChatRoomList";
 import Chat from "./Chat/Chat";
 import { useSelector } from "react-redux";
-import { MdArrowBack } from "react-icons/md";
 
 export default function Widgets() {
   const isLogin = useSelector((state) => state.auth.isLogin);
@@ -25,6 +24,11 @@ export default function Widgets() {
     setSelectedChatRoomId(chatRoomId);
     setActiveChatRoomList(false);
   };
+  
+  useEffect(() => {
+    const location = document.querySelector("chats");
+    console.log(location);
+  }, [])
 
   const navigateBack = () => {
     setActiveChatRoomList(true);
@@ -34,10 +38,10 @@ export default function Widgets() {
     <div className="text-center relative">
      
       <CalendarCp />
-      <div className="h-[43vh] overflow-auto mt-3 bg-blue-200 rounded-lg" ref={chatScrollRef}>
+      <div className="h-[43vh] mt-3 bg-blue-200 rounded-lg" ref={chatScrollRef}>
         {!isLogin && (
           <div className="justify-center items-center">
-            로그인을 먼저 해주세요{" "}
+            로그인을 먼저 해주세요
           </div>
         )}
         {isLogin &&

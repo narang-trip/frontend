@@ -10,8 +10,18 @@ const Chat = ({ chatroomId, navigateBack }) => {
   const [chats, setChats] = useState([]);
   const [msg, setMsg] = useState("");
   const userId = useSelector((state) => state.auth.userId);
-  const chatListRef = useRef(null);
+  const chatDivRef = useRef(null);
   let stompClient = useRef(null);
+
+
+  useEffect(() => {
+    // Access scrollTop inside useEffect to ensure the DOM element is available
+    if (chatDivRef.current) {
+      chatDivRef.current.scrollTop = chatDivRef.current.scrollHeight
+    }
+  }, [chats]); 
+
+
   useEffect(() => {
     getChatList(chatroomId, 0);
     if (!stompClient.current) {
@@ -56,7 +66,6 @@ const Chat = ({ chatroomId, navigateBack }) => {
     };
   }, [chatroomId]);
 
-  useEffect(() => {}, []);
 
   const getChatList = async (chatroomId, page) => {
     try {
@@ -70,14 +79,6 @@ const Chat = ({ chatroomId, navigateBack }) => {
     }
   };
 
-  // const scrollToBottom = () => {
-  //   setTimeout(() => {
-  //     if (chatListRef.current) {
-  //       const { scrollHeight } = chatListRef.current;
-  //       chatListRef.current.scrollTop = scrollHeight;
-  //     }
-  //   }, 0);
-  // }
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -98,13 +99,13 @@ const Chat = ({ chatroomId, navigateBack }) => {
   };
 
   return (
-    <div className="h-full w-full relative" ref={chatListRef}>
+    <div className="h-full w-full relative">
       <div className="absolute top-0 left-0">
         <button onClick={navigateBack} className="p-2">
           <MdArrowBack className="text-2xl" />
         </button>
       </div>
-      <div className="pt-5 pb-6 overflow-y-auto h-full pr-4">
+      <div id="chats" ref={chatDivRef} className="pt-5 pb-6 overflow-y-scroll h-full pr-4">
         {chats.map((chat) => {
           const utcDate = new Date(chat.sendTime);
           const kstDate = new Date(utcDate.getTime());
