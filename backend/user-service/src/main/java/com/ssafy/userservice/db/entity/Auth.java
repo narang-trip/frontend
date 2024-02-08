@@ -24,7 +24,7 @@ public class Auth extends BaseEntity {
     private String providerId;
     @Column
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Authority authority;
     @Column
     private String refreshToken;
 
@@ -39,14 +39,14 @@ public class Auth extends BaseEntity {
     }
 
     @Builder
-    public Auth(String id, String password, String email, String name, String provider, String providerId, Role role, String refreshToken){
+    public Auth(String id, String password, String email, String name, String provider, String providerId, Authority authority, String refreshToken){
         super.setId(id);
         this.password = password;
         this.email = email;
         this.name = name;
         this.provider = provider;
         this.providerId = providerId;
-        this.role = role;
+        this.authority = authority;
         this.refreshToken = refreshToken;
     }
 }
