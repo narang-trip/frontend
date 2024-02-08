@@ -36,7 +36,7 @@ public class ChatroomListResponse {
             private String senderId;
             private String senderName;
             private String latestContent;
-//            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
             private LocalDateTime latestTime;
 
             @Override
