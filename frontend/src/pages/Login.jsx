@@ -32,22 +32,20 @@ const Login = () => {
     })();
   });
 
-  const test = () => {
+  const test = async () => {
     console.log(test, token);
-    async () => {
-      try {
-        const res = await axios.post(
-          `https://i10a701.p.ssafy.io/api/user/profile`,
-          {
-            token: token,
-          }
-        );
-        console.log(res);
-        console.log(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    try {
+      const res = await axios.post(
+        `https://i10a701.p.ssafy.io/api/user/profile`,
+        {
+          token: token,
+        }
+      );
+      console.log(res);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
