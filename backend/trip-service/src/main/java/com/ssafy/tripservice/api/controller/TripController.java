@@ -2,6 +2,7 @@ package com.ssafy.tripservice.api.controller;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.ssafy.tripservice.api.request.TripQueryRequest;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
 import com.ssafy.tripservice.api.response.TripPageResponse;
@@ -74,11 +75,33 @@ public class TripController {
     public ResponseEntity<?> postTrip(@RequestPart TripRequest tripRequest,
                                       @RequestPart(required = false) MultipartFile tripImg) {
 
+        System.out.println(tripRequest);
+
         Optional<TripResponse> createRes = tripService.createTrip(tripRequest, tripImg);
 
         return createRes.map(r -> new ResponseEntity<>(r, HttpStatus.OK))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
+
+    @Operation(summary = "Trip 수정",
+            responses = {
+                    @ApiResponse(description = "The Trip Created",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Trip.class))),
+                    @ApiResponse(responseCode = "404", description = "Trip Not Modified")})
+    @PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @io.swagger.v3.oas.annotations.parameters.RequestBody (content = @Content(encoding = @Encoding(name = "tripRequest", contentType = MediaType.APPLICATION_JSON_VALUE)))
+    public ResponseEntity<?> patchTrip(@RequestPart TripRequest tripRequest,
+                                      @RequestPart(required = false) MultipartFile tripImg) {
+
+        System.out.println();
+
+        Optional<TripResponse> modifiedRes = tripService.modifyTrip(tripRequest, tripImg);
+
+        return  modifiedRes.isPresent() ?
+                ResponseEntity.ok(modifiedRes.get()) : ResponseEntity.badRequest().build();
+    }
+
 
     @Operation(summary = "Trip 가입",
             responses = {
@@ -106,6 +129,7 @@ public class TripController {
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }
+
 
     /*
         Just For Test
@@ -153,7 +177,6 @@ public class TripController {
     @Operation(summary = "배너용 Trips",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Trips For Banner")})
-    @ResponseBody
     @GetMapping("/trips/banner")
     public ResponseEntity<List<TripResponse>> getBannerTrips(
             @RequestParam("tripConcept") String tripConcept) {
@@ -162,23 +185,27 @@ public class TripController {
         return ResponseEntity.ok(tripService.getBannerTrips(tripConcept));
     }
 
-    @Operation(summary = "나의 Trips",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Trips I Joined")})
-    @ResponseBody
-    @GetMapping("/trips")
-    public ResponseEntity<Page<TripPageResponse>> getMyTrips (
-            @RequestParam("userId") UUID userId, @RequestParam("pageNo") Integer pageNo) {
-        System.out.println(userId);
-
-        return ResponseEntity.ok(tripService.getMyTrips(userId, pageNo));
-    }
-
     @DeleteMapping("/user")
     public ResponseEntity<Long> deleteUserTrips (
             @RequestParam("userId") UUID userId) {
         System.out.println(userId);
 
         return ResponseEntity.ok(tripService.eraseWithdrawalUser(userId));
+    }
+
+    @Operation(summary = "나의 여행 조회 (기간)",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User Deleted Trip Successfully")})
+    @PostMapping("/trips")
+    public ResponseEntity<Page<TripPageResponse>> getTripsIveBeen(@RequestBody TripQueryRequest tripQueryRequest) {
+        return ResponseEntity.ok(tripService.getTripsIveBeen(tripQueryRequest));
+    }
+
+    @Operation(summary = "내가 리더인 여행",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User Deleted Trip Successfully")})
+    @PostMapping("/recruit")
+    public ResponseEntity<Page<TripPageResponse>> getTripsIveOwn(@RequestBody TripQueryRequest tripQueryRequest) {
+        return ResponseEntity.ok(tripService.getTripsIveOwn(tripQueryRequest));
     }
 }

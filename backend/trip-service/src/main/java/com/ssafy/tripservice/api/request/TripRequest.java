@@ -12,7 +12,6 @@ import java.util.UUID;
 @Builder
 @ToString
 public class TripRequest {
-
     private UUID tripId;
     private String tripName;
     private String tripDesc;
