@@ -16,8 +16,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Controller
@@ -35,10 +37,13 @@ public class StompController {
      // "/pub/chat/enter"
     @MessageMapping(value = "/chat/enter")
     public void enter(String userId, String chatroomId){
+        Instant instant = Instant.now();
+        ZonedDateTime seoulTime = instant.atZone(ZoneId.of("Asia/Seoul"));
+        LOGGER.info(String.format("메시지 시간 확인중 %s -> ", seoulTime));
         ChatRequest chatRequest = new ChatRequest(
                 chatroomId,
                 userId,
-                LocalDateTime.now(),
+                seoulTime.toLocalDateTime(),
                 "채팅방에 참여하였습니다.");
 
         // ChatroomUser 테이블에 데이터 저장하기 -> 채팅방 입장
@@ -51,10 +56,13 @@ public class StompController {
 
     @MessageMapping(value = "/chat/send")
     public void message(ChatSendRequest chatSendRequest){
+        Instant instant = Instant.now();
+        ZonedDateTime seoulTime = instant.atZone(ZoneId.of("Asia/Seoul"));
+        LOGGER.info(String.format("메시지 시간 확인중 %s -> ", seoulTime));
         ChatRequest chatRequest = new ChatRequest(
                 chatSendRequest.getChatroomId(),
                 chatSendRequest.getSenderId(),
-                LocalDateTime.now(),
+                seoulTime.toLocalDateTime(),
                 chatSendRequest.getContent());
         LOGGER.info(String.format("확인해야 하거든? -> %s", ZoneId.systemDefault()));
         template.convertAndSend("/sub/chat/room/" + chatSendRequest.getChatroomId(), chatRequest);
