@@ -7,8 +7,10 @@ const LoginModal = (props) => {
   const kakaoRedirectURI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
   console.log(kakaoRedirectURI);
   const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
-  const kakaoLoginURI2 = "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
-  const kakaoLoginURI3 = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
+  const kakaoLoginURI2 =
+    "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
+  const kakaoLoginURI3 =
+    "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
   const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
 
   const kakaoLogin = async () => {
@@ -38,7 +40,7 @@ const LoginModal = (props) => {
           </button>
           <h3 className="">로 그 인</h3>
           <div className="flex flex-col">
-            <a href={kakaoLoginURI3}>
+            <a href={kakaoLoginURI}>
               <img
                 className="object-cover h-16 w-36 rounded-xl"
                 src="assets/kakao_login.png"
