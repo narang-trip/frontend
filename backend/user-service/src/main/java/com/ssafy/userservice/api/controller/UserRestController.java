@@ -25,20 +25,20 @@ public class UserRestController {
     private final UserService userService;
     private final OAuth2Service oAuth2Service;
 
-    @GetMapping("/profile")
+    @GetMapping("/getuser")
     public ResponseEntity<User> getUser(@AuthenticationPrincipal UserDetails userDetails){
         Auth auth = userService.getAuth(userDetails.getUsername()).getBody();
         User user = userService.getUser(auth.getId()).getBody();
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/oauth2/authorization/kakao")
-    public RedirectView kakaoLogin() {
-        log.info("==========login controller 동작2345============");
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl(oAuth2Service.getAuthorizationUrl("kakao"));
-        return redirectView;
-    }
+//    @GetMapping("/oauth2/authorization/kakao")
+//    public RedirectView kakaoLogin() {
+//        log.info("==========login controller 동작2345============");
+//        RedirectView redirectView = new RedirectView();
+//        redirectView.setUrl(oAuth2Service.getAuthorizationUrl("kakao"));
+//        return redirectView;
+//    }
 
     @PostMapping("/login/oauth/kakao")
     public ResponseEntity<String> handleKakaoCallback(@RequestParam("code") String code) {
@@ -48,14 +48,11 @@ public class UserRestController {
         return ResponseEntity.ok(accessToken);
     }
 
-    @GetMapping("/welcome")
-    public String getWelcome(Authentication authentication) {
-        System.out.println("welcome");
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        String uuid = principalDetails.getAuth().getId();
-        return uuid; // 로그인 성공시 uuid 리턴
-    }
-
+//    @PostMapping("/logout")
+//    public ResponseEntity<?> logout(HttpServletRequest request) {
+//        authService.logout(request);
+//        return ResponseEntity.ok().build();
+//    }
 
     @GetMapping("/get")
     public User getTest() {
