@@ -25,21 +25,23 @@ const CarouselTemplete = () => {
       slidesToSlide: 1, // optional, default to 1.
     },
   };
-  const concept = useSelector((state) => state.concept.concept);
+  const concept = useSelector((state) => state.concept);
   useEffect(() => {
     getConceptTrip();
     console.log(concept);
-  }, [concept]) 
+  }, [concept]);
 
   const getConceptTrip = async () => {
     try {
-      const res = await axios.get(`https://i10a701.p.ssafy.io/api/trip/trips/banner?tripConcept=${concept}`)
-      const conceptTrips = res.data; 
-      console.log(conceptTrips)
-    } catch(error) {
+      const res = await axios.get(
+        `https://i10a701.p.ssafy.io/api/trip/trips/banner?tripConcept=${concept}`
+      );
+      const conceptTrips = res.data;
+      console.log(conceptTrips);
+    } catch (error) {
       console.error(error);
-    } 
-  }
+    }
+  };
 
   const handleSlide = (currentItem, currentSlide) => {
     // 현재 항목 및 해당 폭을 기반으로 새로운 transform 값을 계산합니다.
