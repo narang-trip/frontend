@@ -8,6 +8,8 @@ spring:
     url: jdbc:mysql://i10a701.p.ssafy.io:3306/narangdb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: root
     password: ssafy
+  jackson:
+    time-zone: Asia/Seoul
   jpa:
     show-sql: true
     properties:
@@ -16,7 +18,6 @@ spring:
         fomat_sql: true
     hibernate:
       ddl-auto: update
-      hibernate:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 

@@ -23,6 +23,7 @@ public class ChatController {
     @GetMapping("/list/{userId}")
     public ResponseEntity<ChatroomListResponse> getLatestChatsByUserId(@PathVariable String userId) {
         ChatroomListResponse chatroomListResponse = chatService.getLatestChatsByUserId(userId);
+        LOGGER.info(String.format("메시지 시간을 확인해보자", chatroomListResponse.getChatroomList().get(0).getChat().getLatestTime()));
         return ResponseEntity.ok(chatroomListResponse);
     }
 
