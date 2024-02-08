@@ -1,13 +1,12 @@
 package com.ssafy.userservice.api.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.userservice.api.oauth2.userinfo.KakaoUserInfo;
 import com.ssafy.userservice.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -18,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.net.URI;
 import java.util.Map;
 
 @Slf4j
@@ -41,6 +41,10 @@ public class OAuth2Service {
 
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String kakaoTokenUri;
+
+    @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
+    private String kakaoUserInfoUri;
+
 
     public String kakaoCallBack(String code){
         // 카카오 API 호출을 위한 설정
@@ -68,15 +72,40 @@ public class OAuth2Service {
 
         log.info("kakaoCallBack에서 kakaoAccessToken {}", kakaoAccessToken);
 
-        // 액세스 토큰을 사용하여 사용자 정보 요청
-        ResponseEntity<Map> userInfoResponseEntity = restTemplate.getForEntity(
-                "https://kapi.kakao.com/v2/user/me", Map.class,
-                kakaoAccessToken);
-        log.info("kakaoCallBack에서 userInfoResponseEntity {}", userInfoResponseEntity);
-        // 사용자 정보 얻기
-        Map userInfo = userInfoResponseEntity.getBody();
+
+
+
+
+
+        restTemplate = new RestTemplate();
+
+        headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + kakaoAccessToken);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+
+        URI uri = UriComponentsBuilder.fromUriString(kakaoUserInfoUri)
+                .build()
+                .toUri();
+
+        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class);
+        Map<String, Object> userInfo;
+        try {
+            userInfo = new ObjectMapper().readValue(response.getBody(), Map.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         log.info("kakaoCallBack에서 userInfo {}", userInfo);
-        // 사용자 정보를 기반으로 JWT 토큰 생성
+
+
+        // 액세스 토큰을 사용하여 사용자 정보 요청
+//        ResponseEntity<Map> userInfoResponseEntity = restTemplate.getForEntity(
+//                "https://kapi.kakao.com/v2/user/me", Map.class,
+//                kakaoAccessToken);
+//        log.info("kakaoCallBack에서 userInfoResponseEntity {}", userInfoResponseEntity);
+//        // 사용자 정보 얻기
+//        Map userInfo = userInfoResponseEntity.getBody();
+//        log.info("kakaoCallBack에서 userInfo {}", userInfo);
+//      // 사용자 정보를 기반으로 JWT 토큰 생성
 //        String accessToken = jwtService.createAccessToken(userInfo.getEmail());
 
 //        log.info("kakaoCallBack에서 jwt accessToken {}", accessToken);
