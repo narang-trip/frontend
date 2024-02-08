@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../store/auth-slice";
+import { authActions } from "../store/authSlice";
 
 import { ModalPortal } from "./modals/ModalPortal";
 import Dropdown from "./UpNavDropdown";
 import LoginModal from "./modals/LoginModal";
-import Button from '../ui/Button'
+import Button from "../ui/Button";
 import { useNavigate } from "react-router";
 
 const UpperNavbar = () => {
@@ -17,8 +17,8 @@ const UpperNavbar = () => {
   const navigate = useNavigate();
 
   const navigateHome = () => {
-    navigate('/');
-  }
+    navigate("/");
+  };
   const OpenLoginModal = () => {
     setIsOpen(true);
   };
@@ -44,7 +44,7 @@ const UpperNavbar = () => {
   }, [isOpen]);
 
   const clickHandler = (name) => {
-    dispatch(authActions.Login({code, userId: name}))
+    dispatch(authActions.Login({ code, userId: name }));
     console.log(`${name} 로그인 됐습니다.`);
     console.log("---------------------------------");
     const EventSource = EventSourcePolyfill || NativeEventSource;
@@ -54,7 +54,7 @@ const UpperNavbar = () => {
         heartbeatTimeout: 3600000,
       }
     );
-    
+
     eventSource.addEventListener("sse", (event) => {
       const { data: receivedConnectData } = event;
       console.log(receivedConnectData);
@@ -65,7 +65,7 @@ const UpperNavbar = () => {
         console.log(event);
       }
     });
-    eventSource.onerror = function(event) {
+    eventSource.onerror = function (event) {
       console.error("SSE 에러 발생:", event);
     };
   };
@@ -73,7 +73,12 @@ const UpperNavbar = () => {
   return (
     <header className="sticky top-0 z-10 flex items-center justify-between w-full p-4 bg-stone-100">
       <div className="ml-5">
-        <img src="/narang_logo.png" className="w-11 h-11 hover:cursor-pointer" onClick={navigateHome} alt="Home" />
+        <img
+          src="/narang_logo.png"
+          className="w-11 h-11 hover:cursor-pointer"
+          onClick={navigateHome}
+          alt="Home"
+        />
       </div>
       <Button onClick={() => clickHandler("노세희")}>노세희 로그인</Button>
       <Button onClick={() => clickHandler("조용환")}>조용환 로그인</Button>
