@@ -27,19 +27,6 @@ export default function Widgets() {
   return (
     <div className="text-center relative">
       <CalendarCp />
-<<<<<<< HEAD
-      {!isLogin && (
-        <div className="justify-center items-center">
-          로그인을 먼저 해주세요
-        </div>
-      )}
-      {isLogin &&
-        (activeChatRoomList ? (
-          <ChatRoomList onChatRoomSelect={handleChatRoomSelect} />
-        ) : (
-          <Chat chatroomId={selectedChatRoomId} />
-        ))}
-=======
       <div className="h-[40vh] overflow-auto mt-3 bg-blue-200 rounded-lg" ref={chatScrollRef}>
         {!isLogin && (
           <div className="justify-center items-center">
@@ -53,7 +40,6 @@ export default function Widgets() {
             <Chat chatroomId={selectedChatRoomId} />
           ))}
       </div>
->>>>>>> feat_chatroom
     </div>
   );
 }
