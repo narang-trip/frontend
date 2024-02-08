@@ -2,7 +2,7 @@ package com.ssafy.userservice.api.oauth2.handler;
 
 //import com.ssafy.userservice.api.oauth2.CustomOAuth2User;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
-import com.ssafy.userservice.db.entity.Role;
+import com.ssafy.userservice.db.entity.Authority;
 import com.ssafy.userservice.security.jwt.JwtService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("OAuth2 Login 성공!");
         PrincipalDetails oAuth2User = (PrincipalDetails) authentication.getPrincipal();
-        if (oAuth2User.getAuth().getRole() == Role.USER) {
+        if (oAuth2User.getAuth().getAuthority() == Authority.USER) {
             String accessToken = jwtService.createAccessToken(oAuth2User.getAuth().getEmail());
             response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
             log.info("my =================> OAuth2LoginSuccessHandler -> onAuthenticationSuccess");
