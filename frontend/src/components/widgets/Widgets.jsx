@@ -11,25 +11,12 @@ export default function Widgets() {
   const [selectedChatRoomId, setSelectedChatRoomId] = useState(null);
   const chatScrollRef = useRef(null);
 
-  useEffect(() => {
-
-    if (chatScrollRef.current) {
-      const { scrollHeight, clientHeight } = chatScrollRef.current;
-      chatScrollRef.current.scrollTop = scrollHeight - clientHeight;
-    }
-
-  }, [selectedChatRoomId, activeChatRoomList])
 
   const handleChatRoomSelect = (chatRoomId) => {
     setSelectedChatRoomId(chatRoomId);
     setActiveChatRoomList(false);
   };
   
-  useEffect(() => {
-    const location = document.querySelector("chats");
-    console.log(location);
-  }, [])
-
   const navigateBack = () => {
     setActiveChatRoomList(true);
     setSelectedChatRoomId(null); // 선택된 채팅방 ID를 초기화
