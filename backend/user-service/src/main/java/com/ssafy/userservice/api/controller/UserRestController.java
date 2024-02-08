@@ -27,6 +27,7 @@ public class UserRestController {
 
     @GetMapping("/getuser")
     public ResponseEntity<User> getUser(@AuthenticationPrincipal UserDetails userDetails){
+        log.info("userDetails : {}", userDetails);
         Auth auth = userService.getAuth(userDetails.getUsername()).getBody();
         User user = userService.getUser(auth.getId()).getBody();
         return ResponseEntity.ok(user);
@@ -42,6 +43,7 @@ public class UserRestController {
 
     @PostMapping("/login/oauth/kakao")
     public ResponseEntity<String> handleKakaoCallback(@RequestParam("code") String code) {
+        log.info("handleKakaoCallback 호출");
         String accessToken = oAuth2Service.kakaoCallBack(code);
 
         // 생성된 토큰을 리액트에 전달
