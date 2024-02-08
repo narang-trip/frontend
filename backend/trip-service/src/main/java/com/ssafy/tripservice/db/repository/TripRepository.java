@@ -3,10 +3,12 @@ package com.ssafy.tripservice.db.repository;
 import com.ssafy.tripservice.api.request.UserRequest;
 import com.ssafy.tripservice.db.entity.QTrip;
 import com.ssafy.tripservice.db.entity.Trip;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
