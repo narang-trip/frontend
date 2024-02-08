@@ -98,22 +98,18 @@ const Chat = ({ chatroomId, navigateBack }) => {
   };
 
   return (
-      <div
-        className="h-full w-full relative"
-        ref={chatListRef}
-      >
-        <div className="absolute top-0 left-0">
-          <button
-            onClick={navigateBack}
-            className="p-2"
-          >
-            <MdArrowBack className="text-2xl" />
-          </button>
-        </div>
-        <div className="pt- 12 overflow-y-auto h-full">
+    <div className="h-full w-full relative" ref={chatListRef}>
+      <div className="absolute top-0 left-0">
+        <button onClick={navigateBack} className="p-2">
+          <MdArrowBack className="text-2xl" />
+        </button>
+      </div>
+      <div className="pt-5 pb-6 overflow-y-auto h-full pr-4">
         {chats.map((chat) => {
-          const date = new Date(chat.sendTime);
-          const formattedDate = `${date.getHours()}시 ${date.getMinutes()}분`;
+          const utcDate = new Date(chat.sendTime);
+          const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000);
+          // 한국 시간대로 변환 (UTC+9)
+          const formattedDate = `${kstDate.getHours()}시 ${kstDate.getMinutes()}분`;
           let messageBoxClass = "w-full flex m-3 items-end";
           let messageClass =
             "text-sm rounded-lg border p-2 max-w-[80%] break-words";
@@ -126,22 +122,28 @@ const Chat = ({ chatroomId, navigateBack }) => {
               </div>
             );
           } else if (chat.userId === userId) {
-            messageBoxClass += " justify-end "; // 본인인 건 오른쪽
+            messageBoxClass += " justify-end my-1"; // 본인인 건 오른쪽
             messageClass += " bg-yellow-200 border-yellow-300";
             return (
-              <div key={chat.chatId} className={messageBoxClass}>
-                <div className="text-xs mr-1">{formattedDate}</div>
-                <div className={messageClass}>{chat.content}</div>
-              </div>
+              <Fragment key={chat.chatId}>
+                <div className="text-xs text-right m-0 justify-end">나</div>
+                <div className={messageBoxClass}>
+                  <div className="text-xs mr-1">{formattedDate}</div>
+                  <div className={messageClass}>{chat.content}</div>
+                </div>
+              </Fragment>
             );
           } else {
-            messageBoxClass += " justify-start"; // 상대방은 왼쪽
+            messageBoxClass += " justify-start my-1"; // 상대방은 왼쪽
             messageClass += " bg-white";
             return (
-              <div key={chat.chatId} className={messageBoxClass}>
-                <div className={messageClass}>{chat.content}</div>
-                <div className="text-xs ml-1">{formattedDate}</div>
-              </div>
+              <Fragment key={chat.chatId}>
+                <div className="text-xs ml-1 text-left">{chat.userId}</div>
+                <div className={messageBoxClass}>
+                  <div className={messageClass}>{chat.content}</div>
+                  <div className="text-xs ml-1">{formattedDate}</div>
+                </div>
+              </Fragment>
             );
           }
         })}
@@ -160,7 +162,7 @@ const Chat = ({ chatroomId, navigateBack }) => {
         />
         <Button type="submit">전송</Button>
       </form>
-      </div>
+    </div>
   );
 };
 
