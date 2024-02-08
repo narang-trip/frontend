@@ -3,6 +3,7 @@ package com.ssafy.messageservice.api.controller;
 import com.ssafy.messageservice.api.request.AlertAttendRequest;
 import com.ssafy.messageservice.api.request.ChatroomRequest;
 import com.ssafy.messageservice.api.response.AlertListResponse;
+import com.ssafy.messageservice.api.response.AlertSendListResponse;
 import com.ssafy.messageservice.api.service.AlertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,21 @@ public class AlertController {
         }
         else {
             AlertListResponse alertListResponse = new AlertListResponse(alertResponses);
+            return ResponseEntity.ok(alertListResponse);
+        }
+    }
+
+    // senderId의 지금까지의 알림 리스트 보내주기
+    @GetMapping(value = "/list/send/{senderId}")
+    public ResponseEntity<AlertSendListResponse> getSendAlertList(@PathVariable String senderId) {
+        List<AlertSendListResponse.AlertSendResponse> alertResponses = alertService.getAlertsBySenderId(senderId);
+        if(alertResponses == null){
+            AlertSendListResponse response = new AlertSendListResponse();
+            response.setAlertList(Collections.emptyList());
+            return ResponseEntity.ok(response);
+        }
+        else {
+            AlertSendListResponse alertListResponse = new AlertSendListResponse(alertResponses);
             return ResponseEntity.ok(alertListResponse);
         }
     }
