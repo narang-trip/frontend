@@ -24,13 +24,14 @@ const Chat = ({ chatroomId }) => {
           stompClient.current.subscribe(
             `/sub/chat/room/${chatroomId}`,
             (message) => {
-              console.log(`Received: ${message.body}`);
-              console.log(message.body.sendTime)
-              console.log(message.body.content)
+              const messageBody = JSON.parse(message.body);
+              console.log(`Received: ${messageBody}`);
+              console.log(messageBody.sendTime)
+              console.log(messageBody.content)
               const chat = {
                 userId: userId,
-                sendTime: message.body.sendTime,
-                content: message.body.content,
+                sendTime: messageBody.sendTime,
+                content: messageBody.content,
               };
               setChats((prevChats) => [...prevChats, chat]);
             }
