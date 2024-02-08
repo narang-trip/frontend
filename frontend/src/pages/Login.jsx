@@ -7,7 +7,7 @@ import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [token, setToken] = useState();
+  let token;
   useEffect(() => {
     const params = new URL(document.URL).searchParams;
     const code = params.get("code");
@@ -24,7 +24,7 @@ const Login = () => {
         );
         console.log(res);
         console.log(res.data);
-        setToken(res.data);
+        token = res.data;
         // dispatch(authActions.Login({code, userId}));
       } catch (error) {
         console.log("Error during POST request:", error);
