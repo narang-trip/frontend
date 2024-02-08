@@ -1,6 +1,8 @@
-import { Fragment, useState } from "react";
+import axios from "axios";
+import { Fragment, useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useSelector } from "react-redux";
 
 // 테스트용 주석입니다.
 const CarouselTemplete = () => {
@@ -9,13 +11,13 @@ const CarouselTemplete = () => {
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 4,
+      items: 3,
       slidesToSlide: 1, // optional, default to 1.
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
       items: 2,
-      slidesToSlide: 2, // optional, default to 1.
+      slidesToSlide: 1, // optional, default to 1.
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
@@ -23,6 +25,21 @@ const CarouselTemplete = () => {
       slidesToSlide: 1, // optional, default to 1.
     },
   };
+  const concept = useSelector((state) => state.concept.concept);
+  useEffect(() => {
+    getConceptTrip();
+    console.log(concept);
+  }, [concept]) 
+
+  const getConceptTrip = async () => {
+    try {
+      const res = await axios.get(`https://i10a701.p.ssafy.io/api/trip/trips/banner?tripConcept=${concept}`)
+      const conceptTrips = res.data; 
+      console.log(conceptTrips)
+    } catch(error) {
+      console.error(error);
+    } 
+  }
 
   const handleSlide = (currentItem, currentSlide) => {
     // 현재 항목 및 해당 폭을 기반으로 새로운 transform 값을 계산합니다.

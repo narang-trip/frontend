@@ -2,8 +2,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import directionsSliceReducer from "./directionsSlice";
 import placesSliceReducer from "./placeSlice";
-import authReducer from "./auth-slice";
-import tripReducer from "./trip-slice";
+import authReducer from "./authSlice";
+import tripReducer from "./tripSlice";
 import scheduleSliceReducer from "./scheduleSlice";
 import BoardSliceReducer from "./boardSlice";
 
