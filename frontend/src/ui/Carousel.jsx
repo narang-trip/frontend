@@ -3,11 +3,13 @@ import { Fragment, useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useSelector } from "react-redux";
+import TripSummarySmall from "../components/Trip/Read/TripSummarySmall";
 
 // 테스트용 주석입니다.
-const CarouselTemplete = () => {
+const CarouselTemplete = ({ list }) => {
   const [transformValue, setTransformValue] = useState(0);
   const [itemWidth, setItemWidth] = useState(0);
+  console.log(list);
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -25,23 +27,6 @@ const CarouselTemplete = () => {
       slidesToSlide: 1, // optional, default to 1.
     },
   };
-  const concept = useSelector((state) => state.concept);
-  useEffect(() => {
-    getConceptTrip();
-    console.log(concept);
-  }, [concept]);
-
-  const getConceptTrip = async () => {
-    try {
-      const res = await axios.get(
-        `https://i10a701.p.ssafy.io/api/trip/trips/banner?tripConcept=${concept}`
-      );
-      const conceptTrips = res.data;
-      console.log(conceptTrips);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleSlide = (currentItem, currentSlide) => {
     // 현재 항목 및 해당 폭을 기반으로 새로운 transform 값을 계산합니다.
@@ -55,7 +40,7 @@ const CarouselTemplete = () => {
     setItemWidth(currentWidth);
   };
   return (
-    <Fragment>
+    <div className="h-[40vh]">
       <Carousel
         swipeable={false}
         draggable={false}
@@ -63,7 +48,7 @@ const CarouselTemplete = () => {
         responsive={responsive}
         ssr={true} // means to render carousel on server-side.
         infinite={true}
-        autoPlay={true}
+        autoPlay={false}
         autoPlaySpeed={2000}
         keyBoardControl={true}
         customTransition="transform 500ms ease-in-out 0s"
@@ -73,22 +58,38 @@ const CarouselTemplete = () => {
         dotListClass="custom-dot-list-style"
         itemClass="carousel-item-padding-40-px"
       >
-        <div
-          id="carousel_item"
-          className="h-[200px] border border-black boder-solid flex flex-wrap"
-        >
-          <div className="w-[45%] h[auto] m-1 border border-solid border-black carousel-item"></div>
-          <div className="w-[45%] h[auto] m-1 border border-solid border-black"></div>
-          <div className="w-[45%] h[auto] m-1 border border-solid border-black"></div>
-          <div className="w-[45%] h[auto] m-1 border border-solid border-black"></div>
+        <div id="carousel_item" className="h-full">
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
         </div>
-        <div className="h-[200px] border border-black boder-solid">Item 2</div>
-        <div className="h-[200px] border border-black boder-solid">Item 3</div>
-        <div className="h-[200px] border border-black boder-solid">Item 4</div>
-        <div className="h-[200px] border border-black boder-solid">Item 5</div>
-        <div className="h-[200px] border border-black boder-solid">Item 6</div>
+        <div className="h-full ">
+          {" "}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+        </div>
+
+        <div className="h-full ">
+          {" "}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+        </div>
+        <div className="h-full ">
+          {" "}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+        </div>
+        <div className="h-full ">
+          {" "}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+        </div>
+        <div className="h-full ">
+          {" "}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+        </div>
       </Carousel>
-    </Fragment>
+    </div>
   );
 };
 

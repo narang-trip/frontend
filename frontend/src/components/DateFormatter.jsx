@@ -1,5 +1,3 @@
-import React from "react";
-
 const DateFormatter = ({ dateString }) => {
   const date = new Date(dateString);
   const year = date.getFullYear();

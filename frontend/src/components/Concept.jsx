@@ -5,10 +5,11 @@ import { conceptActions } from "../store/conceptSlice";
 
 export default function Concept() {
   const dispatch = useDispatch();
-  const conceptColor = useSelector((state) => state.conceptColor);
+  const {conceptColor} = useSelector((state) => state.concept);
+  // console.log(conceptColor);
   const clickHandler = (value) => {
     dispatch(conceptActions.changeConcept({ concept: value }));
-    console.log(conceptColor);
+    // console.log(conceptColor);
   };
 
   return (
