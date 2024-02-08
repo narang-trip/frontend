@@ -69,17 +69,17 @@ public class OAuth2Service {
         log.info("kakaoCallBack에서 kakaoAccessToken {}", kakaoAccessToken);
 
         // 액세스 토큰을 사용하여 사용자 정보 요청
-        ResponseEntity<KakaoUserInfo> userInfoResponseEntity = restTemplate.getForEntity(
-                "https://kapi.kakao.com/v2/user/me", KakaoUserInfo.class,
+        ResponseEntity<Map> userInfoResponseEntity = restTemplate.getForEntity(
+                "https://kapi.kakao.com/v2/user/me", Map.class,
                 kakaoAccessToken);
-
+        log.info("kakaoCallBack에서 userInfoResponseEntity {}", userInfoResponseEntity);
         // 사용자 정보 얻기
-        KakaoUserInfo userInfo = userInfoResponseEntity.getBody();
+        Map userInfo = userInfoResponseEntity.getBody();
         log.info("kakaoCallBack에서 userInfo {}", userInfo);
         // 사용자 정보를 기반으로 JWT 토큰 생성
-        String accessToken = jwtService.createAccessToken(userInfo.getEmail());
+//        String accessToken = jwtService.createAccessToken(userInfo.getEmail());
 
-        log.info("kakaoCallBack에서 jwt accessToken {}", accessToken);
+//        log.info("kakaoCallBack에서 jwt accessToken {}", accessToken);
 
 
         String accessToken2 = kakaoAccessToken; // 일단 임시로

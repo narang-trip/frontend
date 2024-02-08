@@ -71,6 +71,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("SecurityFilterChain() 호출");
         http
+                .exceptionHandling()
+                .authenticationEntryPoint((request, response, authException) ->
+                        response.sendRedirect("https://i10a701.p.ssafy.io"))
+                .and()
 //                .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
