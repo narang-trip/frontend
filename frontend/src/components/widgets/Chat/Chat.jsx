@@ -25,9 +25,6 @@ const Chat = ({ chatroomId }) => {
             `/sub/chat/room/${chatroomId}`,
             (message) => {
               const messageBody = JSON.parse(message.body);
-              console.log(`Received: ${messageBody}`);
-              console.log(messageBody.sendTime)
-              console.log(messageBody.content)
               const chat = {
                 userId: userId,
                 sendTime: messageBody.sendTime,

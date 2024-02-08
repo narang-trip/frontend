@@ -60,12 +60,6 @@ function MainNavigation() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/chatRoomTest">ChatroomTest</NavLink>
-          </li>
-          <li>
-            <NavLink to="/practice">Practice</NavLink>
-          </li>
-          <li>
             <NavLink to="/Mypage">Myapge</NavLink>
           </li>
         </ul>
