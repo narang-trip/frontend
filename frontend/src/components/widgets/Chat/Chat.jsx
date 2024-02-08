@@ -22,50 +22,83 @@
       rootMargin: '10px' // div태그가 보일 때 inView가 true로 설정
     });
 
-    const getChatList = useCallback(
-      async (chatroomId) => {
-        try {
-          const response = await axios.get(
-            `${
-              import.meta.env.VITE_CHAT_REQUEST_URI
-            }/${chatroomId}?page=${pageNo}`
-          );
+    // const getChatList = useCallback(
+    //   async (chatroomId) => {
+    //     try {
+    //       const response = await axios.get(
+    //         `${
+    //           import.meta.env.VITE_CHAT_REQUEST_URI
+    //         }/${chatroomId}?page=${pageNo}`
+    //       );
           
-          console.log(response.data)
-          // 가져올 항목이 없으면 중단
-          if (response.data.chatList.length === 0) {
-            return;
-          }
-          let chatList = response.data.chatList;
-          if (pageNo === 0) {
-            lastChatRef.current = chatList[chatList.length - 1];
-          } else {
-            for (let i = 0; i < chatList.length; i++) {
-              if (chatList[i] === lastChatRef.current) {
-                chatList = chatList.slice(i);
-                break;
-              }
+    //       console.log(response.data)
+    //       // 가져올 항목이 없으면 중단
+    //       if (response.data.chatList.length === 0) {
+    //         return;
+    //       }
+    //       let chatList = response.data.chatList;
+    //       if (pageNo === 0) {
+    //         lastChatRef.current = chatList[chatList.length - 1];
+    //       } else {
+    //         for (let i = 0; i < chatList.length; i++) {
+    //           if (chatList[i] === lastChatRef.current) {
+    //             chatList = chatList.slice(i);
+    //             break;
+    //           }
+    //         }
+    //       }
+    //       chatList = [...chatList].reverse();
+    //       // 새로운 데이터를 기존 데이터에 추가
+    //       setChats((prevData) => [...chatList, ...prevData]);
+    //       // 페이지 번호 증가
+    //       setPageNo((prevPageNo) => prevPageNo + 1);
+    //     } catch (error) {
+    //       console.error("채팅 목록 가져오는 중 에러 발생:", error);
+    //     }
+    //   },
+    //   [chatroomId, pageNo]
+    // );
+    const getChatList = useCallback(async (chatroomId) => {
+      const previousScrollHeight = chatDivRef.current ? chatDivRef.current.scrollHeight : 0;
+    
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_CHAT_REQUEST_URI}/${chatroomId}?page=${pageNo}`);
+        console.log(response.data);
+        if (response.data.chatList.length === 0) {
+          return;
+        }
+        let chatList = response.data.chatList;
+        if (pageNo === 0) {
+          lastChatRef.current = chatList[chatList.length - 1];
+        } else {
+          for (let i = 0; i < chatList.length; i++) {
+            if (chatList[i] === lastChatRef.current) {
+              chatList = chatList.slice(i);
+              break;
             }
           }
-          chatList = [...chatList].reverse();
-          // 새로운 데이터를 기존 데이터에 추가
-          setChats((prevData) => [...chatList, ...prevData]);
-          // 페이지 번호 증가
-          setPageNo((prevPageNo) => prevPageNo + 1);
-        } catch (error) {
-          console.error("채팅 목록 가져오는 중 에러 발생:", error);
         }
-      },
-      [chatroomId, pageNo]
-    );
+        chatList = [...chatList].reverse();
+        setChats((prevData) => [...chatList, ...prevData]);
+        setPageNo((prevPageNo) => prevPageNo + 1);
+    
+        // 데이터 로딩 후 스크롤 조정
+        if (pageNo > 0 && chatDivRef.current) {
+          const currentScrollHeight = chatDivRef.current.scrollHeight;
+          const scrollOffset = currentScrollHeight - previousScrollHeight;
+          chatDivRef.current.scrollTop += scrollOffset;
+        }
+      } catch (error) {
+        console.error("채팅 목록 가져오는 중 에러 발생:", error);
+      }
+    }, [chatroomId, pageNo]);
 
     // inView가 true일때 데이터를 가져옴
     useEffect(() => {
       if (inView && pageNo > 0) {
-        console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
         getChatList(chatroomId);
       }
-    }, [inView]);
+    }, [inView, pageNo, getChatList]);
 
     useEffect(() => {
       if (chatDivRef.current && pageNo === 1) {
@@ -135,12 +168,12 @@
     return (
       <div className="h-full w-full relative">
         <div className="absolute top-0 left-0 right-0">
-          <div onClick={navigateBack} className="p-2">
+          <div  className="p-2">
             {chatroomId}
           </div>
         </div>
         <div className="absolute top-0 left-0">
-          <button className="p-2">
+          <button onClick={navigateBack} className="p-2">
             <MdArrowBack className="text-2xl" />
           </button>
         </div>
