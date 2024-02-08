@@ -9,6 +9,7 @@ import com.ssafy.userservice.db.entity.User;
 import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
 import com.ssafy.userservice.security.jwt.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -130,7 +131,7 @@ public class OAuth2Service {
          */
         String provider = kakaoUserInfo.getProvider();
         String providerId = kakaoUserInfo.getProviderId();
-        UUID uuid = UUID.nameUUIDFromBytes(provider.getBytes());
+        UUID uuid = UUID.nameUUIDFromBytes(providerId.getBytes());
         String id = uuid.toString();
         String username = kakaoUserInfo.getName();
         String email = kakaoUserInfo.getEmail();
@@ -167,28 +168,36 @@ public class OAuth2Service {
         return accessToken;
     }
 
-    public String getAuthorizationUrl(String registrationId) {
-//        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(registrationId);
-        log.info("getAuthorizationUrl 함수 호출============");
-        ClientRegistration clientRegistration = ClientRegistration
-                .withRegistrationId(registrationId)
-                .clientId(kakaoClientId)
-                .clientSecret(kakaoClientSecret)
-                .redirectUri(kakaoRedirectUri)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .scope("profile", "email")
-                .authorizationUri(kakaoAuthorizationUri)
-                .tokenUri(kakaoTokenUri)
-                .build();
-        log.info(clientRegistration.toString());
-        UriComponentsBuilder builder = UriComponentsBuilder
-                .fromUriString(clientRegistration.getProviderDetails().getAuthorizationUri())
-                .queryParam("client_id", clientRegistration.getClientId())
-                .queryParam("redirect_uri", clientRegistration.getRedirectUri())
-                .queryParam("response_type", "code")
-                .queryParam("scope", String.join(" ", clientRegistration.getScopes()));
-        log.info(builder.toString());
-        log.info(builder.toUriString());
-        return builder.toUriString();
-    }
+//    public String getAuthorizationUrl(String registrationId) {
+////        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(registrationId);
+//        log.info("getAuthorizationUrl 함수 호출============");
+//        ClientRegistration clientRegistration = ClientRegistration
+//                .withRegistrationId(registrationId)
+//                .clientId(kakaoClientId)
+//                .clientSecret(kakaoClientSecret)
+//                .redirectUri(kakaoRedirectUri)
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                .scope("profile", "email")
+//                .authorizationUri(kakaoAuthorizationUri)
+//                .tokenUri(kakaoTokenUri)
+//                .build();
+//        log.info(clientRegistration.toString());
+//        UriComponentsBuilder builder = UriComponentsBuilder
+//                .fromUriString(clientRegistration.getProviderDetails().getAuthorizationUri())
+//                .queryParam("client_id", clientRegistration.getClientId())
+//                .queryParam("redirect_uri", clientRegistration.getRedirectUri())
+//                .queryParam("response_type", "code")
+//                .queryParam("scope", String.join(" ", clientRegistration.getScopes()));
+//        log.info(builder.toString());
+//        log.info(builder.toUriString());
+//        return builder.toUriString();
+//    }
+
+//    public void logout(HttpServletRequest request) {
+//        String accessToken = jwtService.extractAccessToken(request).orElseThrow(InvalidTokenException::new);
+//        Integer userId = jwtService.extractId(accessToken).orElseThrow(InvalidTokenException::new);
+//        Auth auth = authRepository.findByUserId(userId).orElseThrow(AuthNotFoundException::new);
+//        auth.setRefreshToken(null);
+//        authRepository.save(auth);
+//    }
 }
