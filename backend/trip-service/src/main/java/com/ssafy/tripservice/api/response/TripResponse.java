@@ -10,6 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@ToString
 public class TripResponse {
 
     private UUID tripId;

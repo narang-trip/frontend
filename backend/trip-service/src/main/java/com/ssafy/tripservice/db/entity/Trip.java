@@ -6,6 +6,7 @@ import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import jakarta.persistence.Entity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,15 +15,14 @@ import java.util.List;
 import java.util.UUID;
 
 
-@Getter
-@Entity
-@Builder
+@Getter @Entity @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Document(collection = "narang-trip")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Trip extends BaseEntity{
+
     private String tripName;
     private String tripDesc;
     private String tripImgUrl;

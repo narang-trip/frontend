@@ -6,12 +6,14 @@ import com.mongodb.ClientSessionOptions;
 import com.mongodb.ReadPreference;
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.UpdateManyModel;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.querydsl.mongodb.document.AbstractMongodbQuery;
 import com.querydsl.mongodb.morphia.MorphiaQuery;
+import com.ssafy.tripservice.api.request.TripQueryRequest;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
 import com.ssafy.tripservice.api.response.TripPageResponse;
@@ -34,6 +36,7 @@ import org.springframework.data.mongodb.core.*;
 import org.springframework.data.mongodb.core.aggregation.AggregationPipeline;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.annotation.Collation;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.mapping.Unwrapped;
@@ -47,6 +50,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import java.awt.print.Pageable;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -97,12 +101,54 @@ public class TripServiceImpl implements TripService {
          */
 
         try {
-            tripRepository.save(trip);
-            return Optional.of(trip.toTripResponse());
+            return Optional.of(tripRepository.insert(trip))
+                    .map(Trip::toTripResponse);
         } catch (DataAccessException e) {
             e.printStackTrace();
             return Optional.empty();
         }
+    }
+
+    @Transactional
+    @Override
+    public Optional<TripResponse> modifyTrip(TripRequest tripRequest, MultipartFile tripImg) {
+
+        Optional<Trip> trip = Optional.ofNullable(mongoTemplate.findById(tripRequest.getTripId(), Trip.class));
+
+        if (trip.isEmpty()) {
+            System.out.println("그런거 없음");
+            return Optional.empty();
+        }
+
+        if (trip.get().getParticipants().size() > tripRequest.getTripParticipantsSize()) {
+            System.out.println("누구 쫓아 내야함");
+            return Optional.empty();
+        }
+
+        Optional<String> uploadTripImgRes = Optional.of("https://youngkimi-bucket-01.s3.ap-northeast-2.amazonaws.com/airplain.jpg");
+
+        if (tripImg != null) {
+            uploadTripImgRes = uploadFile(tripImg);
+        }
+
+        // tripName, tripDesc, tripImgUrl, tripParticipantsSize
+
+        Query query = new Query(Criteria.where("_id").is(tripRequest.getTripId()));
+
+        Update update = new Update();
+
+        update.set("tripName", tripRequest.getTripName());
+        update.set("tripDesc", tripRequest.getTripDesc());
+        update.set("tripImgUrl", tripRequest.getTripImgUrl());
+        update.set("tripParticipantsSize", tripRequest.getTripParticipantsSize());
+
+        mongoTemplate.findAndModify(
+                query,
+                update,
+                Trip.class);
+
+        return Optional.ofNullable(mongoTemplate.findAndModify(query, update, Trip.class))
+                .map(Trip::toTripResponse);
     }
 
     @Override
@@ -291,32 +337,62 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Page<TripPageResponse> getMyTrips(UUID userId, int pageNo) {
+    public Page<TripPageResponse> getTripsIveBeen(TripQueryRequest tripQueryRequest) {
+
+        System.out.println(tripQueryRequest);
 
         final int pageSize = 4;
 
-        PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by("departureDate").descending());
+        PageRequest pageRequest = PageRequest.of(
+                tripQueryRequest.getTripPageNo(), pageSize, Sort.by("departureDate").descending());
 
         Query query = new Query()
                 .with(pageRequest)
                 .skip((long) pageRequest.getPageSize() * pageRequest.getPageNumber())
                 .limit(pageSize);
 
-
         query.addCriteria(
                 Criteria
                         .where("participants")
                         .elemMatch(
-                                Criteria.where("participantId")
-                                        .is(userId)
-                        ));
+                                Criteria.where("participantId").is(tripQueryRequest.getUserId())))
+                .addCriteria(
+                    (Criteria.where("departureDate").lt(tripQueryRequest.getQueryEndDate())
+                        .and("returnDate").gt(tripQueryRequest.getQuerySttDate())));
 
         List<Trip> myTrips = mongoTemplate.find(query, Trip.class);
 
         return PageableExecutionUtils
                 .getPage(myTrips, pageRequest,
                         () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
-                .map(p -> p.toTripPageResponse(pageNo));
+                .map(p -> p.toTripPageResponse(tripQueryRequest.getTripPageNo()));
+    }
+
+    @Override
+    public Page<TripPageResponse> getTripsIveOwn(TripQueryRequest tripQueryRequest) {
+        System.out.println(tripQueryRequest);
+
+        final int pageSize = 4;
+
+        PageRequest pageRequest = PageRequest.of(
+                tripQueryRequest.getTripPageNo(), pageSize, Sort.by("departureDate").descending());
+
+        Query query = new Query()
+                .with(pageRequest)
+                .skip((long) pageRequest.getPageSize() * pageRequest.getPageNumber())
+                .limit(pageSize);
+
+        query.addCriteria(
+                        Criteria
+                                .where("tripLeaderId").is(tripQueryRequest.getUserId())
+                                .and("departureDate").gt(LocalDateTime.now()));
+
+        List<Trip> myTrips = mongoTemplate.find(query, Trip.class);
+
+        return PageableExecutionUtils
+                .getPage(myTrips, pageRequest,
+                        () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
+                .map(p -> p.toTripPageResponse(tripQueryRequest.getTripPageNo()));
     }
 
     /*
