@@ -34,6 +34,7 @@ public class ChatListResponse {
 //        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         private LocalDateTime sendTime;
         private String userId;
+        private String userName;
     }
 
     @Getter
