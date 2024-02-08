@@ -9,12 +9,12 @@ import LoginModal from "./modals/LoginModal";
 import Button from '../ui/Button'
 import { useNavigate } from "react-router";
 
-export default function UpperNavbar() {
-  const navigate = useNavigate();
+const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const code = useSelector((state) => state.auth.code);
   console.log(code);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const navigateHome = () => {
     navigate('/');
@@ -82,7 +82,6 @@ export default function UpperNavbar() {
           Login
         </button>
       )}
-
       {code !== "" && (
         <div className="flex justify-between space-x-4">
           <div>🔔</div>
@@ -97,4 +96,6 @@ export default function UpperNavbar() {
       )}
     </header>
   );
-}
+};
+
+export default UpperNavbar;
