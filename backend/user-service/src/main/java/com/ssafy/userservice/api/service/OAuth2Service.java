@@ -10,6 +10,7 @@ import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
 import com.ssafy.userservice.security.jwt.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -56,7 +57,7 @@ public class OAuth2Service {
     private String kakaoUserInfoUri;
 
 
-    public String kakaoCallBack(String code){
+    public String kakaoCallBack(String code, HttpServletResponse httpServletResponseresponse){
         /*
             받은 코드로 토큰 가져오기
          */
@@ -108,7 +109,13 @@ public class OAuth2Service {
         }
         log.info("kakaoCallBack에서 userInfo {}", userInfo);
         KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(userInfo);
+
         String accessToken = jwtService.createAccessToken(kakaoUserInfo.getEmail());
+        String refreshToken = jwtService.createRefreshToken();
+
+        jwtService.sendAccessToken(httpServletResponseresponse, accessToken);
+        jwtService.sendRefreshToken(httpServletResponseresponse, refreshToken);
+
         log.info("kakaoCallBack에서 jwt accessToken {}", accessToken);
         // 액세스 토큰을 사용하여 사용자 정보 요청
 //        ResponseEntity<Map> userInfoResponseEntity = restTemplate.getForEntity(

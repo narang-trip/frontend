@@ -7,6 +7,7 @@ import com.ssafy.userservice.db.entity.Auth;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -42,9 +43,9 @@ public class UserRestController {
 //    }
 
     @PostMapping("/login/oauth/kakao")
-    public ResponseEntity<String> handleKakaoCallback(@RequestParam("code") String code) {
+    public ResponseEntity<String> handleKakaoCallback(@RequestParam("code") String code, HttpServletResponse response) {
         log.info("handleKakaoCallback 호출");
-        String accessToken = oAuth2Service.kakaoCallBack(code);
+        String accessToken = oAuth2Service.kakaoCallBack(code, response);
 
         // 생성된 토큰을 리액트에 전달
         return ResponseEntity.ok(accessToken);
