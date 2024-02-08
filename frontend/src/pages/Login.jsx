@@ -14,12 +14,15 @@ const Login = () => {
     console.log("test");
     (async () => {
       try {
-        const res = await axios.get(
-          `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=${code}`
-          // "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
-          // code
+        const res = await axios.post(
+          // `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=${code}`
+          "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
+          {
+            code: code,
+          }
         );
         console.log(res);
+        console.log(res.data);
         // dispatch(authActions.Login({code, userId}));
       } catch (error) {
         console.log(error);
