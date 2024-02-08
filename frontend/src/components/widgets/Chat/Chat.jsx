@@ -107,7 +107,7 @@ const Chat = ({ chatroomId, navigateBack }) => {
       <div className="pt-5 pb-6 overflow-y-auto h-full pr-4">
         {chats.map((chat) => {
           const utcDate = new Date(chat.sendTime);
-          const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000);
+          const kstDate = new Date(utcDate.getTime());
           // 한국 시간대로 변환 (UTC+9)
           const formattedDate = `${kstDate.getHours()}시 ${kstDate.getMinutes()}분`;
           let messageBoxClass = "w-full flex m-3 items-end";
