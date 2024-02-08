@@ -4,6 +4,7 @@ import CalendarCp from "./CalendarCp";
 import ChatRoomList from "./Chat/ChatRoomList";
 import Chat from "./Chat/Chat";
 import { useSelector } from "react-redux";
+import { MdArrowBack } from "react-icons/md";
 
 export default function Widgets() {
   const isLogin = useSelector((state) => state.auth.isLogin);
@@ -24,8 +25,14 @@ export default function Widgets() {
     setSelectedChatRoomId(chatRoomId);
     setActiveChatRoomList(false);
   };
+
+  const navigateBack = () => {
+    setActiveChatRoomList(true);
+    setSelectedChatRoomId(null); // 선택된 채팅방 ID를 초기화
+  };
   return (
     <div className="text-center relative">
+     
       <CalendarCp />
       <div className="h-[40vh] overflow-auto mt-3 bg-blue-200 rounded-lg" ref={chatScrollRef}>
         {!isLogin && (
@@ -37,7 +44,7 @@ export default function Widgets() {
           (activeChatRoomList ? (
             <ChatRoomList onChatRoomSelect={handleChatRoomSelect} />
           ) : (
-            <Chat chatroomId={selectedChatRoomId} />
+            <Chat chatroomId={selectedChatRoomId} navigateBack={navigateBack}/>
           ))}
       </div>
     </div>
