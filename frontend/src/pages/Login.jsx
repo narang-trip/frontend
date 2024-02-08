@@ -33,6 +33,7 @@ const Login = () => {
   });
 
   const test = () => {
+    console.log(test, token);
     async () => {
       try {
         const res = await axios.post(
