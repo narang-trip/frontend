@@ -61,15 +61,14 @@
 
     // inView가 true일때 데이터를 가져옴
     useEffect(() => {
-      if (inView) {
+      if (inView && pageNo > 0) {
         console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
-        getChatList();
+        getChatList(chatroomId);
       }
     }, [inView]);
 
     useEffect(() => {
-      // Access scrollTop inside useEffect to ensure the DOM element is available
-      if (chatDivRef.current) {
+      if (chatDivRef.current && pageNo === 1) {
         chatDivRef.current.scrollTo({
           top: chatDivRef.current.scrollHeight,
           behavior: 'smooth'
@@ -96,6 +95,10 @@
                   content: messageBody.content,
                 };
                 setChats((prevChats) => [...prevChats, chat]);
+                chatDivRef.current.scrollTo({
+                  top: chatDivRef.current.scrollHeight,
+                  behavior: 'smooth'
+                });
               }
             );
           },
@@ -110,18 +113,6 @@
         }
       };
     }, [chatroomId]);
-
-    // const getChatList = async (chatroomId, page) => {
-    //   try {
-    //     const res = await axios.get(
-    //       `https://i10a701.p.ssafy.io/api/message/chat/${chatroomId}?page=${page}`
-    //     );
-    //     const chatList = [...res.data.chatList].reverse(); //순서 맞추기 위해서 뒤집어서 넣어주기
-    //     setChats(chatList);
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
 
     const submitHandler = (event) => {
       event.preventDefault();
