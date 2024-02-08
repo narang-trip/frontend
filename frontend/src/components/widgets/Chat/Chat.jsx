@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { MdArrowBack } from "react-icons/md";
 
 const stompEndpoint = "wss://i10a701.p.ssafy.io/api/message/chat";
-const Chat = ({ chatroomId }) => {
+const Chat = ({ chatroomId, navigateBack }) => {
   const [chats, setChats] = useState([]);
   const [msg, setMsg] = useState("");
   const userId = useSelector((state) => state.auth.userId);
@@ -56,6 +56,8 @@ const Chat = ({ chatroomId }) => {
     };
   }, [chatroomId]);
 
+  useEffect(() => {}, []);
+
   const getChatList = async (chatroomId, page) => {
     try {
       const res = await axios.get(
@@ -63,7 +65,6 @@ const Chat = ({ chatroomId }) => {
       );
       const chatList = [...res.data.chatList].reverse(); //순서 맞추기 위해서 뒤집어서 넣어주기
       setChats(chatList);
-
     } catch (error) {
       console.error(error);
     }
@@ -96,16 +97,20 @@ const Chat = ({ chatroomId }) => {
     }
   };
 
-  const navigateBack = () => {};
   return (
-    <Fragment>
-      <button onClick={navigateBack} className="p-2 fixed top-0 left-0 z-10">
-        <MdArrowBack className="text-2xl" /> {/* 아이콘 사이즈 조정 */}
-      </button>
       <div
-        className="pb-10 overflow-y-auto w-full pr-4 relative"
+        className="h-full w-full relative"
         ref={chatListRef}
       >
+        <div className="absolute top-0 left-0">
+          <button
+            onClick={navigateBack}
+            className="p-2"
+          >
+            <MdArrowBack className="text-2xl" />
+          </button>
+        </div>
+        <div className="pt- 12 overflow-y-auto h-full">
         {chats.map((chat) => {
           const date = new Date(chat.sendTime);
           const formattedDate = `${date.getHours()}시 ${date.getMinutes()}분`;
@@ -155,7 +160,7 @@ const Chat = ({ chatroomId }) => {
         />
         <Button type="submit">전송</Button>
       </form>
-    </Fragment>
+      </div>
   );
 };
 

@@ -9,7 +9,6 @@ import PlanningPage from "./pages/Planning";
 import ApplicantList from "./pages/ApplicantList";
 import TripRegisterPage from "./pages/TripResgister";
 import TripDetailPage from "./pages/TripDetail";
-import ChatPage from "./pages/Chat";
 import Login from "./pages/Login";
 import Mypage from "./pages/Mypage";
 import SubscribeTestPage from "./pages/SubscribeTest";
@@ -59,10 +58,6 @@ const router = createBrowserRouter([
     // errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
-      {
-        path: "chatRoomTest",
-        element: <ChatPage />,
-      },
       {
         path: "login/oauth2/code/kakao",
         element: <Login />,
