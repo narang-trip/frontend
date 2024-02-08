@@ -5,12 +5,12 @@ import { conceptActions } from "../store/conceptSlice";
 
 export default function Concept() {
   const dispatch = useDispatch();
-  const conceptColor = useSelector((state) => state.concept.color)
+  const conceptColor = useSelector((state) => state.conceptColor);
   const clickHandler = (value) => {
     dispatch(conceptActions.changeConcept({ concept: value }));
     console.log(conceptColor);
   };
-  
+
   return (
     <div className="flex justify-between m-3">
       {conceptList.map((value) => {

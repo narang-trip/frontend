@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { authActions } from "../store/auth-slice";
+import { authActions } from "../store/authSlice";
 import { useEffect } from "react";
 import axios from "axios";
 
