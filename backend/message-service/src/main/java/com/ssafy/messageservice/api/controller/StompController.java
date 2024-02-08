@@ -17,6 +17,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
 @Controller
@@ -55,6 +56,7 @@ public class StompController {
                 chatSendRequest.getSenderId(),
                 LocalDateTime.now(),
                 chatSendRequest.getContent());
+        LOGGER.info(String.format("확인해야 하거든? -> %s", ZoneId.systemDefault()));
         template.convertAndSend("/sub/chat/room/" + chatSendRequest.getChatroomId(), chatRequest);
 
         // Chat 테이블에 데이터 저장하기
@@ -64,7 +66,7 @@ public class StompController {
                 chatRequest.getContent(),
                 chatRequest.getSendTime(),
                 chatRequest.getUserId());
-        LOGGER.info(String.format("Message receive -> %s", chat));
+        LOGGER.info(String.format("Message receive -> %s", chat.getSendTime()));
         chatRepository.save(chat);
     }
 

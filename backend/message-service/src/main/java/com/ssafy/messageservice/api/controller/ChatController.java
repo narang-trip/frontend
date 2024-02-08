@@ -11,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
@@ -23,6 +27,10 @@ public class ChatController {
     @GetMapping("/list/{userId}")
     public ResponseEntity<ChatroomListResponse> getLatestChatsByUserId(@PathVariable String userId) {
         ChatroomListResponse chatroomListResponse = chatService.getLatestChatsByUserId(userId);
+        LOGGER.info(String.format("메시지 시간을 확인해보자", chatroomListResponse.getChatroomList().get(0).getChat().getLatestTime()));
+        Instant instant = Instant.now();
+        ZonedDateTime seoulTime = instant.atZone(ZoneId.of("Asia/Seoul"));
+        LOGGER.info(String.format("메시지 시간을 확인해보자 %s -> ", seoulTime));
         return ResponseEntity.ok(chatroomListResponse);
     }
 

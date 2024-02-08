@@ -2,6 +2,7 @@ package com.ssafy.messageservice.api.service;
 
 import com.ssafy.messageservice.api.request.AlertAttendRequest;
 import com.ssafy.messageservice.api.response.AlertListResponse;
+import com.ssafy.messageservice.api.response.AlertSendListResponse;
 import com.ssafy.messageservice.db.entity.Alert;
 import com.ssafy.messageservice.db.entity.User;
 import com.ssafy.messageservice.db.repository.AlertRepository;
@@ -182,7 +183,7 @@ public class AlertService {
         }
     }
 
-    // userId별로 알림 리스트 보내기
+    // userId별로 알림 리스트 보내주기
     public List<AlertListResponse.AlertResponse> getAlertsByReceiverId(String receiverId) {
         List<Alert> alerts = alertRepository.findByReceiverId(receiverId);
         if(alerts.isEmpty()){
@@ -193,7 +194,18 @@ public class AlertService {
         }
     }
 
-    // tripId별로 알림 리스트 보내기
+    // senderId별로 알림 리스트 보내주기
+    public List<AlertSendListResponse.AlertSendResponse> getAlertsBySenderId(String senderId) {
+        List<Alert> alerts = alertRepository.findBySenderId(senderId);
+        if(alerts.isEmpty()){
+            return null;
+        }
+        else{
+            return mapAlertsToAlertSendResponses(alerts);
+        }
+    }
+
+    // tripId별로 알림 리스트 보내주기
     public List<AlertListResponse.AlertResponse> getAlertsByTripId(String tripId) {
         List<Alert> alerts = alertRepository.findByTripIdAndAlertType(tripId, "REQUEST");
         if(alerts.isEmpty()){
@@ -212,6 +224,23 @@ public class AlertService {
                         alert.getTripName(),
                         alert.getSenderId(),
                         getSenderName(alert.getSenderId()),
+                        alert.getPosition(),
+                        alert.getAspiration(),
+                        alert.getAlertType(),
+                        alert.isRead()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    // senderId별로
+    private List<AlertSendListResponse.AlertSendResponse> mapAlertsToAlertSendResponses(List<Alert> alerts) {
+        return alerts.stream()
+                .map(alert -> new AlertSendListResponse.AlertSendResponse(
+                        alert.getId(),
+                        alert.getTripId(),
+                        alert.getTripName(),
+                        alert.getReceiverId(),
+                        getSenderName(alert.getReceiverId()),
                         alert.getPosition(),
                         alert.getAspiration(),
                         alert.getAlertType(),

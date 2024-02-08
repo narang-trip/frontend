@@ -25,7 +25,7 @@ import java.util.Optional;
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL = "/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
+    private static final String NO_CHECK_URL = "/api/user/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
 
     private final JwtService jwtService;
 //    private final UserRepository userRepository;
@@ -37,19 +37,20 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("doFilterInternal() 호출");
         log.info("request.getRequestURI() : {}", request.getRequestURI());
-        filterChain.doFilter(request, response);
-//        if (request.getRequestURI().equals(NO_CHECK_URL)) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-//        String refreshToken = jwtService.extractRefreshToken(request)
-//                .filter(jwtService::isTokenValid)
-//                .orElse(null);
-//        if (refreshToken != null) {
-//            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-//            return;
-//        }
-//        checkAccessTokenAndAuthentication(request, response, filterChain);
+//        filterChain.doFilter(request, response);
+        if (request.getRequestURI().startsWith(NO_CHECK_URL)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        String refreshToken = jwtService.extractRefreshToken(request)
+                .filter(jwtService::isTokenValid)
+                .orElse(null);
+        log.info("방금 받아온 refreshToken : {}", refreshToken);
+        if (refreshToken != null) {
+            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
+            return;
+        }
+        checkAccessTokenAndAuthentication(request, response, filterChain);
     }
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
@@ -133,7 +134,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
                 .username(myUser.getEmail())
                 .password(password)
-                .roles(String.valueOf(myUser.getRole()))
+                .roles(String.valueOf(myUser.getAuthority()))
                 .build();
 
         Authentication authentication =
