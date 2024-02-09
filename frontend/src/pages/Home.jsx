@@ -1,10 +1,20 @@
 import Button from "../ui/Button";
 import Concept from "../components/Concept";
 import TripList from "../components/TripList";
-import { useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function HomePage() {
+  const [temmaColor, setTemmaColor] = useState("teal")
+  const {conceptColor} = useSelector((state) => state.concept);
+  
+  useEffect(() => {
+    
+    setTemmaColor(`bg-${conceptColor}-500`);
+  }, [conceptColor])
+
   // useEffect(() => {
   //   getUser();
   // });
@@ -21,13 +31,12 @@ export default function HomePage() {
   // };
 
   return (
-    <div>
-      <img
-        src="/assets/travelBanner.jpg"
-        className="object-cover w-full h-40"
-      />
+    <Fragment>
+      <div className={`object-cover w-full h-[20%] ${temmaColor} rounded-full flex text-white items-center justify-center`}>
+        일딴 입력해봄
+      </div>
       <Concept />
       <TripList />
-    </div>
+    </Fragment>
   );
 }

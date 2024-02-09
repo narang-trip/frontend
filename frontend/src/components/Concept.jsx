@@ -1,4 +1,4 @@
-import Button from "../ui/Button";
+import ButtonConcept from "../ui/ButtonConcept";
 import { conceptList, conceptColorObject } from "../data/concepts";
 import { useSelector, useDispatch } from "react-redux";
 import { conceptActions } from "../store/conceptSlice";
@@ -9,21 +9,22 @@ export default function Concept() {
   // console.log(conceptColor);
   const clickHandler = (value) => {
     dispatch(conceptActions.changeConcept({ concept: value }));
-    // console.log(conceptColor);
+    console.log(conceptColor);
   };
 
   return (
-    <div className="flex justify-between m-3">
+    <div className="flex justify-between mt-3">
       {conceptList.map((value) => {
         const color = conceptColorObject[value];
         return (
-          <Button
+          <ButtonConcept
             onClick={() => clickHandler(value)}
-            className={`m-1 w-20 min-w-20 h-20 rounded-lg ${color}} neon-red`}
+            className={`m-1 w-16 min-w-10 h-16 rounded-lg`}
+            color={color} 
             key={value}
           >
             {value}
-          </Button>
+          </ButtonConcept>
         );
       })}
     </div>
