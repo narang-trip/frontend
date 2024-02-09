@@ -33,9 +33,7 @@ public class UserRestController {
     @PostMapping("/login/oauth/{provider}")
     public ResponseEntity<User> handleKakaoCallback(@PathVariable String provider, @RequestParam("code") String code, HttpServletResponse response) {
         log.info("handle {} Callback 호출", provider);
-
         User user = oAuth2Service.oauth2Login(provider, code, response);
-
 
         // 생성된 토큰을 리액트에 전달
         return ResponseEntity.ok(user);
