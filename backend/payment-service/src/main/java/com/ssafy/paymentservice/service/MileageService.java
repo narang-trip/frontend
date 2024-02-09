@@ -18,6 +18,13 @@ public class MileageService {
     private final UsageRecordRepository usageRecordRepository;
     @Autowired
     private TextEncryptor textEncryptor;
+    public int getMileage(String user_id){
+        UserMileage userMileage = userMileageRepository.findById(user_id)
+                .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
+        String encryptedMileage = userMileage.getEncryptedMileage();
+        // 암호화된 마일리지 복호화
+        return Integer.parseInt(textEncryptor.decrypt(encryptedMileage));
+    }
     public UsageRecord useMileage(String user_id, int price){
         UserMileage userMileage = userMileageRepository.findById(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
