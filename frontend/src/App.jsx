@@ -12,6 +12,7 @@ import TripDetailPage from "./pages/TripDetail";
 import Login from "./pages/Login";
 import Mypage from "./pages/Mypage";
 import SubscribeTestPage from "./pages/SubscribeTest";
+import MyPlan from "./pages/MyPlan";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       },
       {
         path: "/planning",
+        element: <MyPlan />,
+      },
+      {
+        path: "/makeplan",
         element: <PlanningPage />,
       },
 

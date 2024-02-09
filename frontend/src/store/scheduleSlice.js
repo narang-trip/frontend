@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { DirectionsService } from "@react-google-maps/api";
 
 const initialState = {
   // 여행 계획표의 시간
@@ -44,10 +43,15 @@ const scheduleSlice = createSlice({
     },
     // 저장된 계획 불러오기
     setSchedule: (state, action) => {
+      console.log(action.payload);
+      state.time = action.payload.time;
+      state.blackHeight = action.payload.blackHeight;
+      state.list = action.payload.list;
       state = action.payload;
     },
     // 여행 계획표의 시간 설정
     setTime: (state, action) => {
+      console.log(action.payload);
       state.time = action.payload;
       state.time.lineCnt = action.payload.totalTime / 30 + 1;
       // 설정한 날 만큼 빈칸으로 채워진 일정 생성
