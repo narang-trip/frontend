@@ -61,13 +61,6 @@ public class OAuth2Service {
     @Value("${spring.security.oauth2.client.provider.naver.user-info-uri}")
     private String naverUserInfoUri;
 
-<<<<<<< HEAD
-    public String kakaoCallBack(String code, HttpServletResponse httpServletResponseresponse){
-        /*
-            받은 코드로 토큰 가져오기
-         */
-        // 카카오 API 호출을 위한 설정
-=======
 
     public String oauth2Login(String provider, String code){
         // 받은 코드로 토큰 가져오기
@@ -91,7 +84,6 @@ public class OAuth2Service {
     }
 
     private String getKakaoAccessToken(String code){  // 카카오 API 호출을 위한 설정
->>>>>>> origin/feature_login
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -168,29 +160,9 @@ public class OAuth2Service {
         }
         log.info("getKakaoUserInfo에서 userInfo {}", userInfo);
         KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(userInfo);
-<<<<<<< HEAD
 
-        String accessToken = jwtService.createAccessToken(kakaoUserInfo.getEmail());
-        String refreshToken = jwtService.createRefreshToken();
-
-        jwtService.sendAccessToken(httpServletResponseresponse, accessToken);
-        jwtService.sendRefreshToken(httpServletResponseresponse, refreshToken);
-
-        log.info("kakaoCallBack에서 jwt accessToken {}", accessToken);
-        // 액세스 토큰을 사용하여 사용자 정보 요청
-//        ResponseEntity<Map> userInfoResponseEntity = restTemplate.getForEntity(
-//                "https://kapi.kakao.com/v2/user/me", Map.class,
-//                kakaoAccessToken);
-//        log.info("kakaoCallBack에서 userInfoResponseEntity {}", userInfoResponseEntity);
-//        // 사용자 정보 얻기
-//        Map userInfo = userInfoResponseEntity.getBody();
-//        log.info("kakaoCallBack에서 userInfo {}", userInfo);
-//      // 사용자 정보를 기반으로 JWT 토큰 생성
-//        String accessToken = jwtService.createAccessToken(userInfo.getEmail());
-=======
         return kakaoUserInfo;
     }
->>>>>>> origin/feature_login
 
     private OAuth2UserInfo getNaverUserInfo(String accessToken){
         RestTemplate restTemplate = new RestTemplate();

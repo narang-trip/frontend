@@ -84,13 +84,7 @@ public class JwtService {
      * AccessToken 헤더에 실어서 보내기
      */
     public void sendAccessToken(HttpServletResponse response, String accessToken) {
-<<<<<<< HEAD
-        response.setHeader(accessHeader, BEARER + accessToken);
-        log.info("Access Token sent in header");
-    }
 
-    public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
-=======
         log.info("sendAccessToken() 호출");
         response.setHeader(accessHeader, BEARER + accessToken);
         log.info("Access Token sent in header");
@@ -110,7 +104,6 @@ public class JwtService {
 //    }
     public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
         log.info("sendRefreshToken() 호출");
->>>>>>> origin/feature_login
         response.setHeader(refreshHeader, BEARER + refreshToken);
         log.info("Refresh Token sent in header");
     }
