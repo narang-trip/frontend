@@ -11,45 +11,15 @@ import { useNavigate } from "react-router";
 
 const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const code = useSelector((state) => state.auth.code);
-  console.log(code);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const navigateHome = () => {
-    navigate("/");
-  };
-  const OpenLoginModal = () => {
-    setIsOpen(true);
-  };
-
-  const CloseLoginModal = () => {
-    setIsOpen(false);
-  };
-
-  const Logout = () => {
-    dispatch(authActions.Logout());
-  };
-  useEffect(() => {
-    // 모달이 열렸을 때 스크롤 막기 위함
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isOpen]);
-
-  const clickHandler = (name) => {
-    dispatch(authActions.Login({ code, userId: name }));
-    console.log(`${name} 로그인 됐습니다.`);
-    console.log("---------------------------------");
+  let code = useSelector((state) => state.auth.code);
+  let sessionCode = window.sessionStorage.getItem("code");
+  if (sessionCode !== null) {
+    code = sessionCode;
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const eventSource = new EventSource(
-      `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${name}`,
+      `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${code}`,
       {
         heartbeatTimeout: 3600000,
       }
@@ -68,6 +38,39 @@ const UpperNavbar = () => {
     eventSource.onerror = function (event) {
       console.error("SSE 에러 발생:", event);
     };
+  }
+  console.log(code);
+
+  const navigateHome = () => {
+    navigate("/");
+  };
+  const OpenLoginModal = () => {
+    setIsOpen(true);
+  };
+
+  const CloseLoginModal = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    // 모달이 열렸을 때 스크롤 막기 위함
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
+  const clickHandler = (name) => {
+    code = name;
+    window.sessionStorage.setItem("code", code);
+    dispatch(authActions.Login({ code, userId: name }));
+    console.log(`${name} 로그인 됐습니다.`);
+    console.log("---------------------------------");
   };
 
   return (
@@ -91,7 +94,7 @@ const UpperNavbar = () => {
         <div className="flex justify-between space-x-4">
           <div>🔔</div>
           <div>User</div>
-          <Dropdown Logout={Logout} />
+          <Dropdown />
         </div>
       )}
       {isOpen && (
