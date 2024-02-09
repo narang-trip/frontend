@@ -7,6 +7,7 @@ import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let userId;
   let token;
   useEffect(() => {
     const params = new URL(document.URL).searchParams;
