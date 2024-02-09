@@ -20,7 +20,7 @@ export default function Concept() {
         return (
           <ButtonConcept
             onClick={() => clickHandler(concept)}
-            className={`m-1 w-16 min-w-10 h-16 rounded-lg ${colorClass} ${isSelected ? 'neon-'+selectedConceptColor + ' -translate-y-2 ' : ''}`}
+            className={`m-1 w-16 min-w-10 h-16 rounded-lg ${colorClass} ${isSelected ? 'neon-'+selectedConceptColor + ' -translate-y-2 transition duration-300' : ''}`}
             key={concept} 
           >
             {concept}
