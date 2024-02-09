@@ -25,7 +25,9 @@ const Login = () => {
         console.log(res);
         console.log(res.data);
         token = res.data;
-        // dispatch(authActions.Login({code, userId}));
+        userId = "temp";
+        dispatch(authActions.Login({ token, userId }));
+        navigate("/");
       } catch (error) {
         console.log("Error during POST request:", error);
       }
@@ -35,12 +37,9 @@ const Login = () => {
   const test = async () => {
     console.log(test, token);
     try {
-      const res = await axios.get(
-        `https://i10a701.p.ssafy.io/api/user/getuser`,
-        {
-          token: token,
-        }
-      );
+      const res = await axios.get(`https://i10a701.p.ssafy.io/api/user/getuser`, {
+        token: token,
+      });
       console.log(res);
       console.log(res.data);
     } catch (error) {
