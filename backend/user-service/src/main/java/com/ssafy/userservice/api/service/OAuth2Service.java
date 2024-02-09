@@ -68,7 +68,7 @@ public class OAuth2Service {
         OAuth2UserInfo userInfo = getUserInfo(provider, providerAccessToken);
         //DB에 저장하기
         User user = registerUser(userInfo);
-        log.info("userInfo : {}", user);
+        log.info("userInfo : {}", user.toString());
         setTokensForUser(user.getId(), response);
         return user;
     }
