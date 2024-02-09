@@ -1,13 +1,13 @@
-package com.ssafy.userservice.messenger;
-
+//package com.ssafy.userservice.messenger;
+//
 //import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
-
-import java.util.Random;
-
-@Component
-public class UserEventConsumer {
-
+//import org.springframework.stereotype.Component;
+//
+//import java.util.Random;
+//
+//@Component
+//public class UserEventConsumer {
+//
 //    @KafkaListener(topics = {"testing"}, groupId = "payment-test-1")
 //    public void testConsumer(Object data) {
 //        System.out.println(data);
@@ -17,4 +17,4 @@ public class UserEventConsumer {
 //    public void testTripApply(Object data) throws Exception {
 //        System.out.println(data);
 //    }
-}
+//}

@@ -61,17 +61,16 @@ public class OAuth2Service {
     private String naverUserInfoUri;
 
 
-    public String oauth2Login(String provider, String code){
+    public User oauth2Login(String provider, String code, HttpServletResponse response){
         // 받은 코드로 토큰 가져오기
         String providerAccessToken = getAccessToken(provider, code);
         // 받은 토큰으로 유저 정보 갖고오기
         OAuth2UserInfo userInfo = getUserInfo(provider, providerAccessToken);
         //DB에 저장하기
-        registerUser(userInfo);
-
-        String jwtAccessToken = jwtService.createAccessToken(userInfo.getEmail());
-        log.info("oauth2Login에서 jwtAccessToken {}", jwtAccessToken);
-        return jwtAccessToken;
+        User user = registerUser(userInfo);
+        log.info("userInfo : {}", user);
+        setTokensForUser(user.getId(), response);
+        return user;
     }
 
     private String getAccessToken(String provider, String code){
@@ -182,7 +181,17 @@ public class OAuth2Service {
         return new NaverUserInfo((Map)userInfo.get("response"));
     }
 
-    private void registerUser(OAuth2UserInfo userInfo){
+    private void setTokensForUser(String userId, HttpServletResponse response){
+        String accessToken = jwtService.createAccessToken(userId);
+        String refreshToken = jwtService.createRefreshToken();
+
+        jwtService.sendAccessToken(response, accessToken);
+        jwtService.sendRefreshToken(response, refreshToken);
+
+        jwtService.updateRefreshToken(userId, refreshToken);
+    }
+
+    private User registerUser(OAuth2UserInfo userInfo){
         String provider = userInfo.getProvider();
         String providerId = userInfo.getProviderId();
         UUID uuid = UUID.nameUUIDFromBytes(providerId.getBytes());
@@ -194,10 +203,10 @@ public class OAuth2Service {
         int ageRange = userInfo.getAgeRange();
         String nickname = userInfo.getNickName();
 
-        Optional<Auth> findAuth = authRepository.findById(id);
+        Optional<User> findUser = userRepository.findById(id);
         User user = null;
         Auth auth = null;
-        if (findAuth.isEmpty()) { //찾지 못했다면
+        if (findUser.isEmpty()) { //찾지 못했다면
             log.info("등록되지 않은 사용자입니다.");
             user = User.builder()
                     .id(id)
@@ -218,14 +227,15 @@ public class OAuth2Service {
             authRepository.save(auth);
         }
         else{
-            log.info("{}는 등록된 사용자입니다", findAuth.get().getName());
+            log.info("{}는 등록된 사용자입니다", findUser.get().getNickname());
+            user = findUser.get();
         }
-
+        return user;
     }
     public void logout(HttpServletRequest request) {
         String accessToken = jwtService.extractAccessToken(request).orElseThrow(InvalidTokenException::new);
-        String email = jwtService.extractEmail(accessToken).orElseThrow(InvalidTokenException::new);
-        Auth auth = authRepository.findByEmail(email).orElseThrow(AuthNotFoundException::new);
+        String id = jwtService.extractId(accessToken).orElseThrow(InvalidTokenException::new);
+        Auth auth = authRepository.findById(id).orElseThrow(AuthNotFoundException::new);
         auth.setRefreshToken(null);
         authRepository.save(auth);
     }
