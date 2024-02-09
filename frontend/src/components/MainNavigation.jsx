@@ -11,13 +11,15 @@ function MainNavigation() {
   };
 
   return (
-    <div className="fixed left-0 flex flex-col items-center w-[12rem] h-screen top-19">
+    <div className="fixed left-0 flex flex-col items-center w-[12rem] h-5/6 top-19">
       <nav>
         <ul className="flex flex-col items-start h-screen py-10 mx-auto list-none justify-normal">
           <li className="duration-300 py-7">
             <NavLink
               to="/"
-              className={`flex items-center justify-center ${isActive("/") ? "text-amber-500 font-bold" : "hover:text-amber-500 hover:font-bold"}`}
+              className={`flex items-center justify-center ${
+                isActive("/") ? "text-amber-500 font-bold" : "hover:text-amber-500 hover:font-bold"
+              }`}
             >
               <GoHome className="w-6 h-6 ml-0 mr-3" />
               <span className="text-base text-nowrap ">홈</span>
@@ -26,7 +28,11 @@ function MainNavigation() {
           <li className="transition-all duration-300 py-7">
             <NavLink
               to="/register"
-              className={`flex items-center justify-center ${isActive("/register") ? "text-amber-500 font-bold" : "hover:text-amber-500 hover:font-bold"}`}
+              className={`flex items-center justify-center ${
+                isActive("/register")
+                  ? "text-amber-500 font-bold"
+                  : "hover:text-amber-500 hover:font-bold"
+              }`}
             >
               <PencilSquareIcon className="w-6 h-6 ml-0 mr-3" />
               <span className="text-base text-nowrap">동행 작성</span>
@@ -35,7 +41,11 @@ function MainNavigation() {
           <li className="transition-all duration-300 py-7">
             <NavLink
               to="/search"
-              className={`flex items-center justify-center ${isActive("/search") ? "text-amber-500 font-bold" : "hover:text-amber-500 hover:font-bold"}`}
+              className={`flex items-center justify-center ${
+                isActive("/search")
+                  ? "text-amber-500 font-bold"
+                  : "hover:text-amber-500 hover:font-bold"
+              }`}
             >
               <GoSearch className="w-6 h-6 ml-0 mr-3" />
               <span className="text-base text-nowrap">동행 검색</span>
@@ -44,7 +54,11 @@ function MainNavigation() {
           <li className="transition-all duration-300 py-7">
             <NavLink
               to="/applicantList"
-              className={`flex items-center justify-center ${isActive("/applicantList") ? "text-amber-500 font-bold" : "hover:text-amber-500 hover:font-bold"}`}
+              className={`flex items-center justify-center ${
+                isActive("/applicantList")
+                  ? "text-amber-500 font-bold"
+                  : "hover:text-amber-500 hover:font-bold"
+              }`}
             >
               <GoPersonAdd className="w-6 h-6 ml-0 mr-3" />
               <span className="text-base text-nowrap">신청 현황</span>
@@ -53,7 +67,11 @@ function MainNavigation() {
           <li className="transition-all duration-300 py-7">
             <NavLink
               to="/planning"
-              className={`flex items-center justify-center ${isActive("/planning") ? "text-amber-500 font-bold" : "hover:text-amber-500 hover:font-bold"}`}
+              className={`flex items-center justify-center ${
+                isActive("/planning")
+                  ? "text-amber-500 font-bold"
+                  : "hover:text-amber-500 hover:font-bold"
+              }`}
             >
               <LiaCalendarDaySolid className="w-6 h-6 ml-0 mr-3" />
               <span className="text-base text-nowrap">여행 계획</span>

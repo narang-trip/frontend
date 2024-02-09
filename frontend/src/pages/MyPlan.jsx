@@ -1,5 +1,9 @@
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { useCallback, useState, useEffect } from "react";
+import { ModalPortal } from "../components/modals/ModalPortal";
+
+import NewPlan from "../components/modals/NewPlan";
 
 const MyPlan = () => {
   const [pageNo, setPageNo] = useState(0);
