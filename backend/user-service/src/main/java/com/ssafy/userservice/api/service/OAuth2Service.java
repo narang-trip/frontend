@@ -158,8 +158,7 @@ public class OAuth2Service {
             throw new RuntimeException(e);
         }
         log.info("getKakaoUserInfo에서 userInfo {}", userInfo);
-        KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(userInfo);
-        return kakaoUserInfo;
+        return new KakaoUserInfo(userInfo);
     }
 
     private OAuth2UserInfo getNaverUserInfo(String accessToken){
@@ -180,8 +179,7 @@ public class OAuth2Service {
             throw new RuntimeException(e);
         }
         log.info("getNaverUserInfo에서 userInfo {}", userInfo);
-        NaverUserInfo naverUserInfo = new NaverUserInfo(userInfo);
-        return naverUserInfo;
+        return new NaverUserInfo((Map)userInfo.get("response"));
     }
 
     private void registerUser(OAuth2UserInfo userInfo){
