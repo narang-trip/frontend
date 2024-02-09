@@ -49,3 +49,21 @@ export const conceptNeonColorObject = {
     "핫플": "neon-rose "
 }
 //TailwindCss가 처음에 있다고 판단한것만 만들어두기 때문에 필요한 것들을 모아놓은 것
+export const conceptTextColorObject = {
+    "낭만": "text-red-400 ",
+    "건축": "text-teal-400 ",
+    "모험": "text-yellow-400 ",
+    "자유": "text-sky-400 ",
+    "쇼핑": "text-violet-400 ",
+    "휴양": "text-emerald-400 ",
+    "핫플": "text-rose-400 "
+}
+export const conceptChatRoomColorObject = {
+    "낭만": "bg-red-200",
+    "건축": "bg-teal-200",
+    "모험": "bg-yellow-200",
+    "자유": "bg-sky-200",
+    "쇼핑": "bg-violet-200",
+    "휴양": "bg-emerald-200",
+    "핫플": "bg-rose-200"
+};

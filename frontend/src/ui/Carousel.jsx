@@ -2,7 +2,6 @@ import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useSelector } from "react-redux";
 import TripSummarySmall from "../components/Trip/Read/TripSummarySmall";
 
 // 테스트용 주석입니다.
@@ -10,6 +9,12 @@ const CarouselTemplete = ({ list }) => {
   const [transformValue, setTransformValue] = useState(0);
   const [itemWidth, setItemWidth] = useState(0);
   console.log(list);
+
+  const tmpList = [];
+  for (let i = 0; i < list.length; i += 2) {
+    tmpList.push(list.slice(i, i + 2));
+  }
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -43,13 +48,13 @@ const CarouselTemplete = ({ list }) => {
     <div className="h-[40vh]">
       <Carousel
         swipeable={false}
-        draggable={false}
+        draggable={true}
         showDots={true}
         responsive={responsive}
         ssr={true} // means to render carousel on server-side.
         infinite={true}
         autoPlay={true}
-        autoPlaySpeed={2000}
+        autoPlaySpeed={3000}
         keyBoardControl={true}
         customTransition="transform 500ms ease-in-out 0s"
         transitionDuration={500}
@@ -58,11 +63,18 @@ const CarouselTemplete = ({ list }) => {
         dotListClass="custom-dot-list-style"
         itemClass="carousel-item-padding-40-px"
       >
-        <div id="carousel_item" className="h-full">
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
+        {tmpList.map((tripList, index) => (
+          <div key={index} className="h-full">
+            {tripList.map((trip, tripIndex) => (
+              <TripSummarySmall key={tripIndex} trip={trip} />
+            ))}
+          </div>
+        ))}
+        {/* <div id="carousel_item" className="">
+          <TripSummarySmall trip={list[0]} />
+          <TripSummarySmall trip={list[1]} />
         </div>
-        <div className="h-full ">
+        <div id="carousel_item" className="h-full ">
           {" "}
           {list.length > 0 && <TripSummarySmall trip={list[0]} />}
           {list.length > 0 && <TripSummarySmall trip={list[0]} />}
@@ -87,7 +99,7 @@ const CarouselTemplete = ({ list }) => {
           {" "}
           {list.length > 0 && <TripSummarySmall trip={list[0]} />}
           {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-        </div>
+        </div> */}
       </Carousel>
     </div>
   );
