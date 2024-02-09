@@ -46,9 +46,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/sub",
-        element: <SubscribeTestPage />
-      }
-      
+        element: <SubscribeTestPage />,
+      },
     ],
   },
 

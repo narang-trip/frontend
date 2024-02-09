@@ -6,7 +6,7 @@ import authReducer from "./authSlice";
 import tripReducer from "./tripSlice";
 import scheduleSliceReducer from "./scheduleSlice";
 import BoardSliceReducer from "./boardSlice";
-
+import conceptSliceReducer from "./conceptSlice"
 const store = configureStore({
   reducer: {
     directions: directionsSliceReducer,
@@ -15,6 +15,7 @@ const store = configureStore({
     trip: tripReducer,
     schedule: scheduleSliceReducer,
     board: BoardSliceReducer,
+    concept : conceptSliceReducer
   },
 });
 
