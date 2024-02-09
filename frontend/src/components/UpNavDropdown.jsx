@@ -1,19 +1,26 @@
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Dropdown = (props) => {
+const Dropdown = () => {
+  const dispath = useDispatch();
+  const navigate = useNavigate();
+  const logout = () => {
+    dispath(authActions.Logout());
+    navigate("/");
+  };
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button>
-          <ChevronDownIcon
-            className="-mr-1 h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
+          <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
         </Menu.Button>
       </div>
 
@@ -44,7 +51,7 @@ const Dropdown = (props) => {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    onClick={props.Logout()}
+                    onClick={logout}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full px-4 py-2 text-left text-sm"
