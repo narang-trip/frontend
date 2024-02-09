@@ -8,13 +8,13 @@ import { useInView } from "react-intersection-observer";
 import Button from "../../../ui/Button";
 
 const stompEndpoint = "wss://i10a701.p.ssafy.io/api/message/chat";
-const Chat = ({ chatroomId, navigateBack }) => {
+const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
   const [chats, setChats] = useState([]);
   const [msg, setMsg] = useState("");
-  const [loadingOlderMessages, setLoadingOlderMessages] = useState(false);
+  const [loadingChatMore, setLoadingChatMore] = useState(true)
   const userId = useSelector((state) => state.auth.userId);
   const lastChatRef = useRef("");
-  const previousScrollHeightRef = useRef(0);
+  const [prevScrollHeight, setPrevScrollHeight] = useState(null);
   const chatDivRef = useRef(null);
   let stompClient = useRef(null);
   const [pageNo, setPageNo] = useState(0);
@@ -24,21 +24,15 @@ const Chat = ({ chatroomId, navigateBack }) => {
     rootMargin: '10px' // div태그가 보일 때 inView가 true로 설정
   });
 
- 
-  const getChatList = useCallback(async (chatroomId) => {
-    if (pageNo > 0) {
-      setLoadingOlderMessages(true); // 무한 스크롤 요청 시작
-      previousScrollHeightRef.current = chatDivRef.current ? chatDivRef.current.scrollHeight : 0;
-      
-    }
 
+  const getChatList = useCallback(async (chatroomId) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_CHAT_REQUEST_URI}/${chatroomId}?page=${pageNo}`);
-      console.log(response.data);
+      const response = await axios.get(`${import.meta.env.VITE_CHAT_REQUEST_URI}/${chatroomId}?page=${pageNo}`); //데이터 가져오기 20개 단위
       if (response.data.chatList.length === 0) {
         return;
-      }
+      } // 없으면 그냥 리턴
       let chatList = response.data.chatList;
+      console.log(chatList);
       if (pageNo === 0) {
         lastChatRef.current = chatList[chatList.length - 1];
       } else {
@@ -56,33 +50,49 @@ const Chat = ({ chatroomId, navigateBack }) => {
     } catch (error) {
       console.error("채팅 목록 가져오는 중 에러 발생:", error);
     }
-    if (pageNo > 0) {
-      setLoadingOlderMessages(false); // 무한 스크롤 요청 끝
-    }
   }, [chatroomId, pageNo]);
-
   // inView가 true일때 데이터를 가져옴
+
+  const handleFetchMessageMore = () => {
+      setLoadingChatMore(true);
+      const currentScrollHeight = chatDivRef.current.scrollHeight;
+      setPrevScrollHeight(currentScrollHeight);
+      getChatList(chatroomId).finally(() => setLoadingChatMore(false));
+
+  }
+
   useEffect(() => {
-    if (inView && pageNo > 0) {
-      getChatList(chatroomId);
+    if (inView ) {
+      handleFetchMessageMore();
     }
-  }, [inView, pageNo, getChatList]);
+  }, [inView]);
 
-  // useEffect(() => {
-  //   if (!loadingOlderMessages && chatDivRef.current && pageNo > 0) {
-  //     const currentScrollHeight = chatDivRef.current.scrollHeight;
-  //     const scrollOffset = currentScrollHeight - previousScrollHeightRef.current;
+  useEffect(() => {
 
-  //     if (scrollOffset > 0) {
-  //       chatDivRef.current.scrollTop += scrollOffset;
+    if (pageNo === 1 && chatDivRef.current) {
+      chatDivRef.current.scrollTop = chatDivRef.current.scrollHeight
+      return;
+    }
 
-  //     }
-  //   }
-  // }, [chats, loadingOlderMessages]);
+    if (chatDivRef.current) {
+      chatDivRef.current.scrollTo({
+        top: chatDivRef.current.scrollHeight,
+        behavior: "smooth",
+      })
+    }
+  }, [chats]); // chat 업데이트시 제일 아래로 이동
+
+  useEffect(() => {
+    if (!loadingChatMore && prevScrollHeight !== null && pageNo > 1) {
+      const newScrollHeight = chatDivRef.current.scrollHeight;
+      const scrollOffset = newScrollHeight - prevScrollHeight;
+      chatDivRef.current.scrollTop = scrollOffset; // 새로 로드된 메시지의 높이만큼 스크롤 이동
+      setPrevScrollHeight(null); // prevScrollHeight 상태 초기화
+    }
+  }, [chats, loadingChatMore, prevScrollHeight]);
 
 
   useEffect(() => {
-    getChatList(chatroomId, 0);
     if (!stompClient.current) {
       // stompClient 인스턴스 초기화 확인
       const socket = new WebSocket(stompEndpoint);
@@ -119,13 +129,6 @@ const Chat = ({ chatroomId, navigateBack }) => {
     };
   }, [chatroomId]);
 
-  useEffect(() => {
-    // Access scrollTop inside useEffect to ensure the DOM element is available
-    if (chatDivRef.current) {
-      chatDivRef.current.scrollTop = chatDivRef.current.scrollHeight
-    }
-  }, [chats]); 
-
   const submitHandler = (event) => {
     event.preventDefault();
     if (!msg.trim()) return; // 메시지가 비어있는 경우 전송하지 않음
@@ -148,7 +151,7 @@ const Chat = ({ chatroomId, navigateBack }) => {
     <div className="h-full w-full relative">
       <div className="absolute top-0 left-0 right-0">
         <div className="p-2">
-          {chatroomId}
+          {chatroomName}
         </div>
       </div>
       <div className="absolute top-0 left-0">

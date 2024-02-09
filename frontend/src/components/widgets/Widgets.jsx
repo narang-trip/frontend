@@ -9,11 +9,13 @@ export default function Widgets() {
   const isLogin = useSelector((state) => state.auth.isLogin);
   const [activeChatRoomList, setActiveChatRoomList] = useState(true);
   const [selectedChatRoomId, setSelectedChatRoomId] = useState(null);
+  const [selectedChatRoomName, setSelectedChatRoomName] = useState("");
   const chatScrollRef = useRef(null);
 
 
-  const handleChatRoomSelect = (chatRoomId) => {
-    setSelectedChatRoomId(chatRoomId);
+  const handleChatRoomSelect = (chatroomName, chatroomId) => {
+    setSelectedChatRoomName(chatroomName)
+    setSelectedChatRoomId(chatroomId);
     setActiveChatRoomList(false);
   };
   
@@ -35,7 +37,7 @@ export default function Widgets() {
           (activeChatRoomList ? (
             <ChatRoomList onChatRoomSelect={handleChatRoomSelect} />
           ) : (
-            <Chat chatroomId={selectedChatRoomId} navigateBack={navigateBack}/>
+            <Chat chatroomId={selectedChatRoomId} navigateBack={navigateBack} chatroomName={selectedChatRoomName}/>
           ))}
       </div>
     </div>
