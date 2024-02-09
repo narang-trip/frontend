@@ -2,7 +2,6 @@ import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useSelector } from "react-redux";
 import TripSummarySmall from "../components/Trip/Read/TripSummarySmall";
 
 // 테스트용 주석입니다.

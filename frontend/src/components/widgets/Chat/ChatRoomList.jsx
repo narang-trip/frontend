@@ -6,6 +6,7 @@ import Button from "../../../ui/Button";
 
 const ChatRoomList = ({ onChatRoomSelect }) => {
   const userId = useSelector((state) => state.auth.userId);
+  const {conceptColor} = useSelector((state) => state.concept)
   const [chatroomList, setChatroomList] = useState({ chatroomList: [] });
   useEffect(() => {
     if (userId) {
@@ -36,7 +37,7 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
     <div className="w-auto">
       {chatroomList.chatroomList.map((chatroom) => (
         <div key={chatroom.chatroomId}>
-          <Button onClick={() => enterChatroomHandler(chatroom)} className="w-[90%] m-1 bg-red-200 rounded-full">
+          <Button onClick={() => enterChatroomHandler(chatroom)} className={`w-[90%] m-1 bg-${conceptColor}-200 rounded-full`}>
             {chatroom.chatroomName}
           </Button>
         </div>
