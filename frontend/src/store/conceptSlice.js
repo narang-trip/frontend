@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { conceptColorObject} from "../data/concepts"
+import { conceptTemaColorObject} from "../data/concepts"
 const initialState = {
   concept: "건축",
-  conceptColor: "E99D9D",
+  conceptColor: "teal",
 };
 const conceptSlice = createSlice({
   name: "concept",
@@ -10,7 +10,7 @@ const conceptSlice = createSlice({
   reducers: {
     changeConcept: (state, action) => {
       state.concept = action.payload.concept; // 컨셉 및 색깔 바꾸기
-      state.conceptColor = conceptColorObject[action.payload.concept];
+      state.conceptColor = conceptTemaColorObject[action.payload.concept];
     },
   },
 });
