@@ -111,8 +111,8 @@ public class UserService extends DefaultOAuth2UserService {
         return ResponseEntity.ok().body(user);
     }
 
-    public ResponseEntity<Auth> getAuth(String email){
-        Optional<Auth> findAuth = authRepository.findByEmail(email);
+    public ResponseEntity<Auth> getAuth(String id){
+        Optional<Auth> findAuth = authRepository.findById(id);
         Auth auth = findAuth.get();
         return ResponseEntity.ok().body(auth);
     }

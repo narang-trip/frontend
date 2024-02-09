@@ -24,21 +24,21 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
-        String email = extractUsername(authentication);
-        String accessToken = jwtService.createAccessToken(email);
+        String id = extractUsername(authentication);
+        String accessToken = jwtService.createAccessToken(id);
         String refreshToken = jwtService.createRefreshToken();
 
         addCorsHeaders(response); // CORS 헤더 추가
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
 
-        authRepository.findByEmail(email)
+        authRepository.findById(id)
                 .ifPresent(auth ->{
                     auth.updateRefreshToken(refreshToken);
                     authRepository.saveAndFlush(auth);
                 });
 
-        log.info("로그인에 성공하였습니다. 이메일 : {}", email);
+        log.info("로그인에 성공하였습니다. ID : {}", id);
         log.info("로그인에 성공하였습니다. AccessToken : {}", accessToken);
         log.info("발급된 AccessToken 만료 기간 : {}", accessTokenExpiration);
     }
