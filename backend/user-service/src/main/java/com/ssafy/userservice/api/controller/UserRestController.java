@@ -42,11 +42,11 @@ public class UserRestController {
         return ResponseEntity.ok(accessToken);
     }
 
-//    @PostMapping("/logout")
-//    public ResponseEntity<?> logout(HttpServletRequest request) {
-//        authService.logout(request);
-//        return ResponseEntity.ok().build();
-//    }
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        oAuth2Service.logout(request);
+        return ResponseEntity.ok().build();
+    }
 
     // User 탈퇴
     @DeleteMapping("/{id}")
