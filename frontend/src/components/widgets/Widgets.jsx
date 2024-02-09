@@ -29,7 +29,7 @@ export default function Widgets() {
     <div className="text-center relative">
      
       <CalendarCp />
-      <div className="h-[43vh] mt-3 bg-blue-200 rounded-lg" ref={chatScrollRef}>
+      <div className="h-[43svh] mt-3 bg-blue-200 rounded-lg" ref={chatScrollRef}>
         {!isLogin && (
           <div className="flex flex-col justify-center items-center h-full">
           <p className={`text-lg font-semibold animate-bounce text-${conceptColor}-400`}>로그인을 먼저 해주세요</p>

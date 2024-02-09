@@ -2,17 +2,20 @@ import { useState, useEffect } from "react";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/authSlice";
+import { useNavigate } from "react-router";
 
 import { ModalPortal } from "./modals/ModalPortal";
 import Dropdown from "./UpNavDropdown";
 import LoginModal from "./modals/LoginModal";
 import Button from "../ui/Button";
-import { useNavigate } from "react-router";
+import {conceptTemaBannerColorObject} from "../data/concepts"
 
 const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {concept} = useSelector((state) => state.concept)
+  const conceptColorClass = conceptTemaBannerColorObject[concept]
   let code = useSelector((state) => state.auth.code);
   let sessionCode = window.sessionStorage.getItem("code");
   if (sessionCode !== null) {
@@ -92,8 +95,13 @@ const UpperNavbar = () => {
       )}
       {code !== "" && (
         <div className="flex justify-between space-x-4">
-          <div>🔔</div>
-          <div>User</div>
+          <div className="relative flex items-center">
+            <span className="relative flex h-3 w-3">
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${conceptColorClass} opacity-75`} style={{ right: -22, top: '-8px' }}></span>
+              <span className={`absolute inline-flex rounded-full h-3 w-3 ${conceptColorClass}`} style={{ right: -22, top: '-8px' }}></span>
+            </span>
+            🔔
+          </div>
           <Dropdown />
         </div>
       )}
