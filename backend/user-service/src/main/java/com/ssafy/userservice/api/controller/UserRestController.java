@@ -41,10 +41,11 @@ public class UserRestController {
 //        return redirectView;
 //    }
 
-    @PostMapping("/login/oauth/kakao")
-    public ResponseEntity<String> handleKakaoCallback(@RequestParam("code") String code) {
-        log.info("handleKakaoCallback 호출");
-        String accessToken = oAuth2Service.kakaoCallBack(code);
+    @PostMapping("/login/oauth/{provider}")
+    public ResponseEntity<String> handleKakaoCallback(@PathVariable String provider, @RequestParam("code") String code) {
+        log.info("handle {} Callback 호출", provider);
+
+        String accessToken = oAuth2Service.oauth2Login(provider, code);
 
         // 생성된 토큰을 리액트에 전달
         return ResponseEntity.ok(accessToken);
@@ -56,11 +57,6 @@ public class UserRestController {
 //        return ResponseEntity.ok().build();
 //    }
 
-    @GetMapping("/get")
-    public User getTest() {
-        User user = userService.getTest("1").get();
-        return user; // 로그인 성공시 uuid 리턴
-    }
 
     // User 탈퇴
     @DeleteMapping("/{id}")
