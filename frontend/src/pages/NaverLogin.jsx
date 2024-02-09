@@ -16,11 +16,7 @@ const Login = () => {
     (async () => {
       try {
         const res = await axios.post(
-          `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=${code}`
-          // "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
-          // {
-          //   code: code,
-          // }
+          `https://i10a701.p.ssafy.io/api/user/login/oauth/naver?code=${code}`
         );
         console.log(res);
         console.log(res.data);
@@ -50,7 +46,8 @@ const Login = () => {
   return (
     <>
       <button onClick={test}>유저정보 가져오기</button>
-      뭔가 뭔가 무언가의 페이지
+      <b />
+      뭔가 뭔가 무언가의 페이지 네이버로그인
     </>
   );
 };
