@@ -33,7 +33,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect("https://i10a701.p.ssafy.io"); // 가입 화면으로 보내기
 
             // AccessToken만 추가
-            jwtService.setAccessTokenHeader(response, accessToken);
+            jwtService.sendAccessToken(response, accessToken);
         } else {
             loginSuccess(response, oAuth2User);
         }

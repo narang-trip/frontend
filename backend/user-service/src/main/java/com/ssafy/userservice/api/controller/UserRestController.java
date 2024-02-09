@@ -4,18 +4,14 @@ import com.ssafy.userservice.api.request.UserInfoRequest;
 import com.ssafy.userservice.api.service.OAuth2Service;
 import com.ssafy.userservice.api.service.UserService;
 import com.ssafy.userservice.db.entity.Auth;
-import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Slf4j
 @CrossOrigin("*")
@@ -37,22 +33,7 @@ public class UserRestController {
     public ResponseEntity<String> handleKakaoCallback(@PathVariable String provider, @RequestParam("code") String code) {
         log.info("handle {} Callback 호출", provider);
 
-<<<<<<< HEAD
-//    @GetMapping("/oauth2/authorization/kakao")
-//    public RedirectView kakaoLogin() {
-//        log.info("==========login controller 동작2345============");
-//        RedirectView redirectView = new RedirectView();
-//        redirectView.setUrl(oAuth2Service.getAuthorizationUrl("kakao"));
-//        return redirectView;
-//    }
-
-    @PostMapping("/login/oauth/kakao")
-    public ResponseEntity<String> handleKakaoCallback(@RequestParam("code") String code, HttpServletResponse response) {
-        log.info("handleKakaoCallback 호출");
-        String accessToken = oAuth2Service.kakaoCallBack(code, response);
-=======
         String accessToken = oAuth2Service.oauth2Login(provider, code);
->>>>>>> origin/feature_login
 
         // 생성된 토큰을 리액트에 전달
         return ResponseEntity.ok(accessToken);
