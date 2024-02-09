@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.userservice.api.oauth2.exception.InvalidSocialTypeException;
 import com.ssafy.userservice.api.oauth2.userinfo.KakaoUserInfo;
+import com.ssafy.userservice.api.oauth2.userinfo.NaverUserInfo;
 import com.ssafy.userservice.api.oauth2.userinfo.OAuth2UserInfo;
 import com.ssafy.userservice.db.entity.Auth;
 import com.ssafy.userservice.db.entity.Authority;
@@ -40,28 +41,29 @@ public class OAuth2Service {
     private String kakaoClientSecret;
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String kakaoRedirectUri;
-    @Value("${spring.security.oauth2.client.provider.kakao.authorization-uri}")
-    private String kakaoAuthorizationUri;
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String kakaoTokenUri;
     @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
     private String kakaoUserInfoUri;
 
+    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
+    private String naverClientId;
+    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+    private String naverClientSecret;
+    @Value("${spring.security.oauth2.client.registration.naver.redirect-uri}")
+    private String naverRedirectUri;
+    @Value("${spring.security.oauth2.client.provider.naver.token-uri}")
+    private String naverTokenUri;
+    @Value("${spring.security.oauth2.client.provider.naver.user-info-uri}")
+    private String naverUserInfoUri;
+
 
     public String oauth2Login(String provider, String code){
-        /*
-            받은 코드로 토큰 가져오기
-         */
+        // 받은 코드로 토큰 가져오기
         String providerAccessToken = getAccessToken(provider, code);
-
-        /*
-            받은 토큰으로 유저 정보 갖고오기
-         */
+        // 받은 토큰으로 유저 정보 갖고오기
         OAuth2UserInfo userInfo = getUserInfo(provider, providerAccessToken);
-
-        /*
-            DB에 저장하기
-         */
+        //DB에 저장하기
         registerUser(userInfo);
 
         String jwtAccessToken = jwtService.createAccessToken(userInfo.getEmail());
@@ -72,7 +74,7 @@ public class OAuth2Service {
     private String getAccessToken(String provider, String code){
         return switch (provider){
             case "kakao" -> getKakaoAccessToken(code);
-//            case "naver" -> getNaverAccessToken(code);
+            case "naver" -> getNaverAccessToken(code);
             default -> throw new InvalidSocialTypeException();
         };
     }
@@ -93,22 +95,46 @@ public class OAuth2Service {
 
         // 카카오 API에 POST 요청을 보내 토큰 획득
         ResponseEntity<Map> response = restTemplate.postForEntity(kakaoTokenUri, request, Map.class);
-        log.info("kakaoCallBack에서 responseEntity {}", response);
+        log.info("getKakaoAccessToken에서 response {}", response);
 
         // 응답에서 액세스 토큰 얻기
-        String kakaoAccessToken = (String) response.getBody().get("access_token");
-        log.info("kakaoCallBack에서 kakaoAccessToken {}", kakaoAccessToken);
+        String accessToken = (String) response.getBody().get("access_token");
+        log.info("getKakaoAccessToken에서 accessToken {}", accessToken);
 
-        return kakaoAccessToken;
+        return accessToken;
+    }
+
+    private String getNaverAccessToken(String code){  // 카카오 API 호출을 위한 설정
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", naverClientId);
+        params.add("client_secret", naverClientSecret);
+        params.add("redirect_uri", naverRedirectUri);  // 등록한 카카오 애플리케이션 설정에 등록한 리다이렉트 URI
+        params.add("code", code);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+
+        // 카카오 API에 POST 요청을 보내 토큰 획득
+        ResponseEntity<Map> response = restTemplate.postForEntity(naverTokenUri, request, Map.class);
+        log.info("getNaverAccessToken에서 response {}", response);
+
+        // 응답에서 액세스 토큰 얻기
+        String accessToken = (String) response.getBody().get("access_token");
+        log.info("getNaverAccessToken에서 accessToken {}", accessToken);
+
+        return accessToken;
     }
 
     private OAuth2UserInfo getUserInfo(String provider, String accessToken){
         return switch (provider) {
             case "kakao" -> getKakaoUserInfo(accessToken);
-//            case "naver" -> getNaverUserInfo(accessToken);
+            case "naver" -> getNaverUserInfo(accessToken);
             default -> throw new InvalidSocialTypeException();
         };
-
     }
 
     private OAuth2UserInfo getKakaoUserInfo(String accessToken){
@@ -131,6 +157,28 @@ public class OAuth2Service {
         log.info("getKakaoUserInfo에서 userInfo {}", userInfo);
         KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(userInfo);
         return kakaoUserInfo;
+    }
+
+    private OAuth2UserInfo getNaverUserInfo(String accessToken){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+
+        URI uri = UriComponentsBuilder.fromUriString(naverUserInfoUri)
+                .build()
+                .toUri();
+
+        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class);
+        Map<String, Object> userInfo;
+        try {
+            userInfo = new ObjectMapper().readValue(response.getBody(), Map.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("getNaverUserInfo에서 userInfo {}", userInfo);
+        NaverUserInfo naverUserInfo = new NaverUserInfo(userInfo);
+        return naverUserInfo;
     }
 
     private void registerUser(OAuth2UserInfo userInfo){

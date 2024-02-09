@@ -32,15 +32,6 @@ public class UserRestController {
         User user = userService.getUser(auth.getId()).getBody();
         return ResponseEntity.ok(user);
     }
-
-//    @GetMapping("/oauth2/authorization/kakao")
-//    public RedirectView kakaoLogin() {
-//        log.info("==========login controller 동작2345============");
-//        RedirectView redirectView = new RedirectView();
-//        redirectView.setUrl(oAuth2Service.getAuthorizationUrl("kakao"));
-//        return redirectView;
-//    }
-
     @PostMapping("/login/oauth/{provider}")
     public ResponseEntity<String> handleKakaoCallback(@PathVariable String provider, @RequestParam("code") String code) {
         log.info("handle {} Callback 호출", provider);
@@ -56,7 +47,6 @@ public class UserRestController {
 //        authService.logout(request);
 //        return ResponseEntity.ok().build();
 //    }
-
 
     // User 탈퇴
     @DeleteMapping("/{id}")
