@@ -8,23 +8,3 @@
   font-weight: normal;
   font-style: normal;
 }
-
-/* @keyframes rainbowAnimation {
-  0% { background-color: red; }
-  14% { background-color: orange; }
-  28% { background-color: yellow; }
-  42% { background-color: green; }
-  57% { background-color: blue; }
-  71% { background-color: indigo; }
-  85% { background-color: violet; }
-  100% { background-color: transparent; }
-}
-
-@keyframes colorFade {
-  from { background-color: transparent; }
-  to { background-color: var(--target-color); }
-}
-
-.rainbow-background {
-  animation: rainbowAnimation 0.5s ease-in-out, colorFade 0.5s ease-in-out 0.5s;
-  animation-fill-mode: forwards; /* 애니메이션 종료 후 최종 상태 유지 }*/
