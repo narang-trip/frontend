@@ -48,7 +48,7 @@ const CarouselTemplete = ({ list }) => {
         responsive={responsive}
         ssr={true} // means to render carousel on server-side.
         infinite={true}
-        autoPlay={false}
+        autoPlay={true}
         autoPlaySpeed={2000}
         keyBoardControl={true}
         customTransition="transform 500ms ease-in-out 0s"
