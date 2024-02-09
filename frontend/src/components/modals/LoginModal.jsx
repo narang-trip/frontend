@@ -7,7 +7,7 @@ const LoginModal = (props) => {
   const kakaoRedirectURI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
   const naverClientId = import.meta.env.VITE_NAVER_CLIENT_ID;
   const naverRedirectURI = import.meta.env.VITE_NAVER_REDIRECT_URI;
-  const naverState = import.meta.env.VITE_NAVER_STATE;
+  const naverState = "flase";
   const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
   const kakaoLoginURI2 = "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
   const kakaoLoginURI3 = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
