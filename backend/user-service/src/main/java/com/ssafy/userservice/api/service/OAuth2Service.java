@@ -2,7 +2,9 @@ package com.ssafy.userservice.api.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.userservice.api.oauth2.exception.AuthNotFoundException;
 import com.ssafy.userservice.api.oauth2.exception.InvalidSocialTypeException;
+import com.ssafy.userservice.api.oauth2.exception.InvalidTokenException;
 import com.ssafy.userservice.api.oauth2.userinfo.KakaoUserInfo;
 import com.ssafy.userservice.api.oauth2.userinfo.NaverUserInfo;
 import com.ssafy.userservice.api.oauth2.userinfo.OAuth2UserInfo;
@@ -12,6 +14,7 @@ import com.ssafy.userservice.db.entity.User;
 import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
 import com.ssafy.userservice.security.jwt.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -221,11 +224,11 @@ public class OAuth2Service {
         }
 
     }
-//    public void logout(HttpServletRequest request) {
-//        String accessToken = jwtService.extractAccessToken(request).orElseThrow(InvalidTokenException::new);
-//        Integer userId = jwtService.extractId(accessToken).orElseThrow(InvalidTokenException::new);
-//        Auth auth = authRepository.findByUserId(userId).orElseThrow(AuthNotFoundException::new);
-//        auth.setRefreshToken(null);
-//        authRepository.save(auth);
-//    }
+    public void logout(HttpServletRequest request) {
+        String accessToken = jwtService.extractAccessToken(request).orElseThrow(InvalidTokenException::new);
+        String email = jwtService.extractEmail(accessToken).orElseThrow(InvalidTokenException::new);
+        Auth auth = authRepository.findByEmail(email).orElseThrow(AuthNotFoundException::new);
+        auth.setRefreshToken(null);
+        authRepository.save(auth);
+    }
 }
