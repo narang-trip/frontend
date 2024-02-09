@@ -33,7 +33,11 @@ public class UserRestController {
         User user = userService.getUser(auth.getId()).getBody();
         return ResponseEntity.ok(user);
     }
+    @PostMapping("/login/oauth/{provider}")
+    public ResponseEntity<String> handleKakaoCallback(@PathVariable String provider, @RequestParam("code") String code) {
+        log.info("handle {} Callback 호출", provider);
 
+<<<<<<< HEAD
 //    @GetMapping("/oauth2/authorization/kakao")
 //    public RedirectView kakaoLogin() {
 //        log.info("==========login controller 동작2345============");
@@ -46,21 +50,18 @@ public class UserRestController {
     public ResponseEntity<String> handleKakaoCallback(@RequestParam("code") String code, HttpServletResponse response) {
         log.info("handleKakaoCallback 호출");
         String accessToken = oAuth2Service.kakaoCallBack(code, response);
+=======
+        String accessToken = oAuth2Service.oauth2Login(provider, code);
+>>>>>>> origin/feature_login
 
         // 생성된 토큰을 리액트에 전달
         return ResponseEntity.ok(accessToken);
     }
 
-//    @PostMapping("/logout")
-//    public ResponseEntity<?> logout(HttpServletRequest request) {
-//        authService.logout(request);
-//        return ResponseEntity.ok().build();
-//    }
-
-    @GetMapping("/get")
-    public User getTest() {
-        User user = userService.getTest("1").get();
-        return user; // 로그인 성공시 uuid 리턴
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        oAuth2Service.logout(request);
+        return ResponseEntity.ok().build();
     }
 
     // User 탈퇴

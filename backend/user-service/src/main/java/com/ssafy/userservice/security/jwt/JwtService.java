@@ -84,11 +84,33 @@ public class JwtService {
      * AccessToken 헤더에 실어서 보내기
      */
     public void sendAccessToken(HttpServletResponse response, String accessToken) {
+<<<<<<< HEAD
         response.setHeader(accessHeader, BEARER + accessToken);
         log.info("Access Token sent in header");
     }
 
     public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
+=======
+        log.info("sendAccessToken() 호출");
+        response.setHeader(accessHeader, BEARER + accessToken);
+        log.info("Access Token sent in header");
+    }
+//    public void sendAccessToken(HttpServletResponse response, String accessToken) {
+//        log.info("sendAccessToken() 호출");
+//        response.setStatus(HttpServletResponse.SC_OK);
+////        response.setHeader(accessHeader, accessToken);
+//        try {
+//            response.getWriter().write("{\"access_token\": \"" + accessToken + "\"}");
+//            response.getWriter().flush();
+//            response.getWriter().close();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        log.info("재발급된 Access Token : {}", accessToken);
+//    }
+    public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
+        log.info("sendRefreshToken() 호출");
+>>>>>>> origin/feature_login
         response.setHeader(refreshHeader, BEARER + refreshToken);
         log.info("Refresh Token sent in header");
     }
@@ -106,18 +128,6 @@ public class JwtService {
     }
 
     /**
-     * 헤더에서 RefreshToken 추출
-     * 토큰 형식 : Bearer XXX에서 Bearer를 제외하고 순수 토큰만 가져오기 위해서
-     * 헤더를 가져온 후 "Bearer"를 삭제(""로 replace)
-     */
-    public Optional<String> extractRefreshToken(HttpServletRequest request) {
-        log.info("extractRefreshToken() 호출");
-        return Optional.ofNullable(request.getHeader(refreshHeader))
-                .filter(refreshToken -> refreshToken != null && refreshToken.startsWith(BEARER))
-                .map(refreshToken -> refreshToken.replace(BEARER, ""));
-    }
-
-    /**
      * 헤더에서 AccessToken 추출
      * 토큰 형식 : Bearer XXX에서 Bearer를 제외하고 순수 토큰만 가져오기 위해서
      * 헤더를 가져온 후 "Bearer"를 삭제(""로 replace)
@@ -126,6 +136,18 @@ public class JwtService {
         log.info("extractAccessToken() 호출");
         return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(accessToken -> accessToken != null && accessToken.startsWith(BEARER))
+                .map(refreshToken -> refreshToken.replace(BEARER, ""));
+    }
+
+    /**
+     * 헤더에서 RefreshToken 추출
+     * 토큰 형식 : Bearer XXX에서 Bearer를 제외하고 순수 토큰만 가져오기 위해서
+     * 헤더를 가져온 후 "Bearer"를 삭제(""로 replace)
+     */
+    public Optional<String> extractRefreshToken(HttpServletRequest request) {
+        log.info("extractRefreshToken() 호출");
+        return Optional.ofNullable(request.getHeader(refreshHeader))
+                .filter(refreshToken -> refreshToken != null && refreshToken.startsWith(BEARER))
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
