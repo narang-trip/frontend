@@ -32,21 +32,19 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
         return;
       } // 없으면 그냥 리턴
       let chatList = response.data.chatList;
-      console.log(chatList);
+      // console.log(chatList);
       if (pageNo === 0) {
-        lastChatRef.current = chatList[chatList.length - 1];
+        lastChatRef.current = chatList[chatList.length - 1]?.chatId; //처음 렌더링 시 마지막 채팅 기억
       } else {
-        for (let i = 0; i < chatList.length; i++) {
-          if (chatList[i] === lastChatRef.current) {
-            chatList = chatList.slice(i);
-            break;
-          }
-        }
+        const lastIndex = chatList.findIndex(chat => chat.chatId === lastChatRef.current); //겹치는 채팅 인덱스 찾기
+        if (lastIndex !== -1) {
+          chatList = chatList.slice(lastIndex+1);
+        } //없으면 그대로 반환, 있으면 잘라내기
       }
       chatList = [...chatList].reverse();
       setChats((prevData) => [...chatList, ...prevData]);
       setPageNo((prevPageNo) => prevPageNo + 1);
-
+      //채팅이 들어오는게 역 순서로 들어오기 때문에 뒤집어서 저장
     } catch (error) {
       console.error("채팅 목록 가져오는 중 에러 발생:", error);
     }
@@ -54,18 +52,17 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
   // inView가 true일때 데이터를 가져옴
 
   const handleFetchMessageMore = () => {
-      setLoadingChatMore(true);
-      const currentScrollHeight = chatDivRef.current.scrollHeight;
-      setPrevScrollHeight(currentScrollHeight);
-      getChatList(chatroomId).finally(() => setLoadingChatMore(false));
-
-  }
+    setLoadingChatMore(true);
+    const currentScrollHeight = chatDivRef.current.scrollHeight;
+    setPrevScrollHeight(currentScrollHeight);
+    getChatList(chatroomId).finally(() => setLoadingChatMore(false));
+  } //chatList가져올때 경우에 따라 scroll로직을 다르게 하기 위한 loadingChatMore 설정 및 당시 scroll높이 기억
 
   useEffect(() => {
-    if (inView ) {
+    if (inView) {
       handleFetchMessageMore();
     }
-  }, [inView]);
+  }, [inView]); //infinity scroll 구현
 
   useEffect(() => {
 
