@@ -72,4 +72,9 @@ public class PaymentController {
         UsageRecord usageRecord = mileageService.useMileage(userId, price);
         return new ResponseEntity<>(usageRecord, HttpStatus.OK);
     }
+
+    @GetMapping("/balance")
+    public ResponseEntity balance(@RequestParam("user_id") String userId){
+        return new ResponseEntity<>(mileageService.getMileage(userId), HttpStatus.OK);
+    }
 }
