@@ -1,14 +1,24 @@
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const SavePlanModal = (props) => {
   const modalBG = useRef(null);
   const state = useSelector((state) => state.schedule);
   const [title, setTitle] = useState();
 
-  const savePlan = () => {
-    console.log(title);
+  const savePlan = async () => {
     console.log(title, JSON.stringify(state));
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_PLAN_REQUEST_URI}`, {
+        title: title,
+        plan: JSON.stringify(state),
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    props.onClose();
   };
 
   const onChange = (e) => {
@@ -31,12 +41,7 @@ const SavePlanModal = (props) => {
           x
         </button>
         <label>계획이름</label>
-        <input
-          type="text"
-          value={title}
-          onChange={onChange}
-          placeholder="..."
-        ></input>
+        <input type="text" value={title} onChange={onChange} placeholder="..."></input>
         <button className="" onClick={savePlan}>
           저장하기
         </button>

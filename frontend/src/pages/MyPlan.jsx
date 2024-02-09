@@ -17,7 +17,9 @@ const MyPlan = () => {
 
   const getMyPlanList = useCallback(async () => {
     try {
-      const response = await axios.get(``);
+      const response = await axios.get(
+        `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList/page/${pageNo}`
+      );
 
       // 가져올 항목이 없으면 중단
       if (response.data.content.length === 0) {
