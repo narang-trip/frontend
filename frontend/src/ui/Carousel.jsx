@@ -58,7 +58,7 @@ const CarouselTemplete = ({ list }) => {
         keyBoardControl={true}
         customTransition="transform 500ms ease-in-out 0s"
         transitionDuration={500}
-        containerClass="carousel-container"
+        containerClass="carousel-container w-full"
         removeArrowOnDeviceType={["tablet", "mobile"]}
         dotListClass="custom-dot-list-style"
         itemClass="carousel-item-padding-40-px"
