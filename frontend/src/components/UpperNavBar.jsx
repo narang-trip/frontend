@@ -11,8 +11,9 @@ import Button from "../ui/Button";
 import { conceptTemaBannerColorObject } from "../data/concepts"
 import axios from "axios";
 import { Link } from "react-router-dom";
+import TalkBubble from "../ui/TalkBubble";
 
-const AlertAnimation = ({color}) => {
+const AlertAnimation = ({ color }) => {
   return <span className="relative flex h-3 w-3">
     <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${color} opacity-75`} style={{ right: -22, top: '-8px' }}></span>
     <span className={`absolute inline-flex rounded-full h-3 w-3 ${color}`} style={{ right: -22, top: '-8px' }}></span>
@@ -21,15 +22,17 @@ const AlertAnimation = ({color}) => {
 
 const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [alertAmount, setAlertAmount] = useState(0);
+  const [alertContent, setAlertContent] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { concept } = useSelector((state) => state.concept)
   const conceptColorClass = conceptTemaBannerColorObject[concept]
   let code = useSelector((state) => state.auth.code);
   let sessionCode = window.sessionStorage.getItem("code");
-  
-  useEffect (() => {
+
+  useEffect(() => {
     if (sessionCode !== null) {
       code = sessionCode;
       const EventSource = EventSourcePolyfill || NativeEventSource;
@@ -39,15 +42,18 @@ const UpperNavbar = () => {
           heartbeatTimeout: 3600000,
         }
       );
-  
+
       eventSource.addEventListener("sse", (event) => {
-        const { data: receivedConnectData } = event;
+
+        const { data: receivedConnectData } = (event);
         if (receivedConnectData === `EventStream Created. [userId=${code}]`) {
           console.log("SSE CONNECTED");
+          setAlertAnimation();
+          setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`)
         } else {
-          console.log(event);
-          
-          setAlertAmount((prevData) => [prevData+1 ])
+          const data = JSON.parse(receivedConnectData);
+          setAlertAnimation()
+          setAlertContent(makeAlertContent(data));
         }
       });
       eventSource.onerror = function (event) {
@@ -56,7 +62,6 @@ const UpperNavbar = () => {
     }
     console.log(code);
   }, [code])
-  
 
   const navigateHome = () => {
     navigate("/");
@@ -94,10 +99,26 @@ const UpperNavbar = () => {
   const getAlertData = async (userId) => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_ALERT_REQUEST_URI}/list/${userId}`)
-      setAlertList(res.data.alertList)
+      setAlertAmount(res.data.alertList.length)
       console.log(res.data.alertList);
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  const setAlertAnimation = () => {
+    setIsVisible(true);
+    setAlertAmount((prevData) => [prevData + 1])
+    setTimeout(() => setIsVisible(false), 4500)
+  }
+
+  const makeAlertContent = (event) => {
+    switch (event.alertType) {
+      case "REQUEST": return `${event.senderName}님이 ${event.tripName}에 ${event.position} 포지션으로 참여를 희망합니다`
+      case "ACCEPT": return `${event.senderName}님이 ${event.tripName}의 참여를 허락했습니다.`
+      case "REFUSE": return `${event.tripName}의 참여가 거절당했습니다.`
+      default:
+        return "알 수 없는 알림입니다.";
     }
   }
 
@@ -119,11 +140,12 @@ const UpperNavbar = () => {
         </button>
       )}
       {code !== "" && (
-        <div className="flex justify-between space-x-4">
+        <div className="flex justify-between space-x-4 relative">
           <Link to="/applicantList" className="relative flex items-center">
             {alertAmount > 0 && <AlertAnimation color={conceptColorClass} />}
             🔔
           </Link>
+          <TalkBubble content={alertContent} isVisible={isVisible} />
           <Dropdown />
         </div>
       )}
