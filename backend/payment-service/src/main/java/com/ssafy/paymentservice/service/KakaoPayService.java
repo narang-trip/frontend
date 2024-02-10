@@ -9,6 +9,7 @@ import com.ssafy.paymentservice.entity.KakaoReadyResponse;
 import com.ssafy.paymentservice.db.repository.ChargeRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
@@ -27,7 +28,8 @@ import java.util.Optional;
 public class KakaoPayService {
 
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
-    static final String admin_Key = "723e374a012b3d38c33794bedbd3d451"; // 공개 조심! 본인 애플리케이션의 어드민 키를 넣어주세요
+    @Value("${adminKey}")
+    static String admin_Key;
     private KakaoReadyResponse kakaoReady;
     private final ChargeRecordRepository chargeRecordRepository;
     private final UserMileageRepository userMileageRepository;
