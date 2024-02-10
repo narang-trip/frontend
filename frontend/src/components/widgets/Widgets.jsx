@@ -26,7 +26,7 @@ export default function Widgets() {
     setSelectedChatRoomId(null); // 선택된 채팅방 ID를 초기화
   };
   return (
-    <div className="text-center relative">
+    <div className="text-center relative ">
      
       <CalendarCp />
       <div className="h-[43svh] mt-3 bg-blue-200 rounded-lg" ref={chatScrollRef}>

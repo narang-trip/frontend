@@ -8,7 +8,7 @@ import TripSummarySmall from "../components/Trip/Read/TripSummarySmall";
 const CarouselTemplete = ({ list }) => {
   const [transformValue, setTransformValue] = useState(0);
   const [itemWidth, setItemWidth] = useState(0);
-  console.log(list);
+  // console.table(list);
 
   const tmpList = [];
   for (let i = 0; i < list.length; i += 2) {
