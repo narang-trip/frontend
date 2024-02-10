@@ -21,36 +21,42 @@ const AlertAnimation = ({color}) => {
 
 const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [alertList, setAlertList] = useState([]);
+  const [alertAmount, setAlertAmount] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { concept } = useSelector((state) => state.concept)
   const conceptColorClass = conceptTemaBannerColorObject[concept]
   let code = useSelector((state) => state.auth.code);
   let sessionCode = window.sessionStorage.getItem("code");
-  if (sessionCode !== null) {
-    code = sessionCode;
-    const EventSource = EventSourcePolyfill || NativeEventSource;
-    const eventSource = new EventSource(
-      `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${code}`,
-      {
-        heartbeatTimeout: 3600000,
-      }
-    );
-
-    eventSource.addEventListener("sse", (event) => {
-      const { data: receivedConnectData } = event;
-      if (receivedConnectData === `EventStream Created. [userId=${code}]`) {
-        console.log("SSE CONNECTED");
-      } else {
-
-      }
-    });
-    eventSource.onerror = function (event) {
-      console.error("SSE 에러 발생:", event);
-    };
-  }
-  console.log(code);
+  
+  useEffect (() => {
+    if (sessionCode !== null) {
+      code = sessionCode;
+      const EventSource = EventSourcePolyfill || NativeEventSource;
+      const eventSource = new EventSource(
+        `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${code}`,
+        {
+          heartbeatTimeout: 3600000,
+        }
+      );
+  
+      eventSource.addEventListener("sse", (event) => {
+        const { data: receivedConnectData } = event;
+        if (receivedConnectData === `EventStream Created. [userId=${code}]`) {
+          console.log("SSE CONNECTED");
+        } else {
+          console.log(event);
+          
+          setAlertAmount((prevData) => [prevData+1 ])
+        }
+      });
+      eventSource.onerror = function (event) {
+        console.error("SSE 에러 발생:", event);
+      };
+    }
+    console.log(code);
+  }, [code])
+  
 
   const navigateHome = () => {
     navigate("/");
@@ -115,7 +121,7 @@ const UpperNavbar = () => {
       {code !== "" && (
         <div className="flex justify-between space-x-4">
           <Link to="/applicantList" className="relative flex items-center">
-            {alertList.length > 0 && <AlertAnimation color={conceptColorClass} />}
+            {alertAmount > 0 && <AlertAnimation color={conceptColorClass} />}
             🔔
           </Link>
           <Dropdown />
