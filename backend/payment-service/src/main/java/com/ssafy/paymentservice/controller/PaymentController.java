@@ -66,10 +66,21 @@ public class PaymentController {
         System.out.println("fail");
         throw new BusinessLogicException(ExceptionCode.PAY_FAILED);
     }
-
+    
+    /**
+     * 마일리지 사용
+     */
     @PostMapping("/use")
     public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") int price, @RequestParam("trip_id") String tripId) {
         UsageRecord usageRecord = mileageService.useMileage(userId, price);
         return new ResponseEntity<>(usageRecord, HttpStatus.OK);
+    }
+
+    /**
+     * 잔액 확인
+     */
+    @GetMapping("/balance")
+    public ResponseEntity balance(@RequestParam("user_id") String userId){
+        return new ResponseEntity<>(mileageService.getMileage(userId), HttpStatus.OK);
     }
 }
