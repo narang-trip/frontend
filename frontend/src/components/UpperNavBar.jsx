@@ -9,6 +9,7 @@ import Dropdown from "./UpNavDropdown";
 import LoginModal from "./modals/LoginModal";
 import Button from "../ui/Button";
 import {conceptTemaBannerColorObject} from "../data/concepts"
+import axios from "axios";
 
 const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,9 +73,19 @@ const UpperNavbar = () => {
     code = name;
     window.sessionStorage.setItem("code", code);
     dispatch(authActions.Login({ code, userId: name }));
+    getAlertData(name)
     console.log(`${name} 로그인 됐습니다.`);
     console.log("---------------------------------");
   };
+
+  const getAlertData = async (userId) => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_ALERT_REQUEST_URI}/${userId}`)
+      console.log(res.data);
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <header className="sticky top-0 z-10 flex items-center justify-between w-full p-4 bg-stone-100">
