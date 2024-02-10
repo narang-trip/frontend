@@ -8,14 +8,15 @@ import { ModalPortal } from "./modals/ModalPortal";
 import Dropdown from "./UpNavDropdown";
 import LoginModal from "./modals/LoginModal";
 import Button from "../ui/Button";
-import {conceptTemaBannerColorObject} from "../data/concepts"
+import { conceptTemaBannerColorObject } from "../data/concepts"
 import axios from "axios";
 
 const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [alertList, setAlertList] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {concept} = useSelector((state) => state.concept)
+  const { concept } = useSelector((state) => state.concept)
   const conceptColorClass = conceptTemaBannerColorObject[concept]
   let code = useSelector((state) => state.auth.code);
   let sessionCode = window.sessionStorage.getItem("code");
@@ -81,7 +82,8 @@ const UpperNavbar = () => {
   const getAlertData = async (userId) => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_ALERT_REQUEST_URI}/list/${userId}`)
-      console.log(res.data);
+      setAlertList(res.data.alertList)
+      console.log(res.data.alertList);
     } catch (error) {
       console.error(error)
     }
@@ -107,10 +109,12 @@ const UpperNavbar = () => {
       {code !== "" && (
         <div className="flex justify-between space-x-4">
           <div className="relative flex items-center">
-            <span className="relative flex h-3 w-3">
-              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${conceptColorClass} opacity-75`} style={{ right: -22, top: '-8px' }}></span>
-              <span className={`absolute inline-flex rounded-full h-3 w-3 ${conceptColorClass}`} style={{ right: -22, top: '-8px' }}></span>
-            </span>
+            {alertList>0 && (
+              <span className="relative flex h-3 w-3">
+                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${conceptColorClass} opacity-75`} style={{ right: -22, top: '-8px' }}></span>
+                <span className={`absolute inline-flex rounded-full h-3 w-3 ${conceptColorClass}`} style={{ right: -22, top: '-8px' }}></span>
+              </span>
+            )}
             🔔
           </div>
           <Dropdown />
