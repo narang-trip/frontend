@@ -7,6 +7,7 @@ import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let userId;
   let token;
   useEffect(() => {
     const params = new URL(document.URL).searchParams;
@@ -50,7 +51,8 @@ const Login = () => {
   return (
     <>
       <button onClick={test}>유저정보 가져오기</button>
-      뭔가 뭔가 무언가의 페이지
+      <b />
+      뭔가 뭔가 무언가의 페이지 카카오로그인
     </>
   );
 };

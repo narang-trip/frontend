@@ -9,7 +9,8 @@ import PlanningPage from "./pages/Planning";
 import ApplicantList from "./pages/ApplicantList";
 import TripRegisterPage from "./pages/TripResgister";
 import TripDetailPage from "./pages/TripDetail";
-import Login from "./pages/Login";
+import KakaoLogin from "./pages/KakaoLogin";
+import NaverLogin from "./pages/NaverLogin";
 import Mypage from "./pages/Mypage";
 import SubscribeTestPage from "./pages/SubscribeTest";
 import MyPlan from "./pages/MyPlan";
@@ -64,11 +65,11 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       {
         path: "login/oauth2/code/kakao",
-        element: <Login />,
+        element: <KakaoLogin />,
       },
       {
         path: "login/oauth2/code/naver",
-        element: <Login />,
+        element: <NaverLogin />,
       },
     ],
   },
