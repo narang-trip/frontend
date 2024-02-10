@@ -27,26 +27,26 @@ export default function TripDetail() {
   };
 
   // useEffect (여행 상세 정보 로딩)
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `https://i10a701.p.ssafy.io/api/trip/trip/${tripId}`
+      );
+
+      // 상세 정보 저장
+      setTripDetails(response.data);
+      console.log(response.data.participants.length);
+      // 날짜 포맷 설정
+      setDepartureDate(
+        DateFormatter({ dateString: response.data.departureDate })
+      );
+      setReturnDate(DateFormatter({ dateString: response.data.returnDate }));
+    } catch (error) {
+      console.error("게시판 상세정보를 가져오는 중 에러 발생:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `https://i10a701.p.ssafy.io/api/trip/trip/${tripId}`
-        );
-
-        // 상세 정보 저장
-        setTripDetails(response.data);
-        console.log(tripDetails);
-        // 날짜 포맷 설정
-        setDepartureDate(
-          DateFormatter({ dateString: response.data.departureDate })
-        );
-        setReturnDate(DateFormatter({ dateString: response.data.returnDate }));
-      } catch (error) {
-        console.error("게시판 상세정보를 가져오는 중 에러 발생:", error);
-      }
-    };
-
     fetchData();
   }, [tripId]);
 
@@ -65,7 +65,7 @@ export default function TripDetail() {
 
   return (
     <Fragment>
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-3 gap-3">
         <div className="col-span-2">
           <div className="px-8 py-4 mx-auto">
             {tripDetails ? (
@@ -106,7 +106,8 @@ export default function TripDetail() {
                       <SlPeople className="mx-3 text-neutral-400" size="24" />
                       <div className="text-neutral-700">
                         {" "}
-                        2 / {tripDetails.tripParticipantsSize}{" "}
+                        {tripDetails.participants.length} /{" "}
+                        {tripDetails.tripParticipantsSize}{" "}
                       </div>
                     </div>
                     <div className="flex flex-row items-center my-3 text-sm">
@@ -147,10 +148,7 @@ export default function TripDetail() {
               <ModalPortal>
                 <ApplicationModal
                   onClose={CloseApplicationModal}
-                  positions={tripDetails.tripRoles.map((role, index) => (
-                    <span key={index}>{role}</span>
-                  ))}
-                  deposit={tripDetails.tripDeposit}
+                  data={tripDetails}
                 />
               </ModalPortal>
             )}

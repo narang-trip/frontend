@@ -32,7 +32,7 @@ export default function TripInfo({ tripData }) {
         <ul>
           <button
             onClick={handleViewClick}
-            className="w-8/12 px-4 py-4 mx-auto my-2 border rounded-3xl bg-stone-200 border-stone-400"
+            className="w-10/12 px-4 py-4 mx-auto my-2 border rounded-3xl bg-stone-200 border-stone-400"
           >
             <div className="grid grid-cols-3 gap-6">
               <div className="col-span-1">
@@ -79,7 +79,7 @@ export default function TripInfo({ tripData }) {
               viewOpen ? " opacity-100" : "max-h-0 opacity-0"
             }`}
           >
-            {viewOpen && <ReceivedList tripId={tripData.tripId} />}
+            {viewOpen && <ReceivedList tripData={tripData} />}
           </div>
         </ul>
       </div>

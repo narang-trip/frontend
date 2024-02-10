@@ -18,6 +18,7 @@ const SearchPage = () => {
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/page/${pageNo}`
       );
 
+      console.log(response.data);
       // 가져올 항목이 없으면 중단
       if (response.data.content.length === 0) {
         return;
@@ -28,7 +29,6 @@ const SearchPage = () => {
 
       // 페이지 번호 증가
       setPageNo((prevPageNo) => prevPageNo + 1);
-      
     } catch (error) {
       console.error("여행 목록을 가져오는 중 에러 발생:", error);
     }
@@ -44,13 +44,23 @@ const SearchPage = () => {
 
   return (
     <Fragment>
-      <h2>여행 목록</h2>
-      <div className="flex flex-wrap justify-center">
-        {tripData.map((trip, idx) => (
-          <TripSummary trip={trip} key={idx} />
-        ))}
+      <div className="grid grid-cols-6">
+        <div className="col-span-5">
+          <div className="flex flex-wrap justify-center">
+            {tripData.map((trip, idx) => (
+              <TripSummary trip={trip} key={idx} />
+            ))}
+          </div>
+          <div ref={ref}></div>
+        </div>
+        <div className="col-span-1">
+          <div>날짜</div>
+          <div>장소(대륙)</div>
+          <div>컨셉</div>
+          <div>포지션</div>
+          <div>인원</div>
+        </div>
       </div>
-        <div ref={ref}></div>
     </Fragment>
   );
 };

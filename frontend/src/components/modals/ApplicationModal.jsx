@@ -1,16 +1,22 @@
 import { useRef, useState } from "react";
 import axios from "axios";
-import { ModalPortal } from "./ModalPortal";
-import SuccessModal from "./SuccessModal";
 import { IoMdClose } from "react-icons/io";
 
-const ApplicationModal = (props) => {
+import { ModalPortal } from "./ModalPortal";
+import SuccessModal from "./SuccessModal";
+
+const ApplicationModal = ({ data, onClose }) => {
   // 지원한 포지션리스트 저장
   const [selectedPositions, setSelectedPositions] = useState([]);
+
   // 포부
-  const comment = useRef(null);
+  const [comment, setComment] = useState("");
   // 신청 완료 여부
   const [isApplicationSuccess, setIsApplicationSuccess] = useState(false);
+
+  const handleChangeComment = (e) => {
+    setComment(e.target.value);
+  };
 
   // 포지션 체크박스 선택하는 값 갱신
   const handleCheckboxChange = (position) => {
@@ -21,14 +27,31 @@ const ApplicationModal = (props) => {
     );
   };
 
+  // 보유 마일리지와 예약 마일리지의 차이 계산
+  // 0 이상이면 신청 가능, 0 이하이면 충전해야함
+  const mileageDifference = 200 - data.tripDeposit;
+
+  const postData = {
+    tripId: data.tripId,
+    tripName: data.tripName,
+    senderId: "노세희1",
+    receiverId: data.tripLeaderId,
+    position: selectedPositions,
+    aspiration: comment,
+    alertType: "REQUEST",
+    read: false,
+  };
+
   // 신청하기 버튼 눌렀을 때
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "https://9c989d4d-1118-40ae-98fe-049609dd52a8.mock.pstmn.io/trip",
+        "https://i10a701.p.ssafy.io/api/message/alert/attend",
+        postData,
         {
-          positions: selectedPositions,
-          comment: comment.current.value,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -51,12 +74,11 @@ const ApplicationModal = (props) => {
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-500 bg-opacity-70"
-      onClick={props.onClose}
+      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-opacity-60 bg-neutral-300"
+      onClick={onClose}
       ref={modalBG}
     >
-      <div
-        className="z-10 px-10 py-8 bg-white w-[28rem] h-[40rem] rounded-3xl"
+     <div className="z-40 px-10 py-8 bg-white w-[28rem] h-[40rem] rounded-3xl "
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -65,14 +87,14 @@ const ApplicationModal = (props) => {
           <div className="flex justify-end">
             <button
               className="mb-4 text-xl font-semibold hover:text-red-600"
-              onClick={props.onClose}
+              onClick={onClose}
             >
               <IoMdClose />
             </button>
           </div>
           {isApplicationSuccess ? (
             <ModalPortal>
-              <SuccessModal onClose={props.onClose} />
+              <SuccessModal onClose={onClose} />
             </ModalPortal>
           ) : (
             <div>
@@ -86,9 +108,10 @@ const ApplicationModal = (props) => {
               </div>
               <div className="mx-4">
                 <span>포지션 선택</span>
+
                 <div className="p-3 my-3  overflow-auto border border-stone-600 rounded-xl h-[10rem]">
                   <div>
-                    {props.positions.map((position, index) => (
+                    {data.tripRoles && data.tripRoles.map((position, index) => (
                       <div key={index} className="flex justify-between">
                         <label className="m-2 text-sm">{position}</label>
                         <input
@@ -105,19 +128,43 @@ const ApplicationModal = (props) => {
                 <span>한마디 작성!</span>
                 <div className="p-3 my-3 border border-stone-600 rounded-xl">
                   <textarea
-                    ref={comment}
+                    value={comment}
+                    onChange={handleChangeComment}
                     className=" outline-none w-full text-xs resize-none h-[4rem] p-1.5"
                   />
                 </div>
               </div>
-              <div className="mx-4 my-4">💰 보유 마일리지 : 200,000</div>
-              <div className="flex justify-end">
-                <button
-                  onClick={handleSubmit}
-                  className="inline-flex items-center px-4 py-2 text-sm font-semibold text-indigo-700 rounded-md bg-blue-50 ring-1 ring-inset ring-blue-700/10"
+              <div className="mx-4 my-4">💥 예약 마일리지 : {data.tripDeposit}</div>
+              <div className="mx-4 my-4">
+                <span
+                  className={`${
+                    mileageDifference < 0 ? "text-red-500" : "text-black"
+                  }`}
                 >
-                  신청하기
-                </button>
+                  💰 보유 마일리지 : 2
+                </span>
+              </div>
+              <div className="flex justify-end">
+                {mileageDifference >= 0 ? (
+                  <button
+                    onClick={handleSubmit}
+                    className="inline-flex items-center px-4 py-2 text-sm font-semibold text-indigo-700 rounded-md bg-blue-50 ring-1 ring-inset ring-blue-700/10"
+                  >
+                    신청하기
+                  </button>
+                ) : (
+                  <div>
+                    <button
+                      onClick={() => {
+                        // 처리할 충전 버튼 클릭 시의 로직을 추가하세요.
+                        console.log("충전 버튼 클릭");
+                      }}
+                      className="inline-flex items-center px-4 py-2 text-sm font-semibold text-indigo-700 rounded-md bg-blue-50 ring-1 ring-inset ring-blue-700/10"
+                    >
+                      충전하기
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           )}
