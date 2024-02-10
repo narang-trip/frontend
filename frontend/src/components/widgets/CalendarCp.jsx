@@ -91,7 +91,7 @@ const CalendarCp = () => {
 
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="w-full flex justify-center items-center ">
       <Calendar
         calendarType="gregory"
         onChange={setValue}

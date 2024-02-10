@@ -48,7 +48,6 @@ export const conceptNeonColorObject = {
     "휴양": "neon-emerald ",
     "핫플": "neon-rose "
 }
-//TailwindCss가 처음에 있다고 판단한것만 만들어두기 때문에 필요한 것들을 모아놓은 것
 export const conceptTextColorObject = {
     "낭만": "text-red-400 ",
     "건축": "text-teal-400 ",
@@ -67,3 +66,4 @@ export const conceptChatRoomColorObject = {
     "휴양": "bg-emerald-200",
     "핫플": "bg-rose-200"
 };
+//TailwindCss가 처음에 있다고 판단한것만 만들어두기 때문에 필요한 것들을 모아놓은 것
