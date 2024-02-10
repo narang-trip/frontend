@@ -36,7 +36,7 @@ public class KakaoPayService {
     @Autowired
     private TextEncryptor textEncryptor;
 
-    public KakaoReadyResponse kakaoPayReady(String userId, String price) {
+    public KakaoReadyResponse kakaoPayReady(String userId, String price,String returnUrl) {
 
         // 카카오페이 요청 양식
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -48,11 +48,11 @@ public class KakaoPayService {
         parameters.add("total_amount", price);
         parameters.add("tax_free_amount", "1");
 
-        parameters.add("approval_url", "https://i10a701.p.ssafy.io/api/payment/success" + "?user_id=" + userId); // 성공 시 redirect url
+        parameters.add("approval_url", "https://i10a701.p.ssafy.io/api/payment/success" + "?user_id=" + userId + "&return_url=" + returnUrl); // 성공 시 redirect url
         parameters.add("cancel_url", "https://i10a701.p.ssafy.io/api/payment/cancel" + "?user_id=" + userId); // 취소 시 redirect url
         parameters.add("fail_url", "https://i10a701.p.ssafy.io/api/payment/fail"); // 실패 시 redirect url
 
-//        parameters.add("approval_url", "http://localhost:8082/api/payment/success" + "?user_id=" + userId); // 성공 시 redirect url
+//        parameters.add("approval_url", "http://localhost:8082/api/payment/success" + "?user_id=" + userId + "&return_url=" + returnUrl); // 성공 시 redirect url
 //        parameters.add("cancel_url", "http://localhost:8082/api/payment/cancel" + "?user_id=" + userId); // 취소 시 redirect url
 //        parameters.add("fail_url", "http://localhost:8082/api/payment/fail"); // 실패 시 redirect url
 
