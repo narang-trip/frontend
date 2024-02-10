@@ -80,7 +80,7 @@ const UpperNavbar = () => {
 
   const getAlertData = async (userId) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_ALERT_REQUEST_URI}/${userId}`)
+      const res = await axios.get(`${import.meta.env.VITE_ALERT_REQUEST_URI}/list/${userId}`)
       console.log(res.data);
     } catch (error) {
       console.error(error)
