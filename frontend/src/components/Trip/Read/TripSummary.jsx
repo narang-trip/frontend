@@ -45,9 +45,9 @@ const TripSummary = ({ trip }) => {
           <div className="grid">
             <div className="relative overflow-hidden group rounded-3xl">
               <img
-                src={`assets/airplain.jpg`}
+                src={trip.tripImgUrl}
                 alt="tripThumbnail"
-                className="mb-2 transition-transform duration-300 ease-in-out transform scale-100 rounded-3xl group-hover:scale-125"
+                className="mb-2 transition-transform duration-300 ease-in-out transform scale-100 w-[18rem] h-[13rem] rounded-3xl group-hover:scale-125"
               />
               {isHovered && (
                 <div className="absolute inset-0 flex flex-col items-end justify-end bg-black text-neutral-800 bg-opacity-20">

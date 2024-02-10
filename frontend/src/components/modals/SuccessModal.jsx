@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { IoMdClose } from "react-icons/io";
 
 const SuccessModal = (props) => {
   const modalBG = useRef("");
@@ -16,18 +17,17 @@ const SuccessModal = (props) => {
         }}
       >
         <div className=" font-spoqa">
-          <div className="flex justify-end">
+        <div className="flex justify-end">
             <button
-              className="mb-4 text-xl font-semibold"
+              className="mb-4 text-xl font-semibold hover:text-red-600"
               onClick={props.onClose}
             >
-              X
+              <IoMdClose />
             </button>
           </div>
 
           <div className="items-center mt-5 text-center">
             <p className="mb-4 font-semibold text-ml">동행 신청이 완료되었습니다!</p>
-          
           </div>
         </div>
       </div>

@@ -11,6 +11,19 @@ export default function ReceiveRequestsInfo({ data }) {
         `https://i10a701.p.ssafy.io/api/message/alert/attend/${data.id}/ACCEPT`
       );
 
+      const response2 = await axios.patch(
+        `https://i10a701.p.ssafy.io/api/trip/trip/join`,
+       {
+        tripID: data.tripId,
+        userId: data.tripReaderId
+       },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      
       // 서버 응답을 이용해 필요한 작업 수행
       console.log("서버 응답:", response1.data);
 
