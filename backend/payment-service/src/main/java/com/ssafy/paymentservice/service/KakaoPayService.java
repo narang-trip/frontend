@@ -29,7 +29,7 @@ public class KakaoPayService {
 
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
     @Value("${adminKey}")
-    static String admin_Key;
+    private String admin_Key;
     private KakaoReadyResponse kakaoReady;
     private final ChargeRecordRepository chargeRecordRepository;
     private final UserMileageRepository userMileageRepository;
