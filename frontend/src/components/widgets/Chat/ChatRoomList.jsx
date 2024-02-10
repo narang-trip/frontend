@@ -37,7 +37,7 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
         `https://i10a701.p.ssafy.io/api/message/chat/list/${userId}`
       );
       setChatroomList(res.data);
-      console.log("res data", res.data)
+      // console.log("res data", res.data)
     } catch (error) {
       console.error(error);
     } finally {setIsLoading(false)}
