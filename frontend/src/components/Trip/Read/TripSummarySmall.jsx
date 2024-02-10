@@ -46,7 +46,7 @@ const TripSummarySmall = ({ trip }) => {
             <img
               src={`assets/airplain.jpg`}
               alt="tripThumbnail"
-              className="object-cover w-full h-full transition-transform duration-300 ease-in-out transform scale-100 rounded-3xl group-hover:scale-125 "
+              className="w-full h-full transition-transform duration-300 ease-in-out transform scale-100 rounded-3xl group-hover:scale-125 "
             />
             {isHovered && (
               <div className="absolute inset-0 flex flex-col items-end justify-end bg-black text-neutral-800 bg-opacity-20">
@@ -67,7 +67,7 @@ const TripSummarySmall = ({ trip }) => {
               </p>
             </div>
             <div className="flex flex-row items-center my-3 text-sm">
-              <SlLocationPin className="mx-2 text-4xl" />
+              <SlLocationPin className="mx-2 text-2xl" />
               <p className="text-xs">{trip.destination}</p>
             </div>
             <div className="flex flex-row items-center my-3 text-sm">
