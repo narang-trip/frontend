@@ -4,18 +4,15 @@ import com.ssafy.userservice.api.request.UserInfoRequest;
 import com.ssafy.userservice.api.service.OAuth2Service;
 import com.ssafy.userservice.api.service.UserService;
 import com.ssafy.userservice.db.entity.Auth;
-import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Slf4j
 @CrossOrigin("*")
