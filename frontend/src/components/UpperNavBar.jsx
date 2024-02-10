@@ -10,6 +10,14 @@ import LoginModal from "./modals/LoginModal";
 import Button from "../ui/Button";
 import { conceptTemaBannerColorObject } from "../data/concepts"
 import axios from "axios";
+import { Link } from "react-router-dom";
+
+const AlertAnimation = ({color}) => {
+  return <span className="relative flex h-3 w-3">
+    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${color} opacity-75`} style={{ right: -22, top: '-8px' }}></span>
+    <span className={`absolute inline-flex rounded-full h-3 w-3 ${color}`} style={{ right: -22, top: '-8px' }}></span>
+  </span>
+}
 
 const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,12 +40,10 @@ const UpperNavbar = () => {
 
     eventSource.addEventListener("sse", (event) => {
       const { data: receivedConnectData } = event;
-      console.log(receivedConnectData);
-      if (receivedConnectData === "SSE 연결이 완료되었습니다.") {
-        // "SSE connection has been completed."
+      if (receivedConnectData === `EventStream Created. [userId=${code}]`) {
         console.log("SSE CONNECTED");
       } else {
-        console.log(event);
+
       }
     });
     eventSource.onerror = function (event) {
@@ -108,15 +114,10 @@ const UpperNavbar = () => {
       )}
       {code !== "" && (
         <div className="flex justify-between space-x-4">
-          <div className="relative flex items-center">
-            {alertList>0 && (
-              <span className="relative flex h-3 w-3">
-                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${conceptColorClass} opacity-75`} style={{ right: -22, top: '-8px' }}></span>
-                <span className={`absolute inline-flex rounded-full h-3 w-3 ${conceptColorClass}`} style={{ right: -22, top: '-8px' }}></span>
-              </span>
-            )}
+          <Link to="/applicantList" className="relative flex items-center">
+            {alertList.length > 0 && <AlertAnimation color={conceptColorClass} />}
             🔔
-          </div>
+          </Link>
           <Dropdown />
         </div>
       )}
