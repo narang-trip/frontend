@@ -14,9 +14,22 @@ const ReceivedRequests = () => {
 
   const getMyList = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_TRIP_REQUEST_URI}/trips?userId=3fa85f64-5717-4562-b3fc-2c963f66a123&pageNo=${pageNo}`
-      );
+      // const response = await axios.get(
+      //   `${import.meta.env.VITE_TRIP_REQUEST_URI}/trips?userId=3fa85f64-5717-4562-b3fc-2c963f66a123&pageNo=${pageNo}`
+      // );
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/recruit`,
+        {
+          userId: "3fa85f64-5717-4562-b3fc-2c963f66a123",
+          tripPageNo: pageNo
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
 
       // 가져올 항목이 없으면 중단
       if (response.data.content.length === 0) {

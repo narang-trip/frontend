@@ -13,12 +13,14 @@ function MainNavigation() {
   return (
     <div className="fixed left-0 flex flex-col items-center w-[12rem] h-5/6 top-19">
       <nav>
-        <ul className="flex flex-col items-start h-screen py-10 mx-auto list-none justify-normal">
+        <ul className="flex flex-col items-start h-screen py-1 mx-auto list-none justify-normal">
           <li className="duration-300 py-7">
             <NavLink
               to="/"
               className={`flex items-center justify-center ${
-                isActive("/") ? "text-amber-500 font-bold" : "hover:text-amber-500 hover:font-bold"
+                isActive("/")
+                  ? "text-amber-500 text-opacity-50 font-extrabold"
+                  : "hover:text-amber-500 hover:font-bold"
               }`}
             >
               <GoHome className="w-6 h-6 ml-0 mr-3" />
@@ -30,7 +32,7 @@ function MainNavigation() {
               to="/register"
               className={`flex items-center justify-center ${
                 isActive("/register")
-                  ? "text-amber-500 font-bold"
+                  ? "text-amber-500 text-opacity-50 font-extrabold"
                   : "hover:text-amber-500 hover:font-bold"
               }`}
             >
@@ -43,7 +45,7 @@ function MainNavigation() {
               to="/search"
               className={`flex items-center justify-center ${
                 isActive("/search")
-                  ? "text-amber-500 font-bold"
+                  ? "text-amber-500 text-opacity-50 font-extrabold"
                   : "hover:text-amber-500 hover:font-bold"
               }`}
             >
@@ -56,7 +58,7 @@ function MainNavigation() {
               to="/applicantList"
               className={`flex items-center justify-center ${
                 isActive("/applicantList")
-                  ? "text-amber-500 font-bold"
+                  ? "text-amber-500 text-opacity-50 font-extrabold"
                   : "hover:text-amber-500 hover:font-bold"
               }`}
             >
@@ -69,7 +71,7 @@ function MainNavigation() {
               to="/planning"
               className={`flex items-center justify-center ${
                 isActive("/planning")
-                  ? "text-amber-500 font-bold"
+                  ? "text-amber-500 text-opacity-50 font-extrabold"
                   : "hover:text-amber-500 hover:font-bold"
               }`}
             >

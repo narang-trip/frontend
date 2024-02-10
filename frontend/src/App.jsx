@@ -22,10 +22,6 @@ const router = createBrowserRouter([
     // errorElement: <ErrorPage />,
     children: [
       {
-        path: "/applicantList",
-        element: <ApplicantList />,
-      },
-      {
         path: "/planning",
         element: <MyPlan />,
       },
@@ -70,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "login/oauth2/code/naver",
         element: <NaverLogin />,
+      },
+      {
+        path: "/applicantList",
+        element: <ApplicantList />,
       },
     ],
   },
