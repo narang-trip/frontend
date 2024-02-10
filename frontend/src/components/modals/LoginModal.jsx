@@ -5,13 +5,14 @@ const LoginModal = (props) => {
   const modalBG = useRef(null);
   const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
   const kakaoRedirectURI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
-  console.log(kakaoRedirectURI);
+  const naverClientId = import.meta.env.VITE_NAVER_CLIENT_ID;
+  const naverRedirectURI = import.meta.env.VITE_NAVER_REDIRECT_URI;
+  const naverState = "flase";
   const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
-  const kakaoLoginURI2 =
-    "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
-  const kakaoLoginURI3 =
-    "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
+  const kakaoLoginURI2 = "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
+  const kakaoLoginURI3 = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
   const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
+  const naverLoginURI2 = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=${naverState}&redirect_uri=${naverRedirectURI}`;
 
   const kakaoLogin = async () => {
     try {
@@ -47,13 +48,13 @@ const LoginModal = (props) => {
                 // onClick={kakaoLogin}
               />
             </a>
-            <button>
+            <a href={naverLoginURI2}>
               <img
                 className="object-cover h-16 w-36 rounded-xl"
                 src="assets/naver_login.png"
                 // onClick={naverLogin}
               />
-            </button>
+            </a>
           </div>
         </div>
       </div>
