@@ -22,20 +22,29 @@ const TripListContent = () => {
   const [conceptTripList, setConceptTripList] = useState([]);
 
   useEffect(() => {
-    getConceptTrip(concept)
-  }, [concept])
+    const source = axios.CancelToken.source(); // 빠르게 컨셉 변경 시 호출 취소하기 위함
 
-  const getConceptTrip = async (concept) => {
-    try {
-      setIsLoading(true);
-      const res = await axios.get(`https://i10a701.p.ssafy.io/api/trip/trips/banner?tripConcept=${concept}`)
-      setConceptTripList(res.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
+    const getConceptTrip = async (concept) => {
+      try {
+        setIsLoading(true);
+        const res = await axios.get(`https://i10a701.p.ssafy.io/api/trip/trips/banner?tripConcept=${concept}`)
+        setConceptTripList(res.data);
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("axios 캔슬", error.message)
+        }
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }
+
+    getConceptTrip(concept);
+
+    return () => {
+      source.cancel("너무 빠른 api 요청으로 캔슬")
+    }
+  }, [concept])
 
 
 
@@ -47,7 +56,7 @@ const TripListContent = () => {
     return <NoDataMsg conceptColor={conceptColor} />;
   } //데이터 없으면
 
-  return <CarouselTemplete list={conceptTripList} />; 
+  return <CarouselTemplete list={conceptTripList} />;
   //둘다 아니면
 }
 
