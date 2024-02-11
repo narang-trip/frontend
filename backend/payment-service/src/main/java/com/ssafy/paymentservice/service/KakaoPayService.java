@@ -9,6 +9,7 @@ import com.ssafy.paymentservice.entity.KakaoReadyResponse;
 import com.ssafy.paymentservice.db.repository.ChargeRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
@@ -27,14 +28,15 @@ import java.util.Optional;
 public class KakaoPayService {
 
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
-    static final String admin_Key = "723e374a012b3d38c33794bedbd3d451"; // 공개 조심! 본인 애플리케이션의 어드민 키를 넣어주세요
+    @Value("${adminKey}")
+    private String admin_Key;
     private KakaoReadyResponse kakaoReady;
     private final ChargeRecordRepository chargeRecordRepository;
     private final UserMileageRepository userMileageRepository;
     @Autowired
     private TextEncryptor textEncryptor;
 
-    public KakaoReadyResponse kakaoPayReady(String userId, String price) {
+    public KakaoReadyResponse kakaoPayReady(String userId, String price,String returnUrl) {
 
         // 카카오페이 요청 양식
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -46,11 +48,11 @@ public class KakaoPayService {
         parameters.add("total_amount", price);
         parameters.add("tax_free_amount", "1");
 
-        parameters.add("approval_url", "https://i10a701.p.ssafy.io/api/payment/success" + "?user_id=" + userId); // 성공 시 redirect url
+        parameters.add("approval_url", "https://i10a701.p.ssafy.io/api/payment/success" + "?user_id=" + userId + "&return_url=" + returnUrl); // 성공 시 redirect url
         parameters.add("cancel_url", "https://i10a701.p.ssafy.io/api/payment/cancel" + "?user_id=" + userId); // 취소 시 redirect url
         parameters.add("fail_url", "https://i10a701.p.ssafy.io/api/payment/fail"); // 실패 시 redirect url
 
-//        parameters.add("approval_url", "http://localhost:8082/api/payment/success" + "?user_id=" + userId); // 성공 시 redirect url
+//        parameters.add("approval_url", "http://localhost:8082/api/payment/success" + "?user_id=" + userId + "&return_url=" + returnUrl); // 성공 시 redirect url
 //        parameters.add("cancel_url", "http://localhost:8082/api/payment/cancel" + "?user_id=" + userId); // 취소 시 redirect url
 //        parameters.add("fail_url", "http://localhost:8082/api/payment/fail"); // 실패 시 redirect url
 

@@ -25,3 +25,5 @@ springdoc:
     path: /api/payment/v3/api-docs
   swagger-ui:
     path: /api/payment/swagger-ui.html
+
+adminKey: ${ADMIN_KEY}
