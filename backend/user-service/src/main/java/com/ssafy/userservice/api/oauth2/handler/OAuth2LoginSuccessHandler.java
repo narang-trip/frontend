@@ -3,6 +3,7 @@ package com.ssafy.userservice.api.oauth2.handler;
 //import com.ssafy.userservice.api.oauth2.CustomOAuth2User;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.Authority;
+import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.security.jwt.JwtService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import java.io.IOException;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
+    private final AuthRepository authRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -40,13 +42,21 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private void loginSuccess(HttpServletResponse response, PrincipalDetails oAuth2User) throws IOException {
-        String accessToken = jwtService.createAccessToken(oAuth2User.getAuth().getId());
+        log.info("loginsuccess 호출");
+        String userId = oAuth2User.getAuth().getId();
+        String accessToken = jwtService.createAccessToken(userId);
         String refreshToken = jwtService.createRefreshToken();
         response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
         response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
+        authRepository.findById(userId)
+                .ifPresent(auth ->{
+                    auth.updateRefreshToken(refreshToken);
+                    authRepository.saveAndFlush(auth);
+                });
+
         // AccessToken과 RefreshToken 추가
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
-        jwtService.updateRefreshToken(oAuth2User.getAuth().getId(), refreshToken);
+        jwtService.updateRefreshToken(userId, refreshToken);
     }
 }
