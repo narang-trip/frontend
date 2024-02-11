@@ -1,13 +1,10 @@
 package com.ssafy.tripservice.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.querydsl.core.annotations.QueryEntity;
 import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import jakarta.persistence.Entity;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -27,7 +24,9 @@ public class Trip extends BaseEntity{
     private String tripDesc;
     private String tripImgUrl;
     private LocalDateTime recruitDate;
-    private String destination;
+    private String continent;
+    private String country;
+    private String city;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
     private UUID tripLeaderId;
@@ -57,7 +56,9 @@ public class Trip extends BaseEntity{
                 .tripDesc(this.tripDesc)
                 .tripImgUrl(this.tripImgUrl)
                 .recruitDate(this.recruitDate)
-                .destination(this.destination)
+                .continent(this.continent)
+                .country(this.country)
+                .city(this.city)
                 .departureDate(this.departureDate)
                 .returnDate(this.returnDate)
                 .tripLeaderId(this.tripLeaderId)
@@ -74,14 +75,15 @@ public class Trip extends BaseEntity{
                 .build();
     }
 
-    public TripPageResponse toTripPageResponse(Integer pageNo) {
+    public TripPageResponse toTripPageResponse() {
         return TripPageResponse.builder()
-                .pageNo(pageNo)
                 .tripId(this.get_id())
                 .tripName(this.tripName)
                 .tripDesc(this.tripDesc)
                 .tripImgUrl(this.tripImgUrl)
-                .destination(this.destination)
+                .continent(this.continent)
+                .country(this.country)
+                .city(this.city)
                 .departureDate(this.departureDate)
                 .returnDate(this.returnDate)
                 .tripLeaderId(this.tripLeaderId)
