@@ -16,7 +16,9 @@ public class TripPageResponse {
         private String tripName;
         private String tripDesc;
         private String tripImgUrl;
-        private String destination;
+        private String continent;
+        private String country;
+        private String city;
         private LocalDateTime departureDate;
         private LocalDateTime returnDate;
         private UUID tripLeaderId;

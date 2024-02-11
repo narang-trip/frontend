@@ -2,17 +2,8 @@ package com.ssafy.tripservice.api.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.mongodb.ClientSessionOptions;
-import com.mongodb.ReadPreference;
-import com.mongodb.client.ClientSession;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.ReturnDocument;
-import com.mongodb.client.model.UpdateManyModel;
-import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import com.querydsl.mongodb.document.AbstractMongodbQuery;
-import com.querydsl.mongodb.morphia.MorphiaQuery;
 import com.ssafy.tripservice.api.request.TripQueryRequest;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
@@ -22,40 +13,18 @@ import com.ssafy.tripservice.db.entity.QTrip;
 import com.ssafy.tripservice.db.entity.Trip;
 import com.ssafy.tripservice.db.repository.TripRepository;
 import lombok.AllArgsConstructor;
-import org.bson.Document;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Window;
-import org.springframework.data.geo.GeoResults;
-import org.springframework.data.mongodb.MongoExpression;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.*;
-import org.springframework.data.mongodb.core.aggregation.AggregationPipeline;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
-import org.springframework.data.mongodb.core.annotation.Collation;
-import org.springframework.data.mongodb.core.convert.MongoConverter;
-import org.springframework.data.mongodb.core.index.IndexOperations;
-import org.springframework.data.mongodb.core.mapping.Unwrapped;
-import org.springframework.data.mongodb.core.mapreduce.MapReduceOptions;
-import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
 import org.springframework.data.mongodb.core.query.*;
-import org.springframework.data.mongodb.repository.Aggregation;
-import org.springframework.data.mongodb.repository.support.SpringDataMongodbQuery;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.swing.text.html.Option;
-import java.awt.print.Pageable;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Transactional
@@ -317,7 +286,7 @@ public class TripServiceImpl implements TripService {
         return PageableExecutionUtils
                 .getPage(availableTrips, pageRequest,
                         () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
-                .map(p -> p.toTripPageResponse(pageNo));
+                .map(Trip::toTripPageResponse);
     }
 
     @Override
@@ -357,20 +326,19 @@ public class TripServiceImpl implements TripService {
                         .elemMatch(
                                 Criteria.where("participantId").is(tripQueryRequest.getUserId())))
                 .addCriteria(
-                    (Criteria.where("departureDate").lt(tripQueryRequest.getQueryEndDate())
-                        .and("returnDate").gt(tripQueryRequest.getQuerySttDate())));
+                    (Criteria.where("departureDate").lt(tripQueryRequest.getQueryEndDate()))
+                            .orOperator(Criteria.where("returnDate").gt(tripQueryRequest.getQuerySttDate())));
 
         List<Trip> myTrips = mongoTemplate.find(query, Trip.class);
 
         return PageableExecutionUtils
                 .getPage(myTrips, pageRequest,
                         () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
-                .map(p -> p.toTripPageResponse(tripQueryRequest.getTripPageNo()));
+                .map(Trip::toTripPageResponse);
     }
 
     @Override
     public Page<TripPageResponse> getTripsIveOwn(TripQueryRequest tripQueryRequest) {
-        System.out.println(tripQueryRequest);
 
         final int pageSize = 4;
 
@@ -392,7 +360,29 @@ public class TripServiceImpl implements TripService {
         return PageableExecutionUtils
                 .getPage(myTrips, pageRequest,
                         () -> mongoTemplate.count(query.skip(-1).limit(-1), Trip.class))
-                .map(p -> p.toTripPageResponse(tripQueryRequest.getTripPageNo()));
+                .map(Trip::toTripPageResponse);
+    }
+
+    @Override
+    public Page<TripPageResponse> getTripsIWant(TripQueryRequest tripQueryRequest) {
+
+        final int pageSize = 9;
+
+        PageRequest pageRequest = PageRequest.of(
+        tripQueryRequest.getTripPageNo(), pageSize, Sort.by("departureDate").descending());
+
+        List<Trip> tripsIWant = new LinkedList<>();
+
+        Page<Trip> tripPages = tripRepository.findAll(
+                QTrip.trip
+                        .tripRoles.any().in(tripQueryRequest.getTripRoles())
+                        .and(QTrip.trip.departureDate.before(tripQueryRequest.getQueryEndDate())
+                                .or(QTrip.trip.returnDate.after(tripQueryRequest.getQuerySttDate())))
+                        .and(QTrip.trip.tripParticipantsSize.goe(tripQueryRequest.getParticipantsSize()))
+                        .and(QTrip.trip.tripConcept.in(tripQueryRequest.getTripConcept()))
+                        .and(QTrip.trip.continent.in(tripQueryRequest.getTripContinent())), pageRequest);
+
+        return tripPages.map(Trip::toTripPageResponse);
     }
 
     /*
