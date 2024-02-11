@@ -17,7 +17,9 @@ public class TripRequest {
     private String tripDesc;
     private String tripImgUrl;
     private LocalDateTime recruitDate;
-    private String destination;
+    private String continent;
+    private String country;
+    private String city;
     private LocalDateTime departureDate;
     private LocalDateTime returnDate;
     private UUID tripLeaderId;
@@ -39,7 +41,9 @@ public class TripRequest {
                 .tripDesc(this.tripDesc)
                 .tripImgUrl(this.tripImgUrl)
                 .recruitDate(this.recruitDate)
-                .destination(this.destination)
+                .continent(this.continent)
+                .country(this.country)
+                .city(this.city)
                 .departureDate(this.departureDate)
                 .returnDate(this.returnDate)
                 .tripLeaderId(this.tripLeaderId)
