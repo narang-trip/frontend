@@ -8,10 +8,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-
 //@EnableDiscoveryClient
 // For Deployment
-@OpenAPIDefinition(servers = {@Server(url = "https://i10a701.p.ssafy.io", description = "default url")})
+//@OpenAPIDefinition(servers = {@Server(url = "https://i10a701.p.ssafy.io", description = "default url")})
 @SpringBootApplication
 //@EnableMongoRepositories(basePackageClasses = {TripRepository.class, PlanRepository.class})
 public class TripServiceApplication {

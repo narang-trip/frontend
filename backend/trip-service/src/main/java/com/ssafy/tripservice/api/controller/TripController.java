@@ -40,13 +40,13 @@ public class TripController {
     private final AmazonS3Client amazonS3Client;
     private final TripService tripService;
 
-    @GetMapping("/trips/available")
-    public ResponseEntity<List<TripResponse>> getTripsAvailable() {
-
-        List<TripResponse> availableTrips = tripService.getAvailableTrips();
-
-        return new ResponseEntity<List<TripResponse>>(availableTrips, HttpStatus.OK);
-    }
+//    @GetMapping("/trips/available")
+//    public ResponseEntity<List<TripResponse>> getTripsAvailable() {
+//
+//        List<TripResponse> availableTrips = tripService.getAvailableTrips();
+//
+//        return new ResponseEntity<List<TripResponse>>(availableTrips, HttpStatus.OK);
+//    }
 
     @Operation(summary = "Trip ID 로 TRIP 개별 조회",
             responses = {
@@ -168,9 +168,9 @@ public class TripController {
     @Operation(summary = "참여 가능한 Trip Pages 조회",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Trips You Can Join")})
-    @GetMapping("/page/{pageNo}")
-    public ResponseEntity<Page<TripPageResponse>> getAvailableTripsPageable(@PathVariable("pageNo") int pageNo) {
-        return new ResponseEntity<>(tripService.getAvailableTripPages(pageNo), HttpStatus.OK);
+    @PostMapping("/page/available")
+    public ResponseEntity<Page<TripPageResponse>> getAvailableTrips(@RequestBody TripQueryRequest tripQueryRequest) {
+        return new ResponseEntity<>(tripService.getTripsIWant(tripQueryRequest), HttpStatus.OK);
     }
 
 
@@ -194,18 +194,21 @@ public class TripController {
     }
 
     @Operation(summary = "나의 여행 조회 (기간)",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "User Deleted Trip Successfully")})
+            description = "name = userId, pageNo, querySttDate(optional), queryEndDate(optional)",
+            responses = {@ApiResponse(responseCode = "200", description = "User Get Trip Successfully")})
     @PostMapping("/trips")
-    public ResponseEntity<Page<TripPageResponse>> getTripsIveBeen(@RequestBody TripQueryRequest tripQueryRequest) {
+    public ResponseEntity<Page<TripPageResponse>> getTripsIveBeen(
+            @RequestBody TripQueryRequest tripQueryRequest) {
+        System.out.println(tripQueryRequest);
         return ResponseEntity.ok(tripService.getTripsIveBeen(tripQueryRequest));
     }
 
     @Operation(summary = "내가 리더인 여행",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "User Deleted Trip Successfully")})
+            parameters = { @Parameter (name = "tripQueryRequest", description = "userId, pageNo") },
+            responses = { @ApiResponse(responseCode = "200", description = "User Get Trip Successfully")})
     @PostMapping("/recruit")
-    public ResponseEntity<Page<TripPageResponse>> getTripsIveOwn(@RequestBody TripQueryRequest tripQueryRequest) {
+    public ResponseEntity<Page<TripPageResponse>> getTripsIveOwn(
+            @RequestBody TripQueryRequest tripQueryRequest) {
         return ResponseEntity.ok(tripService.getTripsIveOwn(tripQueryRequest));
     }
 }
