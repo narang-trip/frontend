@@ -10,6 +10,7 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,12 @@ public class MileageService {
     private final UsageRecordRepository usageRecordRepository;
     @Autowired
     private TextEncryptor textEncryptor;
+    public int getMileage(String user_id){
+        Optional<UserMileage> userMileage = userMileageRepository.findById(user_id);
+        // 암호화된 마일리지 복호화
+        int mileage = userMileage.map(value -> Integer.parseInt(textEncryptor.decrypt(value.getEncryptedMileage()))).orElse(0);
+        return mileage;
+    }
     public UsageRecord useMileage(String user_id, int price){
         UserMileage userMileage = userMileageRepository.findById(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));

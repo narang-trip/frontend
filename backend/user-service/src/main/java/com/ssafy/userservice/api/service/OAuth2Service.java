@@ -2,7 +2,12 @@ package com.ssafy.userservice.api.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.userservice.api.oauth2.exception.AuthNotFoundException;
+import com.ssafy.userservice.api.oauth2.exception.InvalidSocialTypeException;
+import com.ssafy.userservice.api.oauth2.exception.InvalidTokenException;
 import com.ssafy.userservice.api.oauth2.userinfo.KakaoUserInfo;
+import com.ssafy.userservice.api.oauth2.userinfo.NaverUserInfo;
+import com.ssafy.userservice.api.oauth2.userinfo.OAuth2UserInfo;
 import com.ssafy.userservice.db.entity.Auth;
 import com.ssafy.userservice.db.entity.Authority;
 import com.ssafy.userservice.db.entity.User;
@@ -10,12 +15,10 @@ import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
 import com.ssafy.userservice.security.jwt.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -32,35 +35,54 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class OAuth2Service {
-    private final ClientRegistrationRepository clientRegistrationRepository;
     private final JwtService jwtService;
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String kakaoClientId;
-
     @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
     private String kakaoClientSecret;
-
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String kakaoRedirectUri;
-
-    @Value("${spring.security.oauth2.client.provider.kakao.authorization-uri}")
-    private String kakaoAuthorizationUri;
-
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String kakaoTokenUri;
-
     @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
     private String kakaoUserInfoUri;
 
+    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
+    private String naverClientId;
+    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+    private String naverClientSecret;
+    @Value("${spring.security.oauth2.client.registration.naver.redirect-uri}")
+    private String naverRedirectUri;
+    @Value("${spring.security.oauth2.client.provider.naver.token-uri}")
+    private String naverTokenUri;
+    @Value("${spring.security.oauth2.client.provider.naver.user-info-uri}")
+    private String naverUserInfoUri;
 
-    public String kakaoCallBack(String code){
-        /*
-            받은 코드로 토큰 가져오기
-         */
-        // 카카오 API 호출을 위한 설정
+
+    public User oauth2Login(String provider, String code, HttpServletResponse response){
+        // 받은 코드로 토큰 가져오기
+        String providerAccessToken = getAccessToken(provider, code);
+        // 받은 토큰으로 유저 정보 갖고오기
+        OAuth2UserInfo userInfo = getUserInfo(provider, providerAccessToken);
+        //DB에 저장하기
+        User user = registerUser(userInfo);
+        log.info("userInfo : {}", user.toString());
+        setTokensForUser(user.getId(), response);
+        return user;
+    }
+
+    private String getAccessToken(String provider, String code){
+        return switch (provider){
+            case "kakao" -> getKakaoAccessToken(code);
+            case "naver" -> getNaverAccessToken(code);
+            default -> throw new InvalidSocialTypeException();
+        };
+    }
+
+    private String getKakaoAccessToken(String code){  // 카카오 API 호출을 위한 설정
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -75,24 +97,53 @@ public class OAuth2Service {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
         // 카카오 API에 POST 요청을 보내 토큰 획득
-        ResponseEntity<Map> responseEntity = restTemplate.postForEntity(
-                "https://kauth.kakao.com/oauth/token", request, Map.class);
-
-        log.info("kakaoCallBack에서 responseEntity {}", responseEntity);
+        ResponseEntity<Map> response = restTemplate.postForEntity(kakaoTokenUri, request, Map.class);
+        log.info("getKakaoAccessToken에서 response {}", response);
 
         // 응답에서 액세스 토큰 얻기
-        String kakaoAccessToken = (String) responseEntity.getBody().get("access_token");
+        String accessToken = (String) response.getBody().get("access_token");
+        log.info("getKakaoAccessToken에서 accessToken {}", accessToken);
 
-        log.info("kakaoCallBack에서 kakaoAccessToken {}", kakaoAccessToken);
+        return accessToken;
+    }
 
-        /*
-            받은 토큰으로 유저 정보 갖고오기
-         */
+    private String getNaverAccessToken(String code){  // 카카오 API 호출을 위한 설정
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        restTemplate = new RestTemplate();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", naverClientId);
+        params.add("client_secret", naverClientSecret);
+        params.add("redirect_uri", naverRedirectUri);  // 등록한 카카오 애플리케이션 설정에 등록한 리다이렉트 URI
+        params.add("code", code);
 
-        headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + kakaoAccessToken);
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+
+        // 카카오 API에 POST 요청을 보내 토큰 획득
+        ResponseEntity<Map> response = restTemplate.postForEntity(naverTokenUri, request, Map.class);
+        log.info("getNaverAccessToken에서 response {}", response);
+
+        // 응답에서 액세스 토큰 얻기
+        String accessToken = (String) response.getBody().get("access_token");
+        log.info("getNaverAccessToken에서 accessToken {}", accessToken);
+
+        return accessToken;
+    }
+
+    private OAuth2UserInfo getUserInfo(String provider, String accessToken){
+        return switch (provider) {
+            case "kakao" -> getKakaoUserInfo(accessToken);
+            case "naver" -> getNaverUserInfo(accessToken);
+            default -> throw new InvalidSocialTypeException();
+        };
+    }
+
+    private OAuth2UserInfo getKakaoUserInfo(String accessToken){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
         URI uri = UriComponentsBuilder.fromUriString(kakaoUserInfoUri)
@@ -106,44 +157,58 @@ public class OAuth2Service {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        log.info("kakaoCallBack에서 userInfo {}", userInfo);
-        KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(userInfo);
-        String accessToken = jwtService.createAccessToken(kakaoUserInfo.getEmail());
-        log.info("kakaoCallBack에서 jwt accessToken {}", accessToken);
-        // 액세스 토큰을 사용하여 사용자 정보 요청
-//        ResponseEntity<Map> userInfoResponseEntity = restTemplate.getForEntity(
-//                "https://kapi.kakao.com/v2/user/me", Map.class,
-//                kakaoAccessToken);
-//        log.info("kakaoCallBack에서 userInfoResponseEntity {}", userInfoResponseEntity);
-//        // 사용자 정보 얻기
-//        Map userInfo = userInfoResponseEntity.getBody();
-//        log.info("kakaoCallBack에서 userInfo {}", userInfo);
-//      // 사용자 정보를 기반으로 JWT 토큰 생성
-//        String accessToken = jwtService.createAccessToken(userInfo.getEmail());
+        log.info("getKakaoUserInfo에서 userInfo {}", userInfo);
+        return new KakaoUserInfo(userInfo);
+    }
 
-//        log.info("kakaoCallBack에서 jwt accessToken {}", accessToken);
+    private OAuth2UserInfo getNaverUserInfo(String accessToken){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
+        URI uri = UriComponentsBuilder.fromUriString(naverUserInfoUri)
+                .build()
+                .toUri();
 
-//        String accessToken2 = kakaoAccessToken; // 일단 임시로
+        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class);
+        Map<String, Object> userInfo;
+        try {
+            userInfo = new ObjectMapper().readValue(response.getBody(), Map.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("getNaverUserInfo에서 userInfo {}", userInfo);
+        return new NaverUserInfo((Map)userInfo.get("response"));
+    }
 
-        /*
-            DB에 저장하기
-         */
-        String provider = kakaoUserInfo.getProvider();
-        String providerId = kakaoUserInfo.getProviderId();
+    private void setTokensForUser(String userId, HttpServletResponse response){
+        String accessToken = jwtService.createAccessToken(userId);
+        String refreshToken = jwtService.createRefreshToken();
+
+        jwtService.sendAccessToken(response, accessToken);
+        jwtService.sendRefreshToken(response, refreshToken);
+
+        jwtService.updateRefreshToken(userId, refreshToken);
+    }
+
+    private User registerUser(OAuth2UserInfo userInfo){
+        String provider = userInfo.getProvider();
+        String providerId = userInfo.getProviderId();
         UUID uuid = UUID.nameUUIDFromBytes(providerId.getBytes());
         String id = uuid.toString();
-        String username = kakaoUserInfo.getName();
-        String email = kakaoUserInfo.getEmail();
-        String profileUrl = kakaoUserInfo.getProfileUrl();
-        String gender = kakaoUserInfo.getGender();
-        int ageRange = kakaoUserInfo.getAgeRange();
-        String nickname = kakaoUserInfo.getNickName();
+        String username = userInfo.getName();
+        String email = userInfo.getEmail();
+        String profileUrl = userInfo.getProfileUrl();
+        String gender = userInfo.getGender();
+        int ageRange = userInfo.getAgeRange();
+        String nickname = userInfo.getNickName();
 
-        Optional<Auth> findAuth = authRepository.findById(id);
+        Optional<User> findUser = userRepository.findById(id);
         User user = null;
         Auth auth = null;
-        if (findAuth.isEmpty()) { //찾지 못했다면
+        if (findUser.isEmpty()) { //찾지 못했다면
+            log.info("등록되지 않은 사용자입니다.");
             user = User.builder()
                     .id(id)
                     .nickname(nickname)
@@ -163,41 +228,16 @@ public class OAuth2Service {
             authRepository.save(auth);
         }
         else{
-            auth =findAuth.get();
+            log.info("{}는 등록된 사용자입니다", findUser.get().getNickname());
+            user = findUser.get();
         }
-        return accessToken;
+        return user;
     }
-
-//    public String getAuthorizationUrl(String registrationId) {
-////        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(registrationId);
-//        log.info("getAuthorizationUrl 함수 호출============");
-//        ClientRegistration clientRegistration = ClientRegistration
-//                .withRegistrationId(registrationId)
-//                .clientId(kakaoClientId)
-//                .clientSecret(kakaoClientSecret)
-//                .redirectUri(kakaoRedirectUri)
-//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//                .scope("profile", "email")
-//                .authorizationUri(kakaoAuthorizationUri)
-//                .tokenUri(kakaoTokenUri)
-//                .build();
-//        log.info(clientRegistration.toString());
-//        UriComponentsBuilder builder = UriComponentsBuilder
-//                .fromUriString(clientRegistration.getProviderDetails().getAuthorizationUri())
-//                .queryParam("client_id", clientRegistration.getClientId())
-//                .queryParam("redirect_uri", clientRegistration.getRedirectUri())
-//                .queryParam("response_type", "code")
-//                .queryParam("scope", String.join(" ", clientRegistration.getScopes()));
-//        log.info(builder.toString());
-//        log.info(builder.toUriString());
-//        return builder.toUriString();
-//    }
-
-//    public void logout(HttpServletRequest request) {
-//        String accessToken = jwtService.extractAccessToken(request).orElseThrow(InvalidTokenException::new);
-//        Integer userId = jwtService.extractId(accessToken).orElseThrow(InvalidTokenException::new);
-//        Auth auth = authRepository.findByUserId(userId).orElseThrow(AuthNotFoundException::new);
-//        auth.setRefreshToken(null);
-//        authRepository.save(auth);
-//    }
+    public void logout(HttpServletRequest request) {
+        String accessToken = jwtService.extractAccessToken(request).orElseThrow(InvalidTokenException::new);
+        String id = jwtService.extractId(accessToken).orElseThrow(InvalidTokenException::new);
+        Auth auth = authRepository.findById(id).orElseThrow(AuthNotFoundException::new);
+        auth.setRefreshToken(null);
+        authRepository.save(auth);
+    }
 }

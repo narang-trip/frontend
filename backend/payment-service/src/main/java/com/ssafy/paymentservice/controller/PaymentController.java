@@ -8,7 +8,9 @@ import com.ssafy.paymentservice.exception.BusinessLogicException;
 import com.ssafy.paymentservice.exception.ExceptionCode;
 import com.ssafy.paymentservice.service.KakaoPayService;
 import com.ssafy.paymentservice.service.MileageService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +32,10 @@ public class PaymentController {
      * 결제요청
      */
     @PostMapping("/ready")
-    public ResponseEntity readyToKakaoPay(@RequestParam("user_id") String userId, @RequestParam("price") String price) {
-        KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(userId, price);
-
+    public ResponseEntity readyToKakaoPay(@RequestParam("user_id") String userId,
+                                          @RequestParam("price") String price,
+                                          @RequestParam("return_url") String returnUrl) {
+        KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(userId, price, returnUrl);
         return new ResponseEntity<>(kakaoReady, HttpStatus.OK);
     }
 
@@ -40,11 +43,12 @@ public class PaymentController {
      * 결제 성공
      */
     @GetMapping("/success")
-    public ResponseEntity afterPayRequest(@RequestParam("pg_token") String pgToken, @RequestParam("user_id") String userId) {
-
+    public ResponseEntity afterPayRequest(@RequestParam("pg_token") String pgToken,
+                                          @RequestParam("user_id") String userId,
+                                          @RequestParam("return_url") String returnUrl) {
         KakaoApproveResponse kakaoApprove = kakaoPayService.approveResponse(pgToken, userId);
-
-        return new ResponseEntity<>(kakaoApprove, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, returnUrl).body(null);
+//        return new ResponseEntity<>(returnUrl, HttpStatus.OK);
     }
 
     /**
@@ -66,10 +70,21 @@ public class PaymentController {
         System.out.println("fail");
         throw new BusinessLogicException(ExceptionCode.PAY_FAILED);
     }
-
+    
+    /**
+     * 마일리지 사용
+     */
     @PostMapping("/use")
-    public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") int price) {
+    public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") int price, @RequestParam("trip_id") String tripId) {
         UsageRecord usageRecord = mileageService.useMileage(userId, price);
         return new ResponseEntity<>(usageRecord, HttpStatus.OK);
+    }
+
+    /**
+     * 잔액 확인
+     */
+    @GetMapping("/balance")
+    public ResponseEntity balance(@RequestParam("user_id") String userId){
+        return new ResponseEntity<>(mileageService.getMileage(userId), HttpStatus.OK);
     }
 }
