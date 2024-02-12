@@ -2,8 +2,7 @@ import { Fragment, useState, useCallback, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import axios from "axios";
 
-import TripDetail from "../Trip/Read/TripDetail";
-import TripSummary from "../Trip/Read/TripSummary";
+import TripSummaryMini from "../Trip/Read/TripSummaryMini";
 
 const SmallPlan = (props) => {
   const [pageNo, setPageNo] = useState(0);
@@ -18,12 +17,11 @@ const SmallPlan = (props) => {
       const response = await axios.post(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trips`,
         {
-          userId: "3fa85f64-5717-4562-b3fc-2c963f66a123",
+          userId: "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5",
           tripPageNo: pageNo,
         }
       );
 
-      console.log(response.data);
       // 가져올 항목이 없으면 중단
       if (response.data.content.length === 0) {
         return;
@@ -53,13 +51,12 @@ const SmallPlan = (props) => {
   if (dates[1] !== null) {
     plans.push([], []);
   }
-  console.log(plans);
   // 날짜 포함하면
   return (
     <Fragment>
       <div className="flex flex-wrap justify-center">
         {tripData.map((trip, idx) => (
-          <TripSummary trip={trip} key={idx} />
+          <TripSummaryMini trip={trip} key={idx} />
         ))}
       </div>
       <div ref={ref}></div>
