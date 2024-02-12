@@ -2,12 +2,13 @@ package com.ssafy.userservice.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -22,13 +23,21 @@ public class User extends BaseEntity {
     private int ageRange;
     @Column
     private String profile_url;
+    @ManyToMany
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> userRoles;
 
     @Builder
-    public User(String id, String nickname, String gender, int ageRange, String profile_url){
+    public User(String id, String nickname, String gender, int ageRange, String profile_url, List<Role> userRoles){
         super.setId(id);
         this.nickname = nickname;
         this.gender = gender;
         this.ageRange = ageRange;
         this.profile_url = profile_url;
+        this.userRoles = userRoles;
     }
 }
