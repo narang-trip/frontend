@@ -8,7 +8,6 @@ import SuccessModal from "./SuccessModal";
 const ApplicationModal = ({ data, onClose }) => {
   // 지원한 포지션리스트 저장
   const [selectedPositions, setSelectedPositions] = useState([]);
-
   // 포부
   const [comment, setComment] = useState("");
   // 신청 완료 여부
@@ -17,7 +16,7 @@ const ApplicationModal = ({ data, onClose }) => {
   const [balance, setBalance] = useState(0);
 
   const [isRedirecting, setIsRedirecting] = useState(false);
-  
+
   const handleChangeComment = (e) => {
     setComment(e.target.value);
   };
@@ -31,7 +30,6 @@ const ApplicationModal = ({ data, onClose }) => {
     );
   };
 
-  
   // 잔액 조회
   const handleBalance = async () => {
     try {
@@ -46,11 +44,27 @@ const ApplicationModal = ({ data, onClose }) => {
     }
   };
 
+  // 신청자, 즉 로그인 한 사람 정보 조회
+  const [userData, setUserData] = useState([]);
+  const fetchUserData = async () => {
+    try {
+      // API에서 데이터 가져오는 요청
+      const response = await axios.get(
+        `https://i10a701.p.ssafy.io/api/user/profile/${postData.senderId}`
+      );
+
+      // 가져온 데이터를 state에 업데이트
+      setUserData(response.data);
+    } catch (error) {
+      console.error("데이터 가져오기 실패:", error);
+    }
+  };
+
   useEffect(() => {
     handleBalance();
+    fetchUserData();
   }, []);
 
-  
   // 보유 마일리지와 예약 마일리지의 차이 계산
   // 0 이상이면 신청 가능, 0 이하이면 충전해야함
   const mileageDifference = 200 - data.tripDeposit;
@@ -58,7 +72,7 @@ const ApplicationModal = ({ data, onClose }) => {
   const postData = {
     tripId: data.tripId,
     tripName: data.tripName,
-    senderId: "노세희",
+    senderId: "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5",
     receiverId: data.tripLeaderId,
     position: selectedPositions,
     aspiration: comment,
@@ -96,13 +110,13 @@ const ApplicationModal = ({ data, onClose }) => {
 
   const handleCharge = async () => {
     setIsRedirecting(true);
-    
-    const user_id = "노세희"; // 사용자 ID
+
+    const user_id = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"; // 사용자 ID
     const price = 20000; // 충전 금액
 
     try {
       const url = `http://localhost:3000/detail/${postData.tripId}`;
-      
+
       const response = await axios.post(
         `https://i10a701.p.ssafy.io/api/payment/ready?user_id=${user_id}&price=${price}&return_url=${url}`
       );
@@ -121,8 +135,6 @@ const ApplicationModal = ({ data, onClose }) => {
     }
   };
 
-
-
   const modalBG = useRef("");
 
   return (
@@ -138,28 +150,30 @@ const ApplicationModal = ({ data, onClose }) => {
         }}
       >
         <div className="font-spoqa">
-        <button
+          <div className="flex justify-end mr-1">
+            <button
               className="mb-4 text-xl font-semibold hover:text-red-600"
               onClick={onClose}
             >
               <IoMdClose />
             </button>
+          </div>
           {isApplicationSuccess ? (
             <ModalPortal>
               <SuccessModal onClose={onClose} />
             </ModalPortal>
           ) : (
             <div>
-              <div className="inline-block mb-4 align-middle">
+              <div className="inline-block mb-4 ml-4 align-middle">
                 <img
                   className="inline-block w-12 h-12 rounded-full ring-2 ring-white"
-                  src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt=""
+                  src={userData.profile_url}
+                  alt="프로필이미지"
                 />
-                <span className="mx-3 text-ml">user_1</span>
+                <span className="mx-5 text-base font-semibold">{userData.nickname}</span>
               </div>
               <div className="mx-4">
-                <span>포지션 선택</span>
+                <span className="text-base font-semibold">🧩 포지션 선택</span>
 
                 <div className="p-3 my-3  overflow-auto border border-stone-600 rounded-xl h-[10rem]">
                   <div>
@@ -178,7 +192,7 @@ const ApplicationModal = ({ data, onClose }) => {
                 </div>
               </div>
               <div className="mx-4 my-4">
-                <span>한마디 작성!</span>
+              <span className="text-base font-semibold">🧨 같이 여행 가고싶어요!</span>
                 <div className="p-3 my-3 border border-stone-600 rounded-xl">
                   <textarea
                     value={comment}
