@@ -132,6 +132,7 @@ public class UserService extends DefaultOAuth2UserService {
                     .gender(userInfoRequest.getGender())
                     .ageRange(userInfoRequest.getAgeRange())
                     .profile_url(userInfoRequest.getProfile_url())
+                    .userRoles((userInfoRequest.getUserRoles()))
                     .build();
             userRepository.save(user);
             return ResponseEntity.ok().body("UserInfo modify successfully");
