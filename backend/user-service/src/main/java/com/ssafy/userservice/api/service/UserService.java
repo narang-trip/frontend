@@ -20,10 +20,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -129,12 +126,15 @@ public class UserService extends DefaultOAuth2UserService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during modification");
         }
         else{
-            List<Role> userRoles = userInfoRequest.getUserRoles();
-            for(Role role : userRoles){
-                String roleName = role.getRoleName();
-                if(roleRepository.findByRoleName(roleName) == null){
-                    roleRepository.save(new Role(roleName));
+            List<Role> userRoles = new ArrayList<>();
+            List<String> userInfoRoles = userInfoRequest.getUserRoles();
+            for(String roleName : userInfoRoles){
+                Role role = roleRepository.findByRoleName(roleName);
+                if(role == null){
+                    role = new Role(roleName);
+                    roleRepository.save(role);
                 }
+                userRoles.add(role);
             }
 
             user = User.builder()
@@ -143,7 +143,7 @@ public class UserService extends DefaultOAuth2UserService {
                     .gender(userInfoRequest.getGender())
                     .ageRange(userInfoRequest.getAgeRange())
                     .profile_url(userInfoRequest.getProfile_url())
-                    .userRoles((userInfoRequest.getUserRoles()))
+                    .userRoles(userRoles)
                     .build();
             userRepository.save(user);
             return ResponseEntity.ok().body("UserInfo modify successfully");

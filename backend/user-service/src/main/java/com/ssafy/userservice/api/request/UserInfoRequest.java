@@ -16,5 +16,5 @@ public class UserInfoRequest {
     private String gender;
     private int ageRange;
     private String profile_url;
-    private List<Role> userRoles;
+    private List<String> userRoles;
 }
