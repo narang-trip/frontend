@@ -3,15 +3,16 @@ import axios from "axios";
 import colors from 'tailwindcss/colors';
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { motion, AnimatePresence } from 'framer-motion';
 
+import { mainConceptDescriptions } from '../data/concepts'
 import TripList from "../components/TripList";
 import Concept from "../components/Concept";
-import Button from "../ui/Button";
 
 const HomePage = () => {
   const [lineColor, setLineColor] = useState(colors.teal['400'])
-  const { conceptColor } = useSelector((state) => state.concept);
-  
+  const { concept, conceptColor } = useSelector((state) => state.concept);
+  const mainConceptDescription = mainConceptDescriptions[concept]
   const [className, setClassName] = useState(`bg-${conceptColor}-500`);
 
   useEffect(() => {
@@ -36,10 +37,35 @@ const HomePage = () => {
   //     });
   // };
 
+  const textAnimation = {
+    hidden: { x: -100, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { duration: 0.5 }
+    },
+    exit: {
+      x: 100,
+      opacity: 0,
+      transition: { duration: 0.3 }
+    }
+  }
+
   return (
     <Fragment>
       <div className={className}>
-        뭔가 낭만적인 문구, 건축적인 문구 모험적인 문구 추천받아요. 
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={concept}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={textAnimation}
+            className="text-2xl"
+          >
+            {mainConceptDescription}
+          </motion.div>
+        </AnimatePresence>
       </div>
       <div className="mt-2"
         style={{
@@ -61,7 +87,7 @@ const HomePage = () => {
       >
       </div>
       <TripList />
-    </Fragment>
+    </Fragment >
   );
 }
 
