@@ -69,7 +69,7 @@ const TripSummary = ({ trip }) => {
               </div>
               <div className="flex flex-row items-center my-1.5 text-sm">
                 <SlLocationPin className="mx-2 " size="24" />
-                <p className="text-xs">{trip.destination}</p>
+                <p className="text-xs">{trip.continent}, {trip.country}, {trip.city}</p>
               </div>
               <div className="flex flex-row items-center my-1.5 text-sm">
                 <SlInfo className="mx-2 " size="24" />

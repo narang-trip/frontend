@@ -9,13 +9,18 @@ import PositionCheck from "./PositionCheck.jsx";
 import ContinentModal from "../../modals/ContinentModal.jsx";
 
 import axios from "axios";
+import AgeRangeSection from "./AgeRangeSlider.jsx";
 
 export default function TripWriteForm() {
   const [board, setBoard] = useState({
     title: "",
     concept: "",
     img: "",
-    location: "",
+    continent: "",
+    country: "",
+    city: "",
+    ageUpperBound: 7,
+    ageLowerBound: 2,
     startDate: "",
     endDate: "",
     dateRange: "",
@@ -51,22 +56,35 @@ export default function TripWriteForm() {
     }));
   };
 
-  // 선택된 나라 정보 업데이트 함수
-  const handleLocationChange = (selectedLocation) => {
+  // 선택된 대륙 정보 업데이트 함수
+  const handleContinentChange = (selectedContinent) => {
     setBoard((board) => ({
       ...board,
-      location: board.location
-        ? `${board.location}:${selectedLocation}`
-        : selectedLocation,
+      continent: selectedContinent,
     }));
-    console.log(selectedLocation);
+  };
+
+  // 선택된 국가 정보 업데이트 함수
+  const handleCountryChange = (selectedCountry) => {
+    setBoard((board) => ({
+      ...board,
+      country: selectedCountry,
+    }));
+  };
+
+  // 선택된 도시 정보 업데이트 함수
+  const handleCityChange = (selectedCity) => {
+    setBoard((board) => ({
+      ...board,
+      city: selectedCity,
+    }));
   };
 
   // 이미지 input이 변경될 때 호출되는 함수
   const handleImageChange = (e) => {
     console.log(e.target.files[0]);
     const file = e.target.files[0];
-  
+
     setBoard((board) => ({
       ...board,
       img: file,
@@ -80,7 +98,9 @@ export default function TripWriteForm() {
     // claer 해주고
     setBoard((board) => ({
       ...board,
-      location: "",
+      continent: "",
+      country: "",
+      city: "",
     }));
 
     setIsOpen(true);
@@ -99,7 +119,11 @@ export default function TripWriteForm() {
     const requestData = {
       tripName: board.title,
       tripDesc: board.description,
-      destination: board.location,
+      continent: board.continent,
+      country: board.country,
+      city: board.city,
+      tripAgeUpperBound: board.ageUpperBound,
+      tripAgeLowerBound: board.ageLowerBound,
       tripParticipantsSize: board.count,
       tripDeposit: board.deposit,
       leaderRoles: board.myPosition,
@@ -108,9 +132,9 @@ export default function TripWriteForm() {
       departureDate: board.startDate,
       returnDate: board.endDate,
       participants: [],
-      tripLeaderId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      tripLeaderId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     };
-    
+
     try {
       // 이미지 파일이 선택되었을 경우에만 추가
       if (board.img) {
@@ -184,7 +208,7 @@ export default function TripWriteForm() {
                     type="text"
                     name="location"
                     placeholder="장소를 선택해주세요"
-                    value={board.location}
+                    value={board.continent ? `${board.continent}, ${board.country}, ${board.city}` : ''}
                     onClick={OpenLocaitonModal}
                     className="border rounded-sm border-neutral-300  p-1.5 w-2/3 text-neutral-700 placeholder:text-neutral-300 text-sm"
                     readOnly
@@ -193,21 +217,27 @@ export default function TripWriteForm() {
                     <ModalPortal>
                       <ContinentModal
                         onClose={CloseLocationModal}
-                        onSelectedLocation={handleLocationChange}
+                        onSelectedContinent={handleContinentChange}
+                        onSelectedCountry={handleCountryChange}
+                        onSelectedCity={handleCityChange}
                       />
                     </ModalPortal>
                   )}
                 </div>
-                <div className="w-full my-2">
+                <div className="flex w-full my-2">
                   <label className="mr-10 text-base font-medium">
                     모집 연령
                   </label>
-                  <input
-                    type="range"
-                    min="20"
-                    max="70"
-                    step="10"
-                    className="w-2/3 "
+                  <AgeRangeSection
+                    upperBound={board.ageUpperBound}
+                    lowerBound={board.ageLowerBound}
+                    onRangeChange={(left, right) => {
+                      setBoard((prev) => ({
+                        ...prev,
+                        ageUpperBound: right,
+                        ageLowerBound: left,
+                      }));
+                    }}
                   />
                 </div>
                 <div className="w-full my-2">

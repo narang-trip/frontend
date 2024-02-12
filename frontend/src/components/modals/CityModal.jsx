@@ -51,7 +51,7 @@ const CityModal = ({
   onBack,
   onClose,
   selectedCountry,
-  onSelectedLocation
+  onSelectedCity
 }) => {
   const modalBG = useRef("");
 
@@ -60,7 +60,7 @@ const CityModal = ({
   const handleCountrySelect = (city) => {
     setSelectedCity(city);
     // 도시를 선택한 후 상위 컴포넌트로 도시 정보를 전달
-    onSelectedLocation(city);
+    onSelectedCity(city);
     // 모달을 닫음
     onClose();
   };
