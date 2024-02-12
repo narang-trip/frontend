@@ -32,7 +32,6 @@ const Mileage = (props) => {
     };
   }, [isOpen]);
 
-  console.log(props);
 
   const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"
     // 잔액 조회
@@ -54,7 +53,7 @@ const Mileage = (props) => {
     }, []);
 
   return (
-    <div className="flex justify-between p-3 my-3 border border-black rounded-lg ">
+    <div className="flex justify-between p-3 my-3 border rounded-lg border-neutral-300 ">
       <div className="m-1 text-sm">
       💰 보유마일리지 : {balance} 원 
       </div>

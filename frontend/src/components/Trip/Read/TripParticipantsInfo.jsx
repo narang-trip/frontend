@@ -1,7 +1,43 @@
-import { Fragment } from "react";
-import { SlSpeech } from "react-icons/sl";
+import { Fragment, useState, useEffect } from "react";
+import axios from "axios";
 
 export default function TripParticipantsInfo({ participants }) {
+  const [usersInfo, setUsersInfo] = useState({});
+  const [balances, setBalances] = useState({});
+
+  const fetchUsersInfo = async () => {
+    try {
+      for (const participant of participants) {
+        const userResponse = await axios.get(
+          `https://i10a701.p.ssafy.io/api/user/profile/${participant.participantId}`
+        );
+        const userData = userResponse.data;
+
+        const balanceResponse = await axios.get(
+          `https://i10a701.p.ssafy.io/api/payment/balance?user_id=${participant.participantId}`
+        );
+        const balanceData = balanceResponse.data;
+        console.log(balanceResponse.data);
+
+        setUsersInfo((prevUsersInfo) => ({
+          ...prevUsersInfo,
+          [participant.participantId]: userData,
+        }));
+
+        setBalances((prevBalances) => ({
+          ...prevBalances,
+          [participant.participantId]: balanceData,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching users info:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsersInfo();
+  }, [participants]);
+
   return (
     <Fragment>
       <div>
@@ -14,35 +50,50 @@ export default function TripParticipantsInfo({ participants }) {
               <div className="row-span-1 mx-2 my-2">
                 <div className="grid grid-cols-5">
                   <div className="col-span-1">
-                    {" "}
                     <img
                       className="inline-block rounded-full w-14 h-14 ring-2 ring-white"
-                      src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      src={usersInfo[participant.participantId]?.profile_url}
                       alt=""
                     />
                   </div>
 
                   <div className="flex flex-col flex-wrap justify-center col-span-4">
-                    {/* <p className="text-xs">Id: {participant.participantId}</p> */}
-                    <p className="text-xs">닉네임: 망개떡</p>
                     <div>
-                      <span className="text-xs">30대, </span>
-                      <span className="text-xs">여자</span>
+                      <p className="text-xs font-bold">
+                        {usersInfo[participant.participantId]?.nickname}
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="flex flex-col row-span-1 mt-1 ml-3 text-left align-middle">
+                <div className="flex flex-row my-1">
+                  <span className="mx-2 text-xs">
+                    {" "}
+                    {usersInfo[participant.participantId]?.gender === "male"
+                      ? "🧑🏻"
+                      : "👧🏻"}
+                  </span>
+                  <span className="mr-1 text-xs">
+                    {usersInfo[participant.participantId]?.gender === "male"
+                      ? "남성"
+                      : "여성"}
+                  </span>
+                  <span className="mr-1 text-xs">
+                    {usersInfo[participant.participantId]?.ageRange}대
+                  </span>
+                </div>
                 <div className="flex flex-row flex-wrap my-1">
-                  <p className="mx-2 text-xs">💰</p>
-
-                  <p className="text-xs">소유 마일리지: 100,000</p>
+                  <p className="ml-2 mr-1 text-xs">💰</p>
+                  <p className="mx-2 text-xs">소유 마일리지 </p>
+                  <p className="text-xs">
+                    {balances[participant.participantId]} 원
+                  </p>
                 </div>
                 <div className="flex flex-row flex-wrap my-1">
                   <p className="mx-2 text-xs">💬</p>
-
                   <p className="text-xs">
-                    느긋한 여행을 추구하는 사람입니다 !!
+                    {usersInfo[participant.participantId]?.bio || "소개글 없음"}
                   </p>
                 </div>
               </div>
