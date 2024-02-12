@@ -1,18 +1,18 @@
 export default function PositionCheck({ value, onChange }) {
   // 여행 테마
   const positionList = [
-    "역할1",
-    "역할2",
-    "역할3",
-    "역할4",
-    "역할5",
-    "역할6",
-    "역할7",
-    "역할8",
-    "역할9",
-    "역할10",
-    "역할11",
-    "역할12",
+    "비기너",
+    "트레일블레이저",
+    "멜로디메이커",
+    "포토그래퍼",
+    "네비게이터",
+    "클린메이트",
+    "로드레전드",
+    "트렌드파인더",
+    "힐링위버",
+    "스타일리스트",
+    "언어위자드",
+    "푸드파이터",
   ];
 
   const handleCheckboxChange = (position) => {
@@ -31,9 +31,9 @@ export default function PositionCheck({ value, onChange }) {
 
   return (
     <div className="w-full my-2">
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap justify-around">
         {positionList.map((position, index) => (
-          <div key={index} className="w-1/4 p-2 itme">
+          <div key={index} className="w-[24] p-2 itme">
             <label
               className={`inline-flex items-center px-2.5 py-2.5 text-sm font-medium text-neutral-600 rounded-2xl cursor-pointer ring-1 ring-inset ring-neutral-400/10 hover:bg-neutral-400 hover:bg-opacity-30 ${
                 value.includes(position)

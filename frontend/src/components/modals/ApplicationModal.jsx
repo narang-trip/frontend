@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 
@@ -13,7 +13,11 @@ const ApplicationModal = ({ data, onClose }) => {
   const [comment, setComment] = useState("");
   // 신청 완료 여부
   const [isApplicationSuccess, setIsApplicationSuccess] = useState(false);
+  // 보유 마일리지
+  const [balance, setBalance] = useState(0);
 
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  
   const handleChangeComment = (e) => {
     setComment(e.target.value);
   };
@@ -27,6 +31,26 @@ const ApplicationModal = ({ data, onClose }) => {
     );
   };
 
+  
+  // 잔액 조회
+  const handleBalance = async () => {
+    try {
+      const response = await axios.get(
+        `https://i10a701.p.ssafy.io/api/payment/balance?user_id=${postData.senderId}`
+      );
+
+      console.log(response);
+      setBalance(response.data);
+    } catch (error) {
+      console.error("에러 발생", error);
+    }
+  };
+
+  useEffect(() => {
+    handleBalance();
+  }, []);
+
+  
   // 보유 마일리지와 예약 마일리지의 차이 계산
   // 0 이상이면 신청 가능, 0 이하이면 충전해야함
   const mileageDifference = 200 - data.tripDeposit;
@@ -34,7 +58,7 @@ const ApplicationModal = ({ data, onClose }) => {
   const postData = {
     tripId: data.tripId,
     tripName: data.tripName,
-    senderId: "노세희1",
+    senderId: "노세희",
     receiverId: data.tripLeaderId,
     position: selectedPositions,
     aspiration: comment,
@@ -70,6 +94,35 @@ const ApplicationModal = ({ data, onClose }) => {
     }
   };
 
+  const handleCharge = async () => {
+    setIsRedirecting(true);
+    
+    const user_id = "노세희"; // 사용자 ID
+    const price = 20000; // 충전 금액
+
+    try {
+      const url = `http://localhost:3000/detail/${postData.tripId}`;
+      
+      const response = await axios.post(
+        `https://i10a701.p.ssafy.io/api/payment/ready?user_id=${user_id}&price=${price}&return_url=${url}`
+      );
+
+      console.log(response.data.next_redirect_pc_url);
+      // 서버 응답에서 리다이렉션 URL을 가져옴
+      const redirectUrl = response.data.next_redirect_pc_url;
+
+      // 리다이렉션 수행
+      window.location.href = redirectUrl;
+      handleBalance();
+
+      console.log("서버 응답:", response.data);
+    } catch (error) {
+      console.error("에러 발생:", error);
+    }
+  };
+
+
+
   const modalBG = useRef("");
 
   return (
@@ -78,20 +131,19 @@ const ApplicationModal = ({ data, onClose }) => {
       onClick={onClose}
       ref={modalBG}
     >
-     <div className="z-40 px-10 py-8 bg-white w-[28rem] h-[40rem] rounded-3xl "
+      <div
+        className="z-40 px-10 py-8 bg-white w-[28rem] h-[40rem] rounded-3xl "
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <div className=" font-spoqa">
-          <div className="flex justify-end">
-            <button
+        <div className="font-spoqa">
+        <button
               className="mb-4 text-xl font-semibold hover:text-red-600"
               onClick={onClose}
             >
               <IoMdClose />
             </button>
-          </div>
           {isApplicationSuccess ? (
             <ModalPortal>
               <SuccessModal onClose={onClose} />
@@ -111,16 +163,17 @@ const ApplicationModal = ({ data, onClose }) => {
 
                 <div className="p-3 my-3  overflow-auto border border-stone-600 rounded-xl h-[10rem]">
                   <div>
-                    {data.tripRoles && data.tripRoles.map((position, index) => (
-                      <div key={index} className="flex justify-between">
-                        <label className="m-2 text-sm">{position}</label>
-                        <input
-                          type="checkbox"
-                          value={position}
-                          onChange={() => handleCheckboxChange(position)}
-                        />
-                      </div>
-                    ))}
+                    {data.tripRoles &&
+                      data.tripRoles.map((position, index) => (
+                        <div key={index} className="flex justify-between">
+                          <label className="m-2 text-sm">{position}</label>
+                          <input
+                            type="checkbox"
+                            value={position}
+                            onChange={() => handleCheckboxChange(position)}
+                          />
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
@@ -134,14 +187,16 @@ const ApplicationModal = ({ data, onClose }) => {
                   />
                 </div>
               </div>
-              <div className="mx-4 my-4">💥 예약 마일리지 : {data.tripDeposit}</div>
+              <div className="mx-4 my-4">
+                💥 예약 마일리지 : {data.tripDeposit}
+              </div>
               <div className="mx-4 my-4">
                 <span
                   className={`${
                     mileageDifference < 0 ? "text-red-500" : "text-black"
                   }`}
                 >
-                  💰 보유 마일리지 : 2
+                  💰 보유 마일리지 : {balance}
                 </span>
               </div>
               <div className="flex justify-end">
@@ -155,10 +210,7 @@ const ApplicationModal = ({ data, onClose }) => {
                 ) : (
                   <div>
                     <button
-                      onClick={() => {
-                        // 처리할 충전 버튼 클릭 시의 로직을 추가하세요.
-                        console.log("충전 버튼 클릭");
-                      }}
+                      onClick={handleCharge}
                       className="inline-flex items-center px-4 py-2 text-sm font-semibold text-indigo-700 rounded-md bg-blue-50 ring-1 ring-inset ring-blue-700/10"
                     >
                       충전하기
