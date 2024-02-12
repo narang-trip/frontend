@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -48,12 +50,24 @@ public class MileageService {
         return usageRecord;
     }
 
-    public RefundRecord cancelMileage(String usage_id){
+    public RefundRecord cancelMileage(String usage_id, LocalDateTime departureDateTime){
         log.info("cancelMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
         String user_id = usageRecord.getUserId();
         int price = usageRecord.getPrice();
+        
+        long dayDifference = calculateDateDifference(usageRecord.getRegDate(), departureDateTime);
+
+        if(dayDifference > 13){ // 2주일 이상 남은 경우
+            log.info("2주일 이상 남았으므로 전액({}원) 환불 처리됩니다.", price);
+        } else if(dayDifference > 6) { // 1주일 이상 남은 경우
+            log.info("1주일 이상 남았으므로 50%({}원) 환불 처리됩니다.", price / 2);
+            price /= 2;
+        } else {
+            log.info("1주일 이내 남았으므로 환불 처리되지 않습니다.");
+            price = 0;
+        }
 
         UserMileage userMileage = userMileageRepository.findById(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
@@ -71,5 +85,10 @@ public class MileageService {
 
         refundRecordRepository.save(refundRecord);
         return refundRecord;
+    }
+
+    private Long calculateDateDifference(LocalDateTime startDate, LocalDateTime endDate){
+        Duration duration = Duration.between(startDate, endDate);
+        return duration.toDays();
     }
 }
