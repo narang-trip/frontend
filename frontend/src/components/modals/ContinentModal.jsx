@@ -15,7 +15,7 @@ const continents = [
   "남아메리카",
 ];
 
-const ContinentModal = ({ onClose, onSelectedLocation }) => {
+const ContinentModal = ({ onClose, onSelectedContinent, onSelectedCountry, onSelectedCity }) => {
   const modalBG = useRef("");
 
   const [selectedContinent, setSelectedContinent] = useState(null);
@@ -23,13 +23,13 @@ const ContinentModal = ({ onClose, onSelectedLocation }) => {
   // 대륙 선택 함수
   const handleContinentSelect = (continent) => {
     setSelectedContinent(continent);
-    onSelectedLocation(continent);
+    onSelectedContinent(continent);
   };
 
   // 뒤로 가기 함수
   const handleBack = () => {
     setSelectedContinent(null);
-    onSelectedLocation("");
+    onSelectedContinent("");
   };
 
   const onContinentClose = () => {
@@ -80,7 +80,8 @@ const ContinentModal = ({ onClose, onSelectedLocation }) => {
                   isOpen={true}
                   onClose={onContinentClose}
                   selectedContinent={selectedContinent}
-                  onSelectedLocation={onSelectedLocation}
+                  onSelectedCountry={onSelectedCountry}
+                  onSelectedCity={onSelectedCity}
                   onBack={handleBack}
                 />
               </ModalPortal>

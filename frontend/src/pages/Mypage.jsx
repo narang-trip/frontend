@@ -1,4 +1,4 @@
-import { useState,Fragment } from "react";
+import { useState, Fragment } from "react";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
 
@@ -18,10 +18,8 @@ const Mypage = () => {
   };
   return (
     <Fragment>
-    <div className="flex flex-col w-full h-screen">
-      <div className="flex flex-row p-4 space-x-2 h-2/5">
-        {/* <MypageCalendar /> */}
-        <div className="w-3/5">
+      <div className="grid w-full h-screen grid-cols-9 gap-5">
+        <div className="col-span-6">
           <DatePicker
             locale={ko}
             onChange={onChange}
@@ -32,17 +30,16 @@ const Mypage = () => {
             monthsShown={2}
             inline
           />
+          <SmallPlan dates={[startDate, endDate]} />
         </div>
-        <UserInfo />
-      </div>
-      <div className="flex flex-row p-4 space-x-2 h-3/5">
-        <SmallPlan dates={[startDate, endDate]} />
-        <div className="flex flex-col w-2/5">
-          <Mileage />
-          <MyBadge />
+        <div className="col-span-3">
+          <div className="flex flex-col">
+            <UserInfo />
+            <Mileage />
+            <MyBadge />
+          </div>
         </div>
       </div>
-    </div>
     </Fragment>
   );
 };
