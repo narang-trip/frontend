@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+
 import { ModalPortal } from "../modals/ModalPortal";
 import MileageModal from "../modals/MileageModal";
 
 const Mileage = (props) => {
+  // 마일리지 모달 오픈 동작
   const [isOpen, setIsOpen] = useState(false);
+
+  // 마일리지 잔액 조회
+  const [balance, setBalance] = useState(0);
+
   const OpenMileage = () => {
     setIsOpen(true);
   };
@@ -26,11 +33,33 @@ const Mileage = (props) => {
   }, [isOpen]);
 
   console.log(props);
+
+  const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"
+    // 잔액 조회
+    const handleBalance = async () => {
+      try {
+        const response = await axios.get(
+          `https://i10a701.p.ssafy.io/api/payment/balance?user_id=${userId}`
+        );
+  
+        console.log(response);
+        setBalance(response.data);
+      } catch (error) {
+        console.error("에러 발생", error);
+      }
+    };
+  
+    useEffect(() => {
+      handleBalance();
+    }, []);
+
   return (
-    <div className="h-1/3 shadow-xl p-3 border-black rounded-lg relative">
-      보유마일리지 : {} pt
-      <button className="absolute top-0 right-0" onClick={OpenMileage}>
-        상세내역보기
+    <div className="flex justify-between p-3 my-3 border border-black rounded-lg ">
+      <div className="m-1 text-sm">
+      💰 보유마일리지 : {balance} 원 
+      </div>
+      <button className="p-1 mr-2 text-xs border rounded-md border-neutral-200" onClick={OpenMileage}>
+        충천하기
       </button>
       {isOpen && (
         <ModalPortal>

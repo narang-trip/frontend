@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  // 여행 제목
+  title: "",
   // 여행 계획표의 시간
   time: {
     totalDay: 0,
@@ -44,6 +46,7 @@ const scheduleSlice = createSlice({
     // 저장된 계획 불러오기
     setSchedule: (state, action) => {
       console.log(action.payload);
+      state.title = action.payload.title;
       state.time = action.payload.time;
       state.blackHeight = action.payload.blackHeight;
       state.list = action.payload.list;
@@ -73,6 +76,10 @@ const scheduleSlice = createSlice({
     // 일정 한마디
     setComment: (state, action) => {
       state.list[action.payload.day][action.payload.index].comment = action.payload.comment;
+    },
+    // 계획표 제목 정하기
+    setTitle: (state, action) => {
+      state.title = action.payload;
     },
   },
 });

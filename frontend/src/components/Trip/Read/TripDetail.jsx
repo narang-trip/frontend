@@ -99,7 +99,7 @@ export default function TripDetail() {
                         size="24"
                       />
                       <div className="text-neutral-700">
-                        {tripDetails.destination}
+                        {tripDetails.continent}, {tripDetails.country}, {tripDetails.city}
                       </div>
                     </div>
                     <div className="flex flex-row items-center my-3 text-sm">

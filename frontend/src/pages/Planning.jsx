@@ -124,7 +124,7 @@ export default function PlanningPage() {
             <Map />
           </div>
         </DragDropContext>
-        <button className="absolute bottom-0 right-0" onClick={savePlan}>
+        <button className="absolute bottom-2 right-0" onClick={savePlan}>
           저장하기
         </button>
         {isNewPlanOpen && (
