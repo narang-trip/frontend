@@ -88,6 +88,11 @@ public class OAuth2Service {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
+        log.info("client_id : {}", kakaoClientId);
+        log.info("client_secret : {}", kakaoClientSecret);
+        log.info("redirect_uri : {}", kakaoRedirectUri);
+        log.info("token_uri : {}", kakaoTokenUri);
+
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", kakaoClientId);
