@@ -1,8 +1,5 @@
 import axios from "axios";
-<<<<<<< HEAD
-=======
 import { useCallback, useEffect, useMemo, useState } from "react";
->>>>>>> origin/feature_myplanning
 import { useInView } from "react-intersection-observer";
 import { useCallback, useState, useEffect } from "react";
 import { ModalPortal } from "../components/modals/ModalPortal";
