@@ -1,5 +1,6 @@
 package com.ssafy.paymentservice.controller;
 
+import com.ssafy.paymentservice.db.entity.RefundRecord;
 import com.ssafy.paymentservice.db.entity.UsageRecord;
 import com.ssafy.paymentservice.entity.KakaoApproveResponse;
 import com.ssafy.paymentservice.entity.KakaoCancelResponse;
@@ -86,5 +87,14 @@ public class PaymentController {
     @GetMapping("/balance")
     public ResponseEntity balance(@RequestParam("user_id") String userId){
         return new ResponseEntity<>(mileageService.getMileage(userId), HttpStatus.OK);
+    }
+
+    /**
+     * 예약금 환불
+     */
+    @PostMapping("/refund")
+    public ResponseEntity refund(@RequestParam("usage_id") String usageId) {
+        RefundRecord refundRecord = mileageService.cancelMileage(usageId);
+        return new ResponseEntity<>(refundRecord, HttpStatus.OK);
     }
 }
