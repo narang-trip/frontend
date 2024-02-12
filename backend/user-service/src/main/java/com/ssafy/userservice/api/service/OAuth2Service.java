@@ -188,9 +188,8 @@ public class OAuth2Service {
         return new NaverUserInfo((Map)userInfo.get("response"));
     }
 
-    private void setTokensForUser(String userId, HttpServletResponse response){
+    private void setTokensForUser(String userId, HttpServletResponse response, String refreshToken){
         String accessToken = jwtService.createAccessToken(userId);
-        String refreshToken = jwtService.createRefreshToken();
 
         jwtService.sendAccessToken(response, accessToken);
         jwtService.sendRefreshToken(response, refreshToken);
@@ -214,6 +213,7 @@ public class OAuth2Service {
         Optional<User> findUser = userRepository.findById(id);
         User user = null;
         Auth auth = null;
+        String refreshToken = jwtService.createRefreshToken();
         if (findUser.isEmpty()) { //찾지 못했다면
             log.info("등록되지 않은 사용자입니다.");
             userRoles.add(roleRepository.findByRoleName("BEGINNER"));
@@ -225,7 +225,6 @@ public class OAuth2Service {
                     .profile_url(profileUrl)
                     .userRoles(userRoles)
                     .build();
-            setTokensForUser(user.getId(), response);
             userRepository.save(user);
             auth = Auth.builder()
                     .id(id)
@@ -234,14 +233,25 @@ public class OAuth2Service {
                     .provider(provider)
                     .providerId(providerId)
                     .authority(Authority.USER)
+                    .refreshToken(refreshToken)
                     .build();
             authRepository.save(auth);
         }
         else{
             log.info("{}는 등록된 사용자입니다", findUser.get().getNickname());
             user = findUser.get();
-            setTokensForUser(user.getId(), response);
+            auth = Auth.builder()
+                    .id(id)
+                    .email(email)
+                    .name(username)
+                    .provider(provider)
+                    .providerId(providerId)
+                    .authority(Authority.USER)
+                    .refreshToken(refreshToken)
+                    .build();
+            authRepository.save(auth);
         }
+        setTokensForUser(user.getId(), response, refreshToken);
         return user;
     }
     public void logout(HttpServletRequest request) {
