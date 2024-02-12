@@ -76,6 +76,7 @@ public class OAuth2Service {
     }
 
     private String getAccessToken(String provider, String code){
+        log.info("code : {}", code);
         return switch (provider){
             case "kakao" -> getKakaoAccessToken(code);
             case "naver" -> getNaverAccessToken(code);
