@@ -10,6 +10,7 @@ import com.ssafy.userservice.api.oauth2.userinfo.NaverUserInfo;
 import com.ssafy.userservice.api.oauth2.userinfo.OAuth2UserInfo;
 import com.ssafy.userservice.db.entity.Auth;
 import com.ssafy.userservice.db.entity.Authority;
+import com.ssafy.userservice.db.entity.Role;
 import com.ssafy.userservice.db.entity.User;
 import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
@@ -27,9 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.net.URI;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -203,6 +202,8 @@ public class OAuth2Service {
         String gender = userInfo.getGender();
         int ageRange = userInfo.getAgeRange();
         String nickname = userInfo.getNickName();
+        List<Role> userRoles = new ArrayList<>();
+        userRoles.add(new Role("BEGINNER"));
 
         Optional<User> findUser = userRepository.findById(id);
         User user = null;
@@ -215,6 +216,7 @@ public class OAuth2Service {
                     .gender(gender)
                     .ageRange(ageRange)
                     .profile_url(profileUrl)
+                    .userRoles(userRoles)
                     .build();
             userRepository.save(user);
             auth = Auth.builder()
