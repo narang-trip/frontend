@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 //@Setter
-public class UsageRecord {
+public class RefundRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -26,7 +26,7 @@ public class UsageRecord {
     @Column(updatable = false)
     private LocalDateTime regDate; // 요청 시간
     @Builder
-    public UsageRecord(String userId, int price, int balance){
+    public RefundRecord(String userId, int price, int balance){
         this.userId = userId;
         this.price = price;
         this.balance = balance;
