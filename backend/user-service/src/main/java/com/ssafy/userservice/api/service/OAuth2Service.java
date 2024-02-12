@@ -206,20 +206,12 @@ public class OAuth2Service {
         String nickname = userInfo.getNickName();
         List<Role> userRoles = new ArrayList<>();
 
-        
-        Role beginnerRole = roleRepository.findByRoleName("BEGINNER");
-        if (beginnerRole == null) {
-            // "BEGINNER" 역할이 없다면 새로운 역할을 생성하고 저장
-            beginnerRole = new Role("BEGINNER");
-            roleRepository.save(beginnerRole);
-        }
-        userRoles.add(beginnerRole);
-
         Optional<User> findUser = userRepository.findById(id);
         User user = null;
         Auth auth = null;
         if (findUser.isEmpty()) { //찾지 못했다면
             log.info("등록되지 않은 사용자입니다.");
+            userRoles.add(roleRepository.findByRoleName("BEGINNER"));
             user = User.builder()
                     .id(id)
                     .nickname(nickname)
