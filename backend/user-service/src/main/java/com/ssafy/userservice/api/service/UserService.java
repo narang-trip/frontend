@@ -8,6 +8,7 @@ import com.ssafy.userservice.api.request.UserInfoRequest;
 import com.ssafy.userservice.db.entity.Auth;
 import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.repository.AuthRepository;
+import com.ssafy.userservice.db.repository.RoleRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,6 +31,7 @@ public class UserService extends DefaultOAuth2UserService {
     private final BCryptPasswordEncoder encoder;
     private final UserRepository userRepository;
     private final AuthRepository authRepository;
+    private final RoleRepository roleRepository;
 
     public Optional<User> getTest(String id){
         return userRepository.findById(id);
@@ -126,6 +129,14 @@ public class UserService extends DefaultOAuth2UserService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during modification");
         }
         else{
+            List<Role> userRoles = userInfoRequest.getUserRoles();
+            for(Role role : userRoles){
+                String roleName = role.getRoleName();
+                if(roleRepository.findByRoleName(roleName) == null){
+                    roleRepository.save(new Role(roleName));
+                }
+            }
+
             user = User.builder()
                     .id(id)
                     .nickname(userInfoRequest.getNickname())
