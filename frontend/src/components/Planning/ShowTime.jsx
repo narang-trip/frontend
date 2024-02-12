@@ -20,11 +20,7 @@ const ShowTime = () => {
   }
 
   return (
-<<<<<<< HEAD
-    <div className="absolute w-8 h-full grid grid-cols content-between pt-6 pb-6">
-=======
     <div className="absolute w-8 h-full grid grid-cols content-between pt-6 pb-5">
->>>>>>> origin/feature_myplanning
       {[...Array(lineCnt)].map((_, index) => (
         <div key={index} className={`border-b border-red-600 w-full text-[9px]`}>
           {timeList[index]}
