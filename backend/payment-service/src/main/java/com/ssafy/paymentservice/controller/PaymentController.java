@@ -11,10 +11,13 @@ import com.ssafy.paymentservice.service.KakaoPayService;
 import com.ssafy.paymentservice.service.MileageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @CrossOrigin("*")
 @RestController
@@ -93,8 +96,10 @@ public class PaymentController {
      * 예약금 환불
      */
     @PostMapping("/refund")
-    public ResponseEntity refund(@RequestParam("usage_id") String usageId) {
-        RefundRecord refundRecord = mileageService.cancelMileage(usageId);
+    public ResponseEntity refund(
+            @RequestParam("usage_id") String usageId,
+            @RequestParam("departure_datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureDateTime) {
+        RefundRecord refundRecord = mileageService.cancelMileage(usageId, departureDateTime);
         return new ResponseEntity<>(refundRecord, HttpStatus.OK);
     }
 }
