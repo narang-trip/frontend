@@ -115,16 +115,18 @@ export default function PlanningPage() {
   }, [isNewPlanOpen, isSavePlanOpen]);
 
   return (
-    <div className="h-5/6">
+    <>
       <ShowTime />
-      <div className="h-full pl-10">
+      <div className="relative h-full pl-10">
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="flex h-full">
             <Plan />
             <Map />
           </div>
         </DragDropContext>
-        <button onClick={savePlan}>저장하기</button>
+        <button className="absolute bottom-2 right-0" onClick={savePlan}>
+          저장하기
+        </button>
         {isNewPlanOpen && (
           <ModalPortal>
             <NewPlan onClose={CloseNewPlanModal} />
@@ -136,6 +138,6 @@ export default function PlanningPage() {
           </ModalPortal>
         )}
       </div>
-    </div>
+    </>
   );
 }
