@@ -13,6 +13,7 @@ import com.ssafy.userservice.db.entity.Authority;
 import com.ssafy.userservice.db.entity.Role;
 import com.ssafy.userservice.db.entity.User;
 import com.ssafy.userservice.db.repository.AuthRepository;
+import com.ssafy.userservice.db.repository.RoleRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
 import com.ssafy.userservice.security.jwt.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +38,7 @@ public class OAuth2Service {
     private final JwtService jwtService;
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String kakaoClientId;
@@ -203,7 +205,14 @@ public class OAuth2Service {
         int ageRange = userInfo.getAgeRange();
         String nickname = userInfo.getNickName();
         List<Role> userRoles = new ArrayList<>();
-        userRoles.add(new Role("BEGINNER"));
+        
+        Role beginnerRole = roleRepository.findByRoleName("BEGINNER");
+        if (beginnerRole == null) {
+            // "BEGINNER" 역할이 없다면 새로운 역할을 생성하고 저장
+            beginnerRole = new Role("BEGINNER");
+            roleRepository.save(beginnerRole);
+        }
+        userRoles.add(beginnerRole);
 
         Optional<User> findUser = userRepository.findById(id);
         User user = null;
