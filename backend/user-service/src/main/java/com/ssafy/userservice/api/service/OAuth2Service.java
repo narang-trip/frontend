@@ -69,9 +69,8 @@ public class OAuth2Service {
         // 받은 토큰으로 유저 정보 갖고오기
         OAuth2UserInfo userInfo = getUserInfo(provider, providerAccessToken);
         //DB에 저장하기
-        User user = registerUser(userInfo);
+        User user = registerUser(userInfo, response);
         log.info("userInfo : {}", user.toString());
-        setTokensForUser(user.getId(), response);
         return user;
     }
 
@@ -194,7 +193,7 @@ public class OAuth2Service {
         jwtService.updateRefreshToken(userId, refreshToken);
     }
 
-    private User registerUser(OAuth2UserInfo userInfo){
+    private User registerUser(OAuth2UserInfo userInfo, HttpServletResponse response){
         String provider = userInfo.getProvider();
         String providerId = userInfo.getProviderId();
         UUID uuid = UUID.nameUUIDFromBytes(providerId.getBytes());
@@ -206,6 +205,7 @@ public class OAuth2Service {
         int ageRange = userInfo.getAgeRange();
         String nickname = userInfo.getNickName();
         List<Role> userRoles = new ArrayList<>();
+
         
         Role beginnerRole = roleRepository.findByRoleName("BEGINNER");
         if (beginnerRole == null) {
@@ -228,6 +228,7 @@ public class OAuth2Service {
                     .profile_url(profileUrl)
                     .userRoles(userRoles)
                     .build();
+            setTokensForUser(user.getId(), response);
             userRepository.save(user);
             auth = Auth.builder()
                     .id(id)
@@ -242,6 +243,7 @@ public class OAuth2Service {
         else{
             log.info("{}는 등록된 사용자입니다", findUser.get().getNickname());
             user = findUser.get();
+            setTokensForUser(user.getId(), response);
         }
         return user;
     }
