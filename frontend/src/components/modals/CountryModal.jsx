@@ -39,7 +39,8 @@ const CountryModal = ({
   onClose,
   selectedContinent,
   onBack,
-  onSelectedLocation,
+  onSelectedCountry,
+  onSelectedCity
 
 }) => {
   const modalBG = useRef("");
@@ -48,13 +49,13 @@ const CountryModal = ({
   // 나라 선택 함수
   const handleCountrySelect = (country) => {
     setSelectedCountry(country);
-    onSelectedLocation(country);
+    onSelectedCountry(country);
   };
 
   // 뒤로 가기 함수
   const handleBack = () => {
     setSelectedCountry(null);
-    onSelectedLocation("");
+    onSelectedCountry("");
   };
 
   const onCountryClose = () => {
@@ -111,7 +112,7 @@ const CountryModal = ({
                   isOpen={true}
                   onClose={onCountryClose}
                   selectedCountry={selectedCountry}
-                  onSelectedLocation={onSelectedLocation}
+                  onSelectedCity={onSelectedCity}
                   onBack={handleBack}
                 />
               </ModalPortal>

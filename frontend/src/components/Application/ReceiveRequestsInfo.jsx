@@ -46,7 +46,7 @@ export default function ReceiveRequestsInfo({ data }) {
     <Fragment>
       <div className="flex flex-wrap justify-center w-full">
         <div className="flex flex-row justify-around w-9/12 m-2">
-          <div className="grid w-7/12 h-24 grid-rows-2 p-2 border rounded-lg border-stone-400">
+          <div className="grid h-24 grid-rows-2 p-2 border rounded-lg w-/12 border-stone-400">
             <div className="flex items-center justify-between mx-4 mb-2">
               <div>
                 <img
@@ -71,12 +71,7 @@ export default function ReceiveRequestsInfo({ data }) {
                 <span className="items-center px-1.5 py-2 mx-1 text-xs font-medium text-gray-700 rounded-full bg-gray-50 ring-2 ring-inset ring-gray-600/20">
                   뱃지1
                 </span>
-                <span className="items-center px-1.5 py-2 mx-1 text-xs font-medium text-gray-700 rounded-full bg-gray-50 ring-2 ring-inset ring-gray-600/20">
-                  뱃지2
-                </span>
-                <span className="items-center px-1.5 py-2 mx-1 text-xs font-medium text-gray-700 rounded-full bg-gray-50 ring-2 ring-inset ring-gray-600/20">
-                  뱃지3
-                </span>
+           
               </div>
             </div>
             <div className="p-2 mx-5 text-sm border rounded-xl border-slate-300">

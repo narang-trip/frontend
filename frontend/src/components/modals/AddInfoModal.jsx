@@ -1,23 +1,90 @@
-import { useRef } from "react";
-import Select from "react-select";
+import { useRef, useState,useEffect } from "react";
+import axios from "axios";
+import { IoMdClose } from "react-icons/io";
 
-const AddInfoModal = (props) => {
+const AddInfoModal = ({ userId, data, onClose }) => {
   const modalBG = useRef("");
   const positionList = [
-    { value: "1", label: "1" },
-    { value: "2", label: "2" },
-    { value: "3", label: "3" },
-    { value: "4", label: "4" },
+    "비기너",
+    "트레일블레이저",
+    "멜로디메이커",
+    "포토그래퍼",
+    "네비게이터",
+    "클린메이트",
+    "로드레전드",
+    "트렌드파인더",
+    "힐링위버",
+    "스타일리스트",
+    "언어위자드",
+    "푸드파이터",
   ];
 
-  const Check = (e) => {
-    console.log(e);
+  // 닉네임
+  const [nickName, setNickName] = useState('');
+  // 선호하는 포지션
+  const [selectedPositions, setSelectedPositions] = useState([]);
+  
+  // 닉네임 변경
+  const handleNickNameChange = (e) => {
+    setNickName(e.target.value);
+  };
+  
+  
+  // 선호 포지션 변경
+  const handleCheckboxChange = (position) => {
+    setSelectedPositions((prevPositions) => {
+      if (prevPositions.includes(position)) {
+        // 만약 포지션이 이미 선택되어 있다면 제거
+        return prevPositions.filter((pos) => pos !== position);
+      } else if (prevPositions.length < 3) {
+        // 3개 미만의 포지션이 선택되어 있다면 새로운 포지션 추가
+        return [...prevPositions, position];
+      }
+      // 이미 3개의 포지션이 선택되어 있으면 더 이상 추가하지 않음
+      return prevPositions;
+    });
+  };
+  
+  // 체크박스가 활성화 여부를 결정
+  const isCheckboxDisabled = (position) => selectedPositions.length >= 3 && !selectedPositions.includes(position);
+  
+  
+    const userData = {
+      nickname: nickName,
+      gender: data.gender,
+      ageRange: data.ageRange,
+      profile_url: data.profile_url,
+      userRoles: selectedPositions
+    };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+      
+    console.log(userData);
+    try {
+      const response = await axios.patch(
+        `https://i10a701.p.ssafy.io/api/user/profile/${userId}`,
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("요청 성공", response.data);
+
+      // Close the modal after successful update
+      onClose();
+    } catch (error) {
+      console.error("요청 실패", error);
+    }
   };
 
   return (
     <div
       className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-500 bg-opacity-70"
-      onClick={props.onClose}
+      onClick={onClose}
       ref={modalBG}
     >
       <div
@@ -26,58 +93,57 @@ const AddInfoModal = (props) => {
           e.stopPropagation();
         }}
       >
-        <div>
-          {/* 추가정보작성 닫기 버튼 추가 */}
-          <button className="" onClick={props.onClose}>
-            x
+        <div className=" font-spoqa">
+          <div className="flex justify-end mr-1">
+          <button
+            className="mb-4 text-xl font-semibold hover:text-red-600"
+            onClick={onClose}
+          >
+            <IoMdClose />
           </button>
-          <h3>추가 정보작성</h3>
-          <form onSubmit={Check}>
-            <div className="flex">
-              <label>닉네임 :</label>
+          </div>
+          <p className="flex justify-center mb-5 text-base font-bold">정보 수정</p>
+          <form onSubmit={handleSubmit}>
+            <div className="flex m-2">
+              <label className="flex items-center mr-2 text-sm font-bold">
+                닉네임
+              </label>
               <input
                 type="text"
                 name="nickname"
                 id="nickname"
-                className="flex-1 py-1.5 pl-1 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
-                placeholder="..."
+                onChange={handleNickNameChange}
+                className="p-1 text-sm border rounded-md border-neutral-400"
+                placeholder={data.nickname}
               />
             </div>
 
-            <div className="flex">
-              <label>S N S : </label>
-              <input
-                type="text"
-                name="sns"
-                id="sns"
-                className="flex-1 py-1.5 pl-1 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
-                placeholder="..."
-              />
+            <div className="m-2">
+              <label className="mr-2 text-sm font-bold">
+                선호 포지션(최대 3개 선택 가능)
+              </label>
+              <div className="flex flex-wrap justify-start border rounded-md border-neutral-400">
+                {positionList.map((position) => (
+                  <div key={position} className="flex items-center m-2 w-28">
+                    <input
+                      type="checkbox"
+                      value={position}
+                      onChange={() => handleCheckboxChange(position)}
+                      disabled={isCheckboxDisabled(position)}
+                    />
+                    <label className="text-sm">{position}</label>
+                  </div>
+                ))}
+              </div>
             </div>
-
-            <div className="flex-col">
-              <label>선호 포지션</label>
-              <Select
-                isMulti
-                name="positions"
-                options={positionList}
-                className="basic-multi-select"
-                classNamePrefix="select"
-              ></Select>
+            <div className="flex justify-center">
+              <button
+                className="p-2 text-sm font-semibold text-blue-900 bg-blue-200 border border-blue-800 rounded-lg bg-opacity-35 ring-1"
+                type="submit"
+              >
+                완료
+              </button>
             </div>
-
-            <div className="flex-col">
-              <label>소개 한마디!</label>
-              <textarea
-                id="about"
-                name="about"
-                rows={3}
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                defaultValue={""}
-              />
-            </div>
-
-            <button type="submit">수정하기</button>
           </form>
         </div>
       </div>
