@@ -20,17 +20,23 @@ const Mypage = () => {
     <Fragment>
       <div className="grid w-full h-screen grid-cols-9 gap-5">
         <div className="col-span-6">
+          <div className="my-3">
+            <p className="mt-6 text-xl font-bold animate-bounce">🛫나의 여행기록🛬</p>
+            <div className="flex items-center justify-center w-full">
+              <span className="">날짜 선택</span>
           <DatePicker
             locale={ko}
+            selectsRange={true}
             onChange={onChange}
             startDate={startDate}
             endDate={endDate}
-            selectsRange
+            dateFormat="yy/MM/dd"
             todayButton="now"
-            monthsShown={2}
-            inline
+            className="w-auto p-2 m-3 text-sm border rounded-sm border-neutral-300 text-neutral-700 placeholder:text-neutral-300"
           />
+</div>
           <SmallPlan dates={[startDate, endDate]} />
+          </div>
         </div>
         <div className="col-span-3">
           <div className="flex flex-col">

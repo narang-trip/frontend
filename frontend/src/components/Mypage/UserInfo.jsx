@@ -60,7 +60,7 @@ const UserInfo = () => {
   }, [isExitOpen, isModifyOpen]);
 
   return (
-    <div className="flex flex-col p-3 my-3 border border-black rounded-lg ">
+    <div className="flex flex-col p-3 my-3 border rounded-lg border-neutral-300 ">
       <div className="flex justify-evenly">
         <img
           className="rounded-full w-14 h-14"
