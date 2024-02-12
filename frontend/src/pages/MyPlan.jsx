@@ -1,4 +1,8 @@
 import axios from "axios";
+<<<<<<< HEAD
+=======
+import { useCallback, useEffect, useMemo, useState } from "react";
+>>>>>>> origin/feature_myplanning
 import { useInView } from "react-intersection-observer";
 import { useCallback, useState, useEffect } from "react";
 import { ModalPortal } from "../components/modals/ModalPortal";
@@ -13,6 +17,14 @@ const MyPlan = () => {
   const { ref, inView } = useInView({
     threshold: 0, // div태그가 보일 때 inView가 true로 설정
   });
+
+  const list = window.sessionStorage.getItem("plan");
+  useMemo(() => {
+    if (list !== null) {
+      setPlanData([JSON.parse(list)]);
+    }
+  }, [list]);
+  console.log(planData);
 
   const getMyPlanList = useCallback(async () => {
     try {

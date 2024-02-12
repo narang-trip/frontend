@@ -1,14 +1,19 @@
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { scheduleActions } from "../../store/scheduleSlice";
 
 const SavePlanModal = (props) => {
   const modalBG = useRef(null);
   const state = useSelector((state) => state.schedule);
+  const dispatch = useDispatch();
   const [title, setTitle] = useState();
 
   const savePlan = async () => {
     console.log(title, JSON.stringify(state));
+    dispatch(scheduleActions.setTitle(title));
+    console.log(JSON.stringify(state));
+    window.sessionStorage.setItem("plan", JSON.stringify(state));
     try {
       const response = await axios.post(`${import.meta.env.VITE_PLAN_REQUEST_URI}`, {
         title: title,
