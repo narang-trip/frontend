@@ -3,14 +3,14 @@ import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/authSlice";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+import { conceptTemaBannerColorObject } from "../data/concepts";
 
 import { ModalPortal } from "./modals/ModalPortal";
 import Dropdown from "./UpNavDropdown";
 import LoginModal from "./modals/LoginModal";
 import Button from "../ui/Button";
-import { conceptTemaBannerColorObject } from "../data/concepts";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import TalkBubble from "../ui/TalkBubble";
 
 const AlertAnimation = ({ color }) => {
@@ -44,14 +44,29 @@ const UpperNavbar = () => {
 
   useEffect(() => {
     if (!isLogin && sessionToken !== null && sessionRefreshToken !== null) {
-      console.log(userId);
-      dispatch(
-        authActions.Login({
-          token: sessionToken,
-          refreshtoken: sessionRefreshToken,
-          userId: userId,
-        })
-      );
+      (async () => {
+        try {
+          const userRes = await axios.get(
+            "https://i10a701.p.ssafy.io/api/user/getuser",
+            {
+              headers: {
+                Authorization: sessionToken,
+                "Authorization-refresh": sessionRefreshToken,
+              },
+            }
+          );
+
+          dispatch(
+            authActions.Setting({
+              token: sessionToken,
+              refreshToken: sessionRefreshToken,
+              userId: userRes.data,
+            })
+          );
+        } catch (error) {
+          console.error("유저받아오면서 문제생김 : ", error);
+        }
+      })();
       getAlertData(userId);
       const EventSource = EventSourcePolyfill || NativeEventSource;
       let eventSource = new EventSource(

@@ -33,8 +33,8 @@ const Login = () => {
 
           dispatch(
             authActions.Setting({
-              token: res.headers.authorization,
-              refreshToken: res.headers["authorization-refresh"],
+              token: auth,
+              refreshToken: refreshAuth,
               userId: userRes.data,
             })
           );
