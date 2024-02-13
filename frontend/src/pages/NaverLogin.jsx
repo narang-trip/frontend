@@ -32,7 +32,7 @@ const Login = () => {
           console.log("refreshAuth :", refreshAuth)
           
           const userRes = await axios.get(
-            "https://i10a701.p.ssafy.io/api/user",
+            "https://i10a701.p.ssafy.io/api/user/getuser",
             {
               headers: {
                 "Authorization": auth,
