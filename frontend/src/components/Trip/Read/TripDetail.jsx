@@ -230,7 +230,7 @@ export default function TripDetail() {
               <p className="mt-5 mb-3 text-base font-bold">일정 정보</p>
 
               <p className="mb-3 text-base font-bold">여행 참여자 정보</p>
-              <TripParticipantsInfo participants={tripDetails.participants} />
+              <TripParticipantsInfo participants={tripDetails.participants} isLeader={isLeader} />
             </div>
           ) : (
             <div>loading 💦</div>
