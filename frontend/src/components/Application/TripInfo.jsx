@@ -2,7 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import { SlCalender, SlLocationPin, SlPeople, SlBadge } from "react-icons/sl";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
-import ReceiveRequestsInfo from "./ReceiveRequestsInfo";
+
 import DateFormatter from "../DateFormatter";
 import ReceivedList from "./ReceivedList";
 
@@ -21,6 +21,7 @@ export default function TripInfo({ tripData }) {
   };
 
   useEffect(() => {
+    console.log(tripData)
     // 날짜 포맷 설정
     setDepartureDate(DateFormatter({ dateString: tripData.departureDate }));
     setReturnDate(DateFormatter({ dateString: tripData.returnDate }));
@@ -32,11 +33,11 @@ export default function TripInfo({ tripData }) {
         <ul>
           <button
             onClick={handleViewClick}
-            className="w-10/12 px-4 py-4 mx-auto my-2 border rounded-3xl bg-stone-200 border-stone-400"
+            className="w-10/12 px-4 py-2 mx-auto my-2 border rounded-3xl border-stone-400"
           >
             <div className="grid grid-cols-3 gap-6">
               <div className="flex items-center col-span-1">
-                <img src={`assets/airplain.jpg`} className="rounded-3xl" />
+                <img src={tripData.tripImgUrl} className="h-36 w-52 rounded-3xl" />
               </div>
               <div className="col-span-2">
                 <p className="my-1.5 text-sm font-bold text-center">
@@ -51,7 +52,7 @@ export default function TripInfo({ tripData }) {
                 </div>
                 <div className="flex flex-row items-center my-1.5 text-sm">
                   <SlLocationPin className="mx-3 " size="24" />
-                  <div> {tripData.destination}</div>
+                  <div> {tripData.continent}, {tripData.country}, {tripData.city}</div>
                 </div>
                 <div className="flex flex-row items-center my-1.5 text-sm">
                   <SlPeople className="mx-3" size="24" />
