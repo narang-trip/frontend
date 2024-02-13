@@ -43,8 +43,15 @@ const UpperNavbar = () => {
   const sessionRefreshToken = window.sessionStorage.getItem("refreshToken");
 
   useEffect(() => {
-    if (!isLogin && sessionToken !== null && sessionRefreshToken !== null)  {
-      dispatch(authActions.Login({ token: sessionToken, refreshtoken: sessionRefreshToken, userId }));
+    if (!isLogin && sessionToken !== null && sessionRefreshToken !== null) {
+      console.log(userId);
+      dispatch(
+        authActions.Login({
+          token: sessionToken,
+          refreshtoken: sessionRefreshToken,
+          userId: userId,
+        })
+      );
       getAlertData(userId);
       const EventSource = EventSourcePolyfill || NativeEventSource;
       let eventSource = new EventSource(
@@ -70,8 +77,15 @@ const UpperNavbar = () => {
         console.error("SSE 에러 발생:", event);
       };
     }
-
-  }, [isLogin]);
+  }, [
+    isLogin,
+    userId,
+    alertAmount,
+    dispatch,
+    sessionRefreshToken,
+    sessionToken,
+    token,
+  ]);
 
   const navigateHome = () => {
     navigate("/");
@@ -96,7 +110,6 @@ const UpperNavbar = () => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
-
 
   const getAlertData = async (userId) => {
     try {
@@ -139,8 +152,6 @@ const UpperNavbar = () => {
           alt="Home"
         />
       </div>
-      <Button onClick={() => clickHandler("노세희")}>노세희 로그인</Button>
-      <Button onClick={() => clickHandler("조용환")}>조용환 로그인</Button>
       {sessionToken === null && (
         <button onClick={OpenLoginModal} className="mr-5 hover:font-semibold">
           Login
