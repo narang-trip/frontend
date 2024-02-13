@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +27,7 @@ const AlertAnimation = ({ color }) => {
   );
 };
 
-const UpperNavbar = () => {
+const UpperNavbar = React.memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [alertContent, setAlertContent] = useState("");
@@ -36,7 +36,7 @@ const UpperNavbar = () => {
   const { concept } = useSelector((state) => state.concept);
   const conceptColorClass = conceptTemaBannerColorObject[concept];
   const { isLogin, userId, alertAmount } = useSelector((state) => state.auth);
-  // const token = useSelector((state) => state.auth.token);
+  const token = useSelector((state) => state.auth.token);
   const sessionToken = window.sessionStorage.getItem("token");
   const sessionRefreshToken = window.sessionStorage.getItem("refreshToken");
   const prevAlertAmountRef = useRef();
@@ -206,6 +206,6 @@ const UpperNavbar = () => {
       )}
     </header>
   );
-};
+});
 
 export default UpperNavbar;
