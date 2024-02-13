@@ -118,13 +118,8 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
 
         update.set("tripName", tripRequest.getTripName());
         update.set("tripDesc", tripRequest.getTripDesc());
-        update.set("tripImgUrl", uploadTripImgRes);
+        update.set("tripImgUrl", uploadTripImgRes.get());
 //        update.set("tripParticipantsSize", tripRequest.getTripParticipantsSize());
-
-        mongoTemplate.findAndModify(
-                query,
-                update,
-                Trip.class);
 
         return Optional.ofNullable(mongoTemplate.findAndModify(query, update, Trip.class))
                 .map(Trip::toTripResponse);
