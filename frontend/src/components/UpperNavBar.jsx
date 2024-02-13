@@ -30,21 +30,19 @@ const AlertAnimation = ({ color }) => {
 const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [alertAmount, setAlertAmount] = useState(0);
   const [alertContent, setAlertContent] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { concept } = useSelector((state) => state.concept);
   const conceptColorClass = conceptTemaBannerColorObject[concept];
-  const { isLogin, userId } = useSelector((state) => state.auth);
+  const { isLogin, userId, alertAmount } = useSelector((state) => state.auth);
   const token = useSelector((state) => state.auth.token);
   const sessionToken = window.sessionStorage.getItem("token");
   const sessionRefreshToken = window.sessionStorage.getItem("refreshToken");
 
   useEffect(() => {
+    getAlertData(userId);
     if (!isLogin && sessionToken !== null && sessionRefreshToken !== null) {
-      getAlertData(userId);
-
       (async () => {
         try {
           const userRes = await axios.get(
@@ -56,7 +54,6 @@ const UpperNavbar = () => {
               },
             }
           );
-
           dispatch(
             authActions.Login({
               token: sessionToken,
@@ -97,7 +94,7 @@ const UpperNavbar = () => {
         console.log("SSE CONNECTED");
       } else {
         const data = JSON.parse(receivedConnectData);
-        setAlertAmount((prev) => prev + 1);
+        dispatch(authActions.SetAlertAmount({ alertAmount : alertAmount+1}))
         setAlertContent(makeAlertContent(data));
       }
     });
@@ -143,7 +140,7 @@ const UpperNavbar = () => {
       const res = await axios.get(
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/list/${userId}`
       );
-      setAlertAmount(res.data.alertList.length);
+      dispatch(authActions.SetAlertAmount({ alertAmount : res.data.alertList.length}))
       console.log(res.data.alertList);
     } catch (error) {
       console.error(error);
