@@ -37,16 +37,17 @@ const UpperNavbar = () => {
   const navigate = useNavigate();
   const { concept } = useSelector((state) => state.concept);
   const conceptColorClass = conceptTemaBannerColorObject[concept];
-  const { isLogin } = useSelector((state) => state.auth);
+  const { isLogin, userId } = useSelector((state) => state.auth);
   const token = useSelector((state) => state.auth.token);
   const sessionToken = window.sessionStorage.getItem("token");
+  const sessionRefreshToken = window.sessionStorage.getItem("refreshToken");
 
   useEffect(() => {
-    if (!isLogin && sessionToken !== null) {
-      dispatch(authActions.Login({ token: sessionToken }));
-      
+    if (!isLogin && sessionToken !== null && sessionRefreshToken !== null)  {
+      dispatch(authActions.Login({ token: sessionToken, refreshtoken: sessionRefreshToken, userId }));
+      getAlertData(userId);
       const EventSource = EventSourcePolyfill || NativeEventSource;
-      const eventSource = new EventSource(
+      let eventSource = new EventSource(
         `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${token}`,
         {
           heartbeatTimeout: 3600000,
@@ -69,7 +70,7 @@ const UpperNavbar = () => {
         console.error("SSE 에러 발생:", event);
       };
     }
-    // console.log(token);
+
   }, [isLogin]);
 
   const navigateHome = () => {
@@ -96,13 +97,6 @@ const UpperNavbar = () => {
     };
   }, [isOpen]);
 
-  const clickHandler = (name) => {
-    window.sessionStorage.setItem("token", name);
-    dispatch(authActions.Login({ token: name }));
-    getAlertData(name);
-    console.log(`${name} 로그인 됐습니다.`);
-    console.log("---------------------------------");
-  };
 
   const getAlertData = async (userId) => {
     try {
