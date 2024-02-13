@@ -19,14 +19,25 @@ const Login = () => {
           `https://i10a701.p.ssafy.io/api/user/login/oauth/naver?code=${code}`
         );
         console.log(res);
-        console.log(res.headers.authorization);
-        dispatch(authActions.Login({ token: res.headers.authorization }));
+        console.log(res.headers['Authorization-Refresh']);
+        try {
+          const userRes = await axios.get("https://i10a701.p.ssafy.io/api/user", {
+            "Authorization" : res.headers.authorization,
+            "Authorization-Refresh" : res.headers['Authorization-Refresh']
+          })
+          console.log("userRes : ", userRes);
+        } catch (error) {
+          console.error("유저받아오면서 문제생김 : ", error)
+        }
+        
+        dispatch(authActions.Login({ token: res.headers.authorization, refreshToken : res.headers['Authorization-Refresh']  }));
         navigate("/");
+        
       } catch (error) {
         console.log("Error during POST request:", error);
       }
     })();
-  }, [dispatch]);
+  }, []);
 
   const test = async () => {
     console.log("토큰?", token);
