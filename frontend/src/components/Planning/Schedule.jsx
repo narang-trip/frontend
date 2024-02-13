@@ -58,11 +58,7 @@ const Schedule = (props) => {
           key={props.data.scheduleIdx}
         >
           {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            >
+            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
               <div
                 style={scheduleCSS}
                 className="relative flex flex-col bg-white w-56 rounded-xl overflow-hidden z-30"
@@ -96,6 +92,7 @@ const Schedule = (props) => {
                       value={text}
                       disabled={!isCanModify}
                     />
+                    <p>다음 장소까지 {schedule.distance} 분</p>
                   </div>
                 </div>
               </div>
@@ -110,11 +107,7 @@ const Schedule = (props) => {
           isDragDisabled
         >
           {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            >
+            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
               <div style={blackCSS} className="bg-black opacity-5"></div>
             </div>
           )}

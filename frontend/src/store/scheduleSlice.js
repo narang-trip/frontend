@@ -25,6 +25,7 @@ const initialState = {
     //       title: "",
     //       time: "",
     //       loca: [],
+    //       distance: "",
     //       comment: "",
     //     },
     // ],
@@ -36,10 +37,10 @@ const scheduleSlice = createSlice({
   initialState,
   reducers: {
     // 일정 추가하기
-    addSchedule: async (state, action) => {
+    addSchedule: (state, action) => {
       state.list[action.payload.day].splice(action.payload.index, 0, action.payload.schedule);
-      const tmpList = await calculateDurations(current(state.list));
-      state.list = tmpList;
+      // const tmpList = await calculateDurations(current(state.list));
+      // state.list = tmpList;
     },
     // 일정 움직이기
     moveSchedule: (state, action) => {
@@ -97,97 +98,3 @@ const scheduleSlice = createSlice({
 export const scheduleActions = scheduleSlice.actions;
 
 export default scheduleSlice.reducer;
-
-async function calculateDurations(list) {
-  console.log("여기 와지는지 테스트");
-  const newList = list.map((day) => [...day]);
-
-  for (let i = 0; i < newList.length; i++) {
-    let prevLoca = null;
-    let prevIdx = 0;
-    for (let j = 0; j < newList[i].length; j++) {
-      if (!newList[i][j]) continue;
-      console.log(newList[i][j].title);
-      if (newList[i][j].title !== null && newList[i][j].title !== undefined) {
-        let curLoca = list[i][j].loca;
-        let curIdx = j;
-        if (prevLoca !== null) {
-          const minute = await getDuration(prevLoca, curLoca);
-          const cnt = Math.ceil(minute / 600);
-          console.log(cnt);
-          console.log(curIdx - prevIdx - 1);
-          if (curIdx - prevIdx < cnt) {
-            const emptySlots = new Array(cnt - (curIdx - prevIdx - 1)).fill([]);
-            newList[i].splice(prevIdx + 1, 0, ...emptySlots);
-            newList[i].splice(-emptySlots.length);
-            j += cnt - (curIdx - prevIdx - 1);
-          }
-        }
-        prevLoca = curLoca;
-        prevIdx = curIdx;
-      }
-    }
-  }
-
-  console.log(newList);
-  return newList;
-}
-
-// async function calculateDurations(list) {
-//   console.log("여기 와지는지 테스트");
-//   const newList = list.map((day) => [...day]);
-//   const updateList = [];
-//   for (let i = 0; i < newList.length; i++) {
-//     let prevLoca = null;
-//     let prevIdx = 0;
-//     for (let j = 0; j < newList[i].length; j++) {
-//       if (!newList[i][j]) continue;
-//       console.log(newList[i][j].title);
-//       if (newList[i][j].title !== null && newList[i][j].title !== undefined) {
-//         let curLoca = list[i][j].loca;
-//         let curIdx = j;
-//         if (prevLoca !== null) {
-//           const minute = await getDuration(prevLoca, curLoca);
-//           const cnt = Math.ceil(minute / 600);
-//           console.log(cnt);
-//           console.log(curIdx - prevIdx - 1);
-//           if (curIdx - prevIdx < cnt) {
-//             const emptySlots = new Array(cnt - (curIdx - prevIdx - 1)).fill([]);
-//             newList[i].splice(prevIdx + 1, 0, ...emptySlots);
-//             newList[i].splice(-emptySlots.length);
-//             j += cnt - (curIdx - prevIdx - 1);
-//           }
-//         }
-//         prevLoca = curLoca;
-//         prevIdx = curIdx;
-//       }
-//     }
-//     updateList.push(newList[i]);
-//   }
-//   console.log(updateList);
-//   return updateList;
-// }
-
-async function getDuration(pl, cl) {
-  return new Promise((resolve, reject) => {
-    const directionsService = new window.google.maps.DistanceMatrixService();
-    console.log("여기까지도?", pl, cl);
-    directionsService.getDistanceMatrix(
-      {
-        origins: [new window.google.maps.LatLng(pl[0], pl[1])],
-        destinations: [new window.google.maps.LatLng(cl[0], cl[1])],
-        travelMode: "TRANSIT",
-      },
-      (response, status) => {
-        if (status === "OK") {
-          console.log(response);
-          console.log(response.rows[0].elements[0].duration);
-          resolve(response.rows[0].elements[0].duration.value);
-        } else {
-          console.log("Error:", status);
-          reject(new Error("Error:" + status));
-        }
-      }
-    );
-  });
-}
