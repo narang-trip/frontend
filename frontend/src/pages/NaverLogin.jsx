@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authActions } from "../store/authSlice";
 import { useEffect } from "react";
@@ -7,7 +7,7 @@ import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  let token;
+  const token = useSelector((state) => state.auth.token);
   useEffect(() => {
     const params = new URL(document.URL).searchParams;
     const code = params.get("code");
