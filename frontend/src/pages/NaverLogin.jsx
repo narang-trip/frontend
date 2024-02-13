@@ -21,8 +21,8 @@ const Login = () => {
           `https://i10a701.p.ssafy.io/api/user/login/oauth/naver?code=${code}`
         );
         console.log(res);
-        auth = res.headers["Authorization"];
-        refreshAuth = res.headers["Authorization-Refresh"];
+        auth = res.headers["authorization"];
+        refreshAuth = res.headers["authorization-refresh"];
         console.log("바깥")
         console.log("auth :", auth)
         console.log("refreshAuth :", refreshAuth)
@@ -35,8 +35,8 @@ const Login = () => {
             "https://i10a701.p.ssafy.io/api/user",
             {
               headers: {
-                "Authorization": res.headers.authorization,
-                "Authorization-Refresh": res.headers["Authorization-Refresh"],
+                "Authorization": auth,
+                "Authorization-refresh": refreshAuth,
               },
             }
           );
@@ -48,7 +48,7 @@ const Login = () => {
         dispatch(
           authActions.Login({
             token: res.headers.authorization,
-            refreshToken: res.headers["Authorization-Refresh"],
+            refreshToken: res.headers["authorization-refresh"],
           })
         );
         navigate("/");
