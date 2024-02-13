@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
+import { DirectionsService } from "@react-google-maps/api";
 
 const initialState = {
   // 여행 제목
@@ -35,24 +36,15 @@ const scheduleSlice = createSlice({
   initialState,
   reducers: {
     // 일정 추가하기
-    addSchedule: (state, action) => {
-      state.list[action.payload.day].splice(
-        action.payload.index,
-        0,
-        action.payload.schedule
-      );
+    addSchedule: async (state, action) => {
+      state.list[action.payload.day].splice(action.payload.index, 0, action.payload.schedule);
+      const tmpList = await calculateDurations(current(state.list));
+      state.list = tmpList;
     },
     // 일정 움직이기
     moveSchedule: (state, action) => {
-      const data = state.list[action.payload.start.day].splice(
-        action.payload.start.index,
-        1
-      );
-      state.list[action.payload.end.day].splice(
-        action.payload.end.index,
-        0,
-        ...data
-      );
+      const data = state.list[action.payload.start.day].splice(action.payload.start.index, 1);
+      state.list[action.payload.end.day].splice(action.payload.end.index, 0, ...data);
     },
     // 저장된 계획 불러오기
     setSchedule: (state, action) => {
@@ -82,17 +74,18 @@ const scheduleSlice = createSlice({
     },
     // 일정 체류시간 변경
     setScheduleTime: (state, action) => {
-      state.list[action.payload.day][action.payload.index].time =
-        action.payload.time;
+      state.list[action.payload.day][action.payload.index].time = action.payload.time;
     },
     // 일정 한마디
     setComment: (state, action) => {
-      state.list[action.payload.day][action.payload.index].comment =
-        action.payload.comment;
+      state.list[action.payload.day][action.payload.index].comment = action.payload.comment;
     },
     // 계획표 제목 정하기
     setTitle: (state, action) => {
       state.title = action.payload;
+    },
+    setList: (state, action) => {
+      state.list = action.payload;
     },
     // 초기화
     reset: () => {
@@ -104,3 +97,97 @@ const scheduleSlice = createSlice({
 export const scheduleActions = scheduleSlice.actions;
 
 export default scheduleSlice.reducer;
+
+async function calculateDurations(list) {
+  console.log("여기 와지는지 테스트");
+  const newList = list.map((day) => [...day]);
+
+  for (let i = 0; i < newList.length; i++) {
+    let prevLoca = null;
+    let prevIdx = 0;
+    for (let j = 0; j < newList[i].length; j++) {
+      if (!newList[i][j]) continue;
+      console.log(newList[i][j].title);
+      if (newList[i][j].title !== null && newList[i][j].title !== undefined) {
+        let curLoca = list[i][j].loca;
+        let curIdx = j;
+        if (prevLoca !== null) {
+          const minute = await getDuration(prevLoca, curLoca);
+          const cnt = Math.ceil(minute / 600);
+          console.log(cnt);
+          console.log(curIdx - prevIdx - 1);
+          if (curIdx - prevIdx < cnt) {
+            const emptySlots = new Array(cnt - (curIdx - prevIdx - 1)).fill([]);
+            newList[i].splice(prevIdx + 1, 0, ...emptySlots);
+            newList[i].splice(-emptySlots.length);
+            j += cnt - (curIdx - prevIdx - 1);
+          }
+        }
+        prevLoca = curLoca;
+        prevIdx = curIdx;
+      }
+    }
+  }
+
+  console.log(newList);
+  return newList;
+}
+
+// async function calculateDurations(list) {
+//   console.log("여기 와지는지 테스트");
+//   const newList = list.map((day) => [...day]);
+//   const updateList = [];
+//   for (let i = 0; i < newList.length; i++) {
+//     let prevLoca = null;
+//     let prevIdx = 0;
+//     for (let j = 0; j < newList[i].length; j++) {
+//       if (!newList[i][j]) continue;
+//       console.log(newList[i][j].title);
+//       if (newList[i][j].title !== null && newList[i][j].title !== undefined) {
+//         let curLoca = list[i][j].loca;
+//         let curIdx = j;
+//         if (prevLoca !== null) {
+//           const minute = await getDuration(prevLoca, curLoca);
+//           const cnt = Math.ceil(minute / 600);
+//           console.log(cnt);
+//           console.log(curIdx - prevIdx - 1);
+//           if (curIdx - prevIdx < cnt) {
+//             const emptySlots = new Array(cnt - (curIdx - prevIdx - 1)).fill([]);
+//             newList[i].splice(prevIdx + 1, 0, ...emptySlots);
+//             newList[i].splice(-emptySlots.length);
+//             j += cnt - (curIdx - prevIdx - 1);
+//           }
+//         }
+//         prevLoca = curLoca;
+//         prevIdx = curIdx;
+//       }
+//     }
+//     updateList.push(newList[i]);
+//   }
+//   console.log(updateList);
+//   return updateList;
+// }
+
+async function getDuration(pl, cl) {
+  return new Promise((resolve, reject) => {
+    const directionsService = new window.google.maps.DistanceMatrixService();
+    console.log("여기까지도?", pl, cl);
+    directionsService.getDistanceMatrix(
+      {
+        origins: [new window.google.maps.LatLng(pl[0], pl[1])],
+        destinations: [new window.google.maps.LatLng(cl[0], cl[1])],
+        travelMode: "TRANSIT",
+      },
+      (response, status) => {
+        if (status === "OK") {
+          console.log(response);
+          console.log(response.rows[0].elements[0].duration);
+          resolve(response.rows[0].elements[0].duration.value);
+        } else {
+          console.log("Error:", status);
+          reject(new Error("Error:" + status));
+        }
+      }
+    );
+  });
+}

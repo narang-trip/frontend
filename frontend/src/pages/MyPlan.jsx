@@ -67,6 +67,19 @@ const MyPlan = () => {
     setIsNewPlanOpen(false);
   };
 
+  useEffect(() => {
+    // 모달이 열렸을 때 스크롤 막기 위함
+    if (isNewPlanOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isNewPlanOpen]);
+
   return (
     <div className="relative">
       <p className="my-2 text-2xl font-bold text-center">나의 계획</p>

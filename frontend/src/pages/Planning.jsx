@@ -30,9 +30,7 @@ export default function PlanningPage() {
   useEffect(() => {
     async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
-        );
+        const response = await axios.get(`${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`);
         console.log(response);
       } catch (error) {
         console.log(error);
@@ -77,12 +75,11 @@ export default function PlanningPage() {
   const onDragEnd = ({ source, destination }) => {
     // console.log(source);
     // console.log(destination);
-
     if (!destination) return; // 범위밖일 때 드래그 취소
     const idx = Number(destination.droppableId.substr(4));
     if (source.droppableId === "PlaceCard") {
       // 추가;
-      // console.log(card[source.index]);
+      console.log(card[source.index].loca);
       const schedule = {
         img: card[source.index].photo,
         title: card[source.index].name,
@@ -115,9 +112,7 @@ export default function PlanningPage() {
       window.sessionStorage.setItem("plan", JSON.stringify(list));
       async () => {
         try {
-          const response = await axios.patch(
-            `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
-          );
+          const response = await axios.patch(`${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`);
           console.log(response);
         } catch (error) {
           console.log(error);
@@ -140,9 +135,7 @@ export default function PlanningPage() {
     window.sessionStorage.removeItem("plan");
     async () => {
       try {
-        const response = await axios.delete(
-          `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
-        );
+        const response = await axios.delete(`${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`);
         console.log(response);
       } catch (error) {
         console.log(error);
