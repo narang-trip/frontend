@@ -21,8 +21,8 @@ const ReceivedRequests = () => {
       const response = await axios.post(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/recruit`,
         {
-          userId: "3fa85f64-5717-4562-b3fc-2c963f66a123",
-          tripPageNo: pageNo
+          userId: "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5",
+          pageNo: pageNo
         },
         {
           headers: {

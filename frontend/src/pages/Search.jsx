@@ -41,66 +41,39 @@ const SearchPage = () => {
   const [selectedConcepts, setSelectedConcepts] = useState([]);
   const [selectedPositions, setSelectedPositions] = useState([]);
   const [dateRange, setDateRange] = useState([null, null]);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
   const [participantsSize, setParticipantsSize] = useState(1); // Default to 1 person
 
   const [pageNo, setPageNo] = useState(0);
   const [tripData, setTripData] = useState([]);
 
+  const [requestData, setRequestData] = useState({
+    tripConcept: conceptList,
+    tripRoles: positionList,
+    tripContinent: continents,
+    participantsSize: 0,
+  });
+
   const { ref, inView } = useInView({
     threshold: 0, // div태그가 보일 때 inView가 true로 설정
   });
 
-  // 날짜 변경
-  const handleDateChange = (range) => {
-    setDateRange(range);
-    setStartDate(dateRange[0]);
-    setEndDate(dateRange[1]);
-  };
-
-  // 인원 변경
-  const handleParticipantsSize = (event) => {
-    setParticipantsSize(parseInt(event.target.value, 10));
-  };
-
-  // 대륙 체크박스 변경 핸들러
-  const handleContinentChange = (continent) => {
-    const newSelectedContinents = selectedContinents.includes(continent)
-      ? selectedContinents.filter((c) => c !== continent)
-      : [...selectedContinents, continent];
-
-    setSelectedContinents(newSelectedContinents);
-  };
-
-  // 컨셉 체크박스 변경 핸들러
-  const handleConceptChange = (concept) => {
-    const newSelectedConcepts = selectedConcepts.includes(concept)
-      ? selectedConcepts.filter((c) => c !== concept)
-      : [...selectedConcepts, concept];
-
-    setSelectedConcepts(newSelectedConcepts);
-  };
-
-  // 포지션 체크박스 변경 핸들러
-  const handlePositionChange = (position) => {
-    const newSelectedPositions = selectedPositions.includes(position)
-      ? selectedPositions.filter((p) => p !== position)
-      : [...selectedPositions, position];
-
-    setSelectedPositions(newSelectedPositions);
-  };
-
   const getBoardList = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_TRIP_REQUEST_URI}/page/${pageNo}`
+      const response = await axios.post(
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/page/available`,
+        { pageNo: pageNo, ...requestData },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
 
+      console.log(requestData);
       console.log(response.data);
       // 가져올 항목이 없으면 중단
       if (response.data.content.length === 0) {
-        return;
+        setIsEmpty(true);
       }
 
       // 새로운 데이터를 기존 데이터에 추가
@@ -111,41 +84,158 @@ const SearchPage = () => {
     } catch (error) {
       console.error("여행 목록을 가져오는 중 에러 발생:", error);
     }
-  }, [pageNo]);
+  }, [pageNo, requestData]);
+
+
+  // 날짜 포맷
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  // 날짜 변경
+  const handleDateChange = (range) => {
+    setTripData([]);
+    setPageNo(0);
+    setDateRange(range);
+
+    // 요청 데이터 업데이트
+    setRequestData((prevData) => ({
+      ...prevData,
+      querySttDate: range[0] ? formatDate(range[0]) : "1970-01-01",
+      queryEndDate: range[1] ? formatDate(range[1]) : "2030-12-31",
+    }));
+  };
+
+  // 날짜 clear 이벤트 핸들러
+  const handleDateClear = () => {
+    setTripData([]);
+    setPageNo(0);
+
+    // 요청 데이터 업데이트
+    setRequestData((prevData) => ({
+      ...prevData,
+      querySttDate: "1970-01-01",
+      queryEndDate: "2030-12-31",
+    }));
+  };
+
+  // 인원 변경
+  const handleParticipantsSize = (event) => {
+    setTripData([]);
+    setPageNo(0);
+    // 선택된 값이 없으면 0으로 설정
+    const size = event.target.value ? parseInt(event.target.value, 10) : 0;
+    setParticipantsSize(size);
+
+    // 요청 데이터 업데이트
+    setRequestData((prevData) => ({
+      ...prevData,
+      participantsSize: size,
+    }));
+  };
+
+  // 대륙 체크박스 변경 핸들러
+  const handleContinentChange = (continent) => {
+    setTripData([]);
+    setPageNo(0);
+
+    const newSelectedContinents = selectedContinents.includes(continent)
+      ? selectedContinents.filter((c) => c !== continent)
+      : [...selectedContinents, continent];
+
+    setSelectedContinents(newSelectedContinents);
+    // 요청 데이터 업데이트
+    setRequestData((prevData) => ({
+      ...prevData,
+      tripContinent:
+        newSelectedContinents.length === 0 ? continents : newSelectedContinents,
+    }));
+  };
+
+  // 컨셉 체크박스 변경 핸들러
+  const handleConceptChange = (concept) => {
+    setTripData([]);
+    setPageNo(0);
+
+    const newSelectedConcepts = selectedConcepts.includes(concept)
+      ? selectedConcepts.filter((c) => c !== concept)
+      : [...selectedConcepts, concept];
+
+    setSelectedConcepts(newSelectedConcepts);
+
+    // 컨셉 체크 여부에 따라 요청 데이터 업데이트
+    setRequestData((prevData) => ({
+      ...prevData,
+      tripConcept:
+        newSelectedConcepts.length === 0 ? conceptList : newSelectedConcepts,
+    }));
+  };
+
+  // 포지션 체크박스 변경 핸들러
+  const handlePositionChange = (position) => {
+    setTripData([]);
+    setPageNo(0);
+
+    const newSelectedPositions = selectedPositions.includes(position)
+      ? selectedPositions.filter((p) => p !== position)
+      : [...selectedPositions, position];
+
+    setSelectedPositions(newSelectedPositions);
+
+    // 요청 데이터 업데이트
+    setRequestData((prevData) => ({
+      ...prevData,
+      tripRoles: newSelectedPositions,
+    }));
+  };
 
   // inView가 true일때 데이터를 가져옴
   useEffect(() => {
+    // inView가 true일때 데이터를 가져옴
     if (inView) {
       console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
       getBoardList();
     }
-  }, [inView]);
+  }, [inView, requestData]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [tripData]);
 
   return (
     <Fragment>
-      <div className="grid grid-cols-10">
+      <div className="grid grid-cols-10 gap-1">
         <div className="col-span-8">
-          <div className="flex flex-wrap justify-center">
-            {tripData.map((trip, idx) => (
-              <TripSummary trip={trip} key={idx} />
-            ))}
-          </div>
+          {tripData.length === 0 ? (
+            <p>해당 조건에 맞는 모집글이 없습니다.</p>
+          ) : (
+            <div className="flex flex-wrap justify-start">
+              {tripData.map((trip, idx) => (
+                <TripSummary trip={trip} key={idx} />
+              ))}
+            </div>
+          )}
           <div ref={ref}></div>
         </div>
         <div className="col-span-2">
           <div className="flex justify-around mb-2 itmes-center">
             <div className="mr-1">날짜</div>
             <DatePicker
+              isClearable
               locale={ko}
               selectsRange={true}
               startDate={dateRange[0]}
               endDate={dateRange[1]}
               onChange={handleDateChange}
+              onClear={handleDateClear}
               dateFormat="yy/MM/dd"
               className="p-1 text-sm border rounded-sm w-44 border-neutral-300 text-neutral-700"
             />
           </div>
-          <div className="w-full my-3 border-2 border-neutral-300"/>
+          <div className="w-full my-3 border-2 border-neutral-300" />
           <div className="flex items-center justify-around mb-2">
             <div className="mr-1">인원</div>
             <select
@@ -160,7 +250,7 @@ const SearchPage = () => {
               ))}
             </select>
           </div>
-          <div className="w-full my-3 border-2 border-neutral-300"/>
+          <div className="w-full my-3 border-2 border-neutral-300" />
           <div>장소(대륙)</div>
           <div className="flex flex-col items-start p-1 text-neutral-700">
             {continents.map((continent) => (
@@ -169,11 +259,10 @@ const SearchPage = () => {
                 label={continent}
                 checked={selectedContinents.includes(continent)}
                 onChange={() => handleContinentChange(continent)}
-  
               />
             ))}
           </div>
-          <div className="w-full my-3 border-2 border-neutral-300"/>
+          <div className="w-full my-3 border-2 border-neutral-300" />
           <div>컨셉</div>
           <div className="flex flex-col items-start p-1 text-neutral-700">
             {conceptList.map((concept) => (
@@ -185,7 +274,7 @@ const SearchPage = () => {
               />
             ))}
           </div>
-          <div className="w-full my-3 border-2 border-neutral-300"/>
+          <div className="w-full my-3 border-2 border-neutral-300" />
           <div>포지션</div>
           <div className="flex flex-col items-start p-1 text-neutral-700">
             {positionList.map((position) => (
