@@ -13,13 +13,19 @@ const TimeLine = () => {
   }
 
   return (
-    <div className="absolute w-full h-full grid grid-cols content-between pt-8">
+    <div className="w-full h-full grid grid-cols content-between pt-8">
       {[...Array(lineCnt)].map((_, index) => (
         <>
           {isOclock[index] ? (
-            <div key={index} className="border-b opacity-50 border-red-600 w-full"></div>
+            <div
+              key={index}
+              className="border-b opacity-50 border-red-600 w-full"
+            ></div>
           ) : (
-            <div key={index} className="border-b opacity-25 border-red-600 w-full"></div>
+            <div
+              key={index}
+              className="border-b opacity-25 border-red-600 w-full"
+            ></div>
           )}
         </>
       ))}
