@@ -36,7 +36,7 @@ const UpperNavbar = () => {
   const { concept } = useSelector((state) => state.concept);
   const conceptColorClass = conceptTemaBannerColorObject[concept];
   const { isLogin, userId, alertAmount } = useSelector((state) => state.auth);
-  const token = useSelector((state) => state.auth.token);
+  // const token = useSelector((state) => state.auth.token);
   const sessionToken = window.sessionStorage.getItem("token");
   const sessionRefreshToken = window.sessionStorage.getItem("refreshToken");
   const prevAlertAmountRef = useRef();
@@ -61,7 +61,7 @@ const UpperNavbar = () => {
       (async () => {
         try {
           const userRes = await axios.get(
-            "https://i10a701.p.ssafy.io/api/user/getuser",
+            `${import.meta.env.VITE_USER_REQUEST_URI}/getuser`,
             {
               headers: {
                 Authorization: sessionToken,
@@ -84,12 +84,9 @@ const UpperNavbar = () => {
   }, [
     isLogin,
     userId,
-    alertAmount,
     dispatch,
     sessionRefreshToken,
     sessionToken,
-    token,
-    getAlertData,
   ]);
 
   useEffect(() => {
@@ -124,14 +121,14 @@ const UpperNavbar = () => {
     return () => {
       eventSource.close();
     };
-  }, [alertAmount, dispatch, userId]);
+  }, [dispatch, userId]);
 
   useEffect(() => {
     // const prevAlertAmount = prevAlertAmountRef.current;
 
     // if (prevAlertAmount !== alertAmount) {
-    //   setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
-    //   setAlertAnimation();
+      setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
+      setAlertAnimation();
 
     // }
   }, [alertAmount]);
