@@ -80,6 +80,9 @@ const UpperNavbar = () => {
   ]);
 
   useEffect(() => {
+    if (userId === "") {
+      return
+    }
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const eventSource = new EventSource(
       `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`,
