@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
+import com.ssafy.tripservice.api.request.TripModifyRequest;
 import com.ssafy.tripservice.api.request.TripQueryRequest;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
@@ -89,7 +90,7 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
 
     @Transactional
     @Override
-    public Optional<TripResponse> modifyTrip(TripRequest tripRequest, MultipartFile tripImg) {
+    public Optional<TripResponse> modifyTrip(TripModifyRequest tripRequest, MultipartFile tripImg) {
 
         Optional<Trip> trip = Optional.ofNullable(mongoTemplate.findById(tripRequest.getTripId(), Trip.class));
 
@@ -98,10 +99,10 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
             return Optional.empty();
         }
 
-        if (trip.get().getParticipants().size() > tripRequest.getTripParticipantsSize()) {
-            System.out.println("누구 쫓아 내야함");
-            return Optional.empty();
-        }
+//        if (trip.get().getParticipants().size() > tripRequest.getTripParticipantsSize()) {
+//            System.out.println("누구 쫓아 내야함");
+//            return Optional.empty();
+//        }
 
         Optional<String> uploadTripImgRes = Optional.of("https://youngkimi-bucket-01.s3.ap-northeast-2.amazonaws.com/airplain.jpg");
 
@@ -117,8 +118,8 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
 
         update.set("tripName", tripRequest.getTripName());
         update.set("tripDesc", tripRequest.getTripDesc());
-        update.set("tripImgUrl", tripRequest.getTripImgUrl());
-        update.set("tripParticipantsSize", tripRequest.getTripParticipantsSize());
+        update.set("tripImgUrl", uploadTripImgRes);
+//        update.set("tripParticipantsSize", tripRequest.getTripParticipantsSize());
 
         mongoTemplate.findAndModify(
                 query,
@@ -380,7 +381,7 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
         final int pageSize = 9;
 
         PageRequest pageRequest = PageRequest.of(
-        tripQueryRequest.getPageNo(), pageSize, Sort.by("departureDate").descending());
+        tripQueryRequest.getPageNo(), pageSize, Sort.by("departureDate").ascending());
 
         List<Trip> tripsIWant = new LinkedList<>();
 

@@ -1,5 +1,6 @@
 package com.ssafy.tripservice.api.service;
 
+import com.ssafy.tripservice.api.request.TripModifyRequest;
 import com.ssafy.tripservice.api.request.TripQueryRequest;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
@@ -26,7 +27,7 @@ public interface TripService {
     /*
             Trip 생성
     */
-    Optional<TripResponse> modifyTrip(TripRequest tripRequest, MultipartFile tripImg);
+    Optional<TripResponse> modifyTrip(TripModifyRequest tripModifyRequest, MultipartFile tripImg);
     /*
         현재 기준 참가 가능한 Trip
      */

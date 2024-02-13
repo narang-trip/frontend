@@ -96,5 +96,4 @@ public class Trip extends BaseEntity{
                 .tripRoles(this.tripRoles)
                 .build();
     }
-
 }
