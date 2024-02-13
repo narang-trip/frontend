@@ -6,8 +6,14 @@ import com.ssafy.paymentservice.db.entity.UserMileage;
 import com.ssafy.paymentservice.db.repository.RefundRecordRepository;
 import com.ssafy.paymentservice.db.repository.UsageRecordRepository;
 import com.ssafy.paymentservice.db.repository.UserMileageRepository;
+import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.client.inject.GrpcClient;
+import net.devh.boot.grpc.server.service.GrpcService;
+import org.narang.lib.PaymentGrpc;
+import org.narang.lib.TripMileageUsageRequest;
+import org.narang.lib.TripMileageUsageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
@@ -19,11 +25,13 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@Service @GrpcService
 @RequiredArgsConstructor
-public class MileageService {
+public class MileageService extends PaymentGrpc.PaymentImplBase {
     private final UserMileageRepository userMileageRepository;
     private final UsageRecordRepository usageRecordRepository;
     private final RefundRecordRepository refundRecordRepository;
+
     @Autowired
     private TextEncryptor textEncryptor;
     public int getMileage(String user_id){
@@ -90,5 +98,23 @@ public class MileageService {
     private Long calculateDateDifference(LocalDateTime startDate, LocalDateTime endDate){
         Duration duration = Duration.between(startDate, endDate);
         return duration.toDays();
+    /*
+        Trip 아니고 Chat 에 들어가야 함 ...
+     */
+
+    @Override
+    public void tripUseMileage(TripMileageUsageRequest request, StreamObserver<TripMileageUsageResponse> responseObserver) {
+        UsageRecord record = useMileage(request.getUserId(), request.getPrice());
+
+        if (record != null) {
+            TripMileageUsageResponse response = TripMileageUsageResponse.newBuilder()
+                    .setUserId(record.getUser_id())
+                    .setBalance(record.getBalance())
+                    .setPrice(record.getPrice())
+                    .setRecordId(record.getId()).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
+//        responseObserver.onError(new NoSuchElementException());
     }
 }

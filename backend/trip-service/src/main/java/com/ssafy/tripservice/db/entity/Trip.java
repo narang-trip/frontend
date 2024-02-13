@@ -45,6 +45,7 @@ public class Trip extends BaseEntity{
     @Data
     public static class Participant {
         private List<String> userRoles;
+        private String usageId;
         private UUID participantId;
         private LocalDateTime enrollmentDate;
     }
@@ -95,4 +96,5 @@ public class Trip extends BaseEntity{
                 .tripRoles(this.tripRoles)
                 .build();
     }
+
 }
