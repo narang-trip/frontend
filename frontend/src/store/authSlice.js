@@ -5,6 +5,7 @@ const initialState = {
   token: null,
   refreshToken: null,
   userId : "",
+  alertAmount : 0,
 };
 const authSlice = createSlice({
   name: "auth",
@@ -33,6 +34,9 @@ const authSlice = createSlice({
       window.sessionStorage.removeItem("token");
       window.sessionStorage.removeItem("refreshToken");
     },
+    SetAlertAmount: (state, action) => {
+      state.alertAmount = action.payload.alertAmount
+    }
   },
 });
 
