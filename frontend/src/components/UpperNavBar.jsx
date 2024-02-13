@@ -56,7 +56,7 @@ const UpperNavbar = () => {
           );
 
           dispatch(
-            authActions.Setting({
+            authActions.Login({
               token: sessionToken,
               refreshToken: sessionRefreshToken,
               userId: userRes.data,
