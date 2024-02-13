@@ -32,6 +32,7 @@ const TripEditModal = ({ data, onClose }) => {
 
     const requestData = {
       ...data,
+      tripId: data.tripId,
       tripName: board.title,
       tripDesc: board.description,
     };
@@ -39,7 +40,7 @@ const TripEditModal = ({ data, onClose }) => {
     try {
       // 데이터 추가
       formData.append(
-        "tripRequest",
+        "tripModifyRequest",
         new Blob([JSON.stringify(requestData)], {
           type: "application/json",
         })

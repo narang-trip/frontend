@@ -80,7 +80,7 @@ function MainNavigation() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/Mypage">Myapge</NavLink>
+            <NavLink to="/Mypage">Mypage</NavLink>
           </li>
         </ul>
       </nav>
