@@ -29,7 +29,7 @@ const Login = () => {
   });
 
   const test = async () => {
-    console.log(test, token);
+    console.log("토큰?", token);
     try {
       const res = await axios.get(
         `https://i10a701.p.ssafy.io/api/user/getuser`,
