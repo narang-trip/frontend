@@ -7,9 +7,8 @@ import ChatRoomList from "./Chat/ChatRoomList";
 import Chat from "./Chat/Chat";
 
 export default function Widgets() {
-  const isLogin = useSelector((state) => state.auth.isLogin);
+  const {isLogin} = useSelector((state) => state.auth);
   const { conceptColor} = useSelector((state => state.concept))
-  console.log(conceptColor)
   const [activeChatRoomList, setActiveChatRoomList] = useState(true);
   const [selectedChatRoomId, setSelectedChatRoomId] = useState(null);
   const [selectedChatRoomName, setSelectedChatRoomName] = useState("");

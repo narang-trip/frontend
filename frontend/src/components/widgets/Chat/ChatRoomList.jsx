@@ -18,7 +18,7 @@ const NoChatRoom = ({ conceptColor }) => {
 }
 
 const ChatRoomList = ({ onChatRoomSelect }) => {
-  const userId = useSelector((state) => state.auth.userId);
+  const {userId} = useSelector((state) => state.auth);
   const { conceptColor } = useSelector((state) => state.concept)
   const [isLoading, setIsLoading] = useState(true);
   const [chatroomList, setChatroomList] = useState({ chatroomList: [] });
