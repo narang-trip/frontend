@@ -48,7 +48,7 @@ const UpperNavbar = () => {
       getAlertData(userId);
       const EventSource = EventSourcePolyfill || NativeEventSource;
       let eventSource = new EventSource(
-        `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${token}`,
+        `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`,
         {
           heartbeatTimeout: 3600000,
         }
