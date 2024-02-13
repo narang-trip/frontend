@@ -95,7 +95,8 @@ const UpperNavbar = () => {
       const { data: receivedConnectData } = event;
       if (receivedConnectData === `EventStream Created. [userId=${userId}]`) {
         console.log("SSE CONNECTED");
-        setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
+        console.log(alertAmount)
+        // setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
       } else {
         const data = JSON.parse(receivedConnectData);
         setAlertContent(makeAlertContent(data));
