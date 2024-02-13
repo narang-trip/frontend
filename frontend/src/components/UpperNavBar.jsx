@@ -43,6 +43,8 @@ const UpperNavbar = () => {
   useEffect(() => {
     if (sessionToken !== null) {
       token = sessionToken;
+      console.log(token);
+      console.log(typeof(token));
       const EventSource = EventSourcePolyfill || NativeEventSource;
       const eventSource = new EventSource(
         `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${token}`,
