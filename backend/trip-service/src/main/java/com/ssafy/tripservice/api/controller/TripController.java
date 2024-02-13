@@ -40,14 +40,6 @@ public class TripController {
     private final AmazonS3Client amazonS3Client;
     private final TripService tripService;
 
-//    @GetMapping("/trips/available")
-//    public ResponseEntity<List<TripResponse>> getTripsAvailable() {
-//
-//        List<TripResponse> availableTrips = tripService.getAvailableTrips();
-//
-//        return new ResponseEntity<List<TripResponse>>(availableTrips, HttpStatus.OK);
-//    }
-
     @Operation(summary = "Trip ID 로 TRIP 개별 조회",
             responses = {
                     @ApiResponse(description = "The Trip",
@@ -172,7 +164,6 @@ public class TripController {
     public ResponseEntity<Page<TripPageResponse>> getAvailableTrips(@RequestBody TripQueryRequest tripQueryRequest) {
         return new ResponseEntity<>(tripService.getTripsIWant(tripQueryRequest), HttpStatus.OK);
     }
-
 
     @Operation(summary = "배너용 Trips",
             responses = {
