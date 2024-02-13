@@ -62,22 +62,31 @@ const TripSummaryMain = ({ trip }) => {
               </div>
             )}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-1 ">
             <div className="flex flex-row items-center my-3 text-sm">
-              <SlCalender className="mx-2 " size="24" />
-              <p className="text-xs">
-                {departureDate} ~ {returnDate}
-              </p>
+              <SlCalender className="mx-1" size="24" />
+              <div className="flex-grow text-center">
+                <p className="text-xs">
+                  {departureDate} ~ {returnDate}
+                </p>
+              </div>
             </div>
             <div className="flex flex-row items-center my-3 text-sm">
-              <SlLocationPin className="mx-2 text-2xl" />
-              <p className="text-xs">
-                {trip.continent}, {trip.country}, {trip.city}
-              </p>
+              <SlLocationPin className="mx-" size="20" />
+              <div className="flex-grow text-center">
+                <p className="text-xs">
+                  {trip.country},
+                  <br />
+                  {trip.city}
+                </p>
+              </div>
+              <p className="text-xs"></p>
             </div>
-            <div className="flex flex-row items-center my-3 text-sm">
-              <SlInfo className="mx-2 " size="24" />
-              <p className="text-xs">{trip.tripDesc}</p>
+            <div className="flex flex-row items-center my-3 text-sm ">
+              <SlInfo className="mx-1 " size="24" />
+              <div className="flex-grow text-center">
+                <p className="text-xs">{trip.tripDesc}</p>
+              </div>
             </div>
           </div>
         </div>

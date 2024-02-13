@@ -44,6 +44,7 @@ const UpperNavbar = () => {
   useEffect(() => {
     if (!isLogin && sessionToken !== null) {
       dispatch(authActions.Login({ token: sessionToken }));
+      
       const EventSource = EventSourcePolyfill || NativeEventSource;
       const eventSource = new EventSource(
         `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${token}`,
