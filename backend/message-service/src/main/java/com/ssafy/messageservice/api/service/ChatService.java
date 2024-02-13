@@ -57,13 +57,14 @@ public class ChatService {
     }
 
     public String postChatroom(ChatroomRequest chatroomRequest){
-        Chatroom room = new Chatroom(UUID.randomUUID().toString(), chatroomRequest.getChatroomName());
+        String chatroomId = UUID.randomUUID().toString();
+        Chatroom room = new Chatroom(chatroomId, chatroomRequest.getChatroomName());
         chatroomRepository.save(room);
 
         ChatroomUser user = new ChatroomUser(UUID.randomUUID().toString(), room, chatroomRequest.getUserId());
         chatroomUserRepository.save(user);
 
-        return "success";
+        return chatroomId;
     }
 
     private String getName(String id) {
