@@ -37,14 +37,13 @@ const UpperNavbar = () => {
   const navigate = useNavigate();
   const { concept } = useSelector((state) => state.concept);
   const conceptColorClass = conceptTemaBannerColorObject[concept];
-  let token = useSelector((state) => state.auth.token);
-  let sessionToken = window.sessionStorage.getItem("token");
+  const { isLogin } = useSelector((state) => state.auth);
+  const token = useSelector((state) => state.auth.token);
+  const sessionToken = window.sessionStorage.getItem("token");
 
   useEffect(() => {
-    if (sessionToken !== null) {
-      token = sessionToken;
-      console.log(token);
-      console.log(typeof(token));
+    if (!isLogin && sessionToken !== null) {
+      dispatch(authActions.Login({ token: sessionToken }));
       const EventSource = EventSourcePolyfill || NativeEventSource;
       const eventSource = new EventSource(
         `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${token}`,
@@ -69,8 +68,8 @@ const UpperNavbar = () => {
         console.error("SSE 에러 발생:", event);
       };
     }
-    console.log(token);
-  }, []);
+    // console.log(token);
+  }, [isLogin]);
 
   const navigateHome = () => {
     navigate("/");
