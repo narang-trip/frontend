@@ -66,7 +66,6 @@ const UpperNavbar = () => {
           console.error("유저받아오면서 문제생김 : ", error);
         }
       })();
-      
     }
   }, [
     isLogin,
@@ -95,7 +94,7 @@ const UpperNavbar = () => {
       const { data: receivedConnectData } = event;
       if (receivedConnectData === `EventStream Created. [userId=${userId}]`) {
         console.log("SSE CONNECTED");
-        console.log(alertAmount)
+        console.log(alertAmount);
         // setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
       } else {
         const data = JSON.parse(receivedConnectData);
@@ -105,6 +104,9 @@ const UpperNavbar = () => {
     eventSource.onerror = function (event) {
       console.error("SSE 에러 발생:", event);
     };
+    return () => {
+      eventSource.close();
+  };
   }, [userId]);
 
   useEffect(() => {
@@ -149,7 +151,7 @@ const UpperNavbar = () => {
 
   const setAlertAnimation = () => {
     setIsVisible(true);
-    setAlertAmount((prevData) => [prevData + 1]);
+    setAlertAmount((prevData) => prevData + 1);
     setTimeout(() => setIsVisible(false), 4500);
   };
 
