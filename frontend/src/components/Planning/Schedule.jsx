@@ -9,6 +9,7 @@ const Schedule = (props) => {
   const dayList = list.list[props.data.dayIdx];
   const schedule = dayList[props.data.scheduleIdx];
   const blackHeight = list.blackHeight / (list.time.lineCnt - 1) / 3;
+  const isCanModify = props.isCanModify;
 
   const blackCSS = {
     height: `${blackHeight}px`,
@@ -57,10 +58,14 @@ const Schedule = (props) => {
           key={props.data.scheduleIdx}
         >
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
               <div
                 style={scheduleCSS}
-                className="flex flex-col bg-white w-56 rounded-xl overflow-hidden"
+                className="relative flex flex-col bg-white w-56 rounded-xl overflow-hidden z-30"
               >
                 <div className="flex">
                   <img
@@ -78,6 +83,7 @@ const Schedule = (props) => {
                         value={t}
                         onChange={timeChange}
                         step="30"
+                        disabled={!isCanModify}
                       />
                       분
                     </p>
@@ -88,6 +94,7 @@ const Schedule = (props) => {
                       placeholder="간단한 메모"
                       onChange={textChange}
                       value={text}
+                      disabled={!isCanModify}
                     />
                   </div>
                 </div>
@@ -103,7 +110,11 @@ const Schedule = (props) => {
           isDragDisabled
         >
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
               <div style={blackCSS} className="bg-black opacity-5"></div>
             </div>
           )}

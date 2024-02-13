@@ -15,7 +15,12 @@ const continents = [
   "남아메리카",
 ];
 
-const ContinentModal = ({ onClose, onSelectedContinent, onSelectedCountry, onSelectedCity }) => {
+const ContinentModal = ({
+  onClose,
+  onSelectedContinent,
+  onSelectedCountry,
+  onSelectedCity,
+}) => {
   const modalBG = useRef("");
 
   const [selectedContinent, setSelectedContinent] = useState(null);
@@ -34,12 +39,12 @@ const ContinentModal = ({ onClose, onSelectedContinent, onSelectedCountry, onSel
 
   const onContinentClose = () => {
     onClose();
-    setSelectedContinent(null)
-  }
+    setSelectedContinent(null);
+  };
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-500 bg-opacity-70"
+      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-70"
       onClick={onContinentClose}
       ref={modalBG}
     >

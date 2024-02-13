@@ -1,15 +1,20 @@
 import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { ModalPortal } from "../components/modals/ModalPortal";
+import { useDispatch } from "react-redux";
 
+import { ModalPortal } from "../components/modals/ModalPortal";
 import NewPlan from "../components/modals/NewPlan";
 import PlanSummary from "../components/Planning/PlanSummary";
+import { scheduleActions } from "../store/scheduleSlice";
 
 const MyPlan = () => {
   const [pageNo, setPageNo] = useState(0);
   const [planData, setPlanData] = useState([]);
   const [isNewPlanOpen, setIsNewPlanOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  dispatch(scheduleActions.reset());
 
   const { ref, inView } = useInView({
     threshold: 0, // div태그가 보일 때 inView가 true로 설정
@@ -63,9 +68,14 @@ const MyPlan = () => {
   };
 
   return (
-    <>
-      <h2>내가 만든 계획</h2>
-      <button onClick={makePlan}>계획 만들기</button>
+    <div className="relative">
+      <p className="my-2 text-2xl font-bold text-center">나의 계획</p>
+      <button
+        className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+        onClick={makePlan}
+      >
+        계획 만들기
+      </button>
       {planData.map((plan, idx) => (
         <PlanSummary plan={plan} key={idx} />
       ))}
@@ -75,7 +85,7 @@ const MyPlan = () => {
           <NewPlan onClose={CloseNewPlanModal} />
         </ModalPortal>
       )}
-    </>
+    </div>
   );
 };
 
