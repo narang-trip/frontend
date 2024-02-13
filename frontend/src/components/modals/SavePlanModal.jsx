@@ -12,7 +12,7 @@ const SavePlanModal = (props) => {
   const [title, setTitle] = useState(null);
 
   const savePlan = async () => {
-    console.log(title, JSON.stringify(state));
+    console.log(title, window.btoa(encodeURIComponent(JSON.stringify(state))));
     console.log(state);
     console.log(JSON.stringify(state));
     window.sessionStorage.setItem("plan", JSON.stringify(state));
