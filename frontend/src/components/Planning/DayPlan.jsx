@@ -26,7 +26,7 @@ const DayPlan = (props) => {
           key={index}
         />
       ))}
-      <div className="absolute top-0 left-0 h-full w-full">
+      <div className="absolute pointer-events-none top-0 left-0 h-full w-full z-10">
         <TimeLine />
       </div>
     </div>

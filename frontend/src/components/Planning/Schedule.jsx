@@ -64,7 +64,7 @@ const Schedule = (props) => {
             >
               <div
                 style={scheduleCSS}
-                className="absolute flex flex-col bg-white w-56 rounded-xl overflow-hidden z-10"
+                className="relative flex flex-col bg-white w-56 rounded-xl overflow-hidden z-30"
               >
                 <div className="flex">
                   <img
