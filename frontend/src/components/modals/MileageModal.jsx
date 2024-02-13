@@ -50,7 +50,7 @@ const MileageModal = ({ onClose }) => {
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-500 bg-opacity-70"
+      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-70"
       onClick={onClose}
       ref={modalBG}
     >
@@ -71,7 +71,7 @@ const MileageModal = ({ onClose }) => {
           </div>
           <div className="flex m-2">
             <label className="flex items-center mr-2 text-sm font-bold">
-            💸 충전금액
+              💸 충전금액
             </label>
             <input
               type="number"
@@ -85,7 +85,12 @@ const MileageModal = ({ onClose }) => {
           <button onClick={() => Change("get")}>획득내역</button>
           {option === "use" && <div>사용내역</div>}
           {option === "get" && <div>획득내역</div>} */}
-          <button className="p-1 border border-black rounded-lg" onClick={handleCharge}>결제하기</button>
+          <button
+            className="p-1 border border-black rounded-lg"
+            onClick={handleCharge}
+          >
+            결제하기
+          </button>
           {isOpen && (
             <ModalPortal>
               <BuyMileageModal onClose={ClosePayment} />

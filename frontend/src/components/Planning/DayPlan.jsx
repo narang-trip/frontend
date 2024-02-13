@@ -11,16 +11,23 @@ const DayPlan = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(scheduleActions.setBlackHeight(divRef.current.scrollHeight - 32));
+    dispatch(scheduleActions.setBlackHeight(divRef.current.clientHeight - 32));
   }, [dispatch]);
 
   return (
-    <div ref={divRef} className="relative bg-amber-200 h-full w-60 rounded-xl p-2 overflow-hidden">
+    <div
+      ref={divRef}
+      className="relative bg-amber-200 h-full w-60 rounded-xl p-2 overflow-hidden"
+    >
       {props.index + 1} 일
       {list[props.index].map((data, index) => (
-        <Schedule data={{ dayIdx: props.index, scheduleIdx: index }} key={index} />
+        <Schedule
+          data={{ dayIdx: props.index, scheduleIdx: index }}
+          isCanModify={props.isCanModify}
+          key={index}
+        />
       ))}
-      <div className="absolute pointer-events-none top-0 left-0 h-full w-full">
+      <div className="absolute pointer-events-none top-0 left-0 h-full w-full z-10">
         <TimeLine />
       </div>
     </div>

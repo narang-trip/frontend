@@ -139,7 +139,7 @@ const ApplicationModal = ({ data, onClose }) => {
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-opacity-60 bg-neutral-300"
+      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-opacity-60 bg-neutral-300"
       onClick={onClose}
       ref={modalBG}
     >
@@ -170,7 +170,9 @@ const ApplicationModal = ({ data, onClose }) => {
                   src={userData.profile_url}
                   alt="프로필이미지"
                 />
-                <span className="mx-5 text-base font-semibold">{userData.nickname}</span>
+                <span className="mx-5 text-base font-semibold">
+                  {userData.nickname}
+                </span>
               </div>
               <div className="mx-4">
                 <span className="text-base font-semibold">🧩 포지션 선택</span>
@@ -192,7 +194,9 @@ const ApplicationModal = ({ data, onClose }) => {
                 </div>
               </div>
               <div className="mx-4 my-4">
-              <span className="text-base font-semibold">🧨 같이 여행 가고싶어요!</span>
+                <span className="text-base font-semibold">
+                  🧨 같이 여행 가고싶어요!
+                </span>
                 <div className="p-3 my-3 border border-stone-600 rounded-xl">
                   <textarea
                     value={comment}

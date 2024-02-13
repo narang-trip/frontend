@@ -40,8 +40,7 @@ const CountryModal = ({
   selectedContinent,
   onBack,
   onSelectedCountry,
-  onSelectedCity
-
+  onSelectedCity,
 }) => {
   const modalBG = useRef("");
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -60,12 +59,12 @@ const CountryModal = ({
 
   const onCountryClose = () => {
     onClose();
-    setSelectedCountry(null)
-  }
+    setSelectedCountry(null);
+  };
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-100 bg-opacity-0"
+      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-gray-100 bg-opacity-0"
       onClick={onClose}
       ref={modalBG}
     >
@@ -97,7 +96,7 @@ const CountryModal = ({
             <div className="flex flex-wrap justify-center">
               {countryData[selectedContinent].map((country) => (
                 <button
-                className="w-[10rem] h-[4.5rem] m-3 text-base rounded-xl bg-stone-100 hover:bg-amber-200"
+                  className="w-[10rem] h-[4.5rem] m-3 text-base rounded-xl bg-stone-100 hover:bg-amber-200"
                   key={country}
                   onClick={() => handleCountrySelect(country)}
                 >
