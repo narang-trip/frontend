@@ -34,6 +34,10 @@ grpc:
     message-service:
       address: 'static://message-service:9099' # Server Address
       negotiation-type: plaintext
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
     trip-service:
       address: 'static://trip-service:9099' # Server Address
       negotiation-type: plaintext
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true

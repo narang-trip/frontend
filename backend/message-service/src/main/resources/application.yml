@@ -26,9 +26,13 @@ grpc:
     payment-service:
       address: 'static://payment-service:9099' # Server Address
       negotiation-type: plaintext
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
     trip-service:
       address: 'static://trip-service:9099' # Server Address
       negotiation-type: plaintext
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
   server:
     port: 9099
 
