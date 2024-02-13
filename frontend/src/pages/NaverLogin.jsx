@@ -1,13 +1,12 @@
 import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { authActions } from "../store/authSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  let userId;
   let token;
   useEffect(() => {
     const params = new URL(document.URL).searchParams;
@@ -20,10 +19,8 @@ const Login = () => {
           `https://i10a701.p.ssafy.io/api/user/login/oauth/naver?code=${code}`
         );
         console.log(res);
-        console.log(res.data);
-        token = res.data;
-        userId = "temp";
-        dispatch(authActions.Login({ token, userId }));
+        console.log(res.headers.authorization);
+        dispatch(authActions.Login({ token: res.headers.authorization }));
         navigate("/");
       } catch (error) {
         console.log("Error during POST request:", error);
@@ -34,9 +31,12 @@ const Login = () => {
   const test = async () => {
     console.log(test, token);
     try {
-      const res = await axios.get(`https://i10a701.p.ssafy.io/api/user/getuser`, {
-        token: token,
-      });
+      const res = await axios.get(
+        `https://i10a701.p.ssafy.io/api/user/getuser`,
+        {
+          token: token,
+        }
+      );
       console.log(res);
       console.log(res.data);
     } catch (error) {
