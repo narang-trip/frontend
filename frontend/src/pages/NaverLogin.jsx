@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authActions } from "../store/authSlice";
 import { useEffect } from "react";
@@ -7,7 +7,7 @@ import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  let token;
+  const token = useSelector((state) => state.auth.token);
   useEffect(() => {
     const params = new URL(document.URL).searchParams;
     const code = params.get("code");
@@ -26,10 +26,10 @@ const Login = () => {
         console.log("Error during POST request:", error);
       }
     })();
-  });
+  }, [dispatch]);
 
   const test = async () => {
-    console.log(test, token);
+    console.log("토큰?", token);
     try {
       const res = await axios.get(
         `https://i10a701.p.ssafy.io/api/user/getuser`,
