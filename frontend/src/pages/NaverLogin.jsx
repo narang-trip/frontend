@@ -32,7 +32,7 @@ const Login = () => {
           );
 
           dispatch(
-            authActions.Login({
+            authActions.Setting({
               token: res.headers.authorization,
               refreshToken: res.headers["authorization-refresh"],
               userId: userRes.data,
