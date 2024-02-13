@@ -94,6 +94,10 @@ const scheduleSlice = createSlice({
     setTitle: (state, action) => {
       state.title = action.payload;
     },
+    // 초기화
+    reset: () => {
+      return initialState;
+    },
   },
 });
 
