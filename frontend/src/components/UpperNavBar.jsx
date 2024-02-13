@@ -84,7 +84,7 @@ const UpperNavbar = () => {
   }, [
     isLogin,
     userId,
-    dispatch,
+    
     sessionRefreshToken,
     sessionToken,
   ]);
