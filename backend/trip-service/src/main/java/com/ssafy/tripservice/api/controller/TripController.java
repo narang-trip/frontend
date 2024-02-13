@@ -68,8 +68,6 @@ public class TripController {
     public ResponseEntity<?> postTrip(@RequestPart TripRequest tripRequest,
                                       @RequestPart(required = false) MultipartFile tripImg) {
 
-        System.out.println(tripRequest);
-
         Optional<TripResponse> createRes = tripService.createTrip(tripRequest, tripImg);
 
         return createRes.map(r -> new ResponseEntity<>(r, HttpStatus.OK))
@@ -81,9 +79,9 @@ public class TripController {
                     @ApiResponse(description = "The Trip Modified",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = Trip.class))),
-                    @ApiResponse(responseCode = "404", description = "Trip Not Modified")})
+                    @ApiResponse(responseCode = "400", description = "Trip Not Modified")})
     @PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @io.swagger.v3.oas.annotations.parameters.RequestBody (content = @Content(encoding = @Encoding(name = "tripRequest", contentType = MediaType.APPLICATION_JSON_VALUE)))
+    @io.swagger.v3.oas.annotations.parameters.RequestBody (content = @Content(encoding = @Encoding(name = "tripModifyRequest", contentType = MediaType.APPLICATION_JSON_VALUE)))
     public ResponseEntity<?> patchTrip(@RequestPart TripModifyRequest tripModifyRequest,
                                       @RequestPart(required = false) MultipartFile tripImg) {
 
