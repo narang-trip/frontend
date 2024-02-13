@@ -68,29 +68,6 @@ const UpperNavbar = () => {
         }
       })();
       getAlertData(userId);
-      const EventSource = EventSourcePolyfill || NativeEventSource;
-      let eventSource = new EventSource(
-        `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`,
-        {
-          heartbeatTimeout: 3600000,
-        }
-      );
-
-      eventSource.addEventListener("sse", (event) => {
-        const { data: receivedConnectData } = event;
-        if (receivedConnectData === `EventStream Created. [userId=${token}]`) {
-          console.log("SSE CONNECTED");
-          setAlertAnimation();
-          setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
-        } else {
-          const data = JSON.parse(receivedConnectData);
-          setAlertAnimation();
-          setAlertContent(makeAlertContent(data));
-        }
-      });
-      eventSource.onerror = function (event) {
-        console.error("SSE 에러 발생:", event);
-      };
     }
   }, [
     isLogin,
@@ -101,6 +78,32 @@ const UpperNavbar = () => {
     sessionToken,
     token,
   ]);
+
+  useEffect(() => {
+    const EventSource = EventSourcePolyfill || NativeEventSource;
+    const eventSource = new EventSource(
+      `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`,
+      {
+        heartbeatTimeout: 3600000,
+      }
+    );
+
+    eventSource.addEventListener("sse", (event) => {
+      const { data: receivedConnectData } = event;
+      if (receivedConnectData === `EventStream Created. [userId=${userId}]`) {
+        console.log("SSE CONNECTED");
+        setAlertAnimation();
+        setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
+      } else {
+        const data = JSON.parse(receivedConnectData);
+        setAlertAnimation();
+        setAlertContent(makeAlertContent(data));
+      }
+    });
+    eventSource.onerror = function (event) {
+      console.error("SSE 에러 발생:", event);
+    };
+  }, [alertAmount, userId]);
 
   const navigateHome = () => {
     navigate("/");
