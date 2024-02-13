@@ -26,7 +26,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
-@Service
 @Service @GrpcService
 @RequiredArgsConstructor
 public class MileageService extends PaymentGrpc.PaymentImplBase {
@@ -100,9 +99,10 @@ public class MileageService extends PaymentGrpc.PaymentImplBase {
         return refundRecord;
     }
 
-    private Long calculateDateDifference(LocalDateTime startDate, LocalDateTime endDate){
+    private Long calculateDateDifference(LocalDateTime startDate, LocalDateTime endDate) {
         Duration duration = Duration.between(startDate, endDate);
         return duration.toDays();
+    }
     /*
         Trip 아니고 Chat 에 들어가야 함 ...
      */
@@ -113,7 +113,7 @@ public class MileageService extends PaymentGrpc.PaymentImplBase {
 
         if (record != null) {
             TripMileageUsageResponse response = TripMileageUsageResponse.newBuilder()
-                    .setUserId(record.getUser_id())
+                    .setUserId(record.getUserId())
                     .setBalance(record.getBalance())
                     .setPrice(record.getPrice())
                     .setRecordId(record.getId()).build();
