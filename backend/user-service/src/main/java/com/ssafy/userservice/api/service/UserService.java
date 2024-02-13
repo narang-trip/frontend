@@ -1,5 +1,7 @@
 package com.ssafy.userservice.api.service;
 
+import com.ssafy.userservice.api.oauth2.exception.AuthNotFoundException;
+import com.ssafy.userservice.api.oauth2.exception.UserNotFoundException;
 import com.ssafy.userservice.api.oauth2.userinfo.KakaoUserInfo;
 import com.ssafy.userservice.api.oauth2.userinfo.NaverUserInfo;
 import com.ssafy.userservice.api.oauth2.userinfo.OAuth2UserInfo;
@@ -106,15 +108,23 @@ public class UserService extends DefaultOAuth2UserService {
 
     // User 정보 조회
     public ResponseEntity<User> getUser(String id){
-        Optional<User> findUser = userRepository.findById(id);
-        User user = findUser.get();
-        return ResponseEntity.ok().body(user);
+        try {
+            User user = userRepository.findById(id)
+                    .orElseThrow(UserNotFoundException::new);
+            return ResponseEntity.ok().body(user);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     public ResponseEntity<Auth> getAuth(String id){
-        Optional<Auth> findAuth = authRepository.findById(id);
-        Auth auth = findAuth.get();
-        return ResponseEntity.ok().body(auth);
+        try {
+            Auth auth = authRepository.findById(id)
+                    .orElseThrow(AuthNotFoundException::new);
+            return ResponseEntity.ok().body(auth);
+        } catch (AuthNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     // User 정보 수정
