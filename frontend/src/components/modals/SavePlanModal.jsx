@@ -9,7 +9,7 @@ const SavePlanModal = (props) => {
   const modalBG = useRef(null);
   const state = useSelector((state) => state.schedule);
   const dispatch = useDispatch();
-  const [title, setTitle] = useState();
+  const [title, setTitle] = useState(null);
 
   const savePlan = async () => {
     console.log(title, JSON.stringify(state));

@@ -212,7 +212,7 @@ const Map = () => {
   };
 
   return isLoaded ? (
-    <div className="flex-col w-1/4 h-full">
+    <div className="flex-col w-1/4 h-full pt-10">
       <h1>Google Map</h1>
       <SearchBox map={map} onPlaceSelected={handlePlaceSelected} />
       <hr />
