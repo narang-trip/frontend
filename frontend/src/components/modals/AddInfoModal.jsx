@@ -1,4 +1,4 @@
-import { useRef, useState,useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 
@@ -20,16 +20,15 @@ const AddInfoModal = ({ userId, data, onClose }) => {
   ];
 
   // 닉네임
-  const [nickName, setNickName] = useState('');
+  const [nickName, setNickName] = useState("");
   // 선호하는 포지션
   const [selectedPositions, setSelectedPositions] = useState([]);
-  
+
   // 닉네임 변경
   const handleNickNameChange = (e) => {
     setNickName(e.target.value);
   };
-  
-  
+
   // 선호 포지션 변경
   const handleCheckboxChange = (position) => {
     setSelectedPositions((prevPositions) => {
@@ -44,22 +43,22 @@ const AddInfoModal = ({ userId, data, onClose }) => {
       return prevPositions;
     });
   };
-  
+
   // 체크박스가 활성화 여부를 결정
-  const isCheckboxDisabled = (position) => selectedPositions.length >= 3 && !selectedPositions.includes(position);
-  
-  
-    const userData = {
-      nickname: nickName,
-      gender: data.gender,
-      ageRange: data.ageRange,
-      profile_url: data.profile_url,
-      userRoles: selectedPositions
-    };
-  
+  const isCheckboxDisabled = (position) =>
+    selectedPositions.length >= 3 && !selectedPositions.includes(position);
+
+  const userData = {
+    nickname: nickName,
+    gender: data.gender,
+    ageRange: data.ageRange,
+    profile_url: data.profile_url,
+    userRoles: selectedPositions,
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-      
+
     console.log(userData);
     try {
       const response = await axios.patch(
@@ -83,7 +82,7 @@ const AddInfoModal = ({ userId, data, onClose }) => {
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-500 bg-opacity-70"
+      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-70"
       onClick={onClose}
       ref={modalBG}
     >
@@ -95,14 +94,16 @@ const AddInfoModal = ({ userId, data, onClose }) => {
       >
         <div className=" font-spoqa">
           <div className="flex justify-end mr-1">
-          <button
-            className="mb-4 text-xl font-semibold hover:text-red-600"
-            onClick={onClose}
-          >
-            <IoMdClose />
-          </button>
+            <button
+              className="mb-4 text-xl font-semibold hover:text-red-600"
+              onClick={onClose}
+            >
+              <IoMdClose />
+            </button>
           </div>
-          <p className="flex justify-center mb-5 text-base font-bold">정보 수정</p>
+          <p className="flex justify-center mb-5 text-base font-bold">
+            정보 수정
+          </p>
           <form onSubmit={handleSubmit}>
             <div className="flex m-2">
               <label className="flex items-center mr-2 text-sm font-bold">

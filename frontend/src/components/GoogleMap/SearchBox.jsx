@@ -1,6 +1,6 @@
 import { useCallback, useRef, useEffect, useState } from "react";
 
-const SearchBox = ({ map, onPlaceSelected }) => {
+const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
   const input = useRef(null);
   const searchBox = useRef(null);
   const [selectedPlaces, setSelectedPlaces] = useState([]);
@@ -40,7 +40,14 @@ const SearchBox = ({ map, onPlaceSelected }) => {
     };
   }, [map, handleOnPlacesChanged]);
 
-  return <input ref={input} placeholder="장소를 검색해주세요" type="text" />;
+  return (
+    <input
+      ref={input}
+      placeholder="장소를 검색해주세요"
+      type="text"
+      disabled={!isCanModify}
+    />
+  );
 };
 
 export default SearchBox;

@@ -29,7 +29,7 @@ import DayPlan from "./DayPlan";
 //   console.log(Array.from(awareness.getStates().values()));
 // });
 
-const Plan = () => {
+const Plan = ({ isCanModify }) => {
   const list = useSelector((state) => state.schedule).list;
   // ydoc.on("afterTransaction", () => {
   //   setList(Array.from(ymap.get("list")));
@@ -46,7 +46,7 @@ const Plan = () => {
           <Droppable droppableId={`list${index}`}>
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                <DayPlan index={index} key={index} />
+                <DayPlan isCanModify={isCanModify} index={index} key={index} />
                 {provided.placeholder}
               </div>
             )}

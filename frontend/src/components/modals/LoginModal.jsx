@@ -9,8 +9,10 @@ const LoginModal = (props) => {
   const naverRedirectURI = import.meta.env.VITE_NAVER_REDIRECT_URI;
   const naverState = "flase";
   const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
-  const kakaoLoginURI2 = "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
-  const kakaoLoginURI3 = "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
+  const kakaoLoginURI2 =
+    "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
+  const kakaoLoginURI3 =
+    "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
   const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
   const naverLoginURI2 = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=${naverState}&redirect_uri=${naverRedirectURI}`;
 
@@ -25,7 +27,7 @@ const LoginModal = (props) => {
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-500 bg-opacity-70"
+      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-70"
       onClick={props.onClose}
       ref={modalBG}
     >
