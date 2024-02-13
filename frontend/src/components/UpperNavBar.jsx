@@ -145,12 +145,12 @@ const UpperNavbar = () => {
       </div>
       <Button onClick={() => clickHandler("노세희")}>노세희 로그인</Button>
       <Button onClick={() => clickHandler("조용환")}>조용환 로그인</Button>
-      {sessionToken === "" && (
+      {sessionToken === null && (
         <button onClick={OpenLoginModal} className="mr-5 hover:font-semibold">
           Login
         </button>
       )}
-      {sessionToken !== "" && (
+      {sessionToken !== null && (
         <div className="flex justify-between space-x-4 relative">
           <Link to="/applicantList" className="relative flex items-center">
             {alertAmount > 0 && <AlertAnimation color={conceptColorClass} />}
