@@ -70,7 +70,7 @@ const UpperNavbar = () => {
       };
     }
     console.log(token);
-  }, [token]);
+  }, []);
 
   const navigateHome = () => {
     navigate("/");
