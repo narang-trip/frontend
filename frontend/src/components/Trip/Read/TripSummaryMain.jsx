@@ -9,7 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import DateFormatter from "../../DateFormatter";
 
-const TripSummarySmall = ({ trip }) => {
+const TripSummaryMain = ({ trip }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
@@ -50,7 +50,10 @@ const TripSummarySmall = ({ trip }) => {
             />
             {isHovered && (
               <div className="absolute inset-0 flex flex-col items-end justify-end bg-black text-neutral-800 bg-opacity-20">
-                <div className="flex flex-row items-center my-1 mr-2 text-xs font-semibold" style={{ whiteSpace: 'nowrap', minWidth: '100px' }}>
+                <div
+                  className="flex flex-row items-center my-1 mr-2 text-xs font-semibold"
+                  style={{ whiteSpace: "nowrap", minWidth: "100px" }}
+                >
                   <SlPeople className="mx-1" size="12" />
                   <p className="text-xs">2 / {trip.tripParticipantsSize}</p>
                   <SlEye className="mx-1" size="12" />
@@ -68,7 +71,9 @@ const TripSummarySmall = ({ trip }) => {
             </div>
             <div className="flex flex-row items-center my-3 text-sm">
               <SlLocationPin className="mx-2 text-2xl" />
-              <p className="text-xs">{trip.destination}</p>
+              <p className="text-xs">
+                {trip.continent}, {trip.country}, {trip.city}
+              </p>
             </div>
             <div className="flex flex-row items-center my-3 text-sm">
               <SlInfo className="mx-2 " size="24" />
@@ -80,4 +85,4 @@ const TripSummarySmall = ({ trip }) => {
     </div>
   );
 };
-export default TripSummarySmall;
+export default TripSummaryMain;

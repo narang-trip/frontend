@@ -2,7 +2,7 @@ import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import TripSummarySmall from "../components/Trip/Read/TripSummarySmall";
+import TripSummaryMain from "../components/Trip/Read/TripSummaryMain";
 
 // 테스트용 주석입니다.
 const CarouselTemplete = ({ list }) => {
@@ -66,40 +66,10 @@ const CarouselTemplete = ({ list }) => {
         {tmpList.map((tripList, index) => (
           <div key={index} className="h-full">
             {tripList.map((trip, tripIndex) => (
-              <TripSummarySmall key={tripIndex} trip={trip} />
+              <TripSummaryMain key={tripIndex} trip={trip} />
             ))}
           </div>
         ))}
-        {/* <div id="carousel_item" className="">
-          <TripSummarySmall trip={list[0]} />
-          <TripSummarySmall trip={list[1]} />
-        </div>
-        <div id="carousel_item" className="h-full ">
-          {" "}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-        </div>
-
-        <div className="h-full ">
-          {" "}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-        </div>
-        <div className="h-full ">
-          {" "}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-        </div>
-        <div className="h-full ">
-          {" "}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-        </div>
-        <div className="h-full ">
-          {" "}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-          {list.length > 0 && <TripSummarySmall trip={list[0]} />}
-        </div> */}
       </Carousel>
     </div>
   );
