@@ -28,16 +28,16 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AlertService {
+public class AlertService extends NarangGrpc.NarangImplBase {
     // 기본 타임아웃 설정
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
     private final EmitterRepository emitterRepository;
     private final AlertRepository alertRepository;
     private final UserRepository userRepository;
     @GrpcClient("payment")
-    private PaymentGrpc.PaymentBlockingStub paymentBlockingStub;
+    private NarangGrpc.NarangBlockingStub paymentBlockingStub;
     @GrpcClient("trip")
-    private TripGrpc.TripBlockingStub tripBlockingStub;
+    private NarangGrpc.NarangBlockingStub tripBlockingStub;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AlertService.class);
 
