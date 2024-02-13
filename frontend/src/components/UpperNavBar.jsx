@@ -43,6 +43,8 @@ const UpperNavbar = () => {
 
   useEffect(() => {
     if (!isLogin && sessionToken !== null && sessionRefreshToken !== null) {
+    getAlertData(userId);
+
       (async () => {
         try {
           const userRes = await axios.get(
@@ -81,7 +83,6 @@ const UpperNavbar = () => {
     if (userId === "") {
       return;
     }
-    getAlertData(userId);
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const eventSource = new EventSource(
       `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`,
