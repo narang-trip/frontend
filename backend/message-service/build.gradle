@@ -57,8 +57,7 @@ dependencies {
      */
 	implementation 'net.devh:grpc-spring-boot-starter:2.15.0.RELEASE'
 	implementation 'net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE'
-	implementation files ('libs/GrpcPaymentInterface-1.0-SNAPSHOT.jar')
-	implementation files ('libs/GrpcTripInterface-1.0-SNAPSHOT.jar')
+	implementation files ('libs/GrpcNarangInterface-1.0-SNAPSHOT.jar')
 
 	implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
 	implementation 'org.hibernate:hibernate-core:6.4.2.Final'

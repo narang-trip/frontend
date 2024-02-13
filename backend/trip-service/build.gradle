@@ -50,8 +50,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/net.devh/grpc-client-spring-boot-starter
 	implementation 'net.devh:grpc-client-spring-boot-starter:2.15.0.RELEASE'
 	implementation 'net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE'
-	implementation files('libs/GrpcPaymentInterface-1.0-SNAPSHOT.jar')
-	implementation files('libs/GrpcTripInterface-1.0-SNAPSHOT.jar')
+	implementation files('libs/GrpcNarangInterface-1.0-SNAPSHOT.jar')
 }
 
 

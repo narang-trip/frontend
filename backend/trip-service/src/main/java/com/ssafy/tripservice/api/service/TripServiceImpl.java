@@ -17,9 +17,7 @@ import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.narang.lib.PaymentGrpc;
-import org.narang.lib.TripGrpc;
-import org.narang.lib.TripGrpcResponse;
+import org.narang.lib.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.*;
@@ -29,21 +27,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-
 
 @Transactional
 @Service @GrpcService
 @RequiredArgsConstructor
-public class TripServiceImpl extends TripGrpc.TripImplBase implements TripService  {
+public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripService  {
 
     private final MongoOperations mongoTemplate;
     private final AmazonS3Client amazonS3Client;
     private final TripRepository tripRepository;
 
     @GrpcClient("payment")
-    private PaymentGrpc.PaymentBlockingStub paymentBlockingStub;
+    private NarangGrpc.NarangBlockingStub paymentBlockingStub;
+
+    @GrpcClient("chat")
+    private NarangGrpc.NarangBlockingStub chatBlockingStub;
 
     @Transactional
     @Override
@@ -72,7 +73,15 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
 
         List<Trip.Participant> initialParty = List.of(initialParticipant);
 
+        ChatGrpcResponse response = chatBlockingStub.postChatRoom(
+                ChatGrpcRequest.newBuilder()
+                        .setChatroomName(tripRequest.getTripName())
+                        .setUserId(tripRequest.getTripLeaderId().toString())
+                        .build()
+        );
+
         tripRequest.setParticipants(initialParty);
+        tripRequest.setTripChatId(UUID.fromString(response.getChatroomId()));
         Trip trip = tripRequest.toEntity();
 
         /*
@@ -131,13 +140,13 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
         List<TripResponse> tripResponses = new ArrayList<>();
 
         Iterable<Trip> tripIterable = tripRepository.findAll(
-                QTrip.trip.departureDate.gt(LocalDateTime.now()));
+                QTrip.trip.departureDate.gt(LocalDate.now()));
 
         for (Trip trip : tripIterable) {
 
             TripResponse tripResponse = trip.toTripResponse();
 
-            if (tripResponse.getDepartureDate().isAfter(LocalDateTime.now()))
+            if (tripResponse.getDepartureDate().isAfter(LocalDate.now()))
                 System.out.println(tripResponses);
             tripResponses.add(tripResponse);
         }
@@ -179,7 +188,7 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
             System.out.println("파티 이미 가입함");
             return Optional.empty();
         }
-        if (trip.get().getDepartureDate().isBefore(LocalDateTime.now())) {
+        if (trip.get().getDepartureDate().isBefore(LocalDate.now())) {
             System.out.println("파티 이미 출발함");
             return Optional.empty();
         }

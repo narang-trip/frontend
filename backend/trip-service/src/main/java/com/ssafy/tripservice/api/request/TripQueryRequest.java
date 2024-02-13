@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -16,8 +17,8 @@ import java.util.UUID;
 @ToString @RequiredArgsConstructor
 public class TripQueryRequest {
     private UUID userId;
-    private LocalDateTime querySttDate = LocalDateTime.of(2000, 12, 31, 0, 0);
-    private LocalDateTime queryEndDate = LocalDateTime.of(2100, 12, 31, 0, 0);
+    private LocalDate querySttDate = LocalDate.of(2000, 12, 31);
+    private LocalDate queryEndDate = LocalDate.of(2100, 12, 31);
     private Integer pageNo = 0;
     private Integer participantsSize = 0;
     private List<String> tripConcept = List.of("낭만", "건축", "모험", "자유", "쇼핑", "휴양", "핫플");

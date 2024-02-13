@@ -8,7 +8,9 @@ import com.ssafy.messageservice.db.entity.Chatroom;
 import com.ssafy.messageservice.db.entity.ChatroomUser;
 import com.ssafy.messageservice.db.entity.User;
 import com.ssafy.messageservice.db.repository.*;
+import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import org.narang.lib.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class ChatService {
+public class ChatService extends NarangGrpc.NarangImplBase {
     private final ChatRepositoryCustom chatRepositoryCustom;
     private final ChatRepository chatRepository;
     private final ChatroomRepository chatroomRepository;
@@ -65,6 +67,23 @@ public class ChatService {
         chatroomUserRepository.save(user);
 
         return chatroomId;
+    }
+
+    @Override
+    public void postChatRoom(ChatGrpcRequest request, StreamObserver<ChatGrpcResponse> responseObserver) {
+
+        String chatroomId = postChatroom(
+                ChatroomRequest.builder()
+                        .userId(request.getUserId())
+                        .chatroomName(request.getChatroomName())
+                        .build());
+
+        ChatGrpcResponse response = ChatGrpcResponse.newBuilder()
+                .setChatroomId(chatroomId)
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 
     private String getName(String id) {
