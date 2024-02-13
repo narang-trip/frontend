@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 
-export default function TripParticipantsInfo({ participants }) {
+export default function TripParticipantsInfo({ participants, isLeader }) {
   const [usersInfo, setUsersInfo] = useState({});
   const [balances, setBalances] = useState({});
 
@@ -45,7 +45,7 @@ export default function TripParticipantsInfo({ participants }) {
           participants.map((participant, idx) => (
             <div
               key={idx}
-              className="grid grid-rows-2 px-2 pt-1 mb-2 border rounded-lg border-neutral-200"
+              className={`grid grid-rows-2 px-2 pt-1 mb-2  rounded-lg ${isLeader ? 'bg-amber-300 bg-opacity-20' : 'border border-neutral-200'}`}
             >
               <div className="row-span-1 mx-2 my-2">
                 <div className="grid grid-cols-5">
@@ -59,7 +59,7 @@ export default function TripParticipantsInfo({ participants }) {
 
                   <div className="flex flex-col flex-wrap justify-center col-span-4">
                     <div>
-                      <p className="text-xs font-bold">
+                      <p className="text-base font-bold">
                         {usersInfo[participant.participantId]?.nickname}
                       </p>
                     </div>

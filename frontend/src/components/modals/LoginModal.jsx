@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import axios from "axios";
+import { IoMdClose } from "react-icons/io";
 
 const LoginModal = (props) => {
   const modalBG = useRef(null);
@@ -32,29 +33,34 @@ const LoginModal = (props) => {
       ref={modalBG}
     >
       <div
-        className="z-10 px-10 py-4 bg-white rounded-3xl w-96 h-82"
+        className="z-10 px-10 py-4 bg-white rounded-3xl w-96 h-80"
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <div className="">
-          <button className="" onClick={props.onClose}>
-            x
-          </button>
-          <h3 className="">로 그 인</h3>
-          <div className="flex flex-col">
-            <a href={kakaoLoginURI}>
-              <img
-                className="object-cover h-16 w-36 rounded-xl"
-                src="assets/kakao_login.png"
-                // onClick={kakaoLogin}
-              />
-            </a>
+          <div className="font-spoqa">
+          <div className="flex justify-end mr-1">
+            <button
+              className="mb-4 text-xl font-semibold hover:text-red-600"
+              onClick={props.onClose}
+            >
+              <IoMdClose />
+            </button>
+          </div>
+          <p className="mb-10 text-xl font-extrabold text-center">나랑 로그인🛫</p>
+          <div className="flex flex-col items-center">
             <a href={naverLoginURI2}>
               <img
-                className="object-cover h-16 w-36 rounded-xl"
+                className="object-cover  w-[200px] rounded-xl m-2"
                 src="assets/naver_login.png"
                 // onClick={naverLogin}
+              />
+            </a>
+            <a href={kakaoLoginURI}>
+              <img
+                className="object-cover w-[200px] rounded-xl m-2"
+                src="assets/kakao_login.png"
+                // onClick={kakaoLogin}
               />
             </a>
           </div>
