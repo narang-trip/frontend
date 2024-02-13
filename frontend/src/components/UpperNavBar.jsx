@@ -66,7 +66,7 @@ const UpperNavbar = () => {
           console.error("유저받아오면서 문제생김 : ", error);
         }
       })();
-      getAlertData(userId);
+      
     }
   }, [
     isLogin,
@@ -82,6 +82,7 @@ const UpperNavbar = () => {
     if (userId === "") {
       return;
     }
+    getAlertData(userId);
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const eventSource = new EventSource(
       `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`,
