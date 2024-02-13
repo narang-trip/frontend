@@ -98,6 +98,7 @@ const UpperNavbar = () => {
         setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
       } else {
         const data = JSON.parse(receivedConnectData);
+        setAlertAmount(prev => prev +1);
         setAlertContent(makeAlertContent(data));
       }
     });
@@ -151,7 +152,6 @@ const UpperNavbar = () => {
 
   const setAlertAnimation = () => {
     setIsVisible(true);
-    setAlertAmount((prevData) => prevData + 1);
     setTimeout(() => setIsVisible(false), 4500);
   };
 
