@@ -1,6 +1,7 @@
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
+
+import "../../../css/DatePicker.css";
 
 export default function DateRangePicker({ dateRange, onChange }) {
   return (
