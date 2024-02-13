@@ -92,7 +92,6 @@ public class KakaoPayService {
                 "https://kapi.kakao.com/v1/payment/approve",
                 requestEntity,
                 KakaoApproveResponse.class);
-        System.out.println(approveResponse);
 
         if (approveResponse != null) {
             ChargeRecord chargeRecord = null;
