@@ -94,18 +94,20 @@ const UpperNavbar = () => {
       const { data: receivedConnectData } = event;
       if (receivedConnectData === `EventStream Created. [userId=${userId}]`) {
         console.log("SSE CONNECTED");
-        setAlertAnimation();
         setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
       } else {
         const data = JSON.parse(receivedConnectData);
-        setAlertAnimation();
         setAlertContent(makeAlertContent(data));
       }
     });
     eventSource.onerror = function (event) {
       console.error("SSE 에러 발생:", event);
     };
-  }, [alertAmount, userId]);
+  }, [userId]);
+
+  useEffect(() => {
+    setAlertAnimation();
+  }, [alertAmount]);
 
   const navigateHome = () => {
     navigate("/");
