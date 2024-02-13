@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../store/authSlice";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { conceptTemaBannerColorObject } from "../data/concepts";
 
+import { conceptTemaBannerColorObject } from "../data/concepts";
+import { authActions } from "../store/authSlice";
 import { ModalPortal } from "./modals/ModalPortal";
 import Dropdown from "./UpNavDropdown";
 import LoginModal from "./modals/LoginModal";
-import Button from "../ui/Button";
-import axios from "axios";
 import TalkBubble from "../ui/TalkBubble";
 
 const AlertAnimation = ({ color }) => {
@@ -30,7 +29,7 @@ const AlertAnimation = ({ color }) => {
 
 const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [alertAmount, setAlertAmount] = useState(0);
   const [alertContent, setAlertContent] = useState("");
   const dispatch = useDispatch();
@@ -81,7 +80,7 @@ const UpperNavbar = () => {
 
   useEffect(() => {
     if (userId === "") {
-      return
+      return;
     }
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const eventSource = new EventSource(
