@@ -7,7 +7,6 @@ import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  let userId;
   let token;
   useEffect(() => {
     const params = new URL(document.URL).searchParams;
@@ -18,16 +17,10 @@ const Login = () => {
       try {
         const res = await axios.post(
           `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=${code}`
-          // "https://i10a701.p.ssafy.io/api/user/login/oauth/kakao",
-          // {
-          //   code: code,
-          // }
         );
         console.log(res);
         console.log(res.headers.authorization);
-        dispatch(
-          authActions.Login({ token: res.headers.authorization, userId })
-        );
+        dispatch(authActions.Login({ token: res.headers.authorization }));
         navigate("/");
       } catch (error) {
         console.log("Error during POST request:", error);
