@@ -18,9 +18,10 @@ const Login = () => {
         const res = await axios.post(
           `https://i10a701.p.ssafy.io/api/user/login/oauth/naver?code=${code}`
         );
-        console.log(res);
-        console.log("res.headers : ", res.headers["Authorization-Refresh"]);
+      
         try {
+          console.log(res);
+          console.log("res.headers : ", res.headers["Authorization-Refresh"]);
           const userRes = await axios.get(
             "https://i10a701.p.ssafy.io/api/user",
             {
