@@ -30,6 +30,7 @@ public class AlertController {
                                 @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
 
         log.info("controller에서 subscribe 호출 userId : {}, lastEventId : {}", userId, lastEventId);
+        lastEventId = "sdf";
         if (lastEventId.isEmpty()) {
             return new ResponseEntity<>(alertService.subscribe(userId, ""), HttpStatus.OK);
         }else{
