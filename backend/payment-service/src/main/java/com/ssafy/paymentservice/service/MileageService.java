@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.narang.lib.PaymentGrpc;
+import org.narang.lib.NarangGrpc;
 import org.narang.lib.TripMileageUsageRequest;
 import org.narang.lib.TripMileageUsageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import java.util.Optional;
 @Slf4j
 @Service @GrpcService
 @RequiredArgsConstructor
-public class MileageService extends PaymentGrpc.PaymentImplBase {
+public class MileageService extends NarangGrpc.NarangImplBase {
     private final UserMileageRepository userMileageRepository;
     private final UsageRecordRepository usageRecordRepository;
     private final RefundRecordRepository refundRecordRepository;

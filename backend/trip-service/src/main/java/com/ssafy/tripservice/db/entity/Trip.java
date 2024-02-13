@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -27,8 +28,8 @@ public class Trip extends BaseEntity{
     private String continent;
     private String country;
     private String city;
-    private LocalDateTime departureDate;
-    private LocalDateTime returnDate;
+    private LocalDate departureDate;
+    private LocalDate returnDate;
     private UUID tripLeaderId;
     private UUID tripChatId;
     private UUID tripPlanId;

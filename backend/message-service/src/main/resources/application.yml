@@ -29,8 +29,10 @@ grpc:
     trip:
       address: 'static://trip-service:9092' # Server Address
       negotiation-type: plaintext
+  server:
+    port: 9093
 
-#logging:
+  #logging:
 #  level:
 #    root: DEBUG
     # org:
