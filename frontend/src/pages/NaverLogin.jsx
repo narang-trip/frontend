@@ -21,12 +21,12 @@ const Login = () => {
         console.log(res);
         console.log(res.headers.authorization);
         dispatch(authActions.Login({ token: res.headers.authorization }));
-        // navigate("/");
+        navigate("/");
       } catch (error) {
         console.log("Error during POST request:", error);
       }
     })();
-  });
+  }, [dispatch]);
 
   const test = async () => {
     console.log("토큰?", token);
