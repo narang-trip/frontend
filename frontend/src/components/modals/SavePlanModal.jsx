@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { scheduleActions } from "../../store/scheduleSlice";
+import { useMemo } from "react";
+import { useEffect } from "react";
 
 const SavePlanModal = (props) => {
   const modalBG = useRef(null);
@@ -11,20 +13,31 @@ const SavePlanModal = (props) => {
 
   const savePlan = async () => {
     console.log(title, JSON.stringify(state));
-    dispatch(scheduleActions.setTitle(title));
+    console.log(state);
     console.log(JSON.stringify(state));
     window.sessionStorage.setItem("plan", JSON.stringify(state));
     try {
-      const response = await axios.post(`${import.meta.env.VITE_PLAN_REQUEST_URI}`, {
-        title: title,
-        plan: JSON.stringify(state),
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_PLAN_REQUEST_URI}`,
+        {
+          title: title,
+          plan: JSON.stringify(state),
+        }
+      );
       console.log(response);
     } catch (error) {
       console.log(error);
     }
     props.onClose();
   };
+
+  useMemo(() => {
+    dispatch(scheduleActions.setTitle(title));
+  }, [dispatch, title]);
+
+  useEffect(() => {
+    setTitle(state.title);
+  }, [state.title]);
 
   const onChange = (e) => {
     setTitle(e.target.value);
@@ -46,7 +59,12 @@ const SavePlanModal = (props) => {
           x
         </button>
         <label>계획이름</label>
-        <input type="text" value={title} onChange={onChange} placeholder="..."></input>
+        <input
+          type="text"
+          value={title}
+          onChange={onChange}
+          placeholder="..."
+        ></input>
         <button className="" onClick={savePlan}>
           저장하기
         </button>

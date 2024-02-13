@@ -3,26 +3,34 @@ import { useSelector, useDispatch } from "react-redux";
 import { scheduleActions } from "../store/scheduleSlice";
 import { ModalPortal } from "../components/modals/ModalPortal";
 import { useState, useEffect, useMemo } from "react";
+import axios from "axios";
 
 import Plan from "../components/Planning/Plan";
 import Map from "../components/GoogleMap/Map";
-import NewPlan from "../components/modals/NewPlan";
 import SavePlanModal from "../components/modals/SavePlanModal";
 import ShowTime from "../components/Planning/ShowTime";
 
 export default function PlanningPage() {
   let list = useSelector((state) => state.schedule);
   const card = useSelector((state) => state.places);
-  const [isNewPlanOpen, setIsNewPlanOpen] = useState(false);
   const [isSavePlanOpen, setIsSavePlanOpen] = useState(false);
   const dispatch = useDispatch();
+  const [isCanModify, setIsCanModify] = useState(true);
 
-  console.log(list);
+  useMemo(() => {
+    if (list.title !== "") {
+      setIsCanModify(false);
+    }
+  }, [list.title]);
+
+  console.log(list.title);
 
   useEffect(() => {
     async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
+        );
         console.log(response);
       } catch (error) {
         console.log(error);
@@ -58,6 +66,11 @@ export default function PlanningPage() {
   //     }
   //   }
   // }, [list]);
+  const onDragStart = (start) => {
+    if (!isCanModify) {
+      start.preventDefault();
+    }
+  };
 
   const onDragEnd = ({ source, destination }) => {
     // console.log(source);
@@ -95,15 +108,34 @@ export default function PlanningPage() {
   };
   // 계획 저장하기 모달
   const savePlan = () => {
-    setIsSavePlanOpen(true);
+    if (list.title !== "") {
+      window.sessionStorage.setItem("plan", JSON.stringify(list));
+      async () => {
+        try {
+          const response = await axios.patch(
+            `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
+          );
+          console.log(response);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      setIsCanModify(false);
+    } else {
+      setIsSavePlanOpen(true);
+    }
   };
   const CloseSavePlanModal = () => {
     setIsSavePlanOpen(false);
   };
 
+  const modifyPlan = () => {
+    setIsCanModify(true);
+  };
+
   useEffect(() => {
     // 모달이 열렸을 때 스크롤 막기 위함
-    if (isNewPlanOpen || isSavePlanOpen) {
+    if (isSavePlanOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -112,25 +144,26 @@ export default function PlanningPage() {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isNewPlanOpen, isSavePlanOpen]);
+  }, [isSavePlanOpen]);
 
   return (
     <>
       <ShowTime />
       <div className="relative h-full pl-10">
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
           <div className="flex h-full">
             <Plan />
             <Map />
           </div>
         </DragDropContext>
-        <button className="absolute bottom-2 right-0" onClick={savePlan}>
-          저장하기
-        </button>
-        {isNewPlanOpen && (
-          <ModalPortal>
-            <NewPlan onClose={CloseNewPlanModal} />
-          </ModalPortal>
+        {isCanModify ? (
+          <button className="absolute bottom-2 right-0" onClick={savePlan}>
+            저장하기
+          </button>
+        ) : (
+          <button className="absolute bottom-2 right-0" onClick={modifyPlan}>
+            수정하기
+          </button>
         )}
         {isSavePlanOpen && (
           <ModalPortal>

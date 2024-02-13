@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { ModalPortal } from "../components/modals/ModalPortal";
 
 import NewPlan from "../components/modals/NewPlan";
+import PlanSummary from "../components/Planning/PlanSummary";
 
 const MyPlan = () => {
   const [pageNo, setPageNo] = useState(0);
