@@ -39,14 +39,14 @@ const TripSummaryMain = ({ trip }) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleViewClick}
-        className="px-3 py-4 mx-3 my-4 border flex align-top rounded-3xl bg-stone-200 border-stone-400 h-full"
+        className="px-3 py-4 mx-3 my-4 border flex align-top rounded-3xl bg-stone-200 border-stone-400 h-[20vh]"
       >
         <div className="grid grid-cols-2 gap-4">
           <div className="relative overflow-hidden group rounded-3xl col-span-1">
             <img
               src={`assets/airplain.jpg`}
               alt="tripThumbnail"
-              className="w-full h-full transition-transform duration-300 ease-in-out transform scale-100 rounded-3xl group-hover:scale-125 "
+              className="w-full h-full p-1 transition-transform duration-300 ease-in-out transform scale-100 rounded-3xl group-hover:scale-125 "
             />
             {isHovered && (
               <div className="absolute inset-0 flex flex-col items-end justify-end bg-black text-neutral-800 bg-opacity-20">
