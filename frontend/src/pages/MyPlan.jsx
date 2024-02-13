@@ -63,9 +63,14 @@ const MyPlan = () => {
   };
 
   return (
-    <>
-      <h2>내가 만든 계획</h2>
-      <button onClick={makePlan}>계획 만들기</button>
+    <div className="relative">
+      <p className="my-2 text-2xl font-bold text-center">나의 계획</p>
+      <button
+        className="absolute top-0 right-0 border-2 border-lime-600 rounded-md bg-lime-400 text-xl text-white px-2 py-1"
+        onClick={makePlan}
+      >
+        계획 만들기
+      </button>
       {planData.map((plan, idx) => (
         <PlanSummary plan={plan} key={idx} />
       ))}
@@ -75,7 +80,7 @@ const MyPlan = () => {
           <NewPlan onClose={CloseNewPlanModal} />
         </ModalPortal>
       )}
-    </>
+    </div>
   );
 };
 

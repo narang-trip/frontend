@@ -9,16 +9,19 @@ import Plan from "../components/Planning/Plan";
 import Map from "../components/GoogleMap/Map";
 import SavePlanModal from "../components/modals/SavePlanModal";
 import ShowTime from "../components/Planning/ShowTime";
+import { useNavigate } from "react-router-dom";
 
 export default function PlanningPage() {
   let list = useSelector((state) => state.schedule);
   const card = useSelector((state) => state.places);
   const [isSavePlanOpen, setIsSavePlanOpen] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isCanModify, setIsCanModify] = useState(true);
 
   useMemo(() => {
-    if (list.title !== "") {
+    console.log("언제실행되는가 왜 실행 되는가#", list.title, "#");
+    if (list.title !== null) {
       setIsCanModify(false);
     }
   }, [list.title]);
@@ -108,7 +111,8 @@ export default function PlanningPage() {
   };
   // 계획 저장하기 모달
   const savePlan = () => {
-    if (list.title !== "") {
+    console.log(list.title);
+    if (list.title !== null) {
       window.sessionStorage.setItem("plan", JSON.stringify(list));
       async () => {
         try {
@@ -120,6 +124,7 @@ export default function PlanningPage() {
           console.log(error);
         }
       };
+      console.log("저장?");
       setIsCanModify(false);
     } else {
       setIsSavePlanOpen(true);
@@ -131,6 +136,20 @@ export default function PlanningPage() {
 
   const modifyPlan = () => {
     setIsCanModify(true);
+  };
+  const deletePlan = () => {
+    window.sessionStorage.removeItem("plan");
+    async () => {
+      try {
+        const response = await axios.delete(
+          `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
+        );
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    navigate("/planning");
   };
 
   useEffect(() => {
@@ -157,13 +176,27 @@ export default function PlanningPage() {
           </div>
         </DragDropContext>
         {isCanModify ? (
-          <button className="absolute bottom-2 right-0" onClick={savePlan}>
+          <button
+            className="absolute top-0 right-0 border-2 border-lime-600 rounded-md bg-lime-400 text-xl text-white px-2 py-1"
+            onClick={savePlan}
+          >
             저장하기
           </button>
         ) : (
-          <button className="absolute bottom-2 right-0" onClick={modifyPlan}>
-            수정하기
-          </button>
+          <div className="absolute flex top-0 right-0 gap-2">
+            <button
+              className="border-2 border-lime-600 rounded-md bg-lime-400 text-xl text-white px-2 py-1"
+              onClick={modifyPlan}
+            >
+              수정하기
+            </button>
+            <button
+              className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
+              onClick={deletePlan}
+            >
+              삭제하기
+            </button>
+          </div>
         )}
         {isSavePlanOpen && (
           <ModalPortal>
