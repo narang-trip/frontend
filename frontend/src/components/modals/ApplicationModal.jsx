@@ -14,6 +14,8 @@ const ApplicationModal = ({ data, onClose }) => {
   const [isApplicationSuccess, setIsApplicationSuccess] = useState(false);
   // 보유 마일리지
   const [balance, setBalance] = useState(0);
+  // 충전 금액
+  const [price, setPrice] = useState(0);
 
   const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -67,12 +69,12 @@ const ApplicationModal = ({ data, onClose }) => {
 
   // 보유 마일리지와 예약 마일리지의 차이 계산
   // 0 이상이면 신청 가능, 0 이하이면 충전해야함
-  const mileageDifference = 200 - data.tripDeposit;
+  const mileageDifference = balance - data.tripDeposit;
 
   const postData = {
     tripId: data.tripId,
     tripName: data.tripName,
-    senderId: "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5",
+    senderId: "1db2f956-58c4-3513-a201-b6fba05d65f4",
     receiverId: data.tripLeaderId,
     position: selectedPositions,
     aspiration: comment,
@@ -93,9 +95,13 @@ const ApplicationModal = ({ data, onClose }) => {
         }
       );
 
+      const response2 = await axios.post(
+        `https://i10a701/p/ssafy/io/api/payment/use?user_id=${postData.senderId}&price=${data.tripDeposit}&trip_id=${data.tripId}`
+      );
+
+      console.log(response2);
+
       if (response.status === 200) {
-        // 성공
-        console.log("신청하기 성공");
         // 신청 성공 여부 true
         setIsApplicationSuccess(true);
       } else {
@@ -111,14 +117,11 @@ const ApplicationModal = ({ data, onClose }) => {
   const handleCharge = async () => {
     setIsRedirecting(true);
 
-    const user_id = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"; // 사용자 ID
-    const price = 20000; // 충전 금액
-
     try {
       const url = `http://localhost:3000/detail/${postData.tripId}`;
 
       const response = await axios.post(
-        `https://i10a701.p.ssafy.io/api/payment/ready?user_id=${user_id}&price=${price}&return_url=${url}`
+        `https://i10a701.p.ssafy.io/api/payment/ready?user_id=${postData.senderId}&price=${price}&return_url=${url}`
       );
 
       console.log(response.data.next_redirect_pc_url);
@@ -170,7 +173,9 @@ const ApplicationModal = ({ data, onClose }) => {
                   src={userData.profile_url}
                   alt="프로필이미지"
                 />
-                <span className="mx-5 text-base font-semibold">{userData.nickname}</span>
+                <span className="mx-5 text-base font-semibold">
+                  {userData.nickname}
+                </span>
               </div>
               <div className="mx-4">
                 <span className="text-base font-semibold">🧩 포지션 선택</span>
@@ -192,7 +197,9 @@ const ApplicationModal = ({ data, onClose }) => {
                 </div>
               </div>
               <div className="mx-4 my-4">
-              <span className="text-base font-semibold">🧨 같이 여행 가고싶어요!</span>
+                <span className="text-base font-semibold">
+                  🧨 같이 여행 가고싶어요!
+                </span>
                 <div className="p-3 my-3 border border-stone-600 rounded-xl">
                   <textarea
                     value={comment}
@@ -223,6 +230,13 @@ const ApplicationModal = ({ data, onClose }) => {
                   </button>
                 ) : (
                   <div>
+                    <input
+                      type="number"
+                      placeholder="숫자만 입력해주세요"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                      className="w-24 p-1 mx-2 border rounded-md border-neutral-400"
+                    />
                     <button
                       onClick={handleCharge}
                       className="inline-flex items-center px-4 py-2 text-sm font-semibold text-indigo-700 rounded-md bg-blue-50 ring-1 ring-inset ring-blue-700/10"

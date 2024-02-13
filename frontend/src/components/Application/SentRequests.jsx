@@ -1,4 +1,11 @@
 import { Fragment, useState, useEffect } from "react";
+import {
+  SlCalender,
+  SlLocationPin,
+  SlPeople,
+  SlBadge,
+  SlInfo,
+} from "react-icons/sl";
 import axios from "axios";
 
 export default function SentRequests() {
@@ -8,13 +15,32 @@ export default function SentRequests() {
   const fetchSentData = async () => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/message/alert/list/send/노세희`
+        `https://i10a701.p.ssafy.io/api/message/alert/list/send/44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5`
       );
 
-      setSentData(response.data.alertList);
-      console.log(response.data.alertList);
+      const updatedSentData = await Promise.all(
+        response.data.alertList.map(async (item) => {
+          // 각 tripId에 대한 추가 정보를 가져오기
+          const tripInfo = await fetchTripInfo(item.tripId);
+          // 가져온 정보를 기존의 item과 합치기
+          return { ...item, tripInfo };
+        })
+      );
+
+      setSentData(updatedSentData);
     } catch (error) {
-      console.error("Error fetching request data:", error);
+      console.error("요청 데이터를 불러오는 중 에러 발생:", error);
+    }
+  };
+
+  const fetchTripInfo = async (tripId) => {
+    try {
+      const response = await axios.get(
+        `https://i10a701.p.ssafy.io/api/trip/trip/${tripId}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("여행 정보를 불러오는 중 에러 발생:", error);
     }
   };
 
@@ -22,7 +48,6 @@ export default function SentRequests() {
     try {
       // 예약금 환불이 필요한 경우
       if (item.alertType === "ACCEPT") {
-        // 여기에 예약금 환불 로직 추가
         await refundDeposit(item.tripId);
       }
 
@@ -72,7 +97,7 @@ export default function SentRequests() {
   return (
     <Fragment>
       <div className="flex justify-center">
-        <div className="w-10/12 text-center">
+        <div className="w-10/12 h-full text-center">
           <div>
             <div className="flex justify-around mb-4">
               <button
@@ -135,14 +160,52 @@ export default function SentRequests() {
                     item.alertType === selectedType) && (
                     <div className="flex justify-between" key={idx}>
                       <div
-                        className={`w-4/5 m-4 border border-black ${getColorClass(
-                          item.alertType
-                        )}`}
+                        className={`w-4/5 m-4 border border-neutral-400 rounded-lg p-2`}
                       >
-                        <p>{item.id}</p>
-                        <p>{item.tripId}</p>
-                        <p>{item.tripName}</p>
-                        <p>{item.alertType}</p>
+                        <div className="grid grid-cols-5">
+                          <div className="col-span-1 m-2">
+                            <img
+                              src={item.tripInfo.tripImgUrl}
+                              className="w-20 h-20 rounded-2xl"
+                            />
+                          </div>
+                          <div className="col-span-3">
+                            <p className="mb-1 text-base font-semibold">
+                              {item.tripInfo.tripName}
+                            </p>
+                            <div className="ml-1 text-start">
+                              <div className="flex items-center">
+                                <SlLocationPin className="mr-3" size="14" />
+                                <p className="text-sm">
+                                  {item.tripInfo.continent},{" "}
+                                  {item.tripInfo.country}, {item.tripInfo.city}
+                                </p>
+                              </div>
+                              <div className="flex items-center">
+                                <SlPeople className="mr-3" size="14" />
+                                <p className="text-sm">
+                                  {item.tripInfo.participants.length} /{" "}
+                                  {item.tripInfo.tripParticipantsSize}
+                                </p>
+                              </div>
+                              <div className="flex items-center">
+                                <SlInfo className="mr-3" size="14" />
+                                <p className="text-sm">
+                                  {item.tripInfo.tripDesc}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-center col-span-1">
+                            <p className={`${getColorClass(item.alertType)}`}>
+                              {item.alertType === "REQUEST"
+                                ? "요청중"
+                                : item.alertType === "ACCEPT"
+                                ? "승인완료"
+                                : "거절"}
+                            </p>
+                          </div>
+                        </div>
                       </div>
 
                       <button onClick={() => handleCancel(item)}>취소</button>

@@ -53,6 +53,7 @@ const HomePage = () => {
 
   return (
     <Fragment>
+    <div className="h-screen">
       <div className={className}>
         <AnimatePresence mode="wait">
           <motion.div
@@ -87,6 +88,7 @@ const HomePage = () => {
       >
       </div>
       <TripList />
+      </div>
     </Fragment >
   );
 }
