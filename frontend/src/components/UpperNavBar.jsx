@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,6 +39,7 @@ const UpperNavbar = () => {
   const token = useSelector((state) => state.auth.token);
   const sessionToken = window.sessionStorage.getItem("token");
   const sessionRefreshToken = window.sessionStorage.getItem("refreshToken");
+  const prevAlertAmountRef = useRef();
 
   useEffect(() => {
     getAlertData(userId);
@@ -74,7 +75,12 @@ const UpperNavbar = () => {
     sessionRefreshToken,
     sessionToken,
     token,
+    getAlertData,
   ]);
+
+  useEffect(() => {
+    prevAlertAmountRef.current = alertAmount; //리렌더링 막기위한것
+  }, [alertAmount]);
 
   useEffect(() => {
     if (userId === "") {
@@ -94,7 +100,7 @@ const UpperNavbar = () => {
         console.log("SSE CONNECTED");
       } else {
         const data = JSON.parse(receivedConnectData);
-        dispatch(authActions.SetAlertAmount({ alertAmount : alertAmount+1}))
+        dispatch(authActions.SetAlertAmount({ alertAmount: alertAmount + 1 }));
         setAlertContent(makeAlertContent(data));
       }
     });
@@ -104,11 +110,16 @@ const UpperNavbar = () => {
     return () => {
       eventSource.close();
     };
-  }, [userId]);
+  }, [alertAmount, dispatch, userId]);
 
   useEffect(() => {
-    setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
-    setAlertAnimation();
+    const prevAlertAmount = prevAlertAmountRef.current;
+
+    if (prevAlertAmount !== alertAmount) {
+      setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
+      setAlertAnimation();
+
+    }
   }, [alertAmount]);
 
   const navigateHome = () => {
@@ -135,17 +146,19 @@ const UpperNavbar = () => {
     };
   }, [isOpen]);
 
-  const getAlertData = async (userId) => {
+  const getAlertData = useCallback(async (userId) => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/list/${userId}`
       );
-      dispatch(authActions.SetAlertAmount({ alertAmount : res.data.alertList.length}))
+      dispatch(
+        authActions.SetAlertAmount({ alertAmount: res.data.alertList.length })
+      );
       console.log(res.data.alertList);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [dispatch]);
 
   const setAlertAnimation = () => {
     setIsVisible(true);
