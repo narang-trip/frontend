@@ -220,6 +220,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
 
     // userId별로 알림 리스트 보내주기
     public List<AlertListResponse.AlertResponse> getAlertsByReceiverId(String receiverId) {
+        log.info("getAlertsByReceiverId 호출");
         List<Alert> alerts = alertRepository.findByReceiverId(receiverId);
         if(alerts.isEmpty()){
             return null;
