@@ -22,7 +22,6 @@ public class TripPageResponse {
         private LocalDateTime departureDate;
         private LocalDateTime returnDate;
         private UUID tripLeaderId;
-        private Integer pageNo;
         private Integer viewCnt;
         private Integer tripParticipantsSize;
         private Integer tripAgeUpperBound;

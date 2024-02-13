@@ -2,6 +2,7 @@ package com.ssafy.tripservice.api.controller;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.ssafy.tripservice.api.request.TripModifyRequest;
 import com.ssafy.tripservice.api.request.TripQueryRequest;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
@@ -77,18 +78,16 @@ public class TripController {
 
     @Operation(summary = "Trip 수정",
             responses = {
-                    @ApiResponse(description = "The Trip Created",
+                    @ApiResponse(description = "The Trip Modified",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = Trip.class))),
                     @ApiResponse(responseCode = "404", description = "Trip Not Modified")})
     @PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @io.swagger.v3.oas.annotations.parameters.RequestBody (content = @Content(encoding = @Encoding(name = "tripRequest", contentType = MediaType.APPLICATION_JSON_VALUE)))
-    public ResponseEntity<?> patchTrip(@RequestPart TripRequest tripRequest,
+    public ResponseEntity<?> patchTrip(@RequestPart TripModifyRequest tripModifyRequest,
                                       @RequestPart(required = false) MultipartFile tripImg) {
 
-        System.out.println();
-
-        Optional<TripResponse> modifiedRes = tripService.modifyTrip(tripRequest, tripImg);
+        Optional<TripResponse> modifiedRes = tripService.modifyTrip(tripModifyRequest, tripImg);
 
         return  modifiedRes.isPresent() ?
                 ResponseEntity.ok(modifiedRes.get()) : ResponseEntity.badRequest().build();
