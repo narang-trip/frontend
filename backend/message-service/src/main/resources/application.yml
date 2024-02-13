@@ -23,14 +23,14 @@ spring:
 
 grpc:
   client:
-    payment:
-      address: 'static://payment-service:9090' # Server Address
+    payment-service:
+      address: 'static://payment-service:9099' # Server Address
       negotiation-type: plaintext
-    trip:
-      address: 'static://trip-service:9092' # Server Address
+    trip-service:
+      address: 'static://trip-service:9099' # Server Address
       negotiation-type: plaintext
   server:
-    port: 9093
+    port: 9099
 
   #logging:
 #  level:

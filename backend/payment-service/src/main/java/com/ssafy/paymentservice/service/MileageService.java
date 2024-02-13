@@ -11,7 +11,6 @@ import com.ssafy.paymentservice.exception.BusinessLogicException;
 import com.ssafy.paymentservice.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.devh.boot.grpc.client.inject.GrpcClient;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.narang.lib.NarangGrpc;
 import org.narang.lib.TripMileageUsageRequest;
@@ -131,7 +130,10 @@ public class MileageService extends NarangGrpc.NarangImplBase {
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         }
-//        responseObserver.onError(new NoSuchElementException());
+        else {
+            responseObserver.onError(new NoSuchElementException());
+            responseObserver.onCompleted();
+        }
     }
 
     public RefundRecord rejectMileage(String usage_id){

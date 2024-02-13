@@ -17,14 +17,14 @@ server:
   port: 8081
 grpc:
   client:
-    payment:
-      address: 'static://payment-service:9090' # Server Address
+    payment-service:
+      address: 'static://payment-service:9099' # Server Address
       negotiation-type: plaintext
-    chat:
-      address: 'static://message-service:9093' # Server Address
+    message-service:
+      address: 'static://message-service:9099' # Server Address
       negotiation-type: plaintext
   server:
-    port: 9092
+    port: 9099
 
 springdoc:
   api-docs:

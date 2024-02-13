@@ -31,22 +31,21 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@RequiredArgsConstructor
 @Transactional
 @Service @GrpcService
-@RequiredArgsConstructor
 public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripService  {
 
     private final MongoOperations mongoTemplate;
     private final AmazonS3Client amazonS3Client;
     private final TripRepository tripRepository;
 
-    @GrpcClient("payment")
+    @GrpcClient("payment-service")
     private NarangGrpc.NarangBlockingStub paymentBlockingStub;
 
-    @GrpcClient("chat")
+    @GrpcClient("message-service")
     private NarangGrpc.NarangBlockingStub chatBlockingStub;
 
-    @Transactional
     @Override
     public Optional<TripResponse> createTrip(TripRequest tripRequest, MultipartFile tripImg) {
         /*

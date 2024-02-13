@@ -10,6 +10,7 @@ import com.ssafy.messageservice.db.entity.User;
 import com.ssafy.messageservice.db.repository.*;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import net.devh.boot.grpc.server.service.GrpcService;
 import org.narang.lib.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 
 @RequiredArgsConstructor
-@Service
+@Service @GrpcService
 public class ChatService extends NarangGrpc.NarangImplBase {
     private final ChatRepositoryCustom chatRepositoryCustom;
     private final ChatRepository chatRepository;
