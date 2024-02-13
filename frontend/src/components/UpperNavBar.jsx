@@ -56,7 +56,6 @@ const UpperNavbar = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    getAlertData(userId);
     if (!isLogin && sessionToken !== null && sessionRefreshToken !== null) {
       (async () => {
         try {
@@ -84,19 +83,18 @@ const UpperNavbar = () => {
   }, [
     isLogin,
     userId,
-    
+
     sessionRefreshToken,
     sessionToken,
   ]);
 
-  useEffect(() => {
-    prevAlertAmountRef.current = alertAmount; //리렌더링 막기위한것
-  }, [alertAmount]);
 
   useEffect(() => {
     if (userId === "") {
       return;
     }
+    getAlertData(userId);
+
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const eventSource = new EventSource(
       `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`,
@@ -121,14 +119,14 @@ const UpperNavbar = () => {
     return () => {
       eventSource.close();
     };
-  }, [dispatch, userId]);
+  }, [userId]);
 
   useEffect(() => {
     // const prevAlertAmount = prevAlertAmountRef.current;
 
     // if (prevAlertAmount !== alertAmount) {
-      setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
-      setAlertAnimation();
+    setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
+    setAlertAnimation();
 
     // }
   }, [alertAmount]);
@@ -157,7 +155,6 @@ const UpperNavbar = () => {
     };
   }, [isOpen]);
 
-  
 
   const setAlertAnimation = () => {
     setIsVisible(true);
