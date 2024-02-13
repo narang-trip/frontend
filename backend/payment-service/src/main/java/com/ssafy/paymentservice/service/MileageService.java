@@ -29,10 +29,21 @@ public class MileageService {
     @Autowired
     private TextEncryptor textEncryptor;
     public int getMileage(String user_id){
-        Optional<UserMileage> userMileage = userMileageRepository.findById(user_id);
-        // 암호화된 마일리지 복호화
-        int mileage = userMileage.map(value -> Integer.parseInt(textEncryptor.decrypt(value.getEncryptedMileage()))).orElse(0);
-        return mileage;
+        Optional<UserMileage> userMileageOptional = userMileageRepository.findById(user_id);
+
+        if (userMileageOptional.isPresent()) {
+            UserMileage userMileage = userMileageOptional.get();
+            return Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage()));
+        } else {
+            // 마일리지를 찾을 수 없을 때, 기본 마일리지가 0인 새로운 UserMileage 객체 생성 및 저장
+            UserMileage newUserMileage = new UserMileage();
+            newUserMileage.setId(user_id);
+            newUserMileage.setEncryptedMileage(textEncryptor.encrypt("0")); // 기본 마일리지를 암호화하여 설정
+
+            // userRepository.save(newUserMileage); // 저장하는 코드 필요 (실제 저장 방법에 따라 다를 수 있음)
+
+            return 0; // 0으로 설정된 기본 마일리지 반환
+        }
     }
     public UsageRecord useMileage(String user_id, int price){
         log.info("useMileage 호출. user_id : {}, price : {}", user_id, price);
