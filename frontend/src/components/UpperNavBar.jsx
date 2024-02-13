@@ -41,6 +41,20 @@ const UpperNavbar = () => {
   const sessionRefreshToken = window.sessionStorage.getItem("refreshToken");
   const prevAlertAmountRef = useRef();
 
+  const getAlertData = useCallback(async (userId) => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_ALERT_REQUEST_URI}/list/${userId}`
+      );
+      dispatch(
+        authActions.SetAlertAmount({ alertAmount: res.data.alertList.length })
+      );
+      console.log(res.data.alertList);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch]);
+
   useEffect(() => {
     getAlertData(userId);
     if (!isLogin && sessionToken !== null && sessionRefreshToken !== null) {
@@ -113,13 +127,13 @@ const UpperNavbar = () => {
   }, [alertAmount, dispatch, userId]);
 
   useEffect(() => {
-    const prevAlertAmount = prevAlertAmountRef.current;
+    // const prevAlertAmount = prevAlertAmountRef.current;
 
-    if (prevAlertAmount !== alertAmount) {
-      setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
-      setAlertAnimation();
+    // if (prevAlertAmount !== alertAmount) {
+    //   setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
+    //   setAlertAnimation();
 
-    }
+    // }
   }, [alertAmount]);
 
   const navigateHome = () => {
@@ -146,19 +160,7 @@ const UpperNavbar = () => {
     };
   }, [isOpen]);
 
-  const getAlertData = useCallback(async (userId) => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_ALERT_REQUEST_URI}/list/${userId}`
-      );
-      dispatch(
-        authActions.SetAlertAmount({ alertAmount: res.data.alertList.length })
-      );
-      console.log(res.data.alertList);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [dispatch]);
+  
 
   const setAlertAnimation = () => {
     setIsVisible(true);
