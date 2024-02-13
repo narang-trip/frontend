@@ -40,14 +40,14 @@ const TripSummary = ({ trip }) => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onClick={handleViewClick}
-          className="px-3 py-4 mx-3 my-4 border h-[24rem] flex align-top rounded-3xl bg-stone-200 border-stone-400"
+          className="flex px-3 py-4 mx-3 my-4 align-top border rounded-3xl bg-stone-200 border-stone-400"
         >
           <div className="grid">
             <div className="relative overflow-hidden group rounded-3xl">
               <img
                 src={trip.tripImgUrl}
                 alt="tripThumbnail"
-                className="mb-2 transition-transform duration-300 ease-in-out transform scale-100 w-[18rem] h-[13rem] rounded-3xl group-hover:scale-125"
+                className="mb-2 transition-transform duration-300 ease-in-out transform scale-100 w-[15rem] h-[12rem] rounded-3xl group-hover:scale-125"
               />
               {isHovered && (
                 <div className="absolute inset-0 flex flex-col items-end justify-end bg-black text-neutral-800 bg-opacity-20">
@@ -62,18 +62,18 @@ const TripSummary = ({ trip }) => {
             </div>
             <div>
               <div className="flex flex-row items-center my-1.5 text-sm">
-                <SlCalender className="mx-2 " size="24" />
+                <SlCalender className="mx-2 " size="16" />
                 <p className="text-xs">
                   {departureDate} ~ {returnDate}
                 </p>
               </div>
               <div className="flex flex-row items-center my-1.5 text-sm">
-                <SlLocationPin className="mx-2 " size="24" />
+                <SlLocationPin className="mx-2 " size="16" />
                 <p className="text-xs">{trip.continent}, {trip.country}, {trip.city}</p>
               </div>
               <div className="flex flex-row items-center my-1.5 text-sm">
-                <SlInfo className="mx-2 " size="24" />
-                <p className="text-xs">{trip.tripDesc}</p>
+                <SlInfo className="mx-2 " size="16" />
+                <p className="text-xs text-start">{trip.tripDesc}</p>
               </div>
             </div>
           </div>

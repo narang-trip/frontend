@@ -11,11 +11,6 @@ export default function ReceiveRequestsInfo({ data, trip }) {
         `https://i10a701.p.ssafy.io/api/message/alert/attend/${data.id}/ACCEPT`
       );
 
-      const response2 = await axios.post(
-        `https://i10a701.p.ssafy.io/api/payment/use?user_id=44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5&price=${trip.tripDeposit}&trip_id=${trip.tripId}`
-      );
-
-      console.log(response2.data);
       
       // 서버 응답을 이용해 필요한 작업 수행
       console.log("서버 응답:", response1.data);

@@ -67,7 +67,7 @@ export default function TripDetail() {
 
       // 모집글 작성자 여부 확인
       setIsLeader(
-        response.data.tripLeaderId === "44cf8d0d-a5f4-3fb8-b7c9-2d3d779b5"
+        response.data.tripLeaderId === "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"
       );
 
       // 모집글 참가자 여부 확인
