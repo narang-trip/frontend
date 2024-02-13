@@ -1,5 +1,6 @@
 package com.ssafy.messageservice.db.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Repository
 public class EmitterRepositoryImpl implements EmitterRepository{
     // 모든 Emitters를 저장하는 ConcurrentHashMap
@@ -17,6 +19,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     // 새로운 사용자가 접속할 때마다 save 메소드를 호출하여 해당 사용자에 대한 SseEmitter를 저장
     @Override
     public SseEmitter save(String id, SseEmitter sseEmitter) {
+        log.info("EmitterRepositoryImpl save 호출 id : {}, sseEmitter : {}", id, sseEmitter);
         emitters.put(id, sseEmitter);
         return sseEmitter;
     }
@@ -46,6 +49,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     // 주어진 아이디의 emitter를 지움
     @Override
     public void deleteById(String id) {
+        log.info("EmitterRepositoryImpl deleteById 호출 id : {}", id);
         emitters.remove(id);
     }
 

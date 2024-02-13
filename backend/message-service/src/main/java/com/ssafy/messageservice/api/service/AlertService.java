@@ -54,6 +54,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
         log.info("subscribe 호출 userId : {}", userId);
         String emitterId = userId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
+        log.info("emitter : {}", emitter.toString());
 
         // Emitter가 완료될 때(모든 데이터가 성공적으로 전송된 상태) Emitter를 삭제
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
