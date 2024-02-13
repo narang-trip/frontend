@@ -12,7 +12,13 @@ import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.db.entity.QTrip;
 import com.ssafy.tripservice.db.entity.Trip;
 import com.ssafy.tripservice.db.repository.TripRepository;
-import lombok.AllArgsConstructor;
+import io.grpc.stub.StreamObserver;
+import lombok.RequiredArgsConstructor;
+import net.devh.boot.grpc.client.inject.GrpcClient;
+import net.devh.boot.grpc.server.service.GrpcService;
+import org.narang.lib.PaymentGrpc;
+import org.narang.lib.TripGrpc;
+import org.narang.lib.TripGrpcResponse;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.*;
@@ -24,16 +30,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
-@AllArgsConstructor
+
 @Transactional
-@Service
-public class TripServiceImpl implements TripService {
+@Service @GrpcService
+@RequiredArgsConstructor
+public class TripServiceImpl extends TripGrpc.TripImplBase implements TripService  {
 
     private final MongoOperations mongoTemplate;
     private final AmazonS3Client amazonS3Client;
     private final TripRepository tripRepository;
+
+    @GrpcClient("payment")
+    private PaymentGrpc.PaymentBlockingStub paymentBlockingStub;
 
     @Transactional
     @Override
@@ -404,5 +413,30 @@ public class TripServiceImpl implements TripService {
         Update update = new Update().pull("participants", Query.query(Criteria.where("participantId").is(userId)));
 
         return mongoTemplate.updateMulti(query, update, Trip.class).getMatchedCount();
+    }
+
+    @Override
+    public void getTripById(org.narang.lib.TripGrpcRequest request, StreamObserver<org.narang.lib.TripGrpcResponse> responseObserver) {
+        Optional<Trip> trip = tripRepository.findById(UUID.fromString(request.getTripId()));
+
+        if (trip.isEmpty()) {
+            responseObserver.onError(new NoSuchElementException());
+            responseObserver.onCompleted();
+        }
+        else {
+
+            TripGrpcResponse response = TripGrpcResponse.newBuilder()
+                    .setTripId(trip.get().get_id().toString())
+                    .setTripLeaderId(trip.get().getTripLeaderId().toString())
+                    .setTripChatId(trip.get().getTripChatId().toString())
+                    .setTripPlanId(trip.get().getTripPlanId().toString())
+                    .setTripDeposit(trip.get().getTripDeposit())
+                    .setTripParticipantsSize(trip.get().getTripParticipantsSize())
+                    .setTripApplicantsSize(trip.get().getParticipants().size())
+                    .build();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
     }
 }

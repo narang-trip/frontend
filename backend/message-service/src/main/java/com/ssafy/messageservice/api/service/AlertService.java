@@ -9,6 +9,9 @@ import com.ssafy.messageservice.db.repository.AlertRepository;
 import com.ssafy.messageservice.db.repository.EmitterRepository;
 import com.ssafy.messageservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.apache.coyote.BadRequestException;
+import org.narang.lib.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,11 @@ public class AlertService {
     private final EmitterRepository emitterRepository;
     private final AlertRepository alertRepository;
     private final UserRepository userRepository;
+    @GrpcClient("payment")
+    private PaymentGrpc.PaymentBlockingStub paymentBlockingStub;
+    @GrpcClient("trip")
+    private TripGrpc.TripBlockingStub tripBlockingStub;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AlertService.class);
 
     /**
@@ -89,8 +97,29 @@ public class AlertService {
     // 요청 알림 보내는 메소드
     public ResponseEntity<?> send(AlertAttendRequest alertAttendRequest) {
         try{
+
             boolean exists = alertRepository.existsByTripIdAndSenderId(alertAttendRequest.getTripId(), alertAttendRequest.getSenderId());
+
             if(!exists){
+
+                /*
+                 여행 정보 Get
+                 */
+                TripGrpcResponse tripGrpcResponse = tripBlockingStub.getTripById(TripGrpcRequest.newBuilder()
+                        .setTripId(alertAttendRequest.getTripId()).build());
+
+                if (tripGrpcResponse.getTripApplicantsSize() >= tripGrpcResponse.getTripParticipantsSize())
+                    throw new BadRequestException();
+
+                /*
+                 마일리지 사용
+                 */
+                
+                TripMileageUsageResponse paymentResponse = paymentBlockingStub.tripUseMileage(TripMileageUsageRequest.newBuilder()
+                        .setUserId(alertAttendRequest.getSenderId())
+                        .setPrice(tripGrpcResponse.getTripDeposit())
+                        .build());
+
                 // DB Alert 테이블에 데이터 저장하기
                 Alert alert = new Alert(UUID.randomUUID().toString(),
                         alertAttendRequest.getTripId(),
@@ -123,6 +152,7 @@ public class AlertService {
                             sendAlert(emitter, eventId, key, alertResponse);
                         }
                 );
+
                 return ResponseEntity.ok().body("Alert sent successfully"); // 성공 응답
             }
             else{
