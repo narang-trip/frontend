@@ -45,7 +45,7 @@ const SavePlanModal = (props) => {
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-500 bg-opacity-70"
+      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-70"
       onClick={props.onClose}
       ref={modalBG}
     >

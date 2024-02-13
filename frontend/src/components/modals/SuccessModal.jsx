@@ -6,7 +6,7 @@ const SuccessModal = (props) => {
 
   return (
     <div
-      className="fixed top-0 bottom-0 left-0 right-0 z-20 flex items-center justify-center bg-gray-500 bg-opacity-70"
+      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-70"
       onClick={props.onClose}
       ref={modalBG}
     >
@@ -17,7 +17,7 @@ const SuccessModal = (props) => {
         }}
       >
         <div className=" font-spoqa">
-        <div className="flex justify-end">
+          <div className="flex justify-end">
             <button
               className="mb-4 text-xl font-semibold hover:text-red-600"
               onClick={props.onClose}
@@ -27,7 +27,9 @@ const SuccessModal = (props) => {
           </div>
 
           <div className="items-center mt-5 text-center">
-            <p className="mb-4 font-semibold text-ml">동행 신청이 완료되었습니다!</p>
+            <p className="mb-4 font-semibold text-ml">
+              동행 신청이 완료되었습니다!
+            </p>
           </div>
         </div>
       </div>
