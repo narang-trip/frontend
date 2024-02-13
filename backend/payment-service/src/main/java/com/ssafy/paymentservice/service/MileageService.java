@@ -57,7 +57,7 @@ public class MileageService {
         String user_id = usageRecord.getUserId();
         int price = usageRecord.getPrice();
         
-        long dayDifference = calculateDateDifference(usageRecord.getRegDate(), departureDateTime);
+        long dayDifference = calculateDateDifference(LocalDateTime.now(), departureDateTime);
 
         if(dayDifference > 13){ // 2주일 이상 남은 경우
             log.info("2주일 이상 남았으므로 전액({}원) 환불 처리됩니다.", price);
