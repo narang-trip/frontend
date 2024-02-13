@@ -53,7 +53,7 @@ const HomePage = () => {
 
   return (
     <Fragment>
-      <div className={className}>
+      <div className={`${className} text-center`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={concept}
@@ -63,7 +63,9 @@ const HomePage = () => {
             variants={textAnimation}
             className="text-2xl"
           >
-            {mainConceptDescription}
+            {mainConceptDescription.map((des, index) => {
+              return <div key={index}>{des}</div>
+            })}
           </motion.div>
         </AnimatePresence>
       </div>
