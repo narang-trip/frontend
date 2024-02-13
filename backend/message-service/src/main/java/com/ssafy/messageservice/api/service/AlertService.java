@@ -10,6 +10,7 @@ import com.ssafy.messageservice.db.repository.EmitterRepository;
 import com.ssafy.messageservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import net.devh.boot.grpc.server.service.GrpcService;
 import org.apache.coyote.BadRequestException;
 import org.narang.lib.*;
 import org.slf4j.Logger;
@@ -26,17 +27,17 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
 @RequiredArgsConstructor
+@Service @GrpcService
 public class AlertService extends NarangGrpc.NarangImplBase {
     // 기본 타임아웃 설정
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
     private final EmitterRepository emitterRepository;
     private final AlertRepository alertRepository;
     private final UserRepository userRepository;
-    @GrpcClient("payment")
+    @GrpcClient("payment-service")
     private NarangGrpc.NarangBlockingStub paymentBlockingStub;
-    @GrpcClient("trip")
+    @GrpcClient("trip-service")
     private NarangGrpc.NarangBlockingStub tripBlockingStub;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AlertService.class);
