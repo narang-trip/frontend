@@ -9,6 +9,7 @@ import com.ssafy.messageservice.db.repository.AlertRepository;
 import com.ssafy.messageservice.db.repository.EmitterRepository;
 import com.ssafy.messageservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.apache.coyote.BadRequestException;
@@ -27,6 +28,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AlertService extends NarangGrpc.NarangImplBase {
@@ -49,6 +51,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
      * @return SseEmitter - 서버에서 보낸 이벤트 Emitter
      */
     public SseEmitter subscribe(String userId, String lastEventId) {
+        log.info("subscribe 호출 userId : {}", userId);
         String emitterId = userId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
