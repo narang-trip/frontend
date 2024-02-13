@@ -6,6 +6,8 @@ import com.ssafy.paymentservice.db.entity.UserMileage;
 import com.ssafy.paymentservice.db.repository.RefundRecordRepository;
 import com.ssafy.paymentservice.db.repository.UsageRecordRepository;
 import com.ssafy.paymentservice.db.repository.UserMileageRepository;
+import com.ssafy.paymentservice.exception.BusinessLogicException;
+import com.ssafy.paymentservice.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,9 @@ public class MileageService {
         // 암호화된 마일리지 복호화
         int current_mileage = Integer.parseInt(textEncryptor.decrypt(encryptedMileage));
         int new_mileage = current_mileage - price;
+        if(new_mileage < 0){
+            throw new BusinessLogicException(ExceptionCode.PAY_NO_MONEY);
+        }
         String newEncryptedMileage = textEncryptor.encrypt(String.valueOf(new_mileage));
         userMileage.setEncryptedMileage(newEncryptedMileage);
         userMileageRepository.save(userMileage);
@@ -90,5 +95,30 @@ public class MileageService {
     private Long calculateDateDifference(LocalDateTime startDate, LocalDateTime endDate){
         Duration duration = Duration.between(startDate, endDate);
         return duration.toDays();
+    }
+
+    public RefundRecord rejectMileage(String usage_id){
+        log.info("rejectMileage 호출. usage_id : {}", usage_id);
+        UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
+                .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
+        String user_id = usageRecord.getUserId();
+        int price = usageRecord.getPrice();
+
+        UserMileage userMileage = userMileageRepository.findById(user_id)
+                .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
+
+        String encryptedMileage = userMileage.getEncryptedMileage();
+        // 암호화된 마일리지 복호화
+        int current_mileage = Integer.parseInt(textEncryptor.decrypt(encryptedMileage));
+        int new_mileage = current_mileage + price;
+        String newEncryptedMileage = textEncryptor.encrypt(String.valueOf(new_mileage));
+        userMileage.setEncryptedMileage(newEncryptedMileage);
+        userMileageRepository.save(userMileage);
+
+        RefundRecord refundRecord = new RefundRecord(user_id, price,
+                Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage())));
+
+        refundRecordRepository.save(refundRecord);
+        return refundRecord;
     }
 }
