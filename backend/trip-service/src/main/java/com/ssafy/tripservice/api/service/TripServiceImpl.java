@@ -322,7 +322,7 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
         final int pageSize = 4;
 
         PageRequest pageRequest = PageRequest.of(
-                tripQueryRequest.getTripPageNo(), pageSize, Sort.by("departureDate").descending());
+                tripQueryRequest.getPageNo(), pageSize, Sort.by("departureDate").descending());
 
         Query query = new Query()
                 .with(pageRequest)
@@ -336,7 +336,7 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
                                 Criteria.where("participantId").is(tripQueryRequest.getUserId())))
                 .addCriteria(
                     (Criteria.where("departureDate").lt(tripQueryRequest.getQueryEndDate()))
-                            .orOperator(Criteria.where("returnDate").gt(tripQueryRequest.getQuerySttDate())));
+                            .and("returnDate").gt(tripQueryRequest.getQuerySttDate()));
 
         List<Trip> myTrips = mongoTemplate.find(query, Trip.class);
 
@@ -352,7 +352,7 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
         final int pageSize = 4;
 
         PageRequest pageRequest = PageRequest.of(
-                tripQueryRequest.getTripPageNo(), pageSize, Sort.by("departureDate").descending());
+                tripQueryRequest.getPageNo(), pageSize, Sort.by("departureDate").descending());
 
         Query query = new Query()
                 .with(pageRequest)
@@ -375,10 +375,12 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
     @Override
     public Page<TripPageResponse> getTripsIWant(TripQueryRequest tripQueryRequest) {
 
+        System.out.println(tripQueryRequest);
+
         final int pageSize = 9;
 
         PageRequest pageRequest = PageRequest.of(
-        tripQueryRequest.getTripPageNo(), pageSize, Sort.by("departureDate").descending());
+        tripQueryRequest.getPageNo(), pageSize, Sort.by("departureDate").descending());
 
         List<Trip> tripsIWant = new LinkedList<>();
 
@@ -386,7 +388,7 @@ public class TripServiceImpl extends TripGrpc.TripImplBase implements TripServic
                 QTrip.trip
                         .tripRoles.any().in(tripQueryRequest.getTripRoles())
                         .and(QTrip.trip.departureDate.before(tripQueryRequest.getQueryEndDate())
-                                .or(QTrip.trip.returnDate.after(tripQueryRequest.getQuerySttDate())))
+                                .and(QTrip.trip.returnDate.after(tripQueryRequest.getQuerySttDate())))
                         .and(QTrip.trip.tripParticipantsSize.goe(tripQueryRequest.getParticipantsSize()))
                         .and(QTrip.trip.tripConcept.in(tripQueryRequest.getTripConcept()))
                         .and(QTrip.trip.continent.in(tripQueryRequest.getTripContinent())), pageRequest);
