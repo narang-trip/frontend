@@ -8,6 +8,8 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
+  let auth = "";
+  let refreshAuth = "";
   useEffect(() => {
     const params = new URL(document.URL).searchParams;
     const code = params.get("code");
@@ -18,10 +20,17 @@ const Login = () => {
         const res = await axios.post(
           `https://i10a701.p.ssafy.io/api/user/login/oauth/naver?code=${code}`
         );
-      
+        console.log(res);
+        auth = res.headers["Authorization"];
+        refreshAuth = res.headers["Authorization-Refresh"];
+        console.log("바깥")
+        console.log("auth :", auth)
+        console.log("refreshAuth :", refreshAuth)
         try {
-          console.log(res);
-          console.log("res.headers : ", res.headers["Authorization-Refresh"]);
+          console.log("안")
+          console.log("auth :", auth)
+          console.log("refreshAuth :", refreshAuth)
+          
           const userRes = await axios.get(
             "https://i10a701.p.ssafy.io/api/user",
             {
