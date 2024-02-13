@@ -27,3 +27,6 @@ springdoc:
     path: /api/payment/swagger-ui.html
 
 adminKey: ${ADMIN_KEY}
+grpc:
+  server:
+    port: 9090

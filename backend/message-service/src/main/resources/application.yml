@@ -21,6 +21,15 @@ spring:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 
+grpc:
+  client:
+    payment:
+      address: 'static://payment-service:9090' # Server Address
+      negotiation-type: plaintext
+    trip:
+      address: 'static://trip-service:9092' # Server Address
+      negotiation-type: plaintext
+
 #logging:
 #  level:
 #    root: DEBUG
@@ -39,8 +48,8 @@ springdoc:
   swagger-ui:
     path: /api/message/swagger-ui.html
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://eureka-server:8761/
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://eureka-server:8761/
 
