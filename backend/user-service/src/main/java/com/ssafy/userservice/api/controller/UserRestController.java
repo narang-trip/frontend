@@ -29,6 +29,7 @@ public class UserRestController {
     @GetMapping("/getuser")
     public ResponseEntity<?> getUser(@AuthenticationPrincipal UserDetails userDetails){
         log.info("userDetails : {}", userDetails);
+        log.info(userDetails.getUsername());
         try {
             Auth auth = userService.getAuth(userDetails.getUsername()).getBody();
             User user = userService.getUser(auth.getId()).getBody();
