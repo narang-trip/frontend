@@ -102,7 +102,7 @@ const AddInfoModal = ({ userId, data, onClose }) => {
             </button>
           </div>
           <p className="flex justify-center mb-5 text-base font-bold">
-            정보 수정
+            회원 정보 수정
           </p>
           <form onSubmit={handleSubmit}>
             <div className="flex m-2">
