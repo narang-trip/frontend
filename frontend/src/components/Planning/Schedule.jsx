@@ -57,10 +57,14 @@ const Schedule = (props) => {
           key={props.data.scheduleIdx}
         >
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
               <div
                 style={scheduleCSS}
-                className="flex flex-col bg-white w-56 rounded-xl overflow-hidden"
+                className="absolute flex flex-col bg-white w-56 rounded-xl overflow-hidden z-10"
               >
                 <div className="flex">
                   <img
@@ -103,7 +107,11 @@ const Schedule = (props) => {
           isDragDisabled
         >
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
               <div style={blackCSS} className="bg-black opacity-5"></div>
             </div>
           )}
