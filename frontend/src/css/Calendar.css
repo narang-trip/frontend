@@ -173,9 +173,9 @@
 }
 
 
-.active {
-  background: #006edc !important; /* 'active' 상태의 배경색 */
-  color: white !important; /* 'active' 상태의 글자색 */
+.react-calendar .react-calendar__tile.active {
+  background: #006edc !important;
+  color: white !important;
 }
 
 .weekend-day:hover,
