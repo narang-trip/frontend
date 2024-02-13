@@ -27,12 +27,6 @@ import java.util.NoSuchElementException;
 public class PaymentController {
     private final KakaoPayService kakaoPayService;
     private final MileageService mileageService;
-    @GetMapping("/payment")
-    public String getWelcome() {
-        System.out.println("payment");
-        return "payment";
-    }
-
     /**
      * 결제요청
      */
