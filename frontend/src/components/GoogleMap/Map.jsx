@@ -7,7 +7,7 @@ import PlaceCard from "./PlaceCard";
 import { useDispatch } from "react-redux";
 import { placesActions } from "../../store/placeSlice";
 
-const Map = () => {
+const Map = ({ isCanModify }) => {
   const containerStyle = {
     width: "300px",
     height: "300px",
@@ -214,7 +214,11 @@ const Map = () => {
   return isLoaded ? (
     <div className="flex-col w-1/4 h-full pt-10">
       <h1>Google Map</h1>
-      <SearchBox map={map} onPlaceSelected={handlePlaceSelected} />
+      <SearchBox
+        map={map}
+        onPlaceSelected={handlePlaceSelected}
+        isCanModify={isCanModify}
+      />
       <hr />
       <GoogleMap
         mapContainerStyle={containerStyle}

@@ -11,7 +11,7 @@ const DayPlan = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(scheduleActions.setBlackHeight(divRef.current.scrollHeight - 32));
+    dispatch(scheduleActions.setBlackHeight(divRef.current.clientHeight - 32));
   }, [dispatch]);
 
   return (
@@ -23,6 +23,7 @@ const DayPlan = (props) => {
       {list[props.index].map((data, index) => (
         <Schedule
           data={{ dayIdx: props.index, scheduleIdx: index }}
+          isCanModify={props.isCanModify}
           key={index}
         />
       ))}

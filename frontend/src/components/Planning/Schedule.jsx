@@ -9,6 +9,7 @@ const Schedule = (props) => {
   const dayList = list.list[props.data.dayIdx];
   const schedule = dayList[props.data.scheduleIdx];
   const blackHeight = list.blackHeight / (list.time.lineCnt - 1) / 3;
+  const isCanModify = props.isCanModify;
 
   const blackCSS = {
     height: `${blackHeight}px`,
@@ -82,6 +83,7 @@ const Schedule = (props) => {
                         value={t}
                         onChange={timeChange}
                         step="30"
+                        disabled={!isCanModify}
                       />
                       분
                     </p>
@@ -92,6 +94,7 @@ const Schedule = (props) => {
                       placeholder="간단한 메모"
                       onChange={textChange}
                       value={text}
+                      disabled={!isCanModify}
                     />
                   </div>
                 </div>

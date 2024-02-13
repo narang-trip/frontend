@@ -19,14 +19,13 @@ export default function PlanningPage() {
   const navigate = useNavigate();
   const [isCanModify, setIsCanModify] = useState(true);
 
+  console.log(list);
+
   useMemo(() => {
-    console.log("언제실행되는가 왜 실행 되는가#", list.title, "#");
     if (list.title !== null) {
       setIsCanModify(false);
     }
   }, [list.title]);
-
-  console.log(list.title);
 
   useEffect(() => {
     async () => {
@@ -171,13 +170,13 @@ export default function PlanningPage() {
       <div className="relative h-full pl-10">
         <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
           <div className="flex h-full">
-            <Plan />
-            <Map />
+            <Plan isCanModify={isCanModify} />
+            <Map isCanModify={isCanModify} />
           </div>
         </DragDropContext>
         {isCanModify ? (
           <button
-            className="absolute top-0 right-0 border-2 border-lime-600 rounded-md bg-lime-400 text-xl text-white px-2 py-1"
+            className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
             onClick={savePlan}
           >
             저장하기
@@ -185,7 +184,7 @@ export default function PlanningPage() {
         ) : (
           <div className="absolute flex top-0 right-0 gap-2">
             <button
-              className="border-2 border-lime-600 rounded-md bg-lime-400 text-xl text-white px-2 py-1"
+              className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
               onClick={modifyPlan}
             >
               수정하기
