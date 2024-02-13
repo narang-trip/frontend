@@ -43,7 +43,7 @@ const UpperNavbar = () => {
 
   useEffect(() => {
     if (!isLogin && sessionToken !== null && sessionRefreshToken !== null) {
-    getAlertData(userId);
+      getAlertData(userId);
 
       (async () => {
         try {
@@ -95,11 +95,9 @@ const UpperNavbar = () => {
       const { data: receivedConnectData } = event;
       if (receivedConnectData === `EventStream Created. [userId=${userId}]`) {
         console.log("SSE CONNECTED");
-        console.log(alertAmount);
-        setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
       } else {
         const data = JSON.parse(receivedConnectData);
-        setAlertAmount(prev => prev +1);
+        setAlertAmount((prev) => prev + 1);
         setAlertContent(makeAlertContent(data));
       }
     });
@@ -108,10 +106,11 @@ const UpperNavbar = () => {
     };
     return () => {
       eventSource.close();
-  };
+    };
   }, [userId]);
 
   useEffect(() => {
+    setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
     setAlertAnimation();
   }, [alertAmount]);
 
