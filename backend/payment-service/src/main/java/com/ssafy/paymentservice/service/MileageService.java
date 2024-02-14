@@ -35,7 +35,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
     @Autowired
     private TextEncryptor textEncryptor;
     public int getMileage(String user_id){
-        Optional<UserMileage> userMileageOptional = userMileageRepository.findById(user_id);
+        Optional<UserMileage> userMileageOptional = userMileageRepository.findByUserId(user_id);
 
         if (userMileageOptional.isPresent()) {
             UserMileage userMileage = userMileageOptional.get();
@@ -43,7 +43,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         } else {
             // 마일리지를 찾을 수 없을 때, 기본 마일리지가 0인 새로운 UserMileage 객체 생성 및 저장
             UserMileage newUserMileage = new UserMileage();
-            newUserMileage.setId(user_id);
+            newUserMileage.setUserId(user_id);
             newUserMileage.setEncryptedMileage(textEncryptor.encrypt("0")); // 기본 마일리지를 암호화하여 설정
 
             userMileageRepository.save(newUserMileage); // 저장하는 코드 필요 (실제 저장 방법에 따라 다를 수 있음)
@@ -53,7 +53,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
     }
     public UsageRecord useMileage(String user_id, int price){
         log.info("useMileage 호출. user_id : {}, price : {}", user_id, price);
-        UserMileage userMileage = userMileageRepository.findById(user_id)
+        UserMileage userMileage = userMileageRepository.findByUserId(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
         String encryptedMileage = userMileage.getEncryptedMileage();
         // 암호화된 마일리지 복호화
@@ -91,7 +91,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
             price = 0;
         }
 
-        UserMileage userMileage = userMileageRepository.findById(user_id)
+        UserMileage userMileage = userMileageRepository.findByUserId(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
 
         String encryptedMileage = userMileage.getEncryptedMileage();
@@ -143,7 +143,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         String user_id = usageRecord.getUserId();
         int price = usageRecord.getPrice();
 
-        UserMileage userMileage = userMileageRepository.findById(user_id)
+        UserMileage userMileage = userMileageRepository.findByUserId(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
 
         String encryptedMileage = userMileage.getEncryptedMileage();
