@@ -31,6 +31,9 @@ const placesSlice = createSlice({
         },
       ];
     },
+    reset: () => {
+      return [];
+    },
   },
 });
 

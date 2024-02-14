@@ -30,15 +30,69 @@ export default function PlanningPage() {
   useEffect(() => {
     async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
-        );
+        const response = await axios.get(`${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`);
         console.log(response);
       } catch (error) {
         console.log(error);
       }
     };
   });
+
+  useMemo(async () => {
+    let tmplist = list.list;
+    let modifiedList = JSON.parse(JSON.stringify(tmplist));
+    for (let i = 0; i < tmplist.length; i++) {
+      let prevLoca = null;
+      let prevIdx = 0;
+      for (let j = 0; j < tmplist[i].length; j++) {
+        if (tmplist[i][j].title !== null && tmplist[i][j].title !== undefined) {
+          let curLoca = tmplist[i][j].loca;
+          modifiedList[i][j].distance = undefined;
+          let curIdx = j;
+          if (prevLoca !== null) {
+            const minute = await getDuration(prevLoca, curLoca);
+            modifiedList[i][prevIdx].distance = Math.ceil(minute / 60);
+            const cnt = Math.ceil(minute / 600);
+            if (curIdx - prevIdx - 1 < cnt) {
+              for (let k = 0; k < cnt - (curIdx - prevIdx - 1); k++) {
+                if (modifiedList[i][curIdx + k + 1].title === undefined) {
+                  modifiedList[i].splice(curIdx + k + 1, 1);
+                } else {
+                  modifiedList[i].pop();
+                }
+                modifiedList[i].splice(prevIdx + 1, 0, []);
+              }
+            }
+          }
+          prevLoca = curLoca;
+          prevIdx = curIdx;
+        }
+      }
+    }
+
+    dispatch(scheduleActions.setList(modifiedList));
+
+    async function getDuration(pl, cl) {
+      return new Promise((resolve, reject) => {
+        const directionsService = new window.google.maps.DistanceMatrixService();
+        directionsService.getDistanceMatrix(
+          {
+            origins: [new window.google.maps.LatLng(pl[0], pl[1])],
+            destinations: [new window.google.maps.LatLng(cl[0], cl[1])],
+            travelMode: "TRANSIT",
+          },
+          (response, status) => {
+            if (status === "OK") {
+              resolve(response.rows[0].elements[0].duration.value);
+            } else {
+              console.log("Error:", status);
+              reject(new Error("Error:" + status));
+            }
+          }
+        );
+      });
+    }
+  }, [JSON.stringify(list.list)]);
 
   // useMemo(() => {
   //   // 현재 URL에서 Base64로 인코딩된 JSON 문자열 추출
@@ -74,20 +128,20 @@ export default function PlanningPage() {
     }
   };
 
-  const onDragEnd = ({ source, destination }) => {
+  const onDragEnd = async ({ source, destination }) => {
     // console.log(source);
     // console.log(destination);
-
     if (!destination) return; // 범위밖일 때 드래그 취소
     const idx = Number(destination.droppableId.substr(4));
     if (source.droppableId === "PlaceCard") {
       // 추가;
-      // console.log(card[source.index]);
+      console.log(card[source.index].loca);
       const schedule = {
         img: card[source.index].photo,
         title: card[source.index].name,
         loca: card[source.index].loca,
         time: "120",
+        distance: "",
         comment: "",
       };
       dispatch(
@@ -115,9 +169,7 @@ export default function PlanningPage() {
       window.sessionStorage.setItem("plan", JSON.stringify(list));
       async () => {
         try {
-          const response = await axios.patch(
-            `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
-          );
+          const response = await axios.patch(`${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`);
           console.log(response);
         } catch (error) {
           console.log(error);
@@ -140,9 +192,7 @@ export default function PlanningPage() {
     window.sessionStorage.removeItem("plan");
     async () => {
       try {
-        const response = await axios.delete(
-          `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
-        );
+        const response = await axios.delete(`${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`);
         console.log(response);
       } catch (error) {
         console.log(error);

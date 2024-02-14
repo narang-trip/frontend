@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import { ModalPortal } from "../modals/ModalPortal";
 import AddInfoModal from "../modals/AddInfoModal";
@@ -9,7 +10,7 @@ const UserInfo = () => {
   const [isModifyOpen, setIsModifyOpen] = useState(false);
   const [isExitOpen, setIsExitOpen] = useState(false);
   
-  const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5";
+  const userId = useSelector((state) => state.auth.userId);
   const [userData, setUserData] = useState([]);
 
   const Openmodify = () => {
@@ -35,6 +36,7 @@ const UserInfo = () => {
         `https://i10a701.p.ssafy.io/api/user/profile/${userId}`
       );
 
+     
       // 가져온 데이터를 state에 업데이트
       setUserData(response.data);
       console.log(response.data);
@@ -44,6 +46,7 @@ const UserInfo = () => {
   };
 
   useEffect(() => {
+    console.log(userId);
     // 모달이 열렸을 때 스크롤 막기 위함
     if (isModifyOpen || isExitOpen) {
       document.body.style.overflow = "hidden";
@@ -57,7 +60,7 @@ const UserInfo = () => {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isExitOpen, isModifyOpen]);
+  }, [isExitOpen, isModifyOpen, userId]);
 
   return (
     <div className="flex flex-col p-3 my-3 border rounded-lg border-neutral-300 ">
