@@ -11,7 +11,7 @@ const PlanSummary = ({ plan }) => {
 
   const goPlan = () => {
     dispatch(scheduleActions.setSchedule(plan));
-    navigate(`/makeplan:${plan.planId}`, { plan });
+    navigate(`/makeplan/:${plan.planId}`);
   };
 
   return (
