@@ -23,7 +23,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Service @GrpcService
@@ -73,7 +72,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         return usageRecord;
     }
 
-    public RefundRecord cancelMileage(UUID usage_id, LocalDateTime departureDateTime){
+    public RefundRecord cancelMileage(String usage_id, LocalDateTime departureDateTime){
         log.info("cancelMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
@@ -137,7 +136,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         }
     }
 
-    public RefundRecord rejectMileage(UUID usage_id){
+    public RefundRecord rejectMileage(String usage_id){
         log.info("rejectMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
