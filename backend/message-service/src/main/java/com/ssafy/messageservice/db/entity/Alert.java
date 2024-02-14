@@ -8,6 +8,7 @@ import org.springframework.data.domain.Auditable;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -43,6 +44,9 @@ public class Alert {
 
     @Column
     private boolean isRead;
+
+    @Column
+    private UUID usageId;
 
     public enum AlertType{
         REQUEST, ACCEPT, REFUSE
