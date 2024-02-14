@@ -29,7 +29,10 @@ const router = createBrowserRouter([
         path: "/makeplan",
         element: <PlanningPage />,
       },
-
+      {
+        path: "/makeplan:planId",
+        element: <PlanningPage />,
+      },
       {
         path: "/Mypage",
         element: <Mypage />,
