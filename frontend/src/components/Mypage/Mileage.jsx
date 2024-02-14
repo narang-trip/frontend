@@ -8,10 +8,10 @@ import MileageModal from "../modals/MileageModal";
 const Mileage = (props) => {
   // 마일리지 모달 오픈 동작
   const [isOpen, setIsOpen] = useState(false);
-
   // 마일리지 잔액 조회
   const [balance, setBalance] = useState(0);
-
+  const userId = useSelector((state) => state.auth.userId);
+  
   const OpenMileage = () => {
     setIsOpen(true);
   };
@@ -33,11 +33,10 @@ const Mileage = (props) => {
     };
   }, [isOpen]);
 
-  const userId = useSelector((state) => state.auth.userId);
   // const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"
   // 잔액 조회
   const handleBalance = async () => {
-    console.log(userId);
+    // console.log(userId);
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${userId}`
@@ -61,7 +60,7 @@ const Mileage = (props) => {
         className="p-1 mr-2 text-xs border rounded-md border-neutral-200"
         onClick={OpenMileage}
       >
-        충천하기
+        충전하기
       </button>
       {isOpen && (
         <ModalPortal>
