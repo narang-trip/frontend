@@ -5,12 +5,12 @@ import { scheduleActions } from "../../store/scheduleSlice";
 const PlanSummary = ({ plan }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const day = JSON.parse(decodeURIComponent(window.atob(plan.planInfo))).time
-    .totalDay;
+  const planInfo = JSON.parse(decodeURIComponent(window.atob(plan.planInfo)));
+  const day = planInfo.time.totalDay;
   console.log("day : ", day);
 
   const goPlan = () => {
-    dispatch(scheduleActions.setSchedule(plan));
+    dispatch(scheduleActions.setSchedule(planInfo));
     navigate(`/makeplan/${plan.planId}`);
   };
 
