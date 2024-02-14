@@ -165,33 +165,34 @@ export default function PlanningPage() {
       );
     }
   };
+
+  const doModifyPlan = async () => {
+    const base64Incoding = window.btoa(
+      encodeURIComponent(JSON.stringify(list))
+    );
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_PLAN_REQUEST_URI}/update`,
+        {
+          planId: planId,
+          planName: res.planName,
+          planDesc: res.planDesc,
+          lastModifiedDate: "",
+          ownerId: res.ownerId,
+          participantIds: res.participantIds,
+          planInfo: base64Incoding,
+        }
+      );
+      console.log("수정결과 : ", response);
+    } catch (error) {
+      console.log("수정 Error : ", error);
+    }
+  };
+
   // 계획 저장하기 모달
   const savePlan = () => {
     if (planId !== undefined) {
-      const base64Incoding = window.btoa(
-        encodeURIComponent(JSON.stringify(list))
-      );
-      console.log("수정할때 인코딩된거 : ", base64Incoding);
-      async () => {
-        try {
-          const response = await axios.post(
-            `${import.meta.env.VITE_PLAN_REQUEST_URI}/update`,
-            {
-              planId: planId,
-              planName: res.planName,
-              planDesc: res.planDesc,
-              lastModifiedDate: "",
-              ownerId: res.ownerId,
-              participantIds: res.participantIds,
-              planInfo: base64Incoding,
-            }
-          );
-          console.log("수정결과 : ", response);
-        } catch (error) {
-          console.log("수정 Error : ", error);
-        }
-      };
-      console.log("저장?");
+      doModifyPlan();
       setIsCanModify(false);
     } else {
       setIsSavePlanOpen(true);
