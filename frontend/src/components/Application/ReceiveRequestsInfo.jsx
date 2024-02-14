@@ -6,6 +6,16 @@ export default function ReceiveRequestsInfo({ data, trip }) {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
   const userId = useSelector((state) => state.auth.userId);
+
+   // 날짜 포맷
+   const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  
   const handleAccept = async () => {
     try {
       const response1 = await axios.patch(
@@ -45,13 +55,8 @@ export default function ReceiveRequestsInfo({ data, trip }) {
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/attend/${data.id}/REJECT`
       );
 
-      const response2 = await axios.post(
-        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject`,
-        {
-          params: {
-            usage_id: data.usageId,
-          },
-        }
+      const response2 =  await axios.post(
+        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refundusage_id=${data.usageId}&departure_datetime=${formatDate(trip.departureDate)}`,
       );
 
       // 서버 응답을 이용해 필요한 작업 수행
@@ -85,7 +90,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
                   src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                   alt=""
                 />
-                <span className="mx-3 text-sm">{data.senderId}</span>
+                <span className="mx-3 text-sm">{data.senderName}</span>
               </div>
               <div className=" p-1.5 text-sm text-center flex ">
                 {data.position &&
@@ -97,11 +102,6 @@ export default function ReceiveRequestsInfo({ data, trip }) {
                       {role}{" "}
                     </span>
                   ))}
-              </div>
-              <div className="flex">
-                <span className="items-center px-1.5 py-2 mx-1 text-xs font-medium text-gray-700 rounded-full bg-gray-50 ring-2 ring-inset ring-gray-600/20">
-                  뱃지1
-                </span>
               </div>
             </div>
             <div className="p-2 mx-5 text-sm border rounded-xl border-slate-300">
