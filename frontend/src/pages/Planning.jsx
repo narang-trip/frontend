@@ -22,7 +22,7 @@ export default function PlanningPage() {
   const { planId } = useParams();
   console.log("palnId : ", planId);
 
-  console.log(list);
+  // console.log(list);
 
   useMemo(() => {
     if (list.title !== null) {
@@ -37,9 +37,10 @@ export default function PlanningPage() {
           const response = await axios.get(
             `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan/${planId}`
           );
-          console.log(response);
+          console.log("response.data : ", response.data);
+          dispatch(scheduleActions.setSchedule(response.data));
         } catch (error) {
-          console.log(error);
+          console.log("Error : ", error);
         }
       };
     }
