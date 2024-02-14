@@ -49,7 +49,7 @@ public class PlanController {
                                     schema = @Schema(implementation = Plan.class))),
                     @ApiResponse(responseCode = "400", description = "Plan Not Created")})
     @PostMapping(value = "/create")
-    public ResponseEntity<?> postPlan(@RequestPart PlanRequest planRequest) {
+    public ResponseEntity<?> postPlan(@RequestBody PlanRequest planRequest) {
 
         Optional<PlanResponse> createRes = planService.createPlan(planRequest);
 
@@ -64,7 +64,7 @@ public class PlanController {
                                     schema = @Schema(implementation = Plan.class))),
                     @ApiResponse(responseCode = "400", description = "Plan Not Modified")})
     @PostMapping(value = "/update")
-    public ResponseEntity<?> patchPlan(@RequestPart PlanModifyRequest planModifyRequest) {
+    public ResponseEntity<?> patchPlan(@RequestBody PlanModifyRequest planModifyRequest) {
 
         Optional<PlanResponse> modifiedRes = planService.modifyPlan(planModifyRequest);
 
