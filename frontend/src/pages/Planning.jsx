@@ -32,7 +32,7 @@ export default function PlanningPage() {
         );
         setRes(response);
         console.log("response.data : ", response.data);
-        dispatch(scheduleActions.setSchedule(response.data));
+        // dispatch(scheduleActions.setSchedule(response.data));
       } catch (error) {
         console.log("Error : ", error);
       }
