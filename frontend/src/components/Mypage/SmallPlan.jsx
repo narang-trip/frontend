@@ -17,7 +17,8 @@ const SmallPlan = () => {
   const userId = useSelector((state) => state.auth.userId);
   // const userId = "4c81d009-3270-3163-bd0e-86b257730661";
   const [requestData, setRequestData] = useState({
-    userId: userId, pageNo:0
+    userId: userId,
+    pageNo: 0,
   });
 
   const { ref, inView } = useInView({
@@ -93,6 +94,10 @@ const SmallPlan = () => {
       getMyList();
     }
   }, [inView, requestData]);
+
+  useEffect(() => {
+    getMyList();
+  }, []);
 
   // 날짜 포함하면
   return (
