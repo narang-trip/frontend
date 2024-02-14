@@ -447,11 +447,12 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
                     .setTripId(trip.get().get_id().toString())
                     .setTripLeaderId(trip.get().getTripLeaderId().toString())
                     .setTripChatId(trip.get().getTripChatId().toString())
-                    .setTripPlanId(trip.get().getTripPlanId().toString())
                     .setTripDeposit(trip.get().getTripDeposit())
                     .setTripParticipantsSize(trip.get().getTripParticipantsSize())
                     .setTripApplicantsSize(trip.get().getParticipants().size())
                     .build();
+
+            // Plan NULL EXCEPTION
 
             responseObserver.onNext(response);
             responseObserver.onCompleted();
