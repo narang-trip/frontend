@@ -6,6 +6,7 @@ import com.ssafy.messageservice.api.response.AlertListResponse;
 import com.ssafy.messageservice.api.response.AlertSendListResponse;
 import com.ssafy.messageservice.api.service.AlertService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
@@ -26,6 +28,9 @@ public class AlertController {
     @GetMapping(value = "/subscribe/{userId}", produces = "text/event-stream")
     public ResponseEntity<SseEmitter> subscribe(@PathVariable String userId,
                                 @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
+
+        log.info("controller에서 subscribe 호출 userId : {}, lastEventId : {}", userId, lastEventId);
+        lastEventId = "sdf";
         if (lastEventId.isEmpty()) {
             return new ResponseEntity<>(alertService.subscribe(userId, ""), HttpStatus.OK);
         }else{

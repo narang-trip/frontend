@@ -3,6 +3,7 @@ package com.ssafy.tripservice.api.request;
 import com.ssafy.tripservice.db.entity.Trip;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -12,15 +13,16 @@ import java.util.UUID;
 @Builder
 @ToString
 public class TripRequest {
-
     private UUID tripId;
     private String tripName;
     private String tripDesc;
     private String tripImgUrl;
     private LocalDateTime recruitDate;
-    private String destination;
-    private LocalDateTime departureDate;
-    private LocalDateTime returnDate;
+    private String continent;
+    private String country;
+    private String city;
+    private LocalDate departureDate;
+    private LocalDate returnDate;
     private UUID tripLeaderId;
     private UUID tripChatId;
     private UUID tripPlanId;
@@ -40,7 +42,9 @@ public class TripRequest {
                 .tripDesc(this.tripDesc)
                 .tripImgUrl(this.tripImgUrl)
                 .recruitDate(this.recruitDate)
-                .destination(this.destination)
+                .continent(this.continent)
+                .country(this.country)
+                .city(this.city)
                 .departureDate(this.departureDate)
                 .returnDate(this.returnDate)
                 .tripLeaderId(this.tripLeaderId)

@@ -1,20 +1,21 @@
 package com.ssafy.userservice.api.controller;
 
+import com.ssafy.userservice.api.oauth2.exception.AuthNotFoundException;
+import com.ssafy.userservice.api.oauth2.exception.UserNotFoundException;
 import com.ssafy.userservice.api.request.UserInfoRequest;
 import com.ssafy.userservice.api.service.OAuth2Service;
 import com.ssafy.userservice.api.service.UserService;
 import com.ssafy.userservice.db.entity.Auth;
-import com.ssafy.userservice.db.entity.PrincipalDetails;
 import com.ssafy.userservice.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Slf4j
 @CrossOrigin("*")
@@ -25,42 +26,39 @@ public class UserRestController {
     private final UserService userService;
     private final OAuth2Service oAuth2Service;
 
-    @GetMapping("/profile")
-    public ResponseEntity<User> getUser(@AuthenticationPrincipal UserDetails userDetails){
-        Auth auth = userService.getAuth(userDetails.getUsername()).getBody();
-        User user = userService.getUser(auth.getId()).getBody();
-        return ResponseEntity.ok(user);
+    @GetMapping("/getuser")
+    public ResponseEntity<?> getUser(@AuthenticationPrincipal UserDetails userDetails){
+        log.info("userDetails : {}", userDetails);
+        log.info(userDetails.getUsername());
+        try {
+            Auth auth = userService.getAuth(userDetails.getUsername()).getBody();
+            User user = userService.getUser(auth.getId()).getBody();
+            return ResponseEntity.ok(user);
+        } catch (AuthNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Auth not found");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+        }
+
+    }
+    @PostMapping("/login/oauth/{provider}")
+    public ResponseEntity<?> oauthLogin(@PathVariable String provider, @RequestParam("code") String code, HttpServletResponse response) {
+        log.info("oauthLogin {} 호출", provider);
+        try {
+            User user = oAuth2Service.oauth2Login(provider, code, response);
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
     }
 
-    @GetMapping("/oauth2/authorization/kakao")
-    public RedirectView kakaoLogin() {
-        log.info("==========login controller 동작2345============");
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl(oAuth2Service.getAuthorizationUrl("kakao"));
-        return redirectView;
-    }
-
-    @PostMapping("/login/oauth/kakao")
-    public ResponseEntity<String> handleKakaoCallback(@RequestParam("code") String code) {
-        String accessToken = oAuth2Service.kakaoCallBack(code);
-
-        // 생성된 토큰을 리액트에 전달
-        return ResponseEntity.ok(accessToken);
-    }
-
-    @GetMapping("/welcome")
-    public String getWelcome(Authentication authentication) {
-        System.out.println("welcome");
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        String uuid = principalDetails.getAuth().getId();
-        return uuid; // 로그인 성공시 uuid 리턴
-    }
-
-
-    @GetMapping("/get")
-    public User getTest() {
-        User user = userService.getTest("1").get();
-        return user; // 로그인 성공시 uuid 리턴
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        oAuth2Service.logout(request);
+        return ResponseEntity.ok().build();
     }
 
     // User 탈퇴

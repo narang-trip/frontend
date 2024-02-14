@@ -1,35 +1,35 @@
 package com.ssafy.tripservice.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.querydsl.core.annotations.QueryEntity;
 import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import jakarta.persistence.Entity;
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 
-@Getter
-@Entity
-@Builder
+@Getter @Entity @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Document(collection = "narang-trip")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Trip extends BaseEntity{
+
     private String tripName;
     private String tripDesc;
     private String tripImgUrl;
     private LocalDateTime recruitDate;
-    private String destination;
-    private LocalDateTime departureDate;
-    private LocalDateTime returnDate;
+    private String continent;
+    private String country;
+    private String city;
+    private LocalDate departureDate;
+    private LocalDate returnDate;
     private UUID tripLeaderId;
     private UUID tripChatId;
     private UUID tripPlanId;
@@ -46,6 +46,7 @@ public class Trip extends BaseEntity{
     @Data
     public static class Participant {
         private List<String> userRoles;
+        private String usageId;
         private UUID participantId;
         private LocalDateTime enrollmentDate;
     }
@@ -57,7 +58,9 @@ public class Trip extends BaseEntity{
                 .tripDesc(this.tripDesc)
                 .tripImgUrl(this.tripImgUrl)
                 .recruitDate(this.recruitDate)
-                .destination(this.destination)
+                .continent(this.continent)
+                .country(this.country)
+                .city(this.city)
                 .departureDate(this.departureDate)
                 .returnDate(this.returnDate)
                 .tripLeaderId(this.tripLeaderId)
@@ -74,14 +77,15 @@ public class Trip extends BaseEntity{
                 .build();
     }
 
-    public TripPageResponse toTripPageResponse(Integer pageNo) {
+    public TripPageResponse toTripPageResponse() {
         return TripPageResponse.builder()
-                .pageNo(pageNo)
                 .tripId(this.get_id())
                 .tripName(this.tripName)
                 .tripDesc(this.tripDesc)
                 .tripImgUrl(this.tripImgUrl)
-                .destination(this.destination)
+                .continent(this.continent)
+                .country(this.country)
+                .city(this.city)
                 .departureDate(this.departureDate)
                 .returnDate(this.returnDate)
                 .tripLeaderId(this.tripLeaderId)

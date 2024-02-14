@@ -1,11 +1,14 @@
 package com.ssafy.tripservice.api.service;
 
+import com.ssafy.tripservice.api.request.TripModifyRequest;
+import com.ssafy.tripservice.api.request.TripQueryRequest;
 import com.ssafy.tripservice.api.request.TripRequest;
 import com.ssafy.tripservice.api.request.UserRequest;
 import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.db.entity.Trip;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +25,10 @@ public interface TripService {
      */
     Optional<TripResponse> createTrip(TripRequest tripRequest, MultipartFile tripImg);
     /*
+            Trip 생성
+    */
+    Optional<TripResponse> modifyTrip(TripModifyRequest tripModifyRequest, MultipartFile tripImg);
+    /*
         현재 기준 참가 가능한 Trip
      */
     List<TripResponse> getAvailableTrips();
@@ -31,6 +38,8 @@ public interface TripService {
     boolean deleteTrip(UserRequest userRequest);
     public Page<TripPageResponse> getAvailableTripPages(int pageNo);
     public List<TripResponse> getBannerTrips(String tripConcept);
-    public Page<TripPageResponse> getMyTrips(UUID userId, int pageNo);
+    public Page<TripPageResponse> getTripsIveBeen(TripQueryRequest tripQueryRequest);
+    public Page<TripPageResponse> getTripsIveOwn(TripQueryRequest tripQueryRequest);
+    public Page<TripPageResponse> getTripsIWant (TripQueryRequest tripQueryRequest);
     public long eraseWithdrawalUser(UUID userId);
 }

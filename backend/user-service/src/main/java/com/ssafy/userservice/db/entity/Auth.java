@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Entity
 @NoArgsConstructor
 @Getter
-//@Setter
+@Setter
 public class Auth extends BaseEntity {
     @Column
     private String password;

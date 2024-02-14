@@ -37,19 +37,19 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("doFilterInternal() 호출");
         log.info("request.getRequestURI() : {}", request.getRequestURI());
-        filterChain.doFilter(request, response);
-//        if (request.getRequestURI().equals(NO_CHECK_URL)) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-//        String refreshToken = jwtService.extractRefreshToken(request)
-//                .filter(jwtService::isTokenValid)
-//                .orElse(null);
+//        filterChain.doFilter(request, response);
+        if (request.getRequestURI().startsWith(NO_CHECK_URL)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        String refreshToken = jwtService.extractRefreshToken(request)
+                .filter(jwtService::isTokenValid)
+                .orElse(null);
+        log.info("방금 받아온 refreshToken : {}", refreshToken);
 //        if (refreshToken != null) {
 //            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-//            return;
 //        }
-//        checkAccessTokenAndAuthentication(request, response, filterChain);
+        checkAccessTokenAndAuthentication(request, response, filterChain);
     }
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
@@ -58,7 +58,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 .ifPresent(auth -> {
                     String reIssuedRefreshToken = reIssueRefreshToken(auth);
                     addCorsHeaders(response); // CORS 헤더 추가
-                    jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(auth.getEmail()),
+                    jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(auth.getId()),
                             reIssuedRefreshToken);
                 });
     }
@@ -101,22 +101,22 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 3. AccessToken에서 이메일 추출
-        Optional<String> userEmail = jwtService.extractEmail(accessToken.get());
-        if (!userEmail.isPresent()) {
-            log.error("AccessToken에서 이메일을 추출할 수 없습니다.");
+        // 3. AccessToken에서 아이디 추출
+        Optional<String> userId = jwtService.extractId(accessToken.get());
+        if (!userId.isPresent()) {
+            log.error("AccessToken에서 ID를 추출할 수 없습니다.");
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 4. 추출한 이메일을 사용하여 사용자 정보 조회
-        authRepository.findByEmail(userEmail.get())
+        // 4. 추출한 아이디를 사용하여 사용자 정보 조회
+        authRepository.findById(userId.get())
                 .ifPresent(this::saveAuthentication);
 
 //        jwtService.extractAccessToken(request)
 //                .filter(jwtService::isTokenValid)
-//                .flatMap(jwtService::extractEmail)
-//                .flatMap(authRepository::findByEmail)
+//                .flatMap(jwtService::extractId)
+//                .flatMap(authRepository::findById)
 //                .ifPresent(this::saveAuthentication);
 
         filterChain.doFilter(request, response);
@@ -131,7 +131,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
 
         UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
-                .username(myUser.getEmail())
+                .username(myUser.getId())
                 .password(password)
                 .roles(String.valueOf(myUser.getAuthority()))
                 .build();

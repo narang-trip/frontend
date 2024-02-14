@@ -1,11 +1,10 @@
 package com.ssafy.userservice.config;
 
-import com.ssafy.userservice.api.oauth2.handler.LoginFailureHandler;
-import com.ssafy.userservice.api.oauth2.handler.LoginSuccessHandler;
+//import com.ssafy.userservice.api.oauth2.handler.LoginFailureHandler;
+//import com.ssafy.userservice.api.oauth2.handler.LoginSuccessHandler;
 import com.ssafy.userservice.api.oauth2.handler.OAuth2LoginFailureHandler;
 import com.ssafy.userservice.api.oauth2.handler.OAuth2LoginSuccessHandler;
-import com.ssafy.userservice.api.service.LoginService;
-import com.ssafy.userservice.api.service.PrincipalDetailsService;
+//import com.ssafy.userservice.api.service.LoginService;
 import com.ssafy.userservice.api.service.UserService;
 import com.ssafy.userservice.db.repository.AuthRepository;
 import com.ssafy.userservice.db.repository.UserRepository;
@@ -30,6 +29,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -40,7 +40,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
-    private final LoginService loginService;
+//    private final LoginService loginService;
     private final ObjectMapper objectMapper;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
@@ -71,6 +71,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("SecurityFilterChain() 호출");
         http
+                .addFilterBefore(new JwtAuthenticationProcessingFilter(jwtService, authRepository), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) ->
                         response.sendRedirect("https://i10a701.p.ssafy.io"))
@@ -86,8 +87,8 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login -> oauth2Login
                         .successHandler(oAuth2LoginSuccessHandler)
                         .failureHandler(oAuth2LoginFailureHandler)
-                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                                .userService(customOAuth2UserService))
+//                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+//                                .userService(customOAuth2UserService))
                 );
 //        http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
 //        http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
@@ -102,26 +103,26 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        log.info("authenticationManager() 호출");
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(loginService);
-        return new ProviderManager(provider);
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager() {
+//        log.info("authenticationManager() 호출");
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setPasswordEncoder(passwordEncoder());
+//        provider.setUserDetailsService(loginService);
+//        return new ProviderManager(provider);
+//    }
 
-    @Bean
-    public LoginSuccessHandler loginSuccessHandler() {
-        log.info("loginSuccessHandler() 호출");
-        return new LoginSuccessHandler(jwtService, authRepository);
-    }
+//    @Bean
+//    public LoginSuccessHandler loginSuccessHandler() {
+//        log.info("loginSuccessHandler() 호출");
+//        return new LoginSuccessHandler(jwtService, authRepository);
+//    }
 
-    @Bean
-    public LoginFailureHandler loginFailureHandler() {
-        log.info("loginFailureHandler() 호출");
-        return new LoginFailureHandler();
-    }
+//    @Bean
+//    public LoginFailureHandler loginFailureHandler() {
+//        log.info("loginFailureHandler() 호출");
+//        return new LoginFailureHandler();
+//    }
 
 //    @Bean
 //    public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() {
@@ -134,10 +135,10 @@ public class SecurityConfig {
 //        return customJsonUsernamePasswordLoginFilter;
 //    }
 
-    @Bean
-    public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
-        log.info("jwtAuthenticationProcessingFilter() 호출");
-        return new JwtAuthenticationProcessingFilter(jwtService, authRepository);
-    }
+//    @Bean
+//    public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
+//        log.info("jwtAuthenticationProcessingFilter() 호출");
+//        return new JwtAuthenticationProcessingFilter(jwtService, authRepository);
+//    }
 
 }
