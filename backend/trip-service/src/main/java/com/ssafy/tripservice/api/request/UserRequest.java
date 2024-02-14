@@ -17,5 +17,6 @@ import java.util.UUID;
 public class UserRequest {
     private UUID tripId;
     private UUID userId;
+    private String alertId;
     private List<String> userRoles;
 }
