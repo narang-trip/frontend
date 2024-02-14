@@ -113,7 +113,6 @@ const SmallPlan = () => {
           className="p-1 text-sm border rounded-sm w-44 border-neutral-300 text-neutral-700"
         />
       </div>
-
       <div className="flex flex-wrap justify-center">
         {tripData.map((trip, idx) => (
           <TripSummaryMini trip={trip} key={idx} />

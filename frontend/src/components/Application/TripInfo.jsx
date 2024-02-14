@@ -58,7 +58,7 @@ export default function TripInfo({ tripData }) {
                   <SlPeople className="mx-3" size="24" />
                   <div> 2 / {tripData.tripParticipantsSize} </div>
                 </div>
-                <div className="flex flex-row items-center my-1.5 text-sm">
+                {/* <div className="flex flex-row items-center my-1.5 text-sm">
                   <SlBadge className="mx-3 " size="24" />
                   <div className="flex flex-wrap justify-between">
                     {tripData.tripRoles &&
@@ -71,7 +71,7 @@ export default function TripInfo({ tripData }) {
                         </span>
                       ))}
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </button>
