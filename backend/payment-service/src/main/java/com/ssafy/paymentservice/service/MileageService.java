@@ -6,10 +6,15 @@ import com.ssafy.paymentservice.db.entity.UserMileage;
 import com.ssafy.paymentservice.db.repository.RefundRecordRepository;
 import com.ssafy.paymentservice.db.repository.UsageRecordRepository;
 import com.ssafy.paymentservice.db.repository.UserMileageRepository;
+import io.grpc.stub.StreamObserver;
 import com.ssafy.paymentservice.exception.BusinessLogicException;
 import com.ssafy.paymentservice.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.server.service.GrpcService;
+import org.narang.lib.NarangGrpc;
+import org.narang.lib.TripMileageUsageRequest;
+import org.narang.lib.TripMileageUsageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
@@ -20,12 +25,13 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
-@Service
+@Service @GrpcService
 @RequiredArgsConstructor
-public class MileageService {
+public class MileageService extends NarangGrpc.NarangImplBase {
     private final UserMileageRepository userMileageRepository;
     private final UsageRecordRepository usageRecordRepository;
     private final RefundRecordRepository refundRecordRepository;
+
     @Autowired
     private TextEncryptor textEncryptor;
     public int getMileage(String user_id){
@@ -109,9 +115,31 @@ public class MileageService {
         return refundRecord;
     }
 
-    private Long calculateDateDifference(LocalDateTime startDate, LocalDateTime endDate){
+    private Long calculateDateDifference(LocalDateTime startDate, LocalDateTime endDate) {
         Duration duration = Duration.between(startDate, endDate);
         return duration.toDays();
+    }
+    /*
+        Trip 아니고 Chat 에 들어가야 함 ...
+     */
+
+    @Override
+    public void tripUseMileage(TripMileageUsageRequest request, StreamObserver<TripMileageUsageResponse> responseObserver) {
+        UsageRecord record = useMileage(request.getUserId(), request.getPrice());
+
+        if (record != null) {
+            TripMileageUsageResponse response = TripMileageUsageResponse.newBuilder()
+                    .setUserId(record.getUserId())
+                    .setBalance(record.getBalance())
+                    .setPrice(record.getPrice())
+                    .setRecordId(record.getId().toString()).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
+        else {
+            responseObserver.onError(new NoSuchElementException());
+            responseObserver.onCompleted();
+        }
     }
 
     public RefundRecord rejectMileage(String usage_id){

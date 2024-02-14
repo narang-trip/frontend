@@ -22,9 +22,7 @@ public class ChatroomListResponse {
         private String chatroomId;
         private String chatroomName;
         private ChatResponse chat;
-        // 이 코드 추가
         private List<User> userList;
-        // 여기까지
 
         @Override
         public int compareTo(ChatroomResponse other) {
@@ -38,7 +36,8 @@ public class ChatroomListResponse {
             private String senderId;
             private String senderName;
             private String latestContent;
-            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+//            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
             private LocalDateTime latestTime;
 
             @Override
@@ -47,18 +46,5 @@ public class ChatroomListResponse {
                 return other.getLatestTime().compareTo(this.latestTime);
             }
         }
-
-//        @Getter
-//        @AllArgsConstructor
-//        public static class UserResponse {
-//            private String userId;
-//            private String nickname;
-//        }
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public static class UserIdResponse {
-        private String userId;
     }
 }

@@ -1,9 +1,12 @@
 package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.request.AlertAttendRequest;
+import com.ssafy.messageservice.api.request.ChatroomRequest;
 import com.ssafy.messageservice.api.response.AlertListResponse;
+import com.ssafy.messageservice.api.response.AlertSendListResponse;
 import com.ssafy.messageservice.api.service.AlertService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
@@ -24,6 +28,9 @@ public class AlertController {
     @GetMapping(value = "/subscribe/{userId}", produces = "text/event-stream")
     public ResponseEntity<SseEmitter> subscribe(@PathVariable String userId,
                                 @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
+
+        log.info("controller에서 subscribe 호출 userId : {}, lastEventId : {}", userId, lastEventId);
+
         if (lastEventId.isEmpty()) {
             return new ResponseEntity<>(alertService.subscribe(userId, ""), HttpStatus.OK);
         }else{
@@ -31,18 +38,16 @@ public class AlertController {
         }
     }
 
-    // 여행 참여 요청 생성 + 수락/거절
+    // 여행 참여 요청 생성
     @PostMapping("/attend")
     public ResponseEntity<?> postAttendAlert(@RequestBody AlertAttendRequest alertAttendRequest) {
         return alertService.send(alertAttendRequest);
-//        // 여기서 만약 alertType이 ACCEPT일 경우 프론트 측에서 stomp 통신해야 함
-//        if (isAlertSent.getStatusCode().is2xxSuccessful()) {
-//            // 성공적인 응답 반환
-//            return isAlertSent;
-//        } else {
-//            // 실패 시 응답 반환
-//            return new ResponseEntity<>("Failed to send alert", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+    }
+
+    // 여행 참여 요청 수락/거절
+    @PatchMapping("/attend/{id}/{alertType}")
+    public ResponseEntity<?> patchAttendAlert(@PathVariable String id, @PathVariable String alertType) {
+        return alertService.patchAlert(id, alertType);
     }
 
     // userId의 지금까지의 알림 리스트 보내주기
@@ -59,4 +64,44 @@ public class AlertController {
             return ResponseEntity.ok(alertListResponse);
         }
     }
+
+    // senderId의 지금까지의 알림 리스트 보내주기
+    @GetMapping(value = "/list/send/{senderId}")
+    public ResponseEntity<AlertSendListResponse> getSendAlertList(@PathVariable String senderId) {
+        log.info("/list/send/{} 호출 ", senderId);
+        List<AlertSendListResponse.AlertSendResponse> alertResponses = alertService.getAlertsBySenderId(senderId);
+        log.info("alertResponses 가져온 개수 {}", alertResponses.size());
+        if(alertResponses == null){
+            AlertSendListResponse response = new AlertSendListResponse();
+            response.setAlertList(Collections.emptyList());
+            return ResponseEntity.ok(response);
+        }
+        else {
+            AlertSendListResponse alertListResponse = new AlertSendListResponse(alertResponses);
+            return ResponseEntity.ok(alertListResponse);
+        }
+    }
+
+    // tripId의 지금까지의 알림 리스트 보내주기
+    @GetMapping(value = "/trip/{tripId}")
+    public ResponseEntity<AlertListResponse> getAlertTripList(@PathVariable String tripId) {
+        List<AlertListResponse.AlertResponse> alertResponses = alertService.getAlertsByTripId(tripId);
+        if(alertResponses == null){
+            AlertListResponse response = new AlertListResponse();
+            response.setAlertList(Collections.emptyList());
+            return ResponseEntity.ok(response);
+        }
+        else {
+            AlertListResponse alertListResponse = new AlertListResponse(alertResponses);
+            return ResponseEntity.ok(alertListResponse);
+        }
+    }
+
+    // sse 알림 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAlert(@PathVariable String id) {
+        return alertService.deleteAlert(id);
+    }
+
+    // 여행 참여 수락 시 stomp 통신을 통해 동행자 초대
 }
