@@ -90,14 +90,10 @@ const Map = ({ isCanModify }) => {
       for (let j = 0; j < n; j++) {
         if (
           !visited[j] &&
-          calculateDistance(markers[current].position, markers[j].position) <
-            minDistance
+          calculateDistance(markers[current].position, markers[j].position) < minDistance
         ) {
           nearestNeighbor = j;
-          minDistance = calculateDistance(
-            markers[current].position,
-            markers[j].position
-          );
+          minDistance = calculateDistance(markers[current].position, markers[j].position);
         }
       }
 
@@ -156,7 +152,7 @@ const Map = ({ isCanModify }) => {
 
       placesService.getDetails(request, (result, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          console.log(result.geometry.location);
+          console.log(result);
           placeResult.name = result.name;
           placeResult.photo =
             result.photos && result.photos.length > 0
@@ -168,10 +164,8 @@ const Map = ({ isCanModify }) => {
           placeResult.rating = result.rating;
           placeResult.icon = result.icon;
           placeResult.url = result.url;
-          placeResult.loca = [
-            result.geometry.location.lat(),
-            result.geometry.location.lng(),
-          ];
+          // placeResult.loca = result.geometry.location;
+          placeResult.loca = [result.geometry.location.lat(), result.geometry.location.lng()];
 
           if (result.opening_hours && result.opening_hours.weekday_text) {
             placeResult.weekdayText = result.opening_hours.weekday_text;
@@ -214,11 +208,7 @@ const Map = ({ isCanModify }) => {
   return isLoaded ? (
     <div className="flex-col w-1/4 h-full pt-10">
       <h1>Google Map</h1>
-      <SearchBox
-        map={map}
-        onPlaceSelected={handlePlaceSelected}
-        isCanModify={isCanModify}
-      />
+      <SearchBox map={map} onPlaceSelected={handlePlaceSelected} isCanModify={isCanModify} />
       <hr />
       <GoogleMap
         mapContainerStyle={containerStyle}
