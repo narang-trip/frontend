@@ -10,12 +10,12 @@ export default function TripParticipantsInfo({ participants, leaderId }) {
     try {
       for (const participant of participants) {
         const userResponse = await axios.get(
-          `https://i10a701.p.ssafy.io/api/user/profile/${participant.participantId}`
+          `${import.meta.env.VITE_USER_REQUEST_URI}/profile/${participant.participantId}`
         );
         const userData = userResponse.data;
 
         const balanceResponse = await axios.get(
-          `https://i10a701.p.ssafy.io/api/payment/balance?user_id=${participant.participantId}`
+          `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${participant.participantId}`
         );
         const balanceData = balanceResponse.data;
         console.log(balanceResponse.data);

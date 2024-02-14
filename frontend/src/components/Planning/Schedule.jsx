@@ -12,6 +12,7 @@ const Schedule = (props) => {
   const schedule = dayList[props.data.scheduleIdx];
   const blackHeight = list.blackHeight / (list.time.lineCnt - 1) / 3;
   const isCanModify = props.isCanModify;
+  let visible = isCanModify ? "visible" : "invisible";
 
   const blackCSS = {
     height: `${blackHeight}px`,
@@ -78,7 +79,7 @@ const Schedule = (props) => {
                 style={scheduleCSS}
                 className="relative flex flex-col bg-white w-56 rounded-xl overflow-hidden text-sm z-30"
               >
-                <div className="absolute right-0">
+                <div className={`absolute right-0 ${visible}`}>
                   <button
                     className="mb-4 text-xl font-semibold hover:text-red-600"
                     onClick={removeSchedule}

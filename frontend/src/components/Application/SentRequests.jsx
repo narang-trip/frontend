@@ -12,7 +12,7 @@ export default function SentRequests() {
   const fetchSentData = async () => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/message/alert/list/send/${userId}`
+        `${import.meta.env.VITE_ALERT_REQUEST_URI}/list/send/${userId}`
       );
 
       const updatedSentData = await Promise.all(
@@ -33,7 +33,7 @@ export default function SentRequests() {
   const fetchTripInfo = async (tripId) => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/trip/trip/${tripId}`
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
       );
 
       setStartDate(response.data.departureDate);
@@ -56,7 +56,7 @@ export default function SentRequests() {
 
       // 취소에 대한 요청을 보내거나 삭제 로직을 구현합니다.
       await axios.delete(
-        `https://i10a701.p.ssafy.io/api/message/alert/${item.id}`
+        `${import.meta.env.VITE_ALERT_REQUEST_URI}/${item.id}`
       );
 
       // 삭제 요청이 성공하면 해당 알림을 새로고침 없이 제거합니다.
@@ -80,7 +80,7 @@ export default function SentRequests() {
   const refundDeposit = async (usageId) => {
     // 여기에 예약금 환불에 대한 서버 요청 로직을 추가
     try {
-      await axios.post(`https://i10a701.p.ssafy.io/api/payment/refund`, {
+      await axios.post(`${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund`, {
         params: {
           usage_id: usageId,
           departure_datetime: formatDate(startDate),
@@ -96,7 +96,7 @@ export default function SentRequests() {
   const rejectDeposit = async (usageId) => {
     // 여기에 예약금 환불에 대한 서버 요청 로직을 추가
     try {
-      await axios.post(`https://i10a701.p.ssafy.io/api/payment/reject`, {
+      await axios.post(`${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject`, {
         params: {
           usage_id: usageId,
         },

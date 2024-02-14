@@ -39,7 +39,7 @@ const ApplicationModal = ({ data, onClose }) => {
   const handleBalance = async () => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/payment/balance?user_id=${postData.senderId}`
+        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${postData.senderId}`
       );
 
       console.log(response);
@@ -55,7 +55,7 @@ const ApplicationModal = ({ data, onClose }) => {
     try {
       // API에서 데이터 가져오는 요청
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/user/profile/${postData.senderId}`
+        `${import.meta.env.VITE_USER_REQUEST_URI}/profile/${postData.senderId}`
       );
 
       // 가져온 데이터를 state에 업데이트
@@ -91,7 +91,7 @@ const ApplicationModal = ({ data, onClose }) => {
    
     try {
       const response = await axios.post(
-        "https://i10a701.p.ssafy.io/api/message/alert/attend",
+        `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend`,
         postData,
         {
           headers: {
@@ -123,10 +123,10 @@ const ApplicationModal = ({ data, onClose }) => {
     setIsRedirecting(true);
 
     try {
-      const url = `https://i10a701.p.ssafy.io/detail/${postData.tripId}`;
+      const url = `${import.meta.env.VITE_REQUEST_URI}/detail/${postData.tripId}`;
 
       const response = await axios.post(
-        `https://i10a701.p.ssafy.io/api/payment/ready?user_id=${postData.senderId}&price=${price}&return_url=${url}`
+        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/ready?user_id=${postData.senderId}&price=${price}&return_url=${url}`
       );
 
       console.log(response.data.next_redirect_pc_url);

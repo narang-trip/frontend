@@ -55,7 +55,7 @@ const TripEditModal = ({ data, onClose }) => {
 
       // 데이터를 서버로 전송
       const response = await axios.patch(
-        `https://i10a701.p.ssafy.io/api/trip/update`,
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/update`,
         formData,
         {
           headers: {
