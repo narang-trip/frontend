@@ -12,13 +12,9 @@ import java.util.UUID;
 @MappedSuperclass
 public class BaseEntity {
 
-    @Id @Column(name = "id")
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID id;
-
+    @Id
+    private String id;
     public BaseEntity() {
-        id = UUID.randomUUID();
+        id = UUID.randomUUID().toString();
     }
 }

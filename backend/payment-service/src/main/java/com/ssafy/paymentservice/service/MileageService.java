@@ -23,7 +23,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Service @GrpcService
@@ -36,25 +35,24 @@ public class MileageService extends NarangGrpc.NarangImplBase {
     @Autowired
     private TextEncryptor textEncryptor;
     public int getMileage(String user_id){
-        Optional<UserMileage> userMileageOptional = userMileageRepository.findById(user_id);
-
+        Optional<UserMileage> userMileageOptional = userMileageRepository.findByUserId(user_id);
         if (userMileageOptional.isPresent()) {
             UserMileage userMileage = userMileageOptional.get();
             return Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage()));
         } else {
             // 마일리지를 찾을 수 없을 때, 기본 마일리지가 0인 새로운 UserMileage 객체 생성 및 저장
             UserMileage newUserMileage = new UserMileage();
-            newUserMileage.setId(user_id);
+            newUserMileage.setUserId(user_id);
             newUserMileage.setEncryptedMileage(textEncryptor.encrypt("0")); // 기본 마일리지를 암호화하여 설정
 
-            // userRepository.save(newUserMileage); // 저장하는 코드 필요 (실제 저장 방법에 따라 다를 수 있음)
+            userMileageRepository.save(newUserMileage); // 저장하는 코드 필요 (실제 저장 방법에 따라 다를 수 있음)
 
             return 0; // 0으로 설정된 기본 마일리지 반환
         }
     }
     public UsageRecord useMileage(String user_id, int price){
         log.info("useMileage 호출. user_id : {}, price : {}", user_id, price);
-        UserMileage userMileage = userMileageRepository.findById(user_id)
+        UserMileage userMileage = userMileageRepository.findByUserId(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
         String encryptedMileage = userMileage.getEncryptedMileage();
         // 암호화된 마일리지 복호화
@@ -73,7 +71,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         return usageRecord;
     }
 
-    public RefundRecord cancelMileage(UUID usage_id, LocalDateTime departureDateTime){
+    public RefundRecord cancelMileage(String usage_id, LocalDateTime departureDateTime){
         log.info("cancelMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
@@ -92,7 +90,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
             price = 0;
         }
 
-        UserMileage userMileage = userMileageRepository.findById(user_id)
+        UserMileage userMileage = userMileageRepository.findByUserId(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
 
         String encryptedMileage = userMileage.getEncryptedMileage();
@@ -137,14 +135,14 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         }
     }
 
-    public RefundRecord rejectMileage(UUID usage_id){
+    public RefundRecord rejectMileage(String usage_id){
         log.info("rejectMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
         String user_id = usageRecord.getUserId();
         int price = usageRecord.getPrice();
 
-        UserMileage userMileage = userMileageRepository.findById(user_id)
+        UserMileage userMileage = userMileageRepository.findByUserId(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
 
         String encryptedMileage = userMileage.getEncryptedMileage();

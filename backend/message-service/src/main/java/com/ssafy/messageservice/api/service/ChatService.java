@@ -10,6 +10,7 @@ import com.ssafy.messageservice.db.entity.User;
 import com.ssafy.messageservice.db.repository.*;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.narang.lib.*;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.UUID;
 
-
+@Slf4j
 @RequiredArgsConstructor
 @Service @GrpcService
 public class ChatService extends NarangGrpc.NarangImplBase {
@@ -30,6 +31,7 @@ public class ChatService extends NarangGrpc.NarangImplBase {
     private final UserRepository userRepository;
 
     public ChatroomListResponse getLatestChatsByUserId(String userId) {
+        log.info("getLatestChatsByUserId 호출 userId : {}", userId);
         return chatRepositoryCustom.getLatestChatsByUserId(userId);
     }
 

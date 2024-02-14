@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @CrossOrigin("*")
 @RestController
@@ -75,7 +74,7 @@ public class PaymentController {
      * 마일리지 사용
      */
     @PostMapping("/use")
-    public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") int price, @RequestParam("trip_id") String tripId) {
+    public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") int price) {
         try {
             UsageRecord usageRecord = mileageService.useMileage(userId, price);
             return new ResponseEntity<>(usageRecord, HttpStatus.OK);
@@ -98,7 +97,7 @@ public class PaymentController {
      */
     @PostMapping("/refund")
     public ResponseEntity refund(
-            @RequestParam("usage_id") UUID usageId,
+            @RequestParam("usage_id") String usageId,
             @RequestParam("departure_datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureDateTime) {
         try {
             RefundRecord refundRecord = mileageService.cancelMileage(usageId, departureDateTime);
@@ -113,7 +112,7 @@ public class PaymentController {
      * 여행 계획 거절,
      */
     @PostMapping("/reject")
-    public ResponseEntity reject(@RequestParam("usage_id") UUID usageId){
+    public ResponseEntity reject(@RequestParam("usage_id") String usageId){
         try {
             RefundRecord refundRecord = mileageService.rejectMileage(usageId);
             return new ResponseEntity<>(refundRecord, HttpStatus.OK);
