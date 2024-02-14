@@ -23,6 +23,7 @@ export default function PlanningPage() {
   const { planId } = useParams();
 
   useEffect(() => {
+    console.log("Planning.jsx 26 planId", planId);
     if (planId !== undefined) {
       setIsCanModify(false);
       async () => {
