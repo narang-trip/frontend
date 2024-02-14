@@ -1,8 +1,22 @@
 import { useRef } from "react";
+import { useSelector } from "react-redux";
 import { IoMdClose } from "react-icons/io";
+import axios from "axios";
+
 // 회원 탈퇴 모달
 const LeaveUserModal = (props) => {
+  const userId = useSelector((state) => state.auth.userId);
+
   const modalBG = useRef("");
+
+  const handleWithdrawal = async () => {
+    try {
+      await axios.delete(`https://i10a701.p.ssafy.io/api/${userId}`);
+      props.onClose();
+    } catch (error) {
+      console.error("탈퇴 오류 발생:", error);
+    }
+  };
 
   return (
     <div
@@ -27,7 +41,12 @@ const LeaveUserModal = (props) => {
           </div>
           <div className="flex flex-col items-center justify-center">
             <div className="my-5 text-lg font-bold">정말 탈퇴하시겠습니까?</div>
-            <button className="p-2 mb-5 bg-red-200 bg-opacity-50 rounded-md ring-1 ring-red-300 hover:bg-opacity-100">탈퇴하기</button>
+            <button
+              className="p-2 mb-5 bg-red-200 bg-opacity-50 rounded-md ring-1 ring-red-300 hover:bg-opacity-100"
+              onClick={handleWithdrawal}
+            >
+              탈퇴하기
+            </button>
           </div>
         </div>
       </div>
