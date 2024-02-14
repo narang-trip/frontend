@@ -12,8 +12,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
   const [chats, setChats] = useState([]);
   const [msg, setMsg] = useState("");
   const [loadingChatMore, setLoadingChatMore] = useState(true)
-  const userId = useSelector((state) => state.auth.userId);
-  console.log("chatRoom userId : " ,userId)
+  const nickname = useSelector((state) => state.auth.nickname);
   const lastChatRef = useRef("");
   const [prevScrollHeight, setPrevScrollHeight] = useState(null);
   const chatDivRef = useRef(null);
@@ -103,7 +102,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
             (message) => {
               const messageBody = JSON.parse(message.body);
               const chat = {
-                userId: userId,
+                userId: nickname,
                 sendTime: messageBody.sendTime,
                 content: messageBody.content,
               };
@@ -137,7 +136,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
         destination: "/pub/chat/send",
         body: JSON.stringify({
           chatroomId: chatroomId,
-          senderId: userId,
+          senderId: nickname,
           content: msg,
         }),
       });
@@ -180,7 +179,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
                 <div className={messageClass}>{chat.content}</div>
               </div>
             );
-          } else if (chat.userId === userId) {
+          } else if (chat.userId === nickname) {
             messageBoxClass += " justify-end my-1"; // 본인인 건 오른쪽
             messageClass += " bg-yellow-200 border-yellow-300";
             return (
