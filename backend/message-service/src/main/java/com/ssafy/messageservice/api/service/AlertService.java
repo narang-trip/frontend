@@ -110,7 +110,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
             else
                 System.out.println("TRY TO PARTICIPATE . . .");
 
-            if(!exists){
+            if(!exists) {
 
                 /*
                  여행 정보 Get
