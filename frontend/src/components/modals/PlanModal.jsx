@@ -59,7 +59,7 @@ const PlanModal = ({ onClose, onSelectedPlanId, onSelectedPlanName }) => {
                 <tr>
                   <th className="p-2 border border-gray-400">계획 이름</th>
                   <th className="p-2 border border-gray-400">계획 설명</th>
-                  <th className="p-2 border border-gray-400">선택</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -71,7 +71,7 @@ const PlanModal = ({ onClose, onSelectedPlanId, onSelectedPlanName }) => {
                     <td className="p-2 border border-gray-400">
                       {item.planDesc}
                     </td>
-                    <td className="p-2 border border-gray-400">
+                    <td>
                       <button
                         className="text-base rounded-xl bg-stone-100 hover:bg-amber-200"
                         onClick={() =>
