@@ -23,6 +23,6 @@ public class TripQueryRequest {
     private Integer participantsSize = 0;
     private List<String> tripConcept = List.of("낭만", "건축", "모험", "자유", "쇼핑", "휴양", "핫플");
     private List<String> tripContinent = List.of("동아시아", "동남아시아", "중앙아시아", "서남아시아", "유럽", "오세아니아", "아프리카", "북아메리카", "남아메리카");
-    private List<String> tripRoles = List.of("비기너", "트레일블레이저", "멜로디메이커", "포토그래퍼", "네비게이터", "클린메이트",
-            "로드레전드", "트렌드파인더", "힐링위버", "스타일리스트", "언어위자드", "푸드파이터");
+    private List<String> tripRoles = List.of("요리 강령술사", "여행 초보자", "기억 수호자", "언어 마법사", "지갑 전사", "여행 연금술사",
+            "푸드 파이터", "트렌드 사냥꾼", "사진 도사", "운전 기사", "길잡이", "패션 요정");
 }

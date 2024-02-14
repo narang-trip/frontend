@@ -101,6 +101,11 @@ public class AlertService extends NarangGrpc.NarangImplBase {
 
             boolean exists = alertRepository.existsByTripIdAndSenderId(alertAttendRequest.getTripId(), alertAttendRequest.getSenderId());
 
+            if (exists)
+                System.out.println("ALREADY PARTICIPATED");
+            else
+                System.out.println("TRY TO PARTICIPATE . . .");
+
             if(!exists){
 
                 /*
@@ -109,17 +114,30 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                 TripGrpcResponse tripGrpcResponse = tripBlockingStub.getTripById(TripGrpcRequest.newBuilder()
                         .setTripId(alertAttendRequest.getTripId()).build());
 
-                if (tripGrpcResponse.getTripApplicantsSize() >= tripGrpcResponse.getTripParticipantsSize())
+                System.out.println("===================tripInfo=================");
+                System.out.println(tripGrpcResponse.toString());
+
+                if (tripGrpcResponse.getTripApplicantsSize() >= tripGrpcResponse.getTripParticipantsSize()) {
+                    System.out.println("PARTY FULL ... CANNOT ATTEND");
                     throw new BadRequestException();
+                }
 
                 /*
                  마일리지 사용
                  */
-                
                 TripMileageUsageResponse paymentResponse = paymentBlockingStub.tripUseMileage(TripMileageUsageRequest.newBuilder()
                         .setUserId(alertAttendRequest.getSenderId())
                         .setPrice(tripGrpcResponse.getTripDeposit())
                         .build());
+
+                System.out.println("===================paymentInfo=================");
+                System.out.println(paymentResponse.toString());
+
+                /*
+                    돈이 부족한 경우와
+                    돈이 넉넉한 경우
+                    여행 못 찾는 경우에 대해서 확인.
+                 */
 
                 // DB Alert 테이블에 데이터 저장하기
                 Alert alert = new Alert(UUID.randomUUID().toString(),
@@ -131,7 +149,9 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alertAttendRequest.getAspiration(),
                         alertAttendRequest.getAlertType(),
                         alertAttendRequest.isRead());
+
                 alertRepository.save(alert);
+
                 String receiver = alertAttendRequest.getReceiverId();
                 String eventId = receiver + "_" + System.currentTimeMillis();
                 Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
