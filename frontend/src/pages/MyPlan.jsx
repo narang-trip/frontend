@@ -38,7 +38,7 @@ const MyPlan = () => {
           `${import.meta.env.VITE_PLAN_REQUEST_URI}/my/${userId}`
         );
         console.log("response : ", response);
-        setPlanData(response);
+        setPlanData(response.data);
       } catch (error) {
         console.log("Error : ", error);
       }
