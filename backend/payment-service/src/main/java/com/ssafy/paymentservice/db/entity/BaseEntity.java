@@ -1,9 +1,10 @@
 package com.ssafy.paymentservice.db.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.*;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -13,7 +14,6 @@ public class BaseEntity {
 
     @Id
     private String id;
-
     public BaseEntity() {
         id = UUID.randomUUID().toString();
     }

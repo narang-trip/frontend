@@ -42,7 +42,7 @@ pipeline {
                 sh 'docker rm ${service} | true'
 
                 // 해당 이미지로 컨테이너 생성 중 . . . 
-                sh 'docker run -it --name ${service} --net Narang -d ${service} && docker start ${service}'
+                sh 'docker run -it --name ${service} --net Narang -e JWT_SECRETKEY=${JWT_SECRETKEY} -e NAVER_CLIENT_ID=${NAVER_CLIENT_ID} -e NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET} -e KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID} -e KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET} -d ${service} && docker start ${service}'
             }
         }
     }

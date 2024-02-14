@@ -2,12 +2,18 @@ package com.ssafy.messageservice.api.service;
 
 import com.ssafy.messageservice.api.request.AlertAttendRequest;
 import com.ssafy.messageservice.api.response.AlertListResponse;
+import com.ssafy.messageservice.api.response.AlertSendListResponse;
 import com.ssafy.messageservice.db.entity.Alert;
 import com.ssafy.messageservice.db.entity.User;
 import com.ssafy.messageservice.db.repository.AlertRepository;
 import com.ssafy.messageservice.db.repository.EmitterRepository;
 import com.ssafy.messageservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.client.inject.GrpcClient;
+import net.devh.boot.grpc.server.service.GrpcService;
+import org.apache.coyote.BadRequestException;
+import org.narang.lib.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,14 +28,20 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
+@Slf4j
 @RequiredArgsConstructor
-public class AlertService {
+@Service
+public class AlertService extends NarangGrpc.NarangImplBase {
     // 기본 타임아웃 설정
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
     private final EmitterRepository emitterRepository;
     private final AlertRepository alertRepository;
     private final UserRepository userRepository;
+    @GrpcClient("payment-service")
+    private NarangGrpc.NarangBlockingStub paymentBlockingStub;
+    @GrpcClient("trip-service")
+    private NarangGrpc.NarangBlockingStub tripBlockingStub;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AlertService.class);
 
     /**
@@ -39,8 +51,10 @@ public class AlertService {
      * @return SseEmitter - 서버에서 보낸 이벤트 Emitter
      */
     public SseEmitter subscribe(String userId, String lastEventId) {
+        log.info("subscribe 호출 userId : {}", userId);
         String emitterId = userId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
+        log.info("emitter : {}", emitter.toString());
 
         // Emitter가 완료될 때(모든 데이터가 성공적으로 전송된 상태) Emitter를 삭제
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
@@ -67,7 +81,7 @@ public class AlertService {
                     .name("sse")
                     .data(data)
             );
-            System.out.println("sse ! 구독합니다 !");
+            System.out.println("sse!" + data);
         } catch (IOException exception) {
             System.out.println("연결 오류");
             emitterRepository.deleteById(emitterId);
@@ -85,11 +99,53 @@ public class AlertService {
                 .forEach(entry -> sendAlert(emitter, entry.getKey(), emitterId, entry.getValue()));
     }
 
-    // 알림 보내는 메소드
+    // 요청 알림 보내는 메소드
     public ResponseEntity<?> send(AlertAttendRequest alertAttendRequest) {
         try{
+
             boolean exists = alertRepository.existsByTripIdAndSenderId(alertAttendRequest.getTripId(), alertAttendRequest.getSenderId());
-            if(!exists){
+
+            if (exists)
+                System.out.println("ALREADY PARTICIPATED");
+            else
+                System.out.println("TRY TO PARTICIPATE . . .");
+
+            if(!exists) {
+
+                /*
+                 여행 정보 Get
+                 */
+                System.out.println("TRIP REQUEST . . .");
+                TripGrpcResponse tripGrpcResponse = tripBlockingStub.getTripById(TripGrpcRequest.newBuilder()
+                        .setTripId(alertAttendRequest.getTripId()).build());
+
+                System.out.println("===================tripInfo=================");
+                System.out.println(tripGrpcResponse.toString());
+
+                if (tripGrpcResponse.getTripApplicantsSize() >= tripGrpcResponse.getTripParticipantsSize()) {
+                    System.out.println("PARTY FULL ... CANNOT ATTEND");
+                    throw new BadRequestException();
+                }
+
+                /*
+                 마일리지 사용
+                 */
+                TripMileageUsageResponse paymentResponse = paymentBlockingStub.tripUseMileage(TripMileageUsageRequest.newBuilder()
+                        .setUserId(alertAttendRequest.getSenderId())
+                        .setPrice(tripGrpcResponse.getTripDeposit())
+                        .build());
+
+                System.out.println("===================paymentInfo=================");
+                System.out.println(paymentResponse.toString());
+
+                /*
+                    돈이 부족한 경우와
+                    돈이 넉넉한 경우
+                    여행 못 찾는 경우에 대해서 확인.
+                 */
+                log.info("넘어왔다..");
+                String usageId = UUID.randomUUID().toString();
+
                 // DB Alert 테이블에 데이터 저장하기
                 Alert alert = new Alert(UUID.randomUUID().toString(),
                         alertAttendRequest.getTripId(),
@@ -99,13 +155,19 @@ public class AlertService {
                         alertAttendRequest.getPosition(),
                         alertAttendRequest.getAspiration(),
                         alertAttendRequest.getAlertType(),
-                        alertAttendRequest.isRead());
+                        alertAttendRequest.isRead(),
+                        usageId);
                 alertRepository.save(alert);
+                log.info("alert : {}", alert.getAlertType());
+                log.info(alert.getId());
+                log.info(alert.getSenderId());
+                log.info(alert.getPosition());
+
                 String receiver = alertAttendRequest.getReceiverId();
                 String eventId = receiver + "_" + System.currentTimeMillis();
                 Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
                 // 알림을 보내는 response 값 데이터 넣어주기
-                AlertListResponse.AlertResponse alertResponse = new AlertListResponse.AlertResponse(alert.getAlertId(),
+                AlertListResponse.AlertResponse alertResponse = new AlertListResponse.AlertResponse(alert.getId(),
                         alertAttendRequest.getTripId(),
                         alertAttendRequest.getTripName(),
                         alertAttendRequest.getSenderId(),
@@ -113,7 +175,58 @@ public class AlertService {
                         alertAttendRequest.getPosition(),
                         alertAttendRequest.getAspiration(),
                         alertAttendRequest.getAlertType(),
-                        alertAttendRequest.isRead());
+                        alertAttendRequest.isRead(),
+                        usageId);
+                emitters.forEach(
+                        (key, emitter) -> {
+                            // 데이터 캐시 저장
+                            emitterRepository.saveEventCache(key, alertResponse);
+                            // 데이터 전송
+                            sendAlert(emitter, eventId, key, alertResponse);
+                        }
+                );
+
+                return ResponseEntity.ok().body("Alert sent successfully"); // 성공 응답
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Data already exists");
+            }
+
+        }catch (Exception e){
+            log.error(e.getMessage());
+            // DB에 저장된 senderId를 사용해야 함
+            System.out.println("알림 보내기를 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send alert");
+        }
+    }
+
+    // 수락/거절 알림 보내는 메소드
+    public ResponseEntity<?> patchAlert(String id, String alertType) {
+        try{
+            Optional<Alert> alertExists = alertRepository.findById(id);
+            // 해당 id를 가지고 있는 데이터가 존재하는지 확인하기
+            if(alertExists.isPresent()){
+                // alertType 변경 + sender와 receiver도 변경해야 함
+                Alert alert = alertExists.get();
+                alert.setAlertType(alertType);
+                alertRepository.save(alert);
+
+                // 이때 요청에 대한 답장 알림이기 때문에 sender,receiver 변경해줘야 함
+                String receiver = alert.getSenderId();
+                String eventId = receiver + "_" + System.currentTimeMillis();
+                Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
+
+                // 알림을 보내는 response 값 데이터 넣어주기
+                AlertListResponse.AlertResponse alertResponse = new AlertListResponse.AlertResponse(alert.getId(),
+                        alert.getTripId(),
+                        alert.getTripName(),
+                        alert.getReceiverId(),
+                        getSenderName(alert.getReceiverId()),
+                        alert.getPosition(),
+                        alert.getAspiration(),
+                        alert.getAlertType(),
+                        alert.isRead(),
+                        alert.getUsageId());
                 emitters.forEach(
                         (key, emitter) -> {
                             // 데이터 캐시 저장
@@ -125,7 +238,7 @@ public class AlertService {
                 return ResponseEntity.ok().body("Alert sent successfully"); // 성공 응답
             }
             else{
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Data already exists");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Data not found");
             }
 
         }catch (Exception e){
@@ -135,9 +248,33 @@ public class AlertService {
         }
     }
 
-    // 알림 리스트 보내기
+    // userId별로 알림 리스트 보내주기
     public List<AlertListResponse.AlertResponse> getAlertsByReceiverId(String receiverId) {
+        log.info("getAlertsByReceiverId 호출");
         List<Alert> alerts = alertRepository.findByReceiverId(receiverId);
+        if(alerts.isEmpty()){
+            return null;
+        }
+        else{
+            return mapAlertsToAlertResponses(alerts);
+        }
+    }
+
+    // senderId별로 알림 리스트 보내주기
+    public List<AlertSendListResponse.AlertSendResponse> getAlertsBySenderId(String senderId) {
+        List<Alert> alerts = alertRepository.findBySenderId(senderId);
+        log.info("가져온 알람 개수 : {}", alerts.size());
+        if(alerts.isEmpty()){
+            return null;
+        }
+        else{
+            return mapAlertsToAlertSendResponses(alerts);
+        }
+    }
+
+    // tripId별로 알림 리스트 보내주기
+    public List<AlertListResponse.AlertResponse> getAlertsByTripId(String tripId) {
+        List<Alert> alerts = alertRepository.findByTripIdAndAlertType(tripId, "REQUEST");
         if(alerts.isEmpty()){
             return null;
         }
@@ -149,7 +286,7 @@ public class AlertService {
     private List<AlertListResponse.AlertResponse> mapAlertsToAlertResponses(List<Alert> alerts) {
         return alerts.stream()
                 .map(alert -> new AlertListResponse.AlertResponse(
-                        alert.getAlertId(),
+                        alert.getId(),
                         alert.getTripId(),
                         alert.getTripName(),
                         alert.getSenderId(),
@@ -157,39 +294,49 @@ public class AlertService {
                         alert.getPosition(),
                         alert.getAspiration(),
                         alert.getAlertType(),
-                        alert.isRead()
+                        alert.isRead(),
+                        alert.getUsageId()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    // senderId별로
+    private List<AlertSendListResponse.AlertSendResponse> mapAlertsToAlertSendResponses(List<Alert> alerts) {
+        return alerts.stream()
+                .map(alert -> new AlertSendListResponse.AlertSendResponse(
+                        alert.getId(),
+                        alert.getTripId(),
+                        alert.getTripName(),
+                        alert.getReceiverId(),
+                        getSenderName(alert.getReceiverId()),
+                        alert.getPosition(),
+                        alert.getAspiration(),
+                        alert.getAlertType(),
+                        alert.isRead(),
+                        alert.getUsageId()
                 ))
                 .collect(Collectors.toList());
     }
 
     private String getSenderName(String senderId) {
         Optional<User> sender = userRepository.findById(senderId);
-        return sender.get().getNickname();
+        if (sender.isEmpty()){
+            return "No Data";
+        }
+        else{
+            return sender.get().getNickname();
+        }
     }
 
-
-//    public void send(AlertAttendRequest alertAttendRequest) {
-//        // DB Alert 테이블에 데이터 저장하기
-//        Alert alert = new Alert(UUID.randomUUID().toString(),
-//                alertAttendRequest.getTripId(),
-//                alertAttendRequest.getTripName(),
-//                alertAttendRequest.getSenderId(),
-//                alertAttendRequest.getReceiverId(),
-//                alertAttendRequest.getPosition(),
-//                alertAttendRequest.getAspiration(),
-//                alertAttendRequest.getAlertType(),
-//                alertAttendRequest.isRead());
-//        alertRepository.save(alert);
-//        String receiver = alertAttendRequest.getReceiverId();
-//        String eventId = receiver + "_" + System.currentTimeMillis();
-//        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
-//        emitters.forEach(
-//                (key, emitter) -> {
-//                    emitterRepository.saveEventCache(key, alert);
-//                    sendAlert(emitter, eventId, key, "success");
-//                }
-//        );
-//    }
-
-//
+    // sse 알림 삭제
+    public ResponseEntity<?> deleteAlert(String id){
+        Optional<Alert> findAlert = alertRepository.findById(id);
+        if (findAlert.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during deletion");
+        }
+        else{
+            alertRepository.deleteById(id);
+            return ResponseEntity.ok().body("Delete successfully");
+        }
+    }
 }
