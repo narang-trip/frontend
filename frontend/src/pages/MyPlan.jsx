@@ -103,7 +103,6 @@ const MyPlan = () => {
       {planData.map((plan, idx) => (
         <PlanSummary plan={plan} day={day} key={idx} />
       ))}
-      <div ref={ref} />
       {isNewPlanOpen && (
         <ModalPortal>
           <NewPlan onClose={CloseNewPlanModal} />
