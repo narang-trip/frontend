@@ -6,8 +6,8 @@ import { ko } from "date-fns/locale";
 import axios from "axios";
 
 import TripSummaryMini from "../Trip/Read/TripSummaryMini";
-import "react-datepicker/dist/react-datepicker.css"
-import "../../css/DatePicker.css"
+import "react-datepicker/dist/react-datepicker.css";
+import "../../css/DatePicker.css";
 
 const SmallPlan = () => {
   const [dateRange, setDateRange] = useState([null, null]);
