@@ -5,7 +5,8 @@ import { scheduleActions } from "../../store/scheduleSlice";
 const PlanSummary = ({ plan }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(plan);
+  const day = JSON.parse(plan.planInfo).totalDay;
+  console.log("day : ", day);
 
   const goPlan = () => {
     dispatch(scheduleActions.setSchedule(plan));
@@ -19,7 +20,9 @@ const PlanSummary = ({ plan }) => {
     >
       <p className="w-1/6">{plan.planName}</p>
       <p className="w-1/2">{plan.planDesc}</p>
-      <p className="w-1/6">{/* {day - 1}박{day}일 */}</p>
+      <p className="w-1/6">
+        {day - 1}박{day}일
+      </p>
       <p className="w-1/6">{plan.lastModifiedDate}</p>
     </div>
   );
