@@ -214,11 +214,11 @@ export default function PlanningPage() {
     async () => {
       try {
         const response = await axios.delete(
-          `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
+          `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan${planId}`
         );
-        console.log(response);
+        console.log("삭제결과 : ", response);
       } catch (error) {
-        console.log(error);
+        console.log("삭제중 Error: ", error);
       }
     };
     navigate("/planning");
