@@ -38,7 +38,11 @@ grpc:
 
 logging:
   level:
-    root: DEBUG
+    org.hibernate: DEBUG
+
+#logging:
+#  level:
+#    root: DEBUG
     # org:
     #   springframework:
     #     web:
