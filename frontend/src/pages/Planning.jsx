@@ -170,6 +170,7 @@ export default function PlanningPage() {
     const base64Incoding = window.btoa(
       encodeURIComponent(JSON.stringify(list))
     );
+    console.log("res 테스트 : ", res);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_PLAN_REQUEST_URI}/update`,
