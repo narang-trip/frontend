@@ -8,7 +8,7 @@ export default function ReceivedList({ tripData }) {
   const fetchRequestData = async () => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/message/alert/trip/${tripData.tripId}`
+        `${import.meta.env.VITE_ALERT_REQUEST_URI}/trip/${tripData.tripId}`
       );
 
       setReceivedData(response.data.alertList);

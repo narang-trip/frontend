@@ -39,7 +39,7 @@ const Mileage = (props) => {
     const handleBalance = async () => {
       try {
         const response = await axios.get(
-          `https://i10a701.p.ssafy.io/api/payment/balance?user_id=${userId}`
+          `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${userId}`
         );
   
         console.log(response);

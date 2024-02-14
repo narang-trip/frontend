@@ -99,7 +99,7 @@ const UpperNavbar = () => {
 
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const eventSource = new EventSource(
-      `https://i10a701.p.ssafy.io/api/message/alert/subscribe/${userId}`,
+      `${import.meta.env.ALERT_TRIP_REQUEST_URI}/subscribe/${userId}`,
       {
         heartbeatTimeout: 3600000,
       }

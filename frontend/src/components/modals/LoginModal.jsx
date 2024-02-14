@@ -11,10 +11,10 @@ const LoginModal = (props) => {
   const naverState = "flase";
   const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
   const kakaoLoginURI2 =
-    "https://i10a701.p.ssafy.io/api/user/oauth2/authorization/kakao";
-  const kakaoLoginURI3 =
-    "https://i10a701.p.ssafy.io/oauth2/authorization/kakao";
-  const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
+    `${import.meta.env.VITE_USER_REQUEST_URI}/oauth2/authorization/kakao`;
+  // const kakaoLoginURI3 =
+  //   `https://i10a701.p.ssafy.io/oauth2/authorization/kakao`;
+  // const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
   const naverLoginURI2 = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=${naverState}&redirect_uri=${naverRedirectURI}`;
 
   const kakaoLogin = async () => {

@@ -11,7 +11,7 @@ const LeaveUserModal = (props) => {
 
   const handleWithdrawal = async () => {
     try {
-      await axios.delete(`https://i10a701.p.ssafy.io/api/${userId}`);
+      await axios.delete(`${import.meta.env.VITE_REQUEST_URI}/api/${userId}`);
       props.onClose();
     } catch (error) {
       console.error("탈퇴 오류 발생:", error);
