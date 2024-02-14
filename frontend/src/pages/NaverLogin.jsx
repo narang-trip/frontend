@@ -35,7 +35,8 @@ const Login = () => {
             authActions.Setting({
               token: auth,
               refreshToken: refreshAuth,
-              userId: userRes.data,
+              userId: userRes.data.userId,
+              nickname: userRes.data.nickname
             })
           );
         } catch (error) {
