@@ -36,6 +36,10 @@ grpc:
   server:
     port: 9099
 
+logging:
+  level:
+    org.hibernate: DEBUG
+
 #logging:
 #  level:
 #    root: DEBUG
