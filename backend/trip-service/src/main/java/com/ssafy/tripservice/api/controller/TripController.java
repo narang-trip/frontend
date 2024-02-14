@@ -148,7 +148,7 @@ public class TripController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "User Deleted Trip Successfully"),
                     @ApiResponse(responseCode = "404", description = "Trip Deletion Failed")})
-    @DeleteMapping("/trip/{tripId}")
+    @DeleteMapping("/trip")
     public ResponseEntity<Void> deleteTrip(@RequestBody UserRequest userRequest) {
         return tripService.deleteTrip(userRequest) ?
                 ResponseEntity.ok().build() : ResponseEntity. badRequest().build();
