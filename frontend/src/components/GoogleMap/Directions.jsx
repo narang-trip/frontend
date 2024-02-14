@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, Fragment } from "react";
 import { DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
 import { useDispatch } from "react-redux";
-import { directionsActions } from '../../store/directionsSlice';
+import { directionsActions } from "../../store/directionsSlice";
 
 const Directions = ({ origin, destination, onDirectionsInfoUpdate }) => {
+  console.log(origin);
 
   const [directions, setDirections] = useState();
   const count = useRef(0);
@@ -51,17 +52,17 @@ const Directions = ({ origin, destination, onDirectionsInfoUpdate }) => {
   };
 
   useEffect(() => {
-   // console.log("Directions updated:", setDirections);
+    // console.log("Directions updated:", setDirections);
   }, [setDirections]);
 
   return (
     <Fragment>
       <DirectionsService
-        options={{ origin, destination, travelMode: "TRANSIT",}}
+        options={{ origin, destination, travelMode: "TRANSIT" }}
         callback={directionsCallback}
       />
       <DirectionsRenderer directions={directions} options={dirOptions} />
-   </Fragment>
+    </Fragment>
   );
 };
 

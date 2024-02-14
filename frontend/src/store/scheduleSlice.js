@@ -24,6 +24,7 @@ const initialState = {
     //       title: "",
     //       time: "",
     //       loca: [],
+    //       distance: "",
     //       comment: "",
     //     },
     // ],
@@ -41,6 +42,8 @@ const scheduleSlice = createSlice({
         0,
         action.payload.schedule
       );
+      // const tmpList = await calculateDurations(current(state.list));
+      // state.list = tmpList;
     },
     // 일정 움직이기
     moveSchedule: (state, action) => {
@@ -93,6 +96,12 @@ const scheduleSlice = createSlice({
     // 계획표 제목 정하기
     setTitle: (state, action) => {
       state.title = action.payload;
+    },
+    setList: (state, action) => {
+      state.list = action.payload;
+    },
+    removeSchedule: (state, action) => {
+      state.list[action.payload.day].splice(action.payload.index, 1);
     },
     // 초기화
     reset: () => {
