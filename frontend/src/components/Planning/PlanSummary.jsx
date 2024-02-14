@@ -5,7 +5,8 @@ import { scheduleActions } from "../../store/scheduleSlice";
 const PlanSummary = ({ plan }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const day = JSON.parse(plan.planInfo).totalDay;
+  const day = JSON.parse(decodeURIComponent(window.atob(plan.planInfo))).time
+    .totalDay;
   console.log("day : ", day);
 
   const goPlan = () => {
