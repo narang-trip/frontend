@@ -12,12 +12,14 @@ export default function Widgets() {
   const [activeChatRoomList, setActiveChatRoomList] = useState(true);
   const [selectedChatRoomId, setSelectedChatRoomId] = useState(null);
   const [selectedChatRoomName, setSelectedChatRoomName] = useState("");
+  const [selectedUserList, setSelectedUserList] = useState([]);
   const chatScrollRef = useRef(null);
 
-  const handleChatRoomSelect = (chatroomName, chatroomId) => {
+  const handleChatRoomSelect = (chatroomName, chatroomId, userList) => {
     setSelectedChatRoomName(chatroomName)
     setSelectedChatRoomId(chatroomId);
     setActiveChatRoomList(false);
+    setSelectedUserList(userList)
   };
   
   const navigateBack = () => {
@@ -39,7 +41,7 @@ export default function Widgets() {
           (activeChatRoomList ? (
             <ChatRoomList onChatRoomSelect={handleChatRoomSelect} />
           ) : (
-            <Chat chatroomId={selectedChatRoomId} navigateBack={navigateBack} chatroomName={selectedChatRoomName}/>
+            <Chat chatroomId={selectedChatRoomId} navigateBack={navigateBack} chatroomName={selectedChatRoomName} userList={selectedUserList} />
           ))}
       </div>
     </div>
