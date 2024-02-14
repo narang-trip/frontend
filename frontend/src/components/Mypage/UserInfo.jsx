@@ -36,7 +36,6 @@ const UserInfo = () => {
         `https://i10a701.p.ssafy.io/api/user/profile/${userId}`
       );
 
-     
       // 가져온 데이터를 state에 업데이트
       setUserData(response.data);
       console.log(response.data);

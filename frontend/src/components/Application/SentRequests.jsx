@@ -149,7 +149,7 @@ export default function SentRequests() {
                 REJECT
               </button>
             </div>
-            {sentData &&
+            {sentData && sentData.length > 0 ? 
               sentData.map(
                 (item, idx) =>
                   (selectedType === "ALL" ||
@@ -207,6 +207,8 @@ export default function SentRequests() {
                       <button onClick={() => handleCancel(item)}>취소</button>
                     </div>
                   )
+              ) : (
+                <div>아직 신청한 동행이 없습니다 !!</div>
               )}
           </div>
         </div>
