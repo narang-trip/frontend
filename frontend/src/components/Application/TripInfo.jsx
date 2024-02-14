@@ -37,7 +37,7 @@ export default function TripInfo({ tripData }) {
           >
             <div className="grid grid-cols-3 gap-6">
               <div className="flex items-center col-span-1">
-                <img src={tripData.tripImgUrl} className="h-36 w-52 rounded-3xl" />
+                <img src={tripData.tripImgUrl} className="w-40 h-32 rounded-3xl" />
               </div>
               <div className="col-span-2">
                 <p className="my-1.5 text-sm font-bold text-center">
