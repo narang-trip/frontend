@@ -209,18 +209,15 @@ export default function PlanningPage() {
   const modifyPlan = () => {
     setIsCanModify(true);
   };
-  const deletePlan = () => {
-    window.sessionStorage.removeItem("plan");
-    async () => {
-      try {
-        const response = await axios.delete(
-          `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan${planId}`
-        );
-        console.log("삭제결과 : ", response);
-      } catch (error) {
-        console.log("삭제중 Error: ", error);
-      }
-    };
+  const deletePlan = async () => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan${planId}`
+      );
+      console.log("삭제결과 : ", response);
+    } catch (error) {
+      console.log("삭제중 Error: ", error);
+    }
     navigate("/planning");
   };
 
