@@ -12,6 +12,7 @@ const Mileage = (props) => {
   const [balance, setBalance] = useState(0);
   const userId = useSelector((state) => state.auth.userId);
   
+  const [loading, setLoading] = useState(true);
   const OpenMileage = () => {
     setIsOpen(true);
   };
@@ -44,8 +45,10 @@ const Mileage = (props) => {
 
       console.log(response);
       setBalance(response.data);
+      setLoading(false); // 데이터를 가져온 후 로딩 상태를 false로 설정
     } catch (error) {
       console.error("에러 발생", error);
+      setLoading(false); // 데이터를 가져온 후 로딩 상태를 false로 설정
     }
   };
 
@@ -53,6 +56,10 @@ const Mileage = (props) => {
     handleBalance();
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>; // 데이터를 기다리는 동안 로딩 메시지 표시
+  }
+  
   return (
     <div className="flex justify-between p-3 my-3 border rounded-lg border-neutral-300 ">
       <div className="m-1 text-sm">💰 보유마일리지 : {balance} 원</div>
