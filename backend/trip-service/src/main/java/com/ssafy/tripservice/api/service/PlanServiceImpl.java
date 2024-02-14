@@ -31,9 +31,11 @@ public class PlanServiceImpl implements PlanService{
     private final PlanRepository planRepository;
     @Override
     public Optional<PlanResponse> createPlan(PlanRequest planRequest) {
+        log.info("createPlan 호출");
         planRequest.setLastModifiedDate(LocalDate.now());
+        log.info("setLastModifiedDate OK");
         Plan plan = planRequest.toEntity();
-
+        log.info("toEntity OK");
         try {
             return Optional.of(planRepository.insert(plan))
                     .map(Plan::toPlanResponse);
