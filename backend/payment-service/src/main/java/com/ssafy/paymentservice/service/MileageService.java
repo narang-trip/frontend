@@ -47,7 +47,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
             newUserMileage.setId(user_id);
             newUserMileage.setEncryptedMileage(textEncryptor.encrypt("0")); // 기본 마일리지를 암호화하여 설정
 
-            // userRepository.save(newUserMileage); // 저장하는 코드 필요 (실제 저장 방법에 따라 다를 수 있음)
+            userMileageRepository.save(newUserMileage); // 저장하는 코드 필요 (실제 저장 방법에 따라 다를 수 있음)
 
             return 0; // 0으로 설정된 기본 마일리지 반환
         }
