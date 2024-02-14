@@ -13,8 +13,6 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
 
-server:
-  port: 8081
 grpc:
   client:
     payment-service:
@@ -29,6 +27,9 @@ grpc:
       keepAliveWithoutCalls: true
   server:
     port: 9099
+
+server:
+  port: 8081
 
 springdoc:
   api-docs:
