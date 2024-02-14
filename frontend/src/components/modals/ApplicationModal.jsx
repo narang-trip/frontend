@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 
@@ -17,6 +18,7 @@ const ApplicationModal = ({ data, onClose }) => {
   // 충전 금액
   const [price, setPrice] = useState(0);
 
+  const userId = useSelector((state) => state.auth.userId);
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handleChangeComment = (e) => {
@@ -74,7 +76,7 @@ const ApplicationModal = ({ data, onClose }) => {
   const postData = {
     tripId: data.tripId,
     tripName: data.tripName,
-    senderId: "1db2f956-58c4-3513-a201-b6fba05d65f4",
+    senderId:  userId,
     receiverId: data.tripLeaderId,
     position: selectedPositions,
     aspiration: comment,

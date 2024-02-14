@@ -1,19 +1,35 @@
 import { Fragment, useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 export default function ReceiveRequestsInfo({ data, trip }) {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
 
+  const userId = useSelector((state) => state.auth.userId);
   const handleAccept = async () => {
     try {
       const response1 = await axios.patch(
         `https://i10a701.p.ssafy.io/api/message/alert/attend/${data.id}/ACCEPT`
       );
 
-      
+      const response2 =  await axios.patch(
+        `https://i10a701.p.ssafy.io/api/trip/trip/join`,
+        {
+          tripId: trip.tripId,
+          userId: userId,
+          userRoles: data.position
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       // 서버 응답을 이용해 필요한 작업 수행
       console.log("서버 응답:", response1.data);
+      console.log("서버 응답:", response2.data);
 
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(true);
