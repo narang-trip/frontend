@@ -127,7 +127,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
                     .setUserId(record.getUserId())
                     .setBalance(record.getBalance())
                     .setPrice(record.getPrice())
-                    .setRecordId(record.getId()).build();
+                    .setRecordId(record.getId().toString()).build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         }
