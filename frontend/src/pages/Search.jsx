@@ -201,9 +201,9 @@ const SearchPage = () => {
     }
   }, [inView, requestData]);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [tripData]);
+  // useEffect(() => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // }, [tripData]);
 
   return (
     <Fragment>
