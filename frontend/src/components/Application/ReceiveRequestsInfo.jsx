@@ -22,11 +22,11 @@ export default function ReceiveRequestsInfo({ data, trip }) {
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend/${data.id}/ACCEPT`
       );
 
-      const response2 = await axios.post(
+      const response2 = await axios.patch(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/join`,
         {
           tripId: trip.tripId,
-          userId: userId,
+          userId: data.senderId,
           userRoles: data.position,
         },
         {
