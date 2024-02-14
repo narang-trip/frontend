@@ -31,8 +31,8 @@ export default function PlanningPage() {
   }, [list.title]);
 
   useEffect(() => {
+    console.log("여기 들어는 와지나요?");
     if (planId !== undefined) {
-      console.log("여기 들어는 와지나요?");
       async () => {
         try {
           const response = await axios.get(
