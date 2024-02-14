@@ -146,10 +146,10 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
   };
 
   const getNicknameById = (id) => {
-    console.log(userId);
+    console.log(id);
     console.table(userList);
     for (let i = 0; i < userList.length; i++) {
-      if (userList[i].id === id) {
+      if (userList[i].id == id) {
         return userList[i].nickname;
       }
     }
