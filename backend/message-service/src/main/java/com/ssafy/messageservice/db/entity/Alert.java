@@ -47,8 +47,4 @@ public class Alert {
 
     @Column
     private UUID usageId;
-
-    public enum AlertType{
-        REQUEST, ACCEPT, REFUSE
-    }
 }
