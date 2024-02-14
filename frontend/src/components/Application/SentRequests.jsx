@@ -1,21 +1,17 @@
 import { Fragment, useState, useEffect } from "react";
-import {
-  SlCalender,
-  SlLocationPin,
-  SlPeople,
-  SlBadge,
-  SlInfo,
-} from "react-icons/sl";
+import { SlLocationPin, SlPeople, SlInfo } from "react-icons/sl";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 export default function SentRequests() {
   const [sentData, setSentData] = useState(null);
   const [selectedType, setSelectedType] = useState("ALL");
+  const userId = useSelector((state) => state.auth.userId);
 
   const fetchSentData = async () => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/message/alert/list/send/44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5`
+        `https://i10a701.p.ssafy.io/api/message/alert/list/send/${userId}`
       );
 
       const updatedSentData = await Promise.all(
