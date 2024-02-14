@@ -33,7 +33,7 @@ public class UserRestController {
         try {
             Auth auth = userService.getAuth(userDetails.getUsername()).getBody();
             User user = userService.getUser(auth.getId()).getBody();
-            return ResponseEntity.ok(user.getId());
+            return ResponseEntity.ok(user);
         } catch (AuthNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Auth not found");
         } catch (UserNotFoundException e) {
