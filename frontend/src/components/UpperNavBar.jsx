@@ -192,7 +192,7 @@ const UpperNavbar = () => {
             {alertAmount > 0 && <AlertAnimation color={conceptColorClass} />}
             🔔
           </Link>
-          {emptyMessage && <TalkBubble content={alertContent} isVisible={isVisible} />}
+          {!emptyMessage && <TalkBubble content={alertContent} isVisible={isVisible} />}
           <Dropdown />
         </div>
       )}
