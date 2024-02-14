@@ -86,6 +86,7 @@ const ApplicationModal = ({ data, onClose }) => {
 
   // 신청하기 버튼 눌렀을 때
   const handleSubmit = async () => {
+    
     try {
       const response = await axios.post(
         "https://i10a701.p.ssafy.io/api/message/alert/attend",
@@ -96,7 +97,7 @@ const ApplicationModal = ({ data, onClose }) => {
           },
         }
       );
-      console.log(postData);
+      console.log(postData.position);
 
       // const response2 = await axios.post(
       //   `https://i10a701/p/ssafy/io/api/payment/use?user_id=${postData.senderId}&price=${data.tripDeposit}&trip_id=${data.tripId}`
