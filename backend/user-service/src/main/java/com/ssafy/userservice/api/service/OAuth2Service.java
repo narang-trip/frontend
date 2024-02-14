@@ -216,7 +216,7 @@ public class OAuth2Service {
         String refreshToken = jwtService.createRefreshToken();
         if (findUser.isEmpty()) { //찾지 못했다면
             log.info("등록되지 않은 사용자입니다.");
-            userRoles.add(roleRepository.findByRoleName("BEGINNER"));
+            userRoles.add(roleRepository.findByRoleName("여행 초보자"));
             user = User.builder()
                     .id(id)
                     .nickname(nickname)
