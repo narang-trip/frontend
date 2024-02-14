@@ -57,7 +57,7 @@ const ReceivedRequests = () => {
   return (
     <Fragment>
       <div>
-        {tripData.map((trip, idx) => (
+        {tripData && tripData.map((trip, idx) => (
           <TripInfo tripData={trip} key={idx} />
         ))}
       </div>
