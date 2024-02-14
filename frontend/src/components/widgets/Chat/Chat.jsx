@@ -8,11 +8,11 @@ import { useInView } from "react-intersection-observer";
 import Button from "../../../ui/Button";
 
 const stompEndpoint = "wss://i10a701.p.ssafy.io/api/message/chat";
-const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
+const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
   const [chats, setChats] = useState([]);
   const [msg, setMsg] = useState("");
   const [loadingChatMore, setLoadingChatMore] = useState(true)
-  const nickname = useSelector((state) => state.auth.nickname);
+  const {userId, nickname} = useSelector((state) => state.auth);
   const lastChatRef = useRef("");
   const [prevScrollHeight, setPrevScrollHeight] = useState(null);
   const chatDivRef = useRef(null);
@@ -23,6 +23,8 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
     threshold: 0,
     rootMargin: '10px' // div태그가 보일 때 inView가 true로 설정
   });
+
+  console.log(userList)
 
 
   const getChatList = useCallback(async (chatroomId) => {
@@ -102,7 +104,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
             (message) => {
               const messageBody = JSON.parse(message.body);
               const chat = {
-                userId: nickname,
+                userId: userId,
                 sendTime: messageBody.sendTime,
                 content: messageBody.content,
               };
@@ -136,7 +138,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
         destination: "/pub/chat/send",
         body: JSON.stringify({
           chatroomId: chatroomId,
-          senderId: nickname,
+          senderId: userId,
           content: msg,
         }),
       });
