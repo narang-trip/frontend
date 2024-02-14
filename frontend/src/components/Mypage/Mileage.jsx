@@ -35,30 +35,31 @@ const Mileage = (props) => {
 
   const userId = useSelector((state) => state.auth.userId);
   // const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"
-    // 잔액 조회
-    const handleBalance = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_PAYMENT_REQUEST_API}/balance?user_id=${userId}`
-        );
-  
-        console.log(response);
-        setBalance(response.data);
-      } catch (error) {
-        console.error("에러 발생", error);
-      }
-    };
-  
-    useEffect(() => {
-      handleBalance();
-    }, []);
+  // 잔액 조회
+  const handleBalance = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${userId}`
+      );
+
+      console.log(response);
+      setBalance(response.data);
+    } catch (error) {
+      console.error("에러 발생", error);
+    }
+  };
+
+  useEffect(() => {
+    handleBalance();
+  }, []);
 
   return (
     <div className="flex justify-between p-3 my-3 border rounded-lg border-neutral-300 ">
-      <div className="m-1 text-sm">
-      💰 보유마일리지 : {balance} 원 
-      </div>
-      <button className="p-1 mr-2 text-xs border rounded-md border-neutral-200" onClick={OpenMileage}>
+      <div className="m-1 text-sm">💰 보유마일리지 : {balance} 원</div>
+      <button
+        className="p-1 mr-2 text-xs border rounded-md border-neutral-200"
+        onClick={OpenMileage}
+      >
         충천하기
       </button>
       {isOpen && (
