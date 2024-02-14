@@ -16,7 +16,7 @@ const LeaveUserModal = (props) => {
           e.stopPropagation();
         }}
       >
-           <div className="font-spoqa">
+        <div className="font-spoqa">
           <div className="flex justify-end mr-1">
             <button
               className="mb-4 text-xl font-semibold hover:text-red-600"
@@ -25,11 +25,11 @@ const LeaveUserModal = (props) => {
               <IoMdClose />
             </button>
           </div>
-        <>
-          정말로 탈퇴하시겠습니까?
-          <button>탈퇴하기</button>
-        </>
-      </div>
+          <div className="flex flex-col items-center justify-center">
+            <div className="my-5 text-lg font-bold">정말 탈퇴하시겠습니까?</div>
+            <button className="p-2 mb-5 bg-red-200 bg-opacity-50 rounded-md ring-1 ring-red-300 hover:bg-opacity-100">탈퇴하기</button>
+          </div>
+        </div>
       </div>
     </div>
   );
