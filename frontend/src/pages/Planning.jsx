@@ -22,6 +22,8 @@ export default function PlanningPage() {
 
   const { planId } = useParams();
 
+  console.log("Planning.jsx 26", planId);
+
   useEffect(() => {
     console.log("Planning.jsx 26 planId", planId);
     if (planId !== undefined) {
@@ -39,7 +41,7 @@ export default function PlanningPage() {
         }
       };
     }
-  }, []);
+  }, [dispatch, planId]);
 
   useMemo(async () => {
     let tmplist = list.list;
