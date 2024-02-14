@@ -5,18 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.lang.reflect.Array;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
 @ToString
-public class UserRequest {
+public class UserRejectRequest {
     private UUID tripId;
     private UUID userId;
+    private String usageId;
     private String alertId;
-    private List<String> userRoles;
 }

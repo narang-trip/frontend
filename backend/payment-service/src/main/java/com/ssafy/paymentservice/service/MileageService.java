@@ -11,10 +11,9 @@ import com.ssafy.paymentservice.exception.BusinessLogicException;
 import com.ssafy.paymentservice.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.client.inject.GrpcClient;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.narang.lib.NarangGrpc;
-import org.narang.lib.TripMileageUsageRequest;
-import org.narang.lib.TripMileageUsageResponse;
+import org.narang.lib.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
@@ -164,6 +163,19 @@ public class MileageService extends NarangGrpc.NarangImplBase {
                 Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage())));
 
         refundRecordRepository.save(refundRecord);
+
         return refundRecord;
+    }
+
+
+    @Override
+    public void cancelPaymentRecord(PaymentRefundGrpcRequest request, StreamObserver<PaymentRefundGrpcResponse> responseObserver) {
+
+        RefundRecord record = rejectMileage(request.getUsageId());
+
+        responseObserver.onNext(PaymentRefundGrpcResponse.newBuilder()
+                .setResult(true)
+                .build());
+        responseObserver.onCompleted();
     }
 }
