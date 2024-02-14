@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { GoHome, GoPersonAdd, GoSearch } from "react-icons/go";
@@ -6,14 +6,16 @@ import { LiaCalendarDaySolid } from "react-icons/lia";
 
 function MainNavigation() {
   const location = useLocation();
+  const [currentPath, setCurrentPath] = useState(location.pathname);
 
   const isActive = (path) => {
     return location.pathname === path;
   };
 
   useEffect(() => {
+    setCurrentPath(location.pathname);
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+  }, [currentPath]);
 
   return (
     <div className="fixed left-0 flex flex-col items-center w-[12rem] h-5/6 top-19">
