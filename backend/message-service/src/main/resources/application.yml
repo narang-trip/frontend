@@ -36,9 +36,9 @@ grpc:
   server:
     port: 9099
 
-logging:
-  level:
-    root: DEBUG
+#logging:
+#  level:
+#    root: DEBUG
     # org:
     #   springframework:
     #     web:
