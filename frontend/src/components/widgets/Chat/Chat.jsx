@@ -32,7 +32,6 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
         return;
       } // 없으면 그냥 리턴
       let chatList = response.data.chatList;
-      // console.log(chatList);
       if (pageNo === 0) {
         lastChatRef.current = chatList[chatList.length - 1]?.chatId; //처음 렌더링 시 마지막 채팅 기억
       } else {
@@ -101,7 +100,6 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
             `/sub/chat/room/${chatroomId}`,
             (message) => {
               const messageBody = JSON.parse(message.body);
-              console.log(messageBody);
               const chat = {
                 userId: messageBody.userId,
                 sendTime: messageBody.sendTime,
@@ -146,8 +144,6 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
   };
 
   const getNicknameById = (id) => {
-    console.log(id);
-    console.table(userList);
     for (let i = 0; i < userList.length; i++) {
       if (userList[i].id == id) {
         return userList[i].nickname;
