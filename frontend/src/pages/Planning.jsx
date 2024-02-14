@@ -28,18 +28,16 @@ export default function PlanningPage() {
     console.log("Planning.jsx 26 planId", planId);
     if (planId !== undefined) {
       setIsCanModify(false);
-      async () => {
-        try {
-          const response = await axios.get(
-            `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan/${planId}`
-          );
-          setRes(response);
-          console.log("response.data : ", response.data);
-          dispatch(scheduleActions.setSchedule(response.data));
-        } catch (error) {
-          console.log("Error : ", error);
-        }
-      };
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan/${planId}`
+        );
+        setRes(response);
+        console.log("response.data : ", response.data);
+        dispatch(scheduleActions.setSchedule(response.data));
+      } catch (error) {
+        console.log("Error : ", error);
+      }
     }
   };
 
