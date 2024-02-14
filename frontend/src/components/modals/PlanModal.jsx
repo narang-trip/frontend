@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
 
-const PlanModal = ({ onClose, onSelectedPlanId }) => {
+const PlanModal = ({ onClose, onSelectedPlanId, onSelectedPlanName }) => {
   const modalBG = useRef("");
   const [planList, setPlanList] = useState([]);
   const userId = useSelector((state) => state.auth.userId);
@@ -23,9 +23,9 @@ const PlanModal = ({ onClose, onSelectedPlanId }) => {
     fetchPlanList();
   }, []);
 
-  const handlePlanSelect = (planId) => {
-
+  const handlePlanSelect = ({ planId, planName }) => {
     onSelectedPlanId(planId);
+    onSelectedPlanName(planName);
   };
 
   return (
@@ -53,21 +53,40 @@ const PlanModal = ({ onClose, onSelectedPlanId }) => {
             계획📑을 선택해주세요!
           </p>
           <div className="inline-block mb-4 align-middle">
-            <div className="flex flex-wrap justify-center">
-              {planList.map((item, index) => (
-                <div key={index}>
-                  <div>{item.planName}</div>
-                  <div>{item.planDesc}</div>
-                  <button
-                    className="m-3 text-base rounded-xl bg-stone-100 hover:bg-amber-200"
-                    key={index}
-                    onClick={() => handlePlanSelect(item.planId)}
-                  >
-                    선택
-                  </button>
-                </div>
-              ))}
-            </div>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="p-2 border border-gray-400">계획 이름</th>
+                  <th className="p-2 border border-gray-400">계획 설명</th>
+                  <th className="p-2 border border-gray-400">선택</th>
+                </tr>
+              </thead>
+              <tbody>
+                {planList.map((item, index) => (
+                  <tr key={index} className="border border-gray-400">
+                    <td className="p-2 border border-gray-400">
+                      {item.planName}
+                    </td>
+                    <td className="p-2 border border-gray-400">
+                      {item.planDesc}
+                    </td>
+                    <td className="p-2 border border-gray-400">
+                      <button
+                        className="text-base rounded-xl bg-stone-100 hover:bg-amber-200"
+                        onClick={() =>
+                          handlePlanSelect({
+                            planId: item.planId,
+                            planName: item.planName,
+                          })
+                        }
+                      >
+                        선택
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

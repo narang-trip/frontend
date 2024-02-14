@@ -10,7 +10,7 @@ import DateRangePicker from "./DateRangePicker.jsx";
 import PositionCheck from "./PositionCheck.jsx";
 import { ModalPortal } from "../../modals/ModalPortal.jsx";
 import ContinentModal from "../../modals/ContinentModal.jsx";
-import PlanModal from "../../modals/PlanModal.jsx"
+import PlanModal from "../../modals/PlanModal.jsx";
 
 export default function TripWriteForm() {
   const userId = useSelector((state) => state.auth.userId);
@@ -91,6 +91,10 @@ export default function TripWriteForm() {
       ...board,
       tripPlanId: selectedPlan,
     }));
+  };
+
+  const handlePlanNameChange = (selectedPlanName) => {
+    setPlanName(selectedPlanName);
   };
 
   // 이미지 input이 변경될 때 호출되는 함수
@@ -316,14 +320,18 @@ export default function TripWriteForm() {
                     type="text"
                     name="planId"
                     placeholder="계획을 선택해주세요"
-                    value={board.tripPlanId}
+                    value={planName}
                     onClick={OpenPlanModal}
                     className="border rounded-sm border-neutral-300  p-1.5 w-2/3 text-neutral-700 placeholder:text-neutral-300 text-sm"
                     readOnly
                   ></input>
                   {isPlanOpen && (
                     <ModalPortal>
-                      <PlanModal onClose={ClosePlanModal} onSelectedPlanId={handlePlanChange} />
+                      <PlanModal
+                        onClose={ClosePlanModal}
+                        onSelectedPlanId={handlePlanChange}
+                        onSelectedPlanName={handlePlanNameChange}
+                      />
                     </ModalPortal>
                   )}
                 </div>
