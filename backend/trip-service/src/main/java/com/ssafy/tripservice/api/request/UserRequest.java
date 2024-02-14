@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 @ToString
 public class UserRequest {
-    private UUID tripID;
+    private UUID tripId;
     private UUID userId;
     private List<String> userRoles;
 }
