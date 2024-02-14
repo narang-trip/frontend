@@ -143,10 +143,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                     돈이 넉넉한 경우
                     여행 못 찾는 경우에 대해서 확인.
                  */
-                UUID usageId = alertAttendRequest.getUsageId();
-                if(usageId == null){
-                    usageId = UUID.fromString(paymentResponse.getRecordId());
-                }
+                UUID usageId = UUID.fromString(paymentResponse.getRecordId());
 
                 // DB Alert 테이블에 데이터 저장하기
                 Alert alert = new Alert(UUID.randomUUID().toString(),
@@ -158,7 +155,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alertAttendRequest.getAspiration(),
                         alertAttendRequest.getAlertType(),
                         alertAttendRequest.isRead(),
-                        alertAttendRequest.getUsageId());
+                        usageId);
                 alertRepository.save(alert);
 
                 String receiver = alertAttendRequest.getReceiverId();
@@ -174,7 +171,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alertAttendRequest.getAspiration(),
                         alertAttendRequest.getAlertType(),
                         alertAttendRequest.isRead(),
-                        alertAttendRequest.getUsageId());
+                        usageId);
                 emitters.forEach(
                         (key, emitter) -> {
                             // 데이터 캐시 저장

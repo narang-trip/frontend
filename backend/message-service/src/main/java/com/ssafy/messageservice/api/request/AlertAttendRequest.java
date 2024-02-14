@@ -20,6 +20,5 @@ public class AlertAttendRequest {
     private String aspiration;
     private String alertType;
     private boolean isRead;
-    private UUID usageId;
 
 }
