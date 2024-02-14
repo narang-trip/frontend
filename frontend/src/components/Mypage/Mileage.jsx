@@ -37,6 +37,7 @@ const Mileage = (props) => {
   // const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"
   // 잔액 조회
   const handleBalance = async () => {
+    console.log(userId);
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${userId}`
