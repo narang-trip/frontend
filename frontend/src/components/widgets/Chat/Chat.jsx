@@ -146,9 +146,9 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
   };
 
   const getNicknameById = (id) => {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].id === id) {
-        return array[i].nickname;
+    for (let i = 0; i < userList.length; i++) {
+      if (userList[i].id === id) {
+        return userList[i].nickname;
       }
     }
     // 해당 id를 가진 객체가 없을 경우 예외 처리
