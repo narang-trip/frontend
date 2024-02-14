@@ -28,11 +28,11 @@ const MyPlan = () => {
       setPlanData([JSON.parse(list)]);
     }
   }, [list]);
-  console.log(planData);
+  // console.log(planData);
 
   useEffect(() => {
+    console.log("userId : ", userId);
     async () => {
-      console.log("userId : ", userId);
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_PLAN_REQUEST_URI}/my/${userId}`
