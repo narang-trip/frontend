@@ -36,7 +36,6 @@ public class MileageService extends NarangGrpc.NarangImplBase {
     private TextEncryptor textEncryptor;
     public int getMileage(String user_id){
         Optional<UserMileage> userMileageOptional = userMileageRepository.findByUserId(user_id);
-
         if (userMileageOptional.isPresent()) {
             UserMileage userMileage = userMileageOptional.get();
             return Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage()));
