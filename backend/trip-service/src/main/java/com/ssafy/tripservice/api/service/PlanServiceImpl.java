@@ -34,7 +34,13 @@ public class PlanServiceImpl implements PlanService{
         log.info("createPlan 호출");
         planRequest.setLastModifiedDate(LocalDate.now());
         log.info("setLastModifiedDate OK");
+        log.info("planRequest.getPlanName() : {}", planRequest.getPlanName());
+        log.info("planRequest.getPlanDesc() : {}", planRequest.getPlanDesc());
+        log.info("planRequest.getOwnerId() : {}", planRequest.getOwnerId());
         Plan plan = planRequest.toEntity();
+        log.info("plan.getPlanName() : {}", plan.getPlanName());
+        log.info("plan.getPlanDesc() : {}", plan.getPlanDesc());
+        log.info("plan.getOwnerId() : {}", plan.getOwnerId());
         log.info("toEntity OK");
         try {
             return Optional.of(planRepository.insert(plan))
@@ -82,3 +88,4 @@ public class PlanServiceImpl implements PlanService{
         return false;
     }
 }
+
