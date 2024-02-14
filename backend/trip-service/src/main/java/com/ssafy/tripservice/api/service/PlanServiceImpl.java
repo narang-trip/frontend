@@ -19,8 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -86,6 +88,16 @@ public class PlanServiceImpl implements PlanService{
         if(res.getDeletedCount() == 0)
             log.error("Plan being deleted is not found....");
         return false;
+    }
+
+    @Override
+    public List<PlanResponse> getPlansByOwner(UUID userId) {
+        List<Plan> plans = mongoTemplate.find(Query.query(Criteria.where("ownerId").is(userId)), Plan.class);
+
+        // 조회된 계획들을 PlanResponse로 변환하여 리스트로 반환
+        return plans.stream()
+                .map(Plan::toPlanResponse)
+                .collect(Collectors.toList());
     }
 }
 
