@@ -21,18 +21,15 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
   useEffect(() => {
     
     if (userId) {
-      console.log("getChatroomList 직전 userId : ", userId)
       getChatroomList(userId);
     }
   }, [userId]);
 
   const getChatroomList = async (userId) => {
-    console.log("보낸url : ", `https://i10a701.p.ssafy.io/api/message/chat/list/${userId}`)
     try {
       const res = await axios.get(
         `https://i10a701.p.ssafy.io/api/message/chat/list/${userId}`
       );
-      console.log("res data", res.data)
       setChatroomList(res.data);
     } catch (error) {
       console.error(error);
