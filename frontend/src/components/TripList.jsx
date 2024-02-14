@@ -27,7 +27,7 @@ const TripListContent = () => {
     const getConceptTrip = async (concept) => {
       try {
         setIsLoading(true);
-        const res = await axios.get(`https://i10a701.p.ssafy.io/api/trip/trips/banner?tripConcept=${concept}`)
+        const res = await axios.get(`${import.meta.env.VITE_TRIP_REQUEST_URI}/trips/banner?tripConcept=${concept}`)
         setConceptTripList(res.data);
       } catch (error) {
         if (axios.isCancel(error)) {

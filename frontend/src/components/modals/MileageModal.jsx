@@ -30,10 +30,10 @@ const MileageModal = ({ onClose }) => {
 
   const handleCharge = async () => {
     try {
-      const url = `https://i10a701.p.ssafy.io/Mypage`;
+      const url = `${import.meta.env.VITE_REQUEST_URI}/Mypage`;
 
       const response = await axios.post(
-        `https://i10a701.p.ssafy.io/api/payment/ready?user_id=${user_id}&price=${price}&return_url=${url}`
+        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/ready?user_id=${user_id}&price=${price}&return_url=${url}`
       );
 
       console.log(response.data.next_redirect_pc_url);

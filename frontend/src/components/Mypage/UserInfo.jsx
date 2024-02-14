@@ -34,7 +34,7 @@ const UserInfo = () => {
     try {
       // API에서 데이터 가져오는 요청
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/user/profile/${userId}`
+        `${import.meta.env.VITE_USER_REQUEST_URI}/profile/${userId}`
       );
 
       // 가져온 데이터를 state에 업데이트

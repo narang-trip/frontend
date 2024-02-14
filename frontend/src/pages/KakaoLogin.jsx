@@ -15,14 +15,14 @@ const Login = () => {
     (async () => {
       try {
         const res = await axios.post(
-          `https://i10a701.p.ssafy.io/api/user/login/oauth/kakao?code=${code}`
+          `${import.meta.env.VITE_USER_REQUEST_URI}/login/oauth/kakao?code=${code}`
         );
         // console.log(res);
         auth = res.headers["authorization"];
         refreshAuth = res.headers["authorization-refresh"];
         try {
           const userRes = await axios.get(
-            "https://i10a701.p.ssafy.io/api/user/getuser",
+            `${import.meta.env.VITE_TRIP_REQUEST_URI}/getuser`,
             {
               headers: {
                 Authorization: auth,
