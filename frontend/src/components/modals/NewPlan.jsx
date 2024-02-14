@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 
 import { scheduleActions } from "../../store/scheduleSlice";
+import { setHours, setMinutes } from "date-fns";
 
 const NewPlan = (props) => {
   const modalBG = useRef("");
   const [day, setDay] = useState(1);
   const [sleep, setSleep] = useState(day - 1);
-  const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState();
+  const [startTime, setStartTime] = useState(setHours(setMinutes(new Date(), 0), 10));
+  const [endTime, setEndTime] = useState(setHours(setMinutes(new Date(), 0), 22));
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -61,10 +62,7 @@ const NewPlan = (props) => {
         }}
       >
         <div className="flex justify-end">
-          <button
-            className="mb-4 text-xl font-semibold hover:text-red-600"
-            onClick={props.onClose}
-          >
+          <button className="mb-4 text-xl font-semibold hover:text-red-600" onClick={props.onClose}>
             <IoMdClose />
           </button>
         </div>
@@ -112,6 +110,7 @@ const NewPlan = (props) => {
                 className="rounded-md py-1.5 text-gray-900 ring-2 ring-gray-400 w-32 focus:outline-none focus:ring-3 focus:ring-yellow-500 caret-transparent"
                 selected={endTime}
                 onChange={(date) => setEndTime(date)}
+                onSelect={setHours(22, 0, 0, 0)}
                 showTimeSelect
                 showTimeSelectOnly
                 timeIntervals={30}
