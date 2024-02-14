@@ -55,21 +55,13 @@ const MileageModal = ({ onClose }) => {
       ref={modalBG}
     >
       <div
-        className="z-10 px-10 py-4 bg-white rounded-3xl w-96 h-82"
+        className="z-10 px-10 py-4 bg-white rounded-3xl w-96 min-h-40"
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
         <div className=" font-spoqa">
-          <div className="flex justify-end mr-1">
-            <button
-              className="mb-4 text-xl font-semibold hover:text-red-600"
-              onClick={onClose}
-            >
-              <IoMdClose />
-            </button>
-          </div>
-          <div className="flex m-2">
+          <div className="flex mx-2 my-5">
             <label className="flex items-center mr-2 text-sm font-bold">
               💸 충전금액
             </label>
@@ -78,19 +70,29 @@ const MileageModal = ({ onClose }) => {
               placeholder="숫자만 입력해주세요"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="p-1 border rounded-md border-neutral-400"
+              className="p-1 mr-3 border rounded-md border-neutral-400"
             />
+               
           </div>
           {/* <button onClick={() => Change("use")}>사용내역</button>
           <button onClick={() => Change("get")}>획득내역</button>
           {option === "use" && <div>사용내역</div>}
           {option === "get" && <div>획득내역</div>} */}
+          <div className="flex justify-end">
           <button
-            className="p-1 border border-black rounded-lg"
+            className="p-1 mx-2 border border-black rounded-lg"
             onClick={handleCharge}
           >
-            결제하기
+            결제
           </button>
+          <button
+            className="p-1 border border-black rounded-lg"
+            onClick={onClose}
+          >
+            취소
+          </button>
+          </div>
+   
           {isOpen && (
             <ModalPortal>
               <BuyMileageModal onClose={ClosePayment} />
