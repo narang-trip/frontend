@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         element: <PlanningPage />,
       },
       {
-        path: "/makeplan:planId",
+        path: "/makeplan/:planId",
         element: <PlanningPage />,
       },
       {
