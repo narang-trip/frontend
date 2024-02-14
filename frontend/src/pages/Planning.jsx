@@ -18,6 +18,7 @@ export default function PlanningPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isCanModify, setIsCanModify] = useState(true);
+  const [res, setRes] = useState();
 
   const { planId } = useParams();
 
@@ -29,6 +30,7 @@ export default function PlanningPage() {
           const response = await axios.get(
             `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan/${planId}`
           );
+          setRes(response);
           console.log("response.data : ", response.data);
           dispatch(scheduleActions.setSchedule(response.data));
         } catch (error) {
@@ -165,17 +167,27 @@ export default function PlanningPage() {
   };
   // 계획 저장하기 모달
   const savePlan = () => {
-    console.log(list.title);
     if (list.title !== null) {
-      window.sessionStorage.setItem("plan", JSON.stringify(list));
+      const base64Incoding = window.btoa(
+        encodeURIComponent(JSON.stringify(list))
+      );
       async () => {
         try {
-          const response = await axios.patch(
-            `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
+          const response = await axios.post(
+            `${import.meta.env.VITE_PLAN_REQUEST_URI}/update`,
+            {
+              planId: planId,
+              planName: res.planName,
+              planDesc: res.planDesc,
+              lastModifiedDate: "",
+              ownerId: res.ownerId,
+              participantIds: res.participantIds,
+              planInfo: base64Incoding,
+            }
           );
-          console.log(response);
+          console.log("수정결과 : ", response);
         } catch (error) {
-          console.log(error);
+          console.log("수정 Error : ", error);
         }
       };
       console.log("저장?");
@@ -254,7 +266,7 @@ export default function PlanningPage() {
         )}
         {isSavePlanOpen && (
           <ModalPortal>
-            <SavePlanModal onClose={CloseSavePlanModal} />
+            <SavePlanModal onClose={CloseSavePlanModal} planId={planId} />
           </ModalPortal>
         )}
       </div>
