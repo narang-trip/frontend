@@ -24,7 +24,6 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
     rootMargin: '10px' // div태그가 보일 때 inView가 true로 설정
   });
 
-  console.log(userList)
 
 
   const getChatList = useCallback(async (chatroomId) => {

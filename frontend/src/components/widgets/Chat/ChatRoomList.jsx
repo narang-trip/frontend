@@ -37,11 +37,10 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
   };
 
   const enterChatroomHandler = (chatroom) => {
-    console.log("enterChatroom : ", chatroom.userList )
     onChatRoomSelect(chatroom.chatroomName, chatroom.chatroomId, chatroom.userList);
   };
   return (
-    <div className="w-auto h-full">
+    <div className="w-auto h-full overflow-auto">
       {chatroomList.chatroomList.length > 0 && chatroomList.chatroomList.map((chatroom) => (
         <div key={chatroom.chatroomId}>
           <Button onClick={() => enterChatroomHandler(chatroom)} className={`w-[90%] m-1 bg-${conceptColor}-200 rounded-full`}>
