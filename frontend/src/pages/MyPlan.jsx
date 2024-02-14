@@ -100,7 +100,7 @@ const MyPlan = () => {
           <p className="w-1/6">수정날짜</p>
         </div>
       </>
-      <div className="gap-2">
+      <div className="flex gap-2">
         {planData.map((plan, idx) => (
           <PlanSummary plan={plan} key={idx} />
         ))}
