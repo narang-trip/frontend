@@ -13,12 +13,12 @@ export default function ReceiveRequestsInfo({ data, trip }) {
         `https://i10a701.p.ssafy.io/api/message/alert/attend/${data.id}/ACCEPT`
       );
 
-      const response2 =  await axios.patch(
+      const response2 = await axios.post(
         `https://i10a701.p.ssafy.io/api/trip/trip/join`,
         {
           tripId: trip.tripId,
           userId: userId,
-          userRoles: JSON.parse(decodeURIComponent(window.atob(data.position)))
+          userRoles: JSON.parse(decodeURIComponent(window.atob(data.position))),
         },
         {
           headers: {
@@ -34,6 +34,34 @@ export default function ReceiveRequestsInfo({ data, trip }) {
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(true);
       setIsRejected(false);
+    } catch (error) {
+      // 오류 처리
+      console.error("서버 응답 에러", error);
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      const response1 = await axios.patch(
+        `https://i10a701.p.ssafy.io/api/message/alert/attend/${data.id}/REJECT`
+      );
+
+      const response2 = await axios.post(
+        `https://i10a701.p.ssafy.io/api/payment/reject`,
+        {
+          params: {
+            usage_id: data.usageId,
+          },
+        }
+      );
+
+      // 서버 응답을 이용해 필요한 작업 수행
+      console.log("서버 응답:", response1.data);
+      console.log(response2.data);
+
+      // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
+      setIsAccepted(false);
+      setIsRejected(true);
     } catch (error) {
       // 오류 처리
       console.error("서버 응답 에러", error);
@@ -62,7 +90,9 @@ export default function ReceiveRequestsInfo({ data, trip }) {
               </div>
               <div className=" p-1.5 text-sm text-center flex ">
                 {data &&
-                  JSON.parse(decodeURIComponent(window.atob(data.position))).map((role, idx) => (
+                  JSON.parse(
+                    decodeURIComponent(window.atob(data.position))
+                  ).map((role, idx) => (
                     <span
                       className="p-1 border bg-neutral-100 rounded-xl border-neutral-100"
                       key={idx}
@@ -75,7 +105,6 @@ export default function ReceiveRequestsInfo({ data, trip }) {
                 <span className="items-center px-1.5 py-2 mx-1 text-xs font-medium text-gray-700 rounded-full bg-gray-50 ring-2 ring-inset ring-gray-600/20">
                   뱃지1
                 </span>
-           
               </div>
             </div>
             <div className="p-2 mx-5 text-sm border rounded-xl border-slate-300">
@@ -90,7 +119,10 @@ export default function ReceiveRequestsInfo({ data, trip }) {
             >
               수락
             </button>
-            <button className="items-center px-6 py-3 mx-2 text-xs font-medium text-red-700 rounded-md bg-red-50 ring-1 ring-inset ring-red-600/10">
+            <button
+              className="items-center px-6 py-3 mx-2 text-xs font-medium text-red-700 rounded-md bg-red-50 ring-1 ring-inset ring-red-600/10"
+              onClick={handleReject}
+            >
               거절
             </button>
           </div>

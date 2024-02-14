@@ -44,7 +44,11 @@ export default function SentRequests() {
     try {
       // 예약금 환불이 필요한 경우
       if (item.alertType === "ACCEPT") {
-        await refundDeposit(item.tripId);
+        await rejectDeposit(item.tripId);
+      }
+
+      if (item.alertType === "REQUEST") {
+        await rejectDeposit(item.usageId);
       }
 
       // 취소에 대한 요청을 보내거나 삭제 로직을 구현합니다.
@@ -61,11 +65,15 @@ export default function SentRequests() {
     }
   };
 
-  // 예약금 환불 로직
-  const refundDeposit = async (tripId) => {
+  // 예약금 전체 환불 로직
+  const rejectDeposit = async (usageId) => {
     // 여기에 예약금 환불에 대한 서버 요청 로직을 추가
     try {
-      await axios.post(`https://i10a701.p.ssafy.io/api/refund`, { tripId });
+      await axios.post(`https://i10a701.p.ssafy.io/api/payment/reject`, {
+        params: {
+          usage_id: usageId,
+        },
+      });
       console.log("예약금 환불 성공");
     } catch (error) {
       console.error("Error refunding deposit:", error);
@@ -149,7 +157,7 @@ export default function SentRequests() {
                 REJECT
               </button>
             </div>
-            {sentData && sentData.length > 0 ? 
+            {sentData && sentData.length > 0 ? (
               sentData.map(
                 (item, idx) =>
                   (selectedType === "ALL" ||
@@ -207,9 +215,10 @@ export default function SentRequests() {
                       <button onClick={() => handleCancel(item)}>취소</button>
                     </div>
                   )
-              ) : (
-                <div>아직 신청한 동행이 없습니다 !!</div>
-              )}
+              )
+            ) : (
+              <div>아직 신청한 동행이 없습니다 !!</div>
+            )}
           </div>
         </div>
       </div>
