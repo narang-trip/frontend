@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Builder
 @Table(name="Chatroom")
 @Entity
 @AllArgsConstructor
