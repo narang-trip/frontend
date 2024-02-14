@@ -87,7 +87,7 @@ public class PlanServiceImpl implements PlanService{
         DeleteResult res = mongoTemplate.remove(query, Plan.class);
         if(res.getDeletedCount() == 0)
             log.error("Plan being deleted is not found....");
-        return false;
+        return res.getDeletedCount() != 0;
     }
 
     @Override
