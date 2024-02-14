@@ -193,7 +193,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
               </div>
             );
           } else if (chat.userId === userId) {
-            
+            console.log("내가 친건데 왜 안떠")
             messageBoxClass += " justify-end my-1"; // 본인인 건 오른쪽
             messageClass += " bg-yellow-200 border-yellow-300";
             return (
@@ -209,7 +209,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
 
             messageBoxClass += " justify-start my-1"; // 상대방은 왼쪽
             messageClass += " bg-white";
-            const otherUserNickname = getNicknameById(chat.chatId);
+            const otherUserNickname = getNicknameById(chat.userId);
             return (
               <Fragment key={chat.chatId}>
                 <div className="ml-1 text-xs text-left">{otherUserNickname}</div>
