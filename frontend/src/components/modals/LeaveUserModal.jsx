@@ -1,5 +1,5 @@
 import { useRef } from "react";
-
+import { IoMdClose } from "react-icons/io";
 // 회원 탈퇴 모달
 const LeaveUserModal = (props) => {
   const modalBG = useRef("");
@@ -16,13 +16,20 @@ const LeaveUserModal = (props) => {
           e.stopPropagation();
         }}
       >
-        <button className="" onClick={props.onClose}>
-          x
-        </button>
+           <div className="font-spoqa">
+          <div className="flex justify-end mr-1">
+            <button
+              className="mb-4 text-xl font-semibold hover:text-red-600"
+              onClick={props.onClose}
+            >
+              <IoMdClose />
+            </button>
+          </div>
         <>
           정말로 탈퇴하시겠습니까?
           <button>탈퇴하기</button>
         </>
+      </div>
       </div>
     </div>
   );

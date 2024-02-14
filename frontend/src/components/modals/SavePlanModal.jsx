@@ -10,21 +10,37 @@ import { scheduleActions } from "../../store/scheduleSlice";
 const SavePlanModal = (props) => {
   const modalBG = useRef(null);
   const state = useSelector((state) => state.schedule);
+  const userState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [title, setTitle] = useState(null);
   const [desc, setDesc] = useState(null);
 
   const savePlan = async () => {
-    console.log(title, window.btoa(encodeURIComponent(JSON.stringify(state))));
-    console.log(state);
-    console.log(JSON.stringify(state));
-    window.sessionStorage.setItem("plan", JSON.stringify(state));
+    const base64Incoding = window.btoa(
+      encodeURIComponent(JSON.stringify(state))
+    );
+    console.log(userState.userId);
+    console.log({
+      planId: "",
+      planName: title,
+      planDesc: desc,
+      lastModifiedDate: new Date(),
+      ownerId: userState.userId,
+      participantIds: [],
+      planInfo: base64Incoding,
+    });
+    // window.sessionStorage.setItem("plan", JSON.stringify(state));
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_PLAN_REQUEST_URI}`,
+        `${import.meta.env.VITE_PLAN_REQUEST_URI}/create`,
         {
-          title: title,
-          plan: JSON.stringify(state),
+          planId: "",
+          planName: title,
+          planDesc: desc,
+          lastModifiedDate: "",
+          ownerId: userState.userId,
+          participantIds: [],
+          planInfo: base64Incoding,
         }
       );
       console.log(response);
