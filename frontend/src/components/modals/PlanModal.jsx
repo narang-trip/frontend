@@ -26,6 +26,7 @@ const PlanModal = ({ onClose, onSelectedPlanId, onSelectedPlanName }) => {
   const handlePlanSelect = ({ planId, planName }) => {
     onSelectedPlanId(planId);
     onSelectedPlanName(planName);
+    onClose();
   };
 
   return (
@@ -52,7 +53,7 @@ const PlanModal = ({ onClose, onSelectedPlanId, onSelectedPlanName }) => {
           <p className="m-3 text-lg font-bold text-center">
             계획📑을 선택해주세요!
           </p>
-          <div className="inline-block mb-4 align-middle">
+          <div className="w-full mb-4 align-middle">
             <table className="w-full border-collapse">
               <thead>
                 <tr>
