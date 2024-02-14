@@ -12,9 +12,9 @@ import java.util.UUID;
 public class BaseEntity {
 
     @Id @GeneratedValue
-    private UUID id;
+    private String id;
 
     public BaseEntity() {
-        id = UUID.randomUUID();
+        id = UUID.randomUUID().toString();
     }
 }
