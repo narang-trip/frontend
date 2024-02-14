@@ -1,21 +1,22 @@
 package com.ssafy.paymentservice.db.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@NoArgsConstructor
 @Getter
 @Setter
-public class UserMileage extends BaseEntity{
-    @Column
+public class UserMileage extends BaseEntity {
+
     private String userId;
-    @Column
     private String encryptedMileage;
+
+    public UserMileage() {
+        super();
+    }
+
     @Builder
-    public UserMileage(String userId, String encryptedMileage){
+    public UserMileage(String userId, String encryptedMileage) {
         super();
         this.userId = userId;
         this.encryptedMileage = encryptedMileage;

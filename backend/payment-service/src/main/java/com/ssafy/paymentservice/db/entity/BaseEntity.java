@@ -11,7 +11,7 @@ import java.util.UUID;
 @MappedSuperclass
 public class BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
     private String id;
 
     public BaseEntity() {
