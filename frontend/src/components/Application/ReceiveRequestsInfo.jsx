@@ -18,7 +18,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
         {
           tripId: trip.tripId,
           userId: userId,
-          userRoles: data.position
+          userRoles: JSON.parse(decodeURIComponent(window.atob(data.position)))
         },
         {
           headers: {
