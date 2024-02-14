@@ -27,7 +27,7 @@ const AlertAnimation = ({ color }) => {
   );
 };
 
-const UpperNavbar = React.memo(() => {
+const UpperNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [alertContent, setAlertContent] = useState("");
@@ -41,19 +41,22 @@ const UpperNavbar = React.memo(() => {
   const sessionRefreshToken = window.sessionStorage.getItem("refreshToken");
   const prevAlertAmountRef = useRef();
 
-  const getAlertData = useCallback(async (userId) => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_ALERT_REQUEST_URI}/list/${userId}`
-      );
-      dispatch(
-        authActions.SetAlertAmount({ alertAmount: res.data.alertList.length })
-      );
-      console.log(res.data.alertList);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [dispatch]);
+  const getAlertData = useCallback(
+    async (userId) => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_ALERT_REQUEST_URI}/list/${userId}`
+        );
+        dispatch(
+          authActions.SetAlertAmount({ alertAmount: res.data.alertList.length })
+        );
+        console.log(res.data.alertList);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (!isLogin && sessionToken !== null && sessionRefreshToken !== null) {
@@ -80,14 +83,7 @@ const UpperNavbar = React.memo(() => {
         }
       })();
     }
-  }, [
-    isLogin,
-    userId,
-
-    sessionRefreshToken,
-    sessionToken,
-  ]);
-
+  }, [isLogin, userId, sessionRefreshToken, sessionToken]);
 
   useEffect(() => {
     if (userId === "") {
@@ -110,6 +106,7 @@ const UpperNavbar = React.memo(() => {
       } else {
         const data = JSON.parse(receivedConnectData);
         dispatch(authActions.SetAlertAmount({ alertAmount: alertAmount + 1 }));
+        setAlertAnimation();
         setAlertContent(makeAlertContent(data));
       }
     });
@@ -122,14 +119,9 @@ const UpperNavbar = React.memo(() => {
   }, [userId]);
 
   useEffect(() => {
-    // const prevAlertAmount = prevAlertAmountRef.current;
-
-    // if (prevAlertAmount !== alertAmount) {
-    setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
-    setAlertAnimation();
-
-    // }
-  }, [alertAmount]);
+      setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
+      setAlertAnimation();
+  }, []);
 
   const navigateHome = () => {
     navigate("/");
@@ -154,7 +146,6 @@ const UpperNavbar = React.memo(() => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
-
 
   const setAlertAnimation = () => {
     setIsVisible(true);
@@ -206,6 +197,6 @@ const UpperNavbar = React.memo(() => {
       )}
     </header>
   );
-});
+};
 
 export default UpperNavbar;
