@@ -14,6 +14,7 @@ export default function TripDetail() {
   const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate();
 
+
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [isLeader, setIsLeader] = useState(false);
@@ -100,6 +101,12 @@ export default function TripDetail() {
     } catch (error) {
       console.error("게시판 상세정보를 가져오는 중 에러 발생:", error);
     }
+  };
+
+  
+  const OpenPlanDetail = () => {
+
+    navigate(`/makeplan/${tripDetails.tripPlanId}`);
   };
 
   useEffect(() => {
@@ -252,7 +259,12 @@ export default function TripDetail() {
           {tripDetails ? (
             <div>
               <p className="mt-5 mb-3 text-base font-bold">일정 정보</p>
-
+              <button
+                className="w-full py-3 text-sm font-medium rounded-md text-neutral-700 bg-indigo-50 ring-1 ring-inset ring-neutral-700/10"
+                onClick={OpenPlanDetail}
+              >
+                일정 상세 보기
+              </button>
               <p className="mb-3 text-base font-bold">여행 참여자 정보</p>
               <TripParticipantsInfo
                 participants={tripDetails.participants}
