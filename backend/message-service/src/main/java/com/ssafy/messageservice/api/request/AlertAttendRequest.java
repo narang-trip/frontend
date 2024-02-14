@@ -16,7 +16,7 @@ public class AlertAttendRequest {
     private String tripName;
     private String senderId;
     private String receiverId;
-    private List<String> position;
+    private String position;
     private String aspiration;
     private String alertType;
     private boolean isRead;
