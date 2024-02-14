@@ -1,14 +1,7 @@
 package com.ssafy.messageservice.db.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.domain.Auditable;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -46,5 +39,5 @@ public class Alert {
     private boolean isRead;
 
     @Column
-    private UUID usageId;
+    private String usageId;
 }
