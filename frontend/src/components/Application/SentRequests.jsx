@@ -51,6 +51,7 @@ export default function SentRequests() {
       }
 
       if (item.alertType === "REQUEST") {
+        console.log(item.usageId);
         await rejectDeposit(item.usageId);
       }
 
