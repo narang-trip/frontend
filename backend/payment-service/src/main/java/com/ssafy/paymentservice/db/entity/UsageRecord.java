@@ -17,7 +17,7 @@ public class UsageRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column
-    private String user_id;
+    private String userId;
     @Column
     private int price;
     @Column
@@ -26,8 +26,8 @@ public class UsageRecord {
     @Column(updatable = false)
     private LocalDateTime regDate; // 요청 시간
     @Builder
-    public UsageRecord(String user_id, int price, int balance){
-        this.user_id = user_id;
+    public UsageRecord(String userId, int price, int balance){
+        this.userId = userId;
         this.price = price;
         this.balance = balance;
         this.regDate = LocalDateTime.now();

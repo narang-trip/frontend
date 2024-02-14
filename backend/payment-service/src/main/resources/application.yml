@@ -25,3 +25,19 @@ springdoc:
     path: /api/payment/v3/api-docs
   swagger-ui:
     path: /api/payment/swagger-ui.html
+
+adminKey: ${ADMIN_KEY}
+grpc:
+  server:
+    port: 9099
+  client:
+    message-service:
+      address: 'static://message-service:9099' # Server Address
+      negotiation-type: plaintext
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+    trip-service:
+      address: 'static://trip-service:9099' # Server Address
+      negotiation-type: plaintext
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true

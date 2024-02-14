@@ -1,5 +1,6 @@
 package com.ssafy.paymentservice.controller;
 
+import com.ssafy.paymentservice.db.entity.RefundRecord;
 import com.ssafy.paymentservice.db.entity.UsageRecord;
 import com.ssafy.paymentservice.entity.KakaoApproveResponse;
 import com.ssafy.paymentservice.entity.KakaoCancelResponse;
@@ -8,10 +9,16 @@ import com.ssafy.paymentservice.exception.BusinessLogicException;
 import com.ssafy.paymentservice.exception.ExceptionCode;
 import com.ssafy.paymentservice.service.KakaoPayService;
 import com.ssafy.paymentservice.service.MileageService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @CrossOrigin("*")
 @RestController
@@ -20,19 +27,14 @@ import org.springframework.web.bind.annotation.*;
 public class PaymentController {
     private final KakaoPayService kakaoPayService;
     private final MileageService mileageService;
-    @GetMapping("/payment")
-    public String getWelcome() {
-        System.out.println("payment");
-        return "payment";
-    }
-
     /**
      * 결제요청
      */
     @PostMapping("/ready")
-    public ResponseEntity readyToKakaoPay(@RequestParam("user_id") String userId, @RequestParam("price") String price) {
-        KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(userId, price);
-
+    public ResponseEntity readyToKakaoPay(@RequestParam("user_id") String userId,
+                                          @RequestParam("price") String price,
+                                          @RequestParam("return_url") String returnUrl) {
+        KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(userId, price, returnUrl);
         return new ResponseEntity<>(kakaoReady, HttpStatus.OK);
     }
 
@@ -40,11 +42,12 @@ public class PaymentController {
      * 결제 성공
      */
     @GetMapping("/success")
-    public ResponseEntity afterPayRequest(@RequestParam("pg_token") String pgToken, @RequestParam("user_id") String userId) {
-
+    public ResponseEntity afterPayRequest(@RequestParam("pg_token") String pgToken,
+                                          @RequestParam("user_id") String userId,
+                                          @RequestParam("return_url") String returnUrl) {
         KakaoApproveResponse kakaoApprove = kakaoPayService.approveResponse(pgToken, userId);
-
-        return new ResponseEntity<>(kakaoApprove, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, returnUrl).body(null);
+//        return new ResponseEntity<>(returnUrl, HttpStatus.OK);
     }
 
     /**
@@ -66,10 +69,56 @@ public class PaymentController {
         System.out.println("fail");
         throw new BusinessLogicException(ExceptionCode.PAY_FAILED);
     }
-
+    
+    /**
+     * 마일리지 사용
+     */
     @PostMapping("/use")
-    public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") int price) {
-        UsageRecord usageRecord = mileageService.useMileage(userId, price);
-        return new ResponseEntity<>(usageRecord, HttpStatus.OK);
+    public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") int price, @RequestParam("trip_id") String tripId) {
+        try {
+            UsageRecord usageRecord = mileageService.useMileage(userId, price);
+            return new ResponseEntity<>(usageRecord, HttpStatus.OK);
+        }
+        catch (BusinessLogicException e){
+            return new ResponseEntity<>(e.getExceptionCode().getMessage(), e.getExceptionCode().getHttpStatus());
+        }
+    }
+
+    /**
+     * 잔액 확인
+     */
+    @GetMapping("/balance")
+    public ResponseEntity balance(@RequestParam("user_id") String userId){
+        return new ResponseEntity<>(mileageService.getMileage(userId), HttpStatus.OK);
+    }
+
+    /**
+     * 예약금 환불
+     */
+    @PostMapping("/refund")
+    public ResponseEntity refund(
+            @RequestParam("usage_id") String usageId,
+            @RequestParam("departure_datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureDateTime) {
+        try {
+            RefundRecord refundRecord = mileageService.cancelMileage(usageId, departureDateTime);
+            return new ResponseEntity<>(refundRecord, HttpStatus.OK);
+        }
+        catch (BusinessLogicException e){
+            return new ResponseEntity<>(e.getExceptionCode().getMessage(), e.getExceptionCode().getHttpStatus());
+        }
+    }
+
+    /**
+     * 여행 계획 거절,
+     */
+    @PostMapping("/reject")
+    public ResponseEntity reject(@RequestParam("usage_id") String usageId){
+        try {
+            RefundRecord refundRecord = mileageService.rejectMileage(usageId);
+            return new ResponseEntity<>(refundRecord, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }

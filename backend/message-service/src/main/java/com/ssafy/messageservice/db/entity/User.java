@@ -17,3 +17,5 @@ public class User extends BaseEntity{
     @Column(name = "nickname")
     private String nickname;
 }
+
+

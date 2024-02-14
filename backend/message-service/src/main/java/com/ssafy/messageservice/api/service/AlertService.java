@@ -9,6 +9,11 @@ import com.ssafy.messageservice.db.repository.AlertRepository;
 import com.ssafy.messageservice.db.repository.EmitterRepository;
 import com.ssafy.messageservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.client.inject.GrpcClient;
+import net.devh.boot.grpc.server.service.GrpcService;
+import org.apache.coyote.BadRequestException;
+import org.narang.lib.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,14 +28,20 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
+@Slf4j
 @RequiredArgsConstructor
-public class AlertService {
+@Service
+public class AlertService extends NarangGrpc.NarangImplBase {
     // 기본 타임아웃 설정
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
     private final EmitterRepository emitterRepository;
     private final AlertRepository alertRepository;
     private final UserRepository userRepository;
+    @GrpcClient("payment-service")
+    private NarangGrpc.NarangBlockingStub paymentBlockingStub;
+    @GrpcClient("trip-service")
+    private NarangGrpc.NarangBlockingStub tripBlockingStub;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AlertService.class);
 
     /**
@@ -40,8 +51,10 @@ public class AlertService {
      * @return SseEmitter - 서버에서 보낸 이벤트 Emitter
      */
     public SseEmitter subscribe(String userId, String lastEventId) {
+        log.info("subscribe 호출 userId : {}", userId);
         String emitterId = userId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
+        log.info("emitter : {}", emitter.toString());
 
         // Emitter가 완료될 때(모든 데이터가 성공적으로 전송된 상태) Emitter를 삭제
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
@@ -89,8 +102,29 @@ public class AlertService {
     // 요청 알림 보내는 메소드
     public ResponseEntity<?> send(AlertAttendRequest alertAttendRequest) {
         try{
+
             boolean exists = alertRepository.existsByTripIdAndSenderId(alertAttendRequest.getTripId(), alertAttendRequest.getSenderId());
+
             if(!exists){
+
+                /*
+                 여행 정보 Get
+                 */
+                TripGrpcResponse tripGrpcResponse = tripBlockingStub.getTripById(TripGrpcRequest.newBuilder()
+                        .setTripId(alertAttendRequest.getTripId()).build());
+
+                if (tripGrpcResponse.getTripApplicantsSize() >= tripGrpcResponse.getTripParticipantsSize())
+                    throw new BadRequestException();
+
+                /*
+                 마일리지 사용
+                 */
+                
+                TripMileageUsageResponse paymentResponse = paymentBlockingStub.tripUseMileage(TripMileageUsageRequest.newBuilder()
+                        .setUserId(alertAttendRequest.getSenderId())
+                        .setPrice(tripGrpcResponse.getTripDeposit())
+                        .build());
+
                 // DB Alert 테이블에 데이터 저장하기
                 Alert alert = new Alert(UUID.randomUUID().toString(),
                         alertAttendRequest.getTripId(),
@@ -123,6 +157,7 @@ public class AlertService {
                             sendAlert(emitter, eventId, key, alertResponse);
                         }
                 );
+
                 return ResponseEntity.ok().body("Alert sent successfully"); // 성공 응답
             }
             else{
@@ -185,6 +220,7 @@ public class AlertService {
 
     // userId별로 알림 리스트 보내주기
     public List<AlertListResponse.AlertResponse> getAlertsByReceiverId(String receiverId) {
+        log.info("getAlertsByReceiverId 호출");
         List<Alert> alerts = alertRepository.findByReceiverId(receiverId);
         if(alerts.isEmpty()){
             return null;

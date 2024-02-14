@@ -15,6 +15,20 @@ spring:
 
 server:
   port: 8081
+grpc:
+  client:
+    payment-service:
+      address: 'static://payment-service:9099' # Server Address
+      negotiation-type: plaintext
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+    message-service:
+      address: 'static://message-service:9099' # Server Address
+      negotiation-type: plaintext
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+  server:
+    port: 9099
 
 springdoc:
   api-docs:
@@ -27,5 +41,14 @@ cloud:
     credentials:
       access-key: ${AWS_S3_ACCESSKEY}
       secret-key: ${AWS_S3_SECRETKEY}
-#    s3:
-#      bucket: ${AWS_S3_BUCKETNAME}
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+

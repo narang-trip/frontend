@@ -8,7 +8,10 @@ import com.ssafy.messageservice.db.entity.Chatroom;
 import com.ssafy.messageservice.db.entity.ChatroomUser;
 import com.ssafy.messageservice.db.entity.User;
 import com.ssafy.messageservice.db.repository.*;
+import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import net.devh.boot.grpc.server.service.GrpcService;
+import org.narang.lib.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -18,8 +21,8 @@ import java.util.UUID;
 
 
 @RequiredArgsConstructor
-@Service
-public class ChatService {
+@Service @GrpcService
+public class ChatService extends NarangGrpc.NarangImplBase {
     private final ChatRepositoryCustom chatRepositoryCustom;
     private final ChatRepository chatRepository;
     private final ChatroomRepository chatroomRepository;
@@ -57,13 +60,31 @@ public class ChatService {
     }
 
     public String postChatroom(ChatroomRequest chatroomRequest){
-        Chatroom room = new Chatroom(UUID.randomUUID().toString(), chatroomRequest.getChatroomName());
+        String chatroomId = UUID.randomUUID().toString();
+        Chatroom room = new Chatroom(chatroomId, chatroomRequest.getChatroomName());
         chatroomRepository.save(room);
 
         ChatroomUser user = new ChatroomUser(UUID.randomUUID().toString(), room, chatroomRequest.getUserId());
         chatroomUserRepository.save(user);
 
-        return "success";
+        return chatroomId;
+    }
+
+    @Override
+    public void postChatRoom(ChatGrpcRequest request, StreamObserver<ChatGrpcResponse> responseObserver) {
+
+        String chatroomId = postChatroom(
+                ChatroomRequest.builder()
+                        .userId(request.getUserId())
+                        .chatroomName(request.getChatroomName())
+                        .build());
+
+        ChatGrpcResponse response = ChatGrpcResponse.newBuilder()
+                .setChatroomId(chatroomId)
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 
     private String getName(String id) {

@@ -40,6 +40,13 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
 
     /*
+        gRPC
+     */
+    implementation 'net.devh:grpc-client-spring-boot-starter:2.15.0.RELEASE'
+    implementation 'net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE'
+    implementation files ('libs/GrpcNarangInterface-1.0-SNAPSHOT.jar')
+
+    /*
 		DB
 	 */
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
