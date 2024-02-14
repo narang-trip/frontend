@@ -62,7 +62,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
               </div>
               <div className=" p-1.5 text-sm text-center flex ">
                 {data &&
-                  data.position.map((role, idx) => (
+                  JSON.parse(decodeURIComponent(window.atob(data.position))).map((role, idx) => (
                     <span
                       className="p-1 border bg-neutral-100 rounded-xl border-neutral-100"
                       key={idx}
