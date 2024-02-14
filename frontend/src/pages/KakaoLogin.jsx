@@ -35,7 +35,7 @@ const Login = () => {
             authActions.Setting({
               token: res.headers.authorization,
               refreshToken: res.headers["authorization-refresh"],
-              userId: userRes.data.userId,
+              userId: userRes.data.id,
               nickname: userRes.data.nickname
             })
           );
