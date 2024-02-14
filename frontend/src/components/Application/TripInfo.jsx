@@ -54,10 +54,10 @@ export default function TripInfo({ tripData }) {
                   <SlLocationPin className="mx-3 " size="24" />
                   <div> {tripData.continent}, {tripData.country}, {tripData.city}</div>
                 </div>
-                <div className="flex flex-row items-center my-1.5 text-sm">
+                {/* <div className="flex flex-row items-center my-1.5 text-sm">
                   <SlPeople className="mx-3" size="24" />
                   <div> 2 / {tripData.tripParticipantsSize} </div>
-                </div>
+                </div> */}
                 {/* <div className="flex flex-row items-center my-1.5 text-sm">
                   <SlBadge className="mx-3 " size="24" />
                   <div className="flex flex-wrap justify-between">
