@@ -26,9 +26,9 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
     public ChatroomListResponse getLatestChatsByUserId(String userId) {
         // ChatroomUser 테이블에 가서 전달받은 userId값을 갖고 있는 chatroomId를 받아온다.
         List<ChatroomListResponse.ChatroomResponse> chatroomResponses = queryFactory
-                .selectDistinct(QChat.chat.chatroom.chatroomId)
-                .from(QChat.chat)
-                .where(QChat.chat.chatroom.chatroomId.in(
+                .selectDistinct(QChatroom.chatroom.chatroomId)
+                .from(QChatroom.chatroom)
+                .where(QChatroom.chatroom.chatroomId.in(
                         JPAExpressions
                                 .select(QChatroomUser.chatroomUser.chatroom.chatroomId)
                                 .from(QChatroomUser.chatroomUser)
