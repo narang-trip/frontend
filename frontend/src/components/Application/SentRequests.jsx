@@ -65,10 +65,7 @@ export default function SentRequests() {
         console.log(item.usageId);
         try {
           await axios.post(
-            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject`,
-            {
-              usage_id: item.usageId,
-            }
+            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject?usage_id=${item.usageId}`,
           );
           console.log("예약금 환불 성공");
         } catch (error) {
