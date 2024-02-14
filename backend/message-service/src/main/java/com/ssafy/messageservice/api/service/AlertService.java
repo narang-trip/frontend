@@ -130,13 +130,13 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                 /*
                  마일리지 사용
                  */
-//                TripMileageUsageResponse paymentResponse = paymentBlockingStub.tripUseMileage(TripMileageUsageRequest.newBuilder()
-//                        .setUserId(alertAttendRequest.getSenderId())
-//                        .setPrice(tripGrpcResponse.getTripDeposit())
-//                        .build());
-//
-//                System.out.println("===================paymentInfo=================");
-//                System.out.println(paymentResponse.toString());
+                TripMileageUsageResponse paymentResponse = paymentBlockingStub.tripUseMileage(TripMileageUsageRequest.newBuilder()
+                        .setUserId(alertAttendRequest.getSenderId())
+                        .setPrice(tripGrpcResponse.getTripDeposit())
+                        .build());
+
+                System.out.println("===================paymentInfo=================");
+                System.out.println(paymentResponse.toString());
 
                 /*
                     돈이 부족한 경우와
