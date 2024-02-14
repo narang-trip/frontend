@@ -81,6 +81,7 @@ const ApplicationModal = ({ data, onClose }) => {
     position: selectedPositions,
     aspiration: comment,
     alertType: "REQUEST",
+    usageId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     read: false
   };
 
@@ -97,11 +98,11 @@ const ApplicationModal = ({ data, onClose }) => {
         }
       );
 
-      const response2 = await axios.post(
-        `https://i10a701/p/ssafy/io/api/payment/use?user_id=${postData.senderId}&price=${data.tripDeposit}&trip_id=${data.tripId}`
-      );
+      // const response2 = await axios.post(
+      //   `https://i10a701/p/ssafy/io/api/payment/use?user_id=${postData.senderId}&price=${data.tripDeposit}&trip_id=${data.tripId}`
+      // );
 
-      console.log(response2);
+      // console.log(response2);
 
       if (response.status === 200) {
         // 신청 성공 여부 true
