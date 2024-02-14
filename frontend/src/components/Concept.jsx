@@ -13,7 +13,7 @@ export default function Concept() {
   };
 
   return (
-    <div className="flex justify-between mt-3 mx-2">
+    <div className="flex justify-between mt-3 mx-4">
       {conceptList.map((concept) => {
         const colorClass = conceptButtonColorObject[concept];
         const isSelected = concept === selectedConcept;
