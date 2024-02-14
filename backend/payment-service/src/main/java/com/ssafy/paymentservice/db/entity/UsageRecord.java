@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
-//@Setter
 public class UsageRecord extends BaseEntity{
     @Column
     private String userId;
@@ -19,9 +18,14 @@ public class UsageRecord extends BaseEntity{
     private int price;
     @Column
     private int balance; // 사용 후 잔액
+    @Column
+    private boolean refundStatus; // 환불 여부 (기본값: false)
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime regDate; // 요청 시간
+
+    public boolean getRefundStatus(){ return this.refundStatus; }
+    public void setRefundStatus(boolean refundStatus){ this.refundStatus = refundStatus; }
     @Builder
     public UsageRecord(String userId, int price, int balance){
         super();
@@ -29,5 +33,6 @@ public class UsageRecord extends BaseEntity{
         this.price = price;
         this.balance = balance;
         this.regDate = LocalDateTime.now();
+        this.refundStatus = false;
     }
 }
