@@ -28,6 +28,7 @@ const AlertAnimation = ({ color }) => {
 };
 
 const UpperNavbar = () => {
+  const [emptyMessage, setEmptyMessage] = useState(true)
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [alertContent, setAlertContent] = useState("");
@@ -122,7 +123,10 @@ const UpperNavbar = () => {
   }, [userId]);
 
   useEffect(() => {
-    setAlertAnimation();
+    if (alertContent !== "") {
+      setEmptyMessage(false);
+      setAlertAnimation();
+    }
   }, [alertContent]);
 
   const navigateHome = () => {
@@ -188,7 +192,7 @@ const UpperNavbar = () => {
             {alertAmount > 0 && <AlertAnimation color={conceptColorClass} />}
             🔔
           </Link>
-          <TalkBubble content={alertContent} isVisible={isVisible} />
+          {emptyMessage && <TalkBubble content={alertContent} isVisible={isVisible} />
           <Dropdown />
         </div>
       )}
