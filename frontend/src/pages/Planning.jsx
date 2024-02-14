@@ -167,10 +167,11 @@ export default function PlanningPage() {
   };
   // 계획 저장하기 모달
   const savePlan = () => {
-    if (list.title !== null) {
+    if (planId !== undefined) {
       const base64Incoding = window.btoa(
         encodeURIComponent(JSON.stringify(list))
       );
+      console.log("수정할때 인코딩된거 : ", base64Incoding);
       async () => {
         try {
           const response = await axios.post(
