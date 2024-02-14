@@ -13,6 +13,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
   const [msg, setMsg] = useState("");
   const [loadingChatMore, setLoadingChatMore] = useState(true)
   const userId = useSelector((state) => state.auth.userId);
+  console.log("chatRoom userId : " ,userId)
   const lastChatRef = useRef("");
   const [prevScrollHeight, setPrevScrollHeight] = useState(null);
   const chatDivRef = useRef(null);

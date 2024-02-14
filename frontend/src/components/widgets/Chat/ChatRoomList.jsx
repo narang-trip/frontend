@@ -11,11 +11,6 @@ const LoadingDiv = () => {
   </div>
 }
 
-const NoChatRoom = ({ conceptColor }) => {
-  return <div className="flex flex-col justify-center items-center h-full">
-    <p className={`text-lg font-semibold animate-bounce text-${conceptColor}-400`}>모집글을 작성해 보세요</p>
-  </div>
-}
 
 const ChatRoomList = ({ onChatRoomSelect }) => {
   const {userId} = useSelector((state) => state.auth);
@@ -26,6 +21,7 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
   useEffect(() => {
     
     if (userId) {
+      console.log("getChatroomList 직전 userId : ", userId)
       getChatroomList(userId);
     }
   }, [userId]);
