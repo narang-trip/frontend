@@ -13,7 +13,7 @@ import TripParticipantsInfo from "./TripParticipantsInfo";
 export default function TripDetail() {
   const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate();
-  
+
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [isLeader, setIsLeader] = useState(false);
@@ -45,9 +45,29 @@ export default function TripDetail() {
     fetchData(); // 수정된 정보를 다시 불러오는 함수
   };
 
-  // 취소하기 클릭 
+  // 취소하기 클릭
   const handleCancelClick = () => {
-   navigate('/applicantList');
+    navigate("/applicantList");
+  };
+
+  const handleDeleteClick = async () => {
+    try {
+      const response = await axios.get(
+        `https://i10a701.p.ssafy.io/api/trip/trip`,
+        {
+          tripId: tripId,
+          userId: userId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("게시판 상세정보를 가져오는 중 에러 발생:", error);
+    }
   };
 
   // useEffect (여행 상세 정보 로딩)
@@ -67,21 +87,16 @@ export default function TripDetail() {
       setReturnDate(DateFormatter({ dateString: response.data.returnDate }));
 
       // 모집글 작성자 여부 확인
-      setIsLeader(
-        response.data.tripLeaderId === userId
-      );
+      setIsLeader(response.data.tripLeaderId === userId);
 
       // 모집글 참가자 여부 확인
       if (!isLeader) {
         setIsParcitipant(
           response.data.participants.some(
-            (participant) =>
-              participant.participantId ===
-              userId
+            (participant) => participant.participantId === userId
           )
         );
       }
-      
     } catch (error) {
       console.error("게시판 상세정보를 가져오는 중 에러 발생:", error);
     }
@@ -203,12 +218,20 @@ export default function TripDetail() {
         <div className="col-span-1">
           <div className="flex justify-center mt-4">
             {isLeader ? (
-              <button
-                className="w-full py-3 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-800/10"
-                onClick={OpenUpdateModal}
-              >
-                수정하기
-              </button>
+              <div>
+                <button
+                  className="w-1/2 py-3 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-800/10"
+                  onClick={OpenUpdateModal}
+                >
+                  수정하기
+                </button>
+                <button
+                  className="w-1/2 py-3 text-sm font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-800/10"
+                  onClick={handleDeleteClick}
+                >
+                  삭제하기
+                </button>
+              </div>
             ) : isParticipant ? (
               <button
                 className="w-full py-3 text-sm font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-800/10"
@@ -231,7 +254,10 @@ export default function TripDetail() {
               <p className="mt-5 mb-3 text-base font-bold">일정 정보</p>
 
               <p className="mb-3 text-base font-bold">여행 참여자 정보</p>
-              <TripParticipantsInfo participants={tripDetails.participants} leaderId={tripDetails.tripLeaderId}/>
+              <TripParticipantsInfo
+                participants={tripDetails.participants}
+                leaderId={tripDetails.tripLeaderId}
+              />
             </div>
           ) : (
             <div>loading 💦</div>
