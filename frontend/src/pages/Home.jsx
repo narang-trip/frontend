@@ -1,7 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import axios from "axios";
 import colors from "tailwindcss/colors";
-import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -21,21 +19,6 @@ const HomePage = () => {
     setClassName(newClassName);
     setLineColor(colors[conceptColor]["400"]);
   }, [conceptColor]);
-
-  // useEffect(() => {
-  //   getUser();
-  // });
-
-  // const getUser = () => {
-  //   axios
-  //     .get("/api/user/get")
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
 
   const textAnimation = {
     hidden: { x: -100, opacity: 0 },
