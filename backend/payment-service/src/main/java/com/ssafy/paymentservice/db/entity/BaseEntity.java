@@ -1,14 +1,9 @@
 package com.ssafy.paymentservice.db.entity;
 
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.ValueGenerationType;
+import org.hibernate.annotations.*;
 import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
@@ -17,7 +12,9 @@ import java.util.UUID;
 @MappedSuperclass
 public class BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    @Id @Column(name = "post_id")
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
 
