@@ -100,9 +100,11 @@ const MyPlan = () => {
           <p className="w-1/6">수정날짜</p>
         </div>
       </>
-      {planData.map((plan, idx) => (
-        <PlanSummary plan={plan} key={idx} />
-      ))}
+      <div className="gap-2">
+        {planData.map((plan, idx) => (
+          <PlanSummary plan={plan} key={idx} />
+        ))}
+      </div>
       {isNewPlanOpen && (
         <ModalPortal>
           <NewPlan onClose={CloseNewPlanModal} />
