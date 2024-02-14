@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { ModalPortal } from "../components/modals/ModalPortal";
 import NewPlan from "../components/modals/NewPlan";
@@ -13,6 +13,7 @@ const MyPlan = () => {
   const [pageNo, setPageNo] = useState(0);
   const [planData, setPlanData] = useState([]);
   const [isNewPlanOpen, setIsNewPlanOpen] = useState(false);
+  const userId = useSelector((state) => state.auth).userId;
   const dispatch = useDispatch();
 
   dispatch(scheduleActions.reset());
@@ -33,7 +34,7 @@ const MyPlan = () => {
   const getMyPlanList = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList/page/${pageNo}`
+        `${import.meta.env.VITE_PLAN_REQUEST_URI}/my/${userId}`
       );
 
       // 가져올 항목이 없으면 중단
