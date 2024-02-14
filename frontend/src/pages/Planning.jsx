@@ -179,11 +179,11 @@ export default function PlanningPage() {
         `${import.meta.env.VITE_PLAN_REQUEST_URI}/update`,
         {
           planId: planId,
-          planName: res.planName,
-          planDesc: res.planDesc,
+          planName: res.data.planName,
+          planDesc: res.data.planDesc,
           lastModifiedDate: "",
-          ownerId: res.ownerId,
-          participantIds: res.participantIds,
+          ownerId: res.data.ownerId,
+          participantIds: res.data.participantIds,
           planInfo: base64Incoding,
         }
       );
