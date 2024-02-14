@@ -32,8 +32,13 @@ const TripSummary = ({ trip }) => {
               <img
                 src={trip.tripImgUrl}
                 alt="tripThumbnail"
-                className="w-10 h-10 mb-2 transition-transform duration-300 ease-in-out transform scale-100 rounded-full"
+                className="w-10 h-10 mb-2 mr-3 transition-transform duration-300 ease-in-out transform scale-100 rounded-full"
               />
+            </div>
+            <div className="flex flex-row items-center my-1.5 text-sm">
+              <p className="text-xs">
+               {trip.tripName}
+              </p>
             </div>
             <div className="flex flex-row items-center my-1.5 text-sm">
               <SlCalender className="mx-2 " size="20" />
