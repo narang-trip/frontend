@@ -22,17 +22,33 @@ export default function PlanningPage() {
 
   const { planId } = useParams();
 
+  useEffect(() => {
+    const tmpList = window.sessionStorage.getItem("tmpPlan");
+    if (tmpList !== null) {
+      dispatch(scheduleActions.setSchedule(JSON.parse(tmpList)));
+    }
+    return () => {
+      window.sessionStorage.removeItem("tmpPlan");
+    };
+  }, []);
+
+  useEffect(() => {
+    window.sessionStorage.setItem("tmpPlan", JSON.stringify(list));
+  }, [list]);
+
   const setInitSchedule = async () => {
     console.log("Planning.jsx 26 planId", planId);
     if (planId !== undefined) {
       setIsCanModify(false);
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan/${planId}`
-        );
+        const response = await axios.get(`${import.meta.env.VITE_PLAN_REQUEST_URI}/plan/${planId}`);
         setRes(response);
         console.log("response.data : ", response.data);
-        // dispatch(scheduleActions.setSchedule(response.data));
+        dispatch(
+          scheduleActions.setSchedule(
+            JSON.parse(decodeURIComponent(window.atob(response.data.planInfo)))
+          )
+        );
       } catch (error) {
         console.log("Error : ", error);
       }
@@ -79,8 +95,7 @@ export default function PlanningPage() {
 
     async function getDuration(pl, cl) {
       return new Promise((resolve, reject) => {
-        const directionsService =
-          new window.google.maps.DistanceMatrixService();
+        const directionsService = new window.google.maps.DistanceMatrixService();
         directionsService.getDistanceMatrix(
           {
             origins: [new window.google.maps.LatLng(pl[0], pl[1])],
@@ -170,23 +185,18 @@ export default function PlanningPage() {
   };
 
   const doModifyPlan = async () => {
-    const base64Incoding = window.btoa(
-      encodeURIComponent(JSON.stringify(list))
-    );
+    const base64Incoding = window.btoa(encodeURIComponent(JSON.stringify(list)));
     console.log("res 테스트 : ", res);
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_PLAN_REQUEST_URI}/update`,
-        {
-          planId: planId,
-          planName: res.data.planName,
-          planDesc: res.data.planDesc,
-          lastModifiedDate: "",
-          ownerId: res.data.ownerId,
-          participantIds: res.data.participantIds,
-          planInfo: base64Incoding,
-        }
-      );
+      const response = await axios.post(`${import.meta.env.VITE_PLAN_REQUEST_URI}/update`, {
+        planId: planId,
+        planName: res.data.planName,
+        planDesc: res.data.planDesc,
+        lastModifiedDate: "",
+        ownerId: res.data.ownerId,
+        participantIds: res.data.participantIds,
+        planInfo: base64Incoding,
+      });
       console.log("수정결과 : ", response);
     } catch (error) {
       console.log("수정 Error : ", error);
