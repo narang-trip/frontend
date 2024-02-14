@@ -33,7 +33,7 @@ export default function TripInfo({ tripData }) {
         <ul>
           <button
             onClick={handleViewClick}
-            className="w-10/12 px-4 py-2 mx-auto my-2 border rounded-3xl border-stone-400"
+            className="w-9/12 px-4 py-2 mx-auto my-2 border rounded-3xl border-stone-400"
           >
             <div className="grid grid-cols-3 gap-6">
               <div className="flex items-center col-span-1">
