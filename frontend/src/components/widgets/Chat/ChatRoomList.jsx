@@ -37,7 +37,8 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
   };
 
   const enterChatroomHandler = (chatroom) => {
-    onChatRoomSelect(chatroom.chatroomName, chatroom.chatroomId);
+    console.log("enterChatroom : ", chatroom.userList )
+    onChatRoomSelect(chatroom.chatroomName, chatroom.chatroomId, chatroom.userList);
   };
   return (
     <div className="w-auto h-full">
