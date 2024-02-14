@@ -95,12 +95,6 @@ export default function TripParticipantsInfo({ participants, leaderId }) {
                     {balances[participant.participantId]} 원
                   </p>
                 </div>
-                <div className="flex flex-row flex-wrap my-1">
-                  <p className="mx-2 text-xs">💬</p>
-                  <p className="text-xs">
-                    {usersInfo[participant.participantId]?.bio || "소개글 없음"}
-                  </p>
-                </div>
               </div>
             </div>
           ))}

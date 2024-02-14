@@ -10,10 +10,11 @@ import DateRangePicker from "./DateRangePicker.jsx";
 import PositionCheck from "./PositionCheck.jsx";
 import { ModalPortal } from "../../modals/ModalPortal.jsx";
 import ContinentModal from "../../modals/ContinentModal.jsx";
-
+import PlanModal from "../../modals/PlanModal.jsx"
 
 export default function TripWriteForm() {
   const userId = useSelector((state) => state.auth.userId);
+  const [planName, setPlanName] = useState("");
 
   const [board, setBoard] = useState({
     title: "",
@@ -33,11 +34,13 @@ export default function TripWriteForm() {
     planId: "",
     description: "",
     deposit: 0,
+    tripPlanId: "",
   });
 
   const [imgUrl, setImgUrl] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isPlanOpen, setIsPlanOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -114,11 +117,19 @@ export default function TripWriteForm() {
     setIsOpen(false);
   };
 
+  const OpenPlanModal = () => {
+    setIsPlanOpen(true);
+  };
+
+  const ClosePlanModal = () => {
+    setIsPlanOpen(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     console.log(userId);
-    
+
     const formData = new FormData();
 
     const requestData = {
@@ -213,7 +224,11 @@ export default function TripWriteForm() {
                     type="text"
                     name="location"
                     placeholder="장소를 선택해주세요"
-                    value={board.continent ? `${board.continent}, ${board.country}, ${board.city}` : ''}
+                    value={
+                      board.continent
+                        ? `${board.continent}, ${board.country}, ${board.city}`
+                        : ""
+                    }
                     onClick={OpenLocaitonModal}
                     className="border rounded-sm border-neutral-300  p-1.5 w-2/3 text-neutral-700 placeholder:text-neutral-300 text-sm"
                     readOnly
@@ -290,6 +305,20 @@ export default function TripWriteForm() {
                   <label className="mr-10 text-base font-medium">
                     여행 계획표
                   </label>
+                  <input
+                    type="text"
+                    name="planId"
+                    placeholder="계획을 선택해주세요"
+                    value={planName}
+                    onClick={OpenPlanModal}
+                    className="border rounded-sm border-neutral-300  p-1.5 w-2/3 text-neutral-700 placeholder:text-neutral-300 text-sm"
+                    readOnly
+                  ></input>
+                  {isPlanOpen && (
+                    <ModalPortal>
+                      <PlanModal onClose={ClosePlanModal} />
+                    </ModalPortal>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col justify-between col-span-1">
