@@ -99,7 +99,7 @@ const UpperNavbar = () => {
 
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const eventSource = new EventSource(
-      `${import.meta.env.VITE_CHAT_REQUEST_URI}/subscribe/${userId}`,
+      `${import.meta.env.VITE_ALERT_REQUEST_URI}/subscribe/${userId}`,
       {
         heartbeatTimeout: 3600000,
       }
