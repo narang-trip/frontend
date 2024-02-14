@@ -6,6 +6,7 @@ import axios from "axios";
 export default function SentRequests() {
   const [sentData, setSentData] = useState(null);
   const [selectedType, setSelectedType] = useState("ALL");
+  const [startDate, setStartDate] = useState(null);
   const userId = useSelector((state) => state.auth.userId);
 
   const fetchSentData = async () => {
@@ -34,6 +35,8 @@ export default function SentRequests() {
       const response = await axios.get(
         `https://i10a701.p.ssafy.io/api/trip/trip/${tripId}`
       );
+
+      setStartDate(response.data.departureDate);
       return response.data;
     } catch (error) {
       console.error("여행 정보를 불러오는 중 에러 발생:", error);
@@ -44,7 +47,7 @@ export default function SentRequests() {
     try {
       // 예약금 환불이 필요한 경우
       if (item.alertType === "ACCEPT") {
-        await rejectDeposit(item.tripId);
+        await refundDeposit(item.tripId);
       }
 
       if (item.alertType === "REQUEST") {
@@ -62,6 +65,30 @@ export default function SentRequests() {
       );
     } catch (error) {
       console.error("에러 발생", error);
+    }
+  };
+
+  // 날짜 포맷
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  // 예약금 환불 로직
+  const refundDeposit = async (usageId) => {
+    // 여기에 예약금 환불에 대한 서버 요청 로직을 추가
+    try {
+      await axios.post(`https://i10a701.p.ssafy.io/api/payment/refund`, {
+        params: {
+          usage_id: usageId,
+          departure_datetime: formatDate(startDate),
+        },
+      });
+      console.log("예약금 일부 환불 성공");
+    } catch (error) {
+      console.error("Error refunding deposit:", error);
     }
   };
 
