@@ -20,18 +20,11 @@ export default function PlanningPage() {
   const [isCanModify, setIsCanModify] = useState(true);
 
   const { planId } = useParams();
-  console.log("palnId : ", planId);
-
-  // console.log(list);
-
-  useMemo(() => {
-    if (list.title !== null) {
-      setIsCanModify(false);
-    }
-  }, [list.title]);
+  if (planId !== undefined) {
+    setIsCanModify(false);
+  }
 
   useEffect(() => {
-    console.log("여기 들어는 와지나요?");
     if (planId !== undefined) {
       async () => {
         try {

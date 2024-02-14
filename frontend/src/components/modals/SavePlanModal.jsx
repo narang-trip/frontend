@@ -6,12 +6,14 @@ import { useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
 
 import { scheduleActions } from "../../store/scheduleSlice";
+import { useNavigate } from "react-router-dom";
 
 const SavePlanModal = (props) => {
   const modalBG = useRef(null);
   const state = useSelector((state) => state.schedule);
   const userState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [title, setTitle] = useState(null);
   const [desc, setDesc] = useState(null);
 
@@ -47,6 +49,7 @@ const SavePlanModal = (props) => {
     } catch (error) {
       console.log(error);
     }
+    navigate("/planning");
     props.onClose();
   };
 
