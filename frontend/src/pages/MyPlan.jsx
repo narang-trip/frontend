@@ -30,7 +30,7 @@ const MyPlan = () => {
   }, [list]);
   // console.log(planData);
 
-  useEffect(() => {
+  const getUsersPlan = async () => {
     console.log("userId : ", userId);
     async () => {
       try {
@@ -43,6 +43,10 @@ const MyPlan = () => {
         console.log("Error : ", error);
       }
     };
+  };
+
+  useEffect(() => {
+    getUsersPlan();
   });
 
   // 계획 만들기 모달
