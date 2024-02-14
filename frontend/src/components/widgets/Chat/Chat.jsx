@@ -12,7 +12,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
   const [chats, setChats] = useState([]);
   const [msg, setMsg] = useState("");
   const [loadingChatMore, setLoadingChatMore] = useState(true)
-  const {userId, nickname} = useSelector((state) => state.auth);
+  const { userId, nickname } = useSelector((state) => state.auth);
   const lastChatRef = useRef("");
   const [prevScrollHeight, setPrevScrollHeight] = useState(null);
   const chatDivRef = useRef(null);
@@ -23,7 +23,6 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
     threshold: 0,
     rootMargin: '10px' // div태그가 보일 때 inView가 true로 설정
   });
-
 
 
   const getChatList = useCallback(async (chatroomId) => {
@@ -39,7 +38,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
       } else {
         const lastIndex = chatList.findIndex(chat => chat.chatId === lastChatRef.current); //겹치는 채팅 인덱스 찾기
         if (lastIndex !== -1) {
-          chatList = chatList.slice(lastIndex+1);
+          chatList = chatList.slice(lastIndex + 1);
         } //없으면 그대로 반환, 있으면 잘라내기
       }
       chatList = [...chatList].reverse();
@@ -102,8 +101,9 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
             `/sub/chat/room/${chatroomId}`,
             (message) => {
               const messageBody = JSON.parse(message.body);
+              console.log(messageBody);
               const chat = {
-                userId: userId,
+                userId: messageBody.senderId,
                 sendTime: messageBody.sendTime,
                 content: messageBody.content,
               };
@@ -145,6 +145,16 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
     }
   };
 
+  const getNicknameById = (id) => {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id === id) {
+        return array[i].nickname;
+      }
+    }
+    // 해당 id를 가진 객체가 없을 경우 예외 처리
+    return "해당 id를 가진 객체를 찾을 수 없습니다.";
+  }
+
   return (
     <div className="relative w-full h-full">
       <div className="absolute top-0 left-0 right-0">
@@ -180,7 +190,8 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
                 <div className={messageClass}>{chat.content}</div>
               </div>
             );
-          } else if (chat.userId === nickname) {
+          } else if (chat.userId === userId) {
+            
             messageBoxClass += " justify-end my-1"; // 본인인 건 오른쪽
             messageClass += " bg-yellow-200 border-yellow-300";
             return (
@@ -193,11 +204,13 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
               </Fragment>
             );
           } else {
+
             messageBoxClass += " justify-start my-1"; // 상대방은 왼쪽
             messageClass += " bg-white";
+            const otherUserNickname = getNicknameById(chat.chatId)
             return (
               <Fragment key={chat.chatId}>
-                <div className="ml-1 text-xs text-left">{chat.userId}</div>
+                <div className="ml-1 text-xs text-left">{otherUserNickname}</div>
                 <div className={messageBoxClass}>
                   <div className={messageClass}>{chat.content}</div>
                   <div className="ml-1 text-xs">{formattedDate}</div>
