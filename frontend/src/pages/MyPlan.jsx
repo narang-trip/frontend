@@ -10,7 +10,6 @@ import { scheduleActions } from "../store/scheduleSlice";
 import { placesActions } from "../store/placeSlice";
 
 const MyPlan = () => {
-  const [pageNo, setPageNo] = useState(0);
   const [planData, setPlanData] = useState([]);
   const [isNewPlanOpen, setIsNewPlanOpen] = useState(false);
   const userId = useSelector((state) => state.auth).userId;
@@ -31,36 +30,20 @@ const MyPlan = () => {
   }, [list]);
   console.log(planData);
 
-  const getMyPlanList = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_PLAN_REQUEST_URI}/my/${userId}`
-      );
-
-      // 가져올 항목이 없으면 중단
-      if (response.data.content.length === 0) {
-        return;
-      }
-
-      // 새로운 데이터를 기존 데이터에 추가
-      setPlanData((prevData) => [...prevData, ...response.data.content]);
-
-      // 페이지 번호 증가
-      setPageNo((prevPageNo) => prevPageNo + 1);
-
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  });
-
-  // inView가 true일때 데이터를 가져옴
   useEffect(() => {
-    if (inView) {
-      console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
-      getMyPlanList();
-    }
-  }, [inView]);
+    async () => {
+      console.log(userId);
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_PLAN_REQUEST_URI}/my/${userId}`
+        );
+        console.log(response);
+        setPlanData(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  });
 
   // 계획 만들기 모달
   const makePlan = () => {
