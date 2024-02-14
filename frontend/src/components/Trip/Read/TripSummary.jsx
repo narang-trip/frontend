@@ -28,6 +28,10 @@ const TripSummary = ({ trip }) => {
     setIsHovered(false);
   };
 
+  const tripDescShortened = useMemo(() => {
+    return trip.tripDesc.length > 16 ? trip.tripDesc.slice(0, 15) + "..." : trip.tripDesc;
+  }, [trip.tripDesc]);
+
   useEffect(() => {
     setDepartureDate(DateFormatter({ dateString: trip.departureDate }));
     setReturnDate(DateFormatter({ dateString: trip.returnDate }));
@@ -73,7 +77,7 @@ const TripSummary = ({ trip }) => {
               </div>
               <div className="flex flex-row items-center my-1.5 text-sm">
                 <SlInfo className="mx-2 " size="16" />
-                <p className="inline-flex flex-wrap items-start text-xs text-start">{trip.tripDesc}</p>
+                <p className="inline-flex flex-wrap items-start text-xs text-start">{tripDescShortened}</p>
               </div>
             </div>
           </div>
