@@ -260,6 +260,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
     // senderId별로 알림 리스트 보내주기
     public List<AlertSendListResponse.AlertSendResponse> getAlertsBySenderId(String senderId) {
         List<Alert> alerts = alertRepository.findBySenderId(senderId);
+        log.info("가져온 알람 개수 : {}", alerts.size());
         if(alerts.isEmpty()){
             return null;
         }
@@ -308,7 +309,8 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alert.getPosition(),
                         alert.getAspiration(),
                         alert.getAlertType(),
-                        alert.isRead()
+                        alert.isRead(),
+                        alert.getUsageId()
                 ))
                 .collect(Collectors.toList());
     }
