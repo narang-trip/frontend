@@ -143,7 +143,8 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                     돈이 넉넉한 경우
                     여행 못 찾는 경우에 대해서 확인.
                  */
-                UUID usageId = UUID.fromString(paymentResponse.getRecordId());
+                log.info("넘어왔다..");
+                String usageId = UUID.randomUUID().toString();
 
                 // DB Alert 테이블에 데이터 저장하기
                 Alert alert = new Alert(UUID.randomUUID().toString(),
@@ -157,6 +158,10 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alertAttendRequest.isRead(),
                         usageId);
                 alertRepository.save(alert);
+                log.info("alert : {}", alert.getAlertType());
+                log.info(alert.getId());
+                log.info(alert.getSenderId());
+                log.info(alert.getPosition());
 
                 String receiver = alertAttendRequest.getReceiverId();
                 String eventId = receiver + "_" + System.currentTimeMillis();
@@ -188,6 +193,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
             }
 
         }catch (Exception e){
+            log.error(e.getMessage());
             // DB에 저장된 senderId를 사용해야 함
             System.out.println("알림 보내기를 실패했습니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send alert");

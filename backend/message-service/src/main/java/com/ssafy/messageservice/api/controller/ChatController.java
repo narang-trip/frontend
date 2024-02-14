@@ -6,6 +6,7 @@ import com.ssafy.messageservice.api.response.ChatListResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.api.service.ChatService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+@Slf4j
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
@@ -26,6 +28,7 @@ public class ChatController {
     // 채팅방 리스트
     @GetMapping("/list/{userId}")
     public ResponseEntity<ChatroomListResponse> getLatestChatsByUserId(@PathVariable String userId) {
+        log.info("getLatestChatsByUserId 호출");
         ChatroomListResponse chatroomListResponse = chatService.getLatestChatsByUserId(userId);
         return ResponseEntity.ok(chatroomListResponse);
     }
