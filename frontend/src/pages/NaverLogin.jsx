@@ -30,7 +30,7 @@ const Login = () => {
               },
             }
           );
-
+            console.log(userRes);
           dispatch(
             authActions.Setting({
               token: auth,
