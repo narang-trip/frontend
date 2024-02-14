@@ -19,6 +19,7 @@ const ApplicationModal = ({ data, onClose }) => {
   const [price, setPrice] = useState(0);
 
   const userId = useSelector((state) => state.auth.userId);
+  // const userId = "4c81d009-3270-3163-bd0e-86b257730661"
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handleChangeComment = (e) => {
@@ -86,7 +87,9 @@ const ApplicationModal = ({ data, onClose }) => {
 
   // 신청하기 버튼 눌렀을 때
   const handleSubmit = async () => {
-    
+    console.log(postData.position);
+    postData.position = window.btoa(encodeURIComponent(JSON.stringify(postData.position)));
+    console.log(postData.position);
     try {
       const response = await axios.post(
         "https://i10a701.p.ssafy.io/api/message/alert/attend",
@@ -97,7 +100,6 @@ const ApplicationModal = ({ data, onClose }) => {
           },
         }
       );
-      console.log(postData.position);
 
       // const response2 = await axios.post(
       //   `https://i10a701/p/ssafy/io/api/payment/use?user_id=${postData.senderId}&price=${data.tripDeposit}&trip_id=${data.tripId}`
