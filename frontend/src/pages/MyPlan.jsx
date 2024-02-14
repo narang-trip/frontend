@@ -7,6 +7,7 @@ import { ModalPortal } from "../components/modals/ModalPortal";
 import NewPlan from "../components/modals/NewPlan";
 import PlanSummary from "../components/Planning/PlanSummary";
 import { scheduleActions } from "../store/scheduleSlice";
+import { placesActions } from "../store/placeSlice";
 
 const MyPlan = () => {
   const [pageNo, setPageNo] = useState(0);
@@ -15,6 +16,7 @@ const MyPlan = () => {
   const dispatch = useDispatch();
 
   dispatch(scheduleActions.reset());
+  dispatch(placesActions.reset());
 
   const { ref, inView } = useInView({
     threshold: 0, // div태그가 보일 때 inView가 true로 설정

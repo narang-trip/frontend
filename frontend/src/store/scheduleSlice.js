@@ -1,5 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
-import { DirectionsService } from "@react-google-maps/api";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   // 여행 제목
@@ -38,14 +37,25 @@ const scheduleSlice = createSlice({
   reducers: {
     // 일정 추가하기
     addSchedule: (state, action) => {
-      state.list[action.payload.day].splice(action.payload.index, 0, action.payload.schedule);
+      state.list[action.payload.day].splice(
+        action.payload.index,
+        0,
+        action.payload.schedule
+      );
       // const tmpList = await calculateDurations(current(state.list));
       // state.list = tmpList;
     },
     // 일정 움직이기
     moveSchedule: (state, action) => {
-      const data = state.list[action.payload.start.day].splice(action.payload.start.index, 1);
-      state.list[action.payload.end.day].splice(action.payload.end.index, 0, ...data);
+      const data = state.list[action.payload.start.day].splice(
+        action.payload.start.index,
+        1
+      );
+      state.list[action.payload.end.day].splice(
+        action.payload.end.index,
+        0,
+        ...data
+      );
     },
     // 저장된 계획 불러오기
     setSchedule: (state, action) => {
@@ -75,11 +85,13 @@ const scheduleSlice = createSlice({
     },
     // 일정 체류시간 변경
     setScheduleTime: (state, action) => {
-      state.list[action.payload.day][action.payload.index].time = action.payload.time;
+      state.list[action.payload.day][action.payload.index].time =
+        action.payload.time;
     },
     // 일정 한마디
     setComment: (state, action) => {
-      state.list[action.payload.day][action.payload.index].comment = action.payload.comment;
+      state.list[action.payload.day][action.payload.index].comment =
+        action.payload.comment;
     },
     // 계획표 제목 정하기
     setTitle: (state, action) => {
@@ -87,6 +99,9 @@ const scheduleSlice = createSlice({
     },
     setList: (state, action) => {
       state.list = action.payload;
+    },
+    removeSchedule: (state, action) => {
+      state.list[action.payload.day].splice(action.payload.index, 1);
     },
     // 초기화
     reset: () => {

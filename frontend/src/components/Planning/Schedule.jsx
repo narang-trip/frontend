@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
+import { IoMdClose } from "react-icons/io";
+
 import { scheduleActions } from "../../store/scheduleSlice";
 
 const Schedule = (props) => {
@@ -49,6 +51,15 @@ const Schedule = (props) => {
     scheduleCSS = { height: `${sh}px` };
   });
 
+  const removeSchedule = () => {
+    dispatch(
+      scheduleActions.removeSchedule({
+        day: props.data.dayIdx,
+        index: props.data.scheduleIdx,
+      })
+    );
+  };
+
   return (
     <>
       {schedule.title ? (
@@ -58,11 +69,23 @@ const Schedule = (props) => {
           key={props.data.scheduleIdx}
         >
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
               <div
                 style={scheduleCSS}
-                className="relative flex flex-col bg-white w-56 rounded-xl overflow-hidden z-30"
+                className="relative flex flex-col bg-white w-56 rounded-xl overflow-hidden text-sm z-30"
               >
+                <div className="absolute right-0">
+                  <button
+                    className="mb-4 text-xl font-semibold hover:text-red-600"
+                    onClick={removeSchedule}
+                  >
+                    <IoMdClose />
+                  </button>
+                </div>
                 <div className="flex">
                   <img
                     style={scheduleCSS}
@@ -107,7 +130,11 @@ const Schedule = (props) => {
           isDragDisabled
         >
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
               <div style={blackCSS} className="bg-black opacity-5"></div>
             </div>
           )}
