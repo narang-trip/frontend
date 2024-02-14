@@ -49,11 +49,7 @@ export default function SentRequests() {
       if (item.alertType === "ACCEPT") {
         try {
           await axios.post(
-            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund`,
-            {
-              usage_id: item.usageId,
-              departure_datetime: formatDate(startDate),
-            }
+            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refundusage_id=${item.usageId}&departure_datetime=${formatDate(startDate)}`,
           );
           console.log("예약금 일부 환불 성공");
         } catch (error) {
