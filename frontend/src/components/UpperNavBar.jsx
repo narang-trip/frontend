@@ -36,10 +36,9 @@ const UpperNavbar = () => {
   const { concept } = useSelector((state) => state.concept);
   const conceptColorClass = conceptTemaBannerColorObject[concept];
   const { isLogin, userId, alertAmount } = useSelector((state) => state.auth);
-  const token = useSelector((state) => state.auth.token);
+  // const token = useSelector((state) => state.auth.token);
   const sessionToken = window.sessionStorage.getItem("token");
   const sessionRefreshToken = window.sessionStorage.getItem("refreshToken");
-  const prevAlertAmountRef = useRef();
 
   const getAlertData = useCallback(
     async (userId) => {
@@ -47,9 +46,14 @@ const UpperNavbar = () => {
         const res = await axios.get(
           `${import.meta.env.VITE_ALERT_REQUEST_URI}/list/${userId}`
         );
-        dispatch(
-          authActions.SetAlertAmount({ alertAmount: res.data.alertList.length })
-        );
+        if (alertAmount !== res.data.alertList.length) {
+          dispatch(
+            authActions.SetAlertAmount({
+              alertAmount: res.data.alertList.length,
+            })
+          );
+          setAlertContent(`현재 알림이 ${res.data.alertList.length}개 와 있습니다.`);
+        }
         console.log(res.data.alertList);
       } catch (error) {
         console.error(error);
@@ -106,7 +110,6 @@ const UpperNavbar = () => {
       } else {
         const data = JSON.parse(receivedConnectData);
         dispatch(authActions.SetAlertAmount({ alertAmount: alertAmount + 1 }));
-        setAlertAnimation();
         setAlertContent(makeAlertContent(data));
       }
     });
@@ -119,9 +122,8 @@ const UpperNavbar = () => {
   }, [userId]);
 
   useEffect(() => {
-      setAlertContent(`현재 알림이 ${alertAmount}개 와 있습니다.`);
-      setAlertAnimation();
-  }, []);
+    setAlertAnimation();
+  }, [alertContent]);
 
   const navigateHome = () => {
     navigate("/");
