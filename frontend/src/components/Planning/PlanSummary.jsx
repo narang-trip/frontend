@@ -10,7 +10,7 @@ const PlanSummary = ({ plan }) => {
   console.log("day : ", day);
 
   const goPlan = () => {
-    dispatch(scheduleActions.setSchedule(planInfo));
+    // dispatch(scheduleActions.setSchedule(planInfo));
     navigate(`/makeplan/${plan.planId}`);
   };
 
