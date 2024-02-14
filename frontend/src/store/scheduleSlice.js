@@ -59,7 +59,6 @@ const scheduleSlice = createSlice({
     },
     // 저장된 계획 불러오기
     setSchedule: (state, action) => {
-      console.log(action.payload);
       state.title = action.payload.title;
       state.time = action.payload.time;
       state.blackHeight = action.payload.blackHeight;
