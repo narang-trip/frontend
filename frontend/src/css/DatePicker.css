@@ -4,7 +4,7 @@
 }
 
 .react-datepicker__header {
-  background-color:  rgb(253 224 71); /* Or any color you prefer */
+  background-color:  rgb(253 224 71); 
 }
 
 .react-datepicker__day:hover {

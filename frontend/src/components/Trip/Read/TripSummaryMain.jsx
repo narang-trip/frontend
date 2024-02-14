@@ -28,7 +28,6 @@ const TripSummaryMain = ({ trip }) => {
   const handleViewClick = () => {
     navigate(`/detail/${trip.tripId}`);
   };
-
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
