@@ -1,15 +1,15 @@
 import { DragDropContext } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
-import { scheduleActions } from "../store/scheduleSlice";
-import { ModalPortal } from "../components/modals/ModalPortal";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 
+import { scheduleActions } from "../store/scheduleSlice";
+import { ModalPortal } from "../components/modals/ModalPortal";
 import Plan from "../components/Planning/Plan";
 import Map from "../components/GoogleMap/Map";
 import SavePlanModal from "../components/modals/SavePlanModal";
 import ShowTime from "../components/Planning/ShowTime";
-import { useNavigate, useParams } from "react-router-dom";
 
 export default function PlanningPage() {
   let list = useSelector((state) => state.schedule);
@@ -38,7 +38,7 @@ export default function PlanningPage() {
         }
       };
     }
-  });
+  }, [planId]);
 
   useMemo(async () => {
     let tmplist = list.list;
