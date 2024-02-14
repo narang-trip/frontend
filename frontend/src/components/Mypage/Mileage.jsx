@@ -51,8 +51,10 @@ const Mileage = (props) => {
   };
 
   useEffect(() => {
-    handleBalance();
-  }, []);
+   
+      handleBalance();
+    
+  }, [userId]);
 
   return (
     <div className="flex justify-between p-3 my-3 border rounded-lg border-neutral-300 ">

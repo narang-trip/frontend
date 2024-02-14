@@ -93,7 +93,7 @@ const SmallPlan = () => {
       console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
       getMyList();
     }
-  }, [inView, requestData]);
+  }, [inView, requestData, userId]);
 
   // 날짜 포함하면
   return (
