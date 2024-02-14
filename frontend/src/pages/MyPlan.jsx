@@ -101,7 +101,7 @@ const MyPlan = () => {
         </div>
       </>
       {planData.map((plan, idx) => (
-        <PlanSummary plan={plan} day={day} key={idx} />
+        <PlanSummary plan={plan} key={idx} />
       ))}
       {isNewPlanOpen && (
         <ModalPortal>
