@@ -12,10 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 //@Setter
-public class RefundRecord {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class RefundRecord extends BaseEntity{
     @Column
     private String userId;
     @Column
@@ -27,6 +24,7 @@ public class RefundRecord {
     private LocalDateTime regDate; // 요청 시간
     @Builder
     public RefundRecord(String userId, int price, int balance){
+        super();
         this.userId = userId;
         this.price = price;
         this.balance = balance;
