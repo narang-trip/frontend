@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @CrossOrigin("*")
 @RestController
@@ -97,7 +98,7 @@ public class PaymentController {
      */
     @PostMapping("/refund")
     public ResponseEntity refund(
-            @RequestParam("usage_id") String usageId,
+            @RequestParam("usage_id") UUID usageId,
             @RequestParam("departure_datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureDateTime) {
         try {
             RefundRecord refundRecord = mileageService.cancelMileage(usageId, departureDateTime);
@@ -112,7 +113,7 @@ public class PaymentController {
      * 여행 계획 거절,
      */
     @PostMapping("/reject")
-    public ResponseEntity reject(@RequestParam("usage_id") String usageId){
+    public ResponseEntity reject(@RequestParam("usage_id") UUID usageId){
         try {
             RefundRecord refundRecord = mileageService.rejectMileage(usageId);
             return new ResponseEntity<>(refundRecord, HttpStatus.OK);
