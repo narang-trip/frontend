@@ -30,7 +30,7 @@ const MileageModal = ({ onClose }) => {
 
   const handleCharge = async () => {
     try {
-      const url = `${import.meta.env.VITE_REQUEST_URI}/Mypage`;
+      const url = `${import.meta.env.VITE_REQUEST_API}/Mypage`;
 
       const response = await axios.post(
         `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/ready?user_id=${userId}&price=${price}&return_url=${url}`
