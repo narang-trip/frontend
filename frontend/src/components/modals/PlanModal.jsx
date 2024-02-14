@@ -6,12 +6,13 @@ import axios from "axios";
 const PlanModal = ({ onClose, onSelectedPlanId }) => {
   const modalBG = useRef("");
   const [planList, setPlanList] = useState([]);
-  const [selectedPlanId, setSelectedPlanId] = useState(null);
   const userId = useSelector((state) => state.auth.userId);
 
   const fetchPlanList = async () => {
     try {
-      const response = await axios.get(`https://i10a701.p.ssafy.io/api/plan/my/${userId}`);
+      const response = await axios.get(
+        `https://i10a701.p.ssafy.io/api/plan/my/${userId}`
+      );
       setPlanList(response.data);
     } catch (error) {
       console.error("오류 발생:", error);
@@ -20,10 +21,10 @@ const PlanModal = ({ onClose, onSelectedPlanId }) => {
 
   useEffect(() => {
     fetchPlanList();
-  }, []); 
+  }, []);
 
   const handlePlanSelect = (planId) => {
-    setSelectedPlanId(planId);
+
     onSelectedPlanId(planId);
   };
 
@@ -54,13 +55,17 @@ const PlanModal = ({ onClose, onSelectedPlanId }) => {
           <div className="inline-block mb-4 align-middle">
             <div className="flex flex-wrap justify-center">
               {planList.map((item, index) => (
-                <button
-                  className="w-[10rem] h-[4.5rem] m-3 text-base rounded-xl bg-stone-100 hover:bg-amber-200"
-                  key={index}
-                  onClick={() => handlePlanSelect(item.planId)}
-                >
-                  {item.planName}
-                </button>
+                <div key={index}>
+                  <div>{item.planName}</div>
+                  <div>{item.planDesc}</div>
+                  <button
+                    className="m-3 text-base rounded-xl bg-stone-100 hover:bg-amber-200"
+                    key={index}
+                    onClick={() => handlePlanSelect(item.planId)}
+                  >
+                    선택
+                  </button>
+                </div>
               ))}
             </div>
           </div>
