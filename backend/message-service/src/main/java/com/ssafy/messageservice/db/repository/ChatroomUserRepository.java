@@ -12,4 +12,7 @@ import java.util.List;
 public interface ChatroomUserRepository extends JpaRepository<ChatroomUser, String> {
     @Query("SELECT cu.userId FROM ChatroomUser cu WHERE cu.chatroom.chatroomId = :chatroomId")
     List<String> findUserIdsByChatroomId(@Param("chatroomId") String chatroomId);
+
+    @Query("DELETE FROM ChatroomUser cu WHERE cu.chatroom.chatroomId = :chatroomId AND cu.userId = :userId")
+    int deleteChatroomUserByChatroomIdAndUserId(@Param("chatroomId") String chatroomId, @Param("userId") String userId);
 }
