@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -80,5 +81,19 @@ public class PlanController {
     public ResponseEntity<Void> deleteTrip(@PathVariable UUID planId) {
         return planService.deletePlan(planId) ?
                 ResponseEntity.ok().build() : ResponseEntity. badRequest().build();
+    }
+
+    @Operation(summary = "User ID 로 Plan 조회",
+            responses = {
+                    @ApiResponse(description = "My Plan List",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Plan.class))),
+                    @ApiResponse(responseCode = "404", description = "Plans not found")})
+    @GetMapping("/my/{userId}")
+    public ResponseEntity<List<PlanResponse>> getPlansByUserId(@Parameter(description = "User Id needs to be fetched") @PathVariable UUID userId) {
+
+        List<PlanResponse> plans = planService.getPlansByOwner(userId);
+
+        return ResponseEntity.ok().body(plans);
     }
 }
