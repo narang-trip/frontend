@@ -76,12 +76,12 @@ const ApplicationModal = ({ data, onClose }) => {
   const postData = {
     tripId: data.tripId,
     tripName: data.tripName,
-    senderId:  userId,
+    senderId: userId,
     receiverId: data.tripLeaderId,
     position: selectedPositions,
     aspiration: comment,
     alertType: "REQUEST",
-    read: false,
+    read: false, 
   };
 
   // 신청하기 버튼 눌렀을 때
