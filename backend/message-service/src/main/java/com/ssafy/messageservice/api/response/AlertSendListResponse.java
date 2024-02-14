@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -28,6 +27,6 @@ public class AlertSendListResponse {
         private String aspiration;
         private String alertType;
         private boolean isRead;
-        private UUID usageId;
+        private String usageId;
     }
 }
