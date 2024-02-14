@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -66,7 +67,7 @@ public class MileageService {
         return usageRecord;
     }
 
-    public RefundRecord cancelMileage(String usage_id, LocalDateTime departureDateTime){
+    public RefundRecord cancelMileage(UUID usage_id, LocalDateTime departureDateTime){
         log.info("cancelMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
@@ -108,7 +109,7 @@ public class MileageService {
         return duration.toDays();
     }
 
-    public RefundRecord rejectMileage(String usage_id){
+    public RefundRecord rejectMileage(UUID usage_id){
         log.info("rejectMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
