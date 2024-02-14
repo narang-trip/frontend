@@ -32,20 +32,22 @@ const MyPlan = () => {
 
   const getUsersPlan = async () => {
     console.log("userId : ", userId);
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_PLAN_REQUEST_URI}/my/${userId}`
-      );
-      console.log("response : ", response);
-      setPlanData(response);
-    } catch (error) {
-      console.log("Error : ", error);
+    if (userId !== "") {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_PLAN_REQUEST_URI}/my/${userId}`
+        );
+        console.log("response : ", response);
+        setPlanData(response);
+      } catch (error) {
+        console.log("Error : ", error);
+      }
     }
   };
 
   useEffect(() => {
     getUsersPlan();
-  });
+  }, [userId]);
 
   // 계획 만들기 모달
   const makePlan = () => {
