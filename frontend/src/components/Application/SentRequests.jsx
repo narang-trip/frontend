@@ -47,12 +47,37 @@ export default function SentRequests() {
     try {
       // 예약금 환불이 필요한 경우
       if (item.alertType === "ACCEPT") {
-        await refundDeposit(item.tripId);
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund`,
+            {
+              params: {
+                usage_id: item.usageId,
+                departure_datetime: formatDate(startDate),
+              },
+            }
+          );
+          console.log("예약금 일부 환불 성공");
+        } catch (error) {
+          console.error("Error refunding deposit:", error);
+        }
       }
 
       if (item.alertType === "REQUEST") {
         console.log(item.usageId);
-        await rejectDeposit(item.usageId);
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject`,
+            {
+              params: {
+                usage_id: item.usageId,
+              },
+            }
+          );
+          console.log("예약금 환불 성공");
+        } catch (error) {
+          console.error("Error refunding deposit:", error);
+        }
       }
 
       // 취소에 대한 요청을 보내거나 삭제 로직을 구현합니다.
@@ -75,37 +100,6 @@ export default function SentRequests() {
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const day = date.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
-  };
-
-  // 예약금 환불 로직
-  const refundDeposit = async (usageId) => {
-    // 여기에 예약금 환불에 대한 서버 요청 로직을 추가
-    try {
-      await axios.post(`${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund`, {
-        params: {
-          usage_id: usageId,
-          departure_datetime: formatDate(startDate),
-        },
-      });
-      console.log("예약금 일부 환불 성공");
-    } catch (error) {
-      console.error("Error refunding deposit:", error);
-    }
-  };
-
-  // 예약금 전체 환불 로직
-  const rejectDeposit = async (usageId) => {
-    // 여기에 예약금 환불에 대한 서버 요청 로직을 추가
-    try {
-      await axios.post(`${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject`, {
-        params: {
-          usage_id: usageId,
-        },
-      });
-      console.log("예약금 환불 성공");
-    } catch (error) {
-      console.error("Error refunding deposit:", error);
-    }
   };
 
   // 요청중, 수락, 거절에 따라서 색깔 구분
