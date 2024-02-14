@@ -429,6 +429,15 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     public void getTripById(org.narang.lib.TripGrpcRequest request, StreamObserver<org.narang.lib.TripGrpcResponse> responseObserver) {
         Optional<Trip> trip = tripRepository.findById(UUID.fromString(request.getTripId()));
 
+        System.out.println("REQUEST RECIVED >>>>> ");
+        System.out.println("REQUEST RESULT >>>>> ");
+        if (trip.isPresent()) {
+            System.out.println("REQUEST RESULT EXISTS ");
+        }
+        else {
+            System.out.println("REQUEST RESULT NOT EXISTS");
+        }
+
         if (trip.isEmpty()) {
             responseObserver.onError(new NoSuchElementException());
             responseObserver.onCompleted();
