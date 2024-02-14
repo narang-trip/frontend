@@ -145,6 +145,9 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         log.info("rejectMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
+        if(usageRecord.getRefundStatus()){
+            throw new IllegalStateException("이미 환불된 기록입니다.");
+        }
         String user_id = usageRecord.getUserId();
         int price = usageRecord.getPrice();
 
@@ -159,6 +162,8 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         userMileage.setEncryptedMileage(newEncryptedMileage);
         userMileageRepository.save(userMileage);
 
+        usageRecord.setRefundStatus(true);
+        
         RefundRecord refundRecord = new RefundRecord(user_id, price,
                 Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage())));
 

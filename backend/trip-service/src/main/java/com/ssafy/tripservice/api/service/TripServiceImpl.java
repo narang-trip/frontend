@@ -215,6 +215,10 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
 
         UpdateResult res = mongoTemplate.updateFirst(query, update, Trip.class);
 
+        /*
+            채팅
+         */
+
         return Optional.ofNullable(mongoTemplate.findById(userRequest.getTripId(), Trip.class))
                 .map(Trip::toTripResponse);
     }
