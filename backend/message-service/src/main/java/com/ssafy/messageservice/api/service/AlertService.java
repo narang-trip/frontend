@@ -115,6 +115,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                 /*
                  여행 정보 Get
                  */
+                System.out.println("TRIP REQUEST . . .");
                 TripGrpcResponse tripGrpcResponse = tripBlockingStub.getTripById(TripGrpcRequest.newBuilder()
                         .setTripId(alertAttendRequest.getTripId()).build());
 
@@ -144,7 +145,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                  */
                 UUID usageId = alertAttendRequest.getUsageId();
                 if(usageId == null){
-                    usageId = paymentResponse.getRecordId();
+                    usageId = UUID.fromString(paymentResponse.getRecordId());
                 }
 
                 // DB Alert 테이블에 데이터 저장하기
