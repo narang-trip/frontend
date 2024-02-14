@@ -212,7 +212,7 @@ export default function PlanningPage() {
   const deletePlan = async () => {
     try {
       const response = await axios.delete(
-        `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan${planId}`
+        `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan/${planId}`
       );
       console.log("삭제결과 : ", response);
     } catch (error) {
