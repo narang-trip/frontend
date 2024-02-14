@@ -207,7 +207,7 @@ export default function SentRequests() {
                             />
                           </div>
                           <div className="col-span-3">
-                            <p className="mb-1 text-base font-semibold">
+                            <p className="mb-1 text-sm font-semibold">
                               {item.tripInfo.tripName}
                             </p>
                             <div className="ml-1 text-start">
