@@ -20,12 +20,10 @@ export default function PlanningPage() {
   const [isCanModify, setIsCanModify] = useState(true);
 
   const { planId } = useParams();
-  if (planId !== undefined) {
-    setIsCanModify(false);
-  }
 
   useEffect(() => {
     if (planId !== undefined) {
+      setIsCanModify(false);
       async () => {
         try {
           const response = await axios.get(
