@@ -81,7 +81,7 @@ const ApplicationModal = ({ data, onClose }) => {
     position: selectedPositions,
     aspiration: comment,
     alertType: "REQUEST",
-    read: false, 
+    read: false
   };
 
   // 신청하기 버튼 눌렀을 때
