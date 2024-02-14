@@ -123,7 +123,7 @@ const ApplicationModal = ({ data, onClose }) => {
     setIsRedirecting(true);
 
     try {
-      const url = `${import.meta.env.VITE_REQUEST_URI}/detail/${postData.tripId}`;
+      const url = `${import.meta.env.VITE_REQUEST_API}/detail/${postData.tripId}`;
 
       const response = await axios.post(
         `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/ready?user_id=${postData.senderId}&price=${price}&return_url=${url}`
