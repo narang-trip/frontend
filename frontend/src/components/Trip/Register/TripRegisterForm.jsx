@@ -18,7 +18,7 @@ export default function TripWriteForm() {
 
   const [board, setBoard] = useState({
     title: "",
-    concept: "",
+    concept: "낭만",
     img: "",
     continent: "",
     country: "",
@@ -28,7 +28,7 @@ export default function TripWriteForm() {
     startDate: "",
     endDate: "",
     dateRange: "",
-    count: 0,
+    count: 1,
     myPosition: [],
     recruitPosition: [],
     planId: "",
