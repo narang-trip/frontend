@@ -55,16 +55,16 @@ const PlanModal = ({ onClose, onSelectedPlanId, onSelectedPlanName }) => {
           </p>
           <div className="w-full mb-4 align-middle">
             <table className="w-full text-center border-collapse rounded-md">
-              <thead className="bg-neutral-50">
+              <thead className="bg-neutral-100">
                 <tr>
                   <th className="p-2" >계획 이름</th>
                   <th className="p-2">계획 설명</th>
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody >
                 {planList.map((item, index) => (
-                  <tr key={index}>
+                  <tr key={index} className="border border-b">
                     <td className="p-2 ">
                       {item.planName}
                     </td>
