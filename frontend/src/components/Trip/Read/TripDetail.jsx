@@ -220,13 +220,13 @@ export default function TripDetail() {
             {isLeader ? (
               <div className="w-full">
                 <button
-                  className="w-1/2 py-3 mr-2 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-800/10"
+                  className="w-2/5 py-3 mr-2 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-800/10"
                   onClick={OpenUpdateModal}
                 >
                   수정하기
                 </button>
                 <button
-                  className="w-1/2 py-3 text-sm font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-800/10"
+                  className="w-2/5 py-3 text-sm font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-800/10"
                   onClick={handleDeleteClick}
                 >
                   삭제하기
