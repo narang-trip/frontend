@@ -22,7 +22,7 @@ const Login = () => {
         refreshAuth = res.headers["authorization-refresh"];
         try {
           const userRes = await axios.get(
-            `${import.meta.env.VITE_TRIP_REQUEST_URI}/getuser`,
+            `${import.meta.env.VITE_USER_REQUEST_URI}/getuser`,
             {
               headers: {
                 Authorization: auth,
