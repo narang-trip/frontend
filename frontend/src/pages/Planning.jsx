@@ -39,7 +39,7 @@ export default function PlanningPage() {
         }
       };
     }
-  }, [planId]);
+  }, []);
 
   useMemo(async () => {
     let tmplist = list.list;
