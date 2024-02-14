@@ -30,7 +30,9 @@ export default function PlanningPage() {
   useEffect(() => {
     async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
+        );
         console.log(response);
       } catch (error) {
         console.log(error);
@@ -74,7 +76,8 @@ export default function PlanningPage() {
 
     async function getDuration(pl, cl) {
       return new Promise((resolve, reject) => {
-        const directionsService = new window.google.maps.DistanceMatrixService();
+        const directionsService =
+          new window.google.maps.DistanceMatrixService();
         directionsService.getDistanceMatrix(
           {
             origins: [new window.google.maps.LatLng(pl[0], pl[1])],
@@ -169,7 +172,9 @@ export default function PlanningPage() {
       window.sessionStorage.setItem("plan", JSON.stringify(list));
       async () => {
         try {
-          const response = await axios.patch(`${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`);
+          const response = await axios.patch(
+            `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
+          );
           console.log(response);
         } catch (error) {
           console.log(error);
@@ -192,7 +197,9 @@ export default function PlanningPage() {
     window.sessionStorage.removeItem("plan");
     async () => {
       try {
-        const response = await axios.delete(`${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`);
+        const response = await axios.delete(
+          `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
+        );
         console.log(response);
       } catch (error) {
         console.log(error);
