@@ -83,7 +83,6 @@ const ApplicationModal = ({ data, onClose }) => {
     aspiration: comment,
     alertType: "REQUEST",
     read: false,
-    usageId: "",
   };
 
   // 신청하기 버튼 눌렀을 때
@@ -125,7 +124,7 @@ const ApplicationModal = ({ data, onClose }) => {
     setIsRedirecting(true);
 
     try {
-      const url = `http://localhost:3000/detail/${postData.tripId}`;
+      const url = `https://i10a701.p.ssafy.io/detail/${postData.tripId}`;
 
       const response = await axios.post(
         `https://i10a701.p.ssafy.io/api/payment/ready?user_id=${postData.senderId}&price=${price}&return_url=${url}`
