@@ -25,12 +25,10 @@ const SmallPlan = () => {
   });
 
   const getMyList = useCallback(async () => {
-    console.log(startDate);
-    console.log(endDate);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trips`,
-        { tripPageNo: pageNo, ...requestData },
+        { pageNo: pageNo, ...requestData },
         {
           headers: {
             "Content-Type": "application/json",
@@ -80,9 +78,6 @@ const SmallPlan = () => {
     setTripData([]);
     setPageNo(0);
 
-    setDateRange(["1970-01-01", "2030-12-31"]);
-    setStartDate("1970-01-01");
-    setEndDate("2030-12-31");
     // 요청 데이터 업데이트
     setRequestData((prevData) => ({
       ...prevData,
