@@ -1,5 +1,6 @@
 package com.ssafy.messageservice.db.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Repository
 public class EmitterRepositoryImpl implements EmitterRepository{
     // 모든 Emitters를 저장하는 ConcurrentHashMap
@@ -17,6 +19,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     // 새로운 사용자가 접속할 때마다 save 메소드를 호출하여 해당 사용자에 대한 SseEmitter를 저장
     @Override
     public SseEmitter save(String id, SseEmitter sseEmitter) {
+        log.info("EmitterRepositoryImpl save 호출 id : {}, sseEmitter : {}", id, sseEmitter);
         emitters.put(id, sseEmitter);
         return sseEmitter;
     }
@@ -31,6 +34,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     // 해당 회원과 관련된 모든 이벤트를 찾음
     @Override
     public Map<String, SseEmitter> findAllEmitterStartWithByUserId(String userId) {
+        log.info("findAllEmitterStartWithByUserId 호출");
         return emitters.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(userId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -38,6 +42,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
 
     @Override
     public Map<String, Object> findAllEventCacheStartWithByUserId(String userId) {
+        log.info("findAllEventCacheStartWithByUserId 호출");
         return eventCache.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(userId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -46,6 +51,7 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     // 주어진 아이디의 emitter를 지움
     @Override
     public void deleteById(String id) {
+        log.info("EmitterRepositoryImpl deleteById 호출 id : {}", id);
         emitters.remove(id);
     }
 
