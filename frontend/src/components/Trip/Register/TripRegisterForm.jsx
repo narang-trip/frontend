@@ -160,6 +160,7 @@ export default function TripWriteForm() {
       returnDate: board.endDate,
       participants: [],
       tripLeaderId: userId,
+      tripPlanId: board.tripPlanId
     };
 
     try {
