@@ -24,6 +24,7 @@ export default function ReceivedList({ tripData }) {
         read: item.read,
       }));
 
+      console.log(decodedData);
       setReceivedData(decodedData);
     } catch (error) {
       console.error("Error fetching request data:", error);
