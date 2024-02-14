@@ -22,13 +22,12 @@ const TripSummaryMain = ({ trip }) => {
   );
 
   const tripDescShortened = useMemo(() => {
-    return trip.tripDesc.length > 18 ? trip.tripDesc.slice(0, 15) + "..." : trip.tripDesc;
+    return trip.tripDesc.length > 16 ? trip.tripDesc.slice(0, 15) + "..." : trip.tripDesc;
   }, [trip.tripDesc]);
 
   const handleViewClick = () => {
     navigate(`/detail/${trip.tripId}`);
   };
-
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
