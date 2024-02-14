@@ -144,7 +144,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                     여행 못 찾는 경우에 대해서 확인.
                  */
                 UUID usageId = UUID.fromString(paymentResponse.getRecordId());
-
+                log.info("usageId : {} ", usageId);
                 // DB Alert 테이블에 데이터 저장하기
                 Alert alert = new Alert(UUID.randomUUID().toString(),
                         alertAttendRequest.getTripId(),
@@ -157,6 +157,10 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alertAttendRequest.isRead(),
                         usageId);
                 alertRepository.save(alert);
+                log.info("alert : {}", alert.getAlertType());
+                log.info(alert.getId());
+                log.info(alert.getSenderId());
+                log.info(alert.getPosition());
 
                 String receiver = alertAttendRequest.getReceiverId();
                 String eventId = receiver + "_" + System.currentTimeMillis();
