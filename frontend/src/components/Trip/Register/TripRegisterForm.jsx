@@ -1,17 +1,20 @@
 import { useState, Fragment, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ModalPortal } from "../../modals/ModalPortal.jsx";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
+import AgeRangeSection from "./AgeRangeSlider.jsx";
 import TitleInput from "./TitleInput.jsx";
 import ConceptSelect from "./ConceptSelect.jsx";
 import DateRangePicker from "./DateRangePicker.jsx";
 import PositionCheck from "./PositionCheck.jsx";
+import { ModalPortal } from "../../modals/ModalPortal.jsx";
 import ContinentModal from "../../modals/ContinentModal.jsx";
 
-import axios from "axios";
-import AgeRangeSection from "./AgeRangeSlider.jsx";
 
 export default function TripWriteForm() {
+  const userId = useSelector((state) => state.auth.userId);
+
   const [board, setBoard] = useState({
     title: "",
     concept: "",
@@ -114,6 +117,8 @@ export default function TripWriteForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log(userId);
+    
     const formData = new FormData();
 
     const requestData = {
@@ -132,7 +137,7 @@ export default function TripWriteForm() {
       departureDate: board.startDate,
       returnDate: board.endDate,
       participants: [],
-      tripLeaderId: "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5",
+      tripLeaderId: userId,
     };
 
     try {
