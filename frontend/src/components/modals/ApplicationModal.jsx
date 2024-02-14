@@ -82,14 +82,15 @@ const ApplicationModal = ({ data, onClose }) => {
     position: selectedPositions,
     aspiration: comment,
     alertType: "REQUEST",
-    read: false
+    read: false,
+    usageId: "",
   };
 
   // 신청하기 버튼 눌렀을 때
   const handleSubmit = async () => {
-    console.log(postData.position);
+   
     postData.position = window.btoa(encodeURIComponent(JSON.stringify(postData.position)));
-    console.log(postData.position);
+    
     try {
       const response = await axios.post(
         "https://i10a701.p.ssafy.io/api/message/alert/attend",
