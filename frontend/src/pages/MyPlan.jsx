@@ -32,15 +32,15 @@ const MyPlan = () => {
 
   useEffect(() => {
     async () => {
-      console.log(userId);
+      console.log("userId : ", userId);
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_PLAN_REQUEST_URI}/my/${userId}`
         );
-        console.log(response);
+        console.log("response : ", response);
         setPlanData(response);
       } catch (error) {
-        console.log(error);
+        console.log("Error : ", error);
       }
     };
   });
