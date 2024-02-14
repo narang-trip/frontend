@@ -53,7 +53,7 @@ export default function TripDetail() {
   const handleDeleteClick = async () => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/trip/trip`,
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip`,
         {
           tripId: tripId,
           userId: userId,
@@ -74,7 +74,7 @@ export default function TripDetail() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/trip/trip/${tripId}`
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
       );
 
       // 상세 정보 저장

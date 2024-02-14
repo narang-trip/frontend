@@ -10,11 +10,11 @@ export default function ReceiveRequestsInfo({ data, trip }) {
   const handleAccept = async () => {
     try {
       const response1 = await axios.patch(
-        `https://i10a701.p.ssafy.io/api/message/alert/attend/${data.id}/ACCEPT`
+        `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend/${data.id}/ACCEPT`
       );
 
       const response2 = await axios.post(
-        `https://i10a701.p.ssafy.io/api/trip/trip/join`,
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/join`,
         {
           tripId: trip.tripId,
           userId: userId,
@@ -43,11 +43,11 @@ export default function ReceiveRequestsInfo({ data, trip }) {
   const handleReject = async () => {
     try {
       const response1 = await axios.patch(
-        `https://i10a701.p.ssafy.io/api/message/alert/attend/${data.id}/REJECT`
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/attend/${data.id}/REJECT`
       );
 
       const response2 = await axios.post(
-        `https://i10a701.p.ssafy.io/api/payment/reject`,
+        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject`,
         {
           params: {
             usage_id: data.usageId,

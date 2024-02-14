@@ -62,7 +62,7 @@ const AddInfoModal = ({ userId, data, onClose }) => {
     console.log(userData);
     try {
       const response = await axios.patch(
-        `https://i10a701.p.ssafy.io/api/user/profile/${userId}`,
+        `${import.meta.env.VITE_USER_REQUEST_URI}/profile/${userId}`,
         userData,
         {
           headers: {

@@ -28,7 +28,7 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
   const getChatroomList = async (userId) => {
     try {
       const res = await axios.get(
-        `https://i10a701.p.ssafy.io/api/message/chat/list/${userId}`
+        `${import.meta.env.VITE_CHAT_REQUEST_URI}/list/${userId}`
       );
       setChatroomList(res.data);
     } catch (error) {

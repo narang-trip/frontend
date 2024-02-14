@@ -11,7 +11,7 @@ const PlanModal = ({ onClose, onSelectedPlanId, onSelectedPlanName }) => {
   const fetchPlanList = async () => {
     try {
       const response = await axios.get(
-        `https://i10a701.p.ssafy.io/api/plan/my/${userId}`
+        `${import.meta.env.VITE_PLAN_REQUEST_URI}/my/${userId}`
       );
       setPlanList(response.data);
     } catch (error) {
