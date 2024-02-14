@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useSelector } from "react";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
 
@@ -8,7 +8,7 @@ import Mileage from "../components/Mypage/Mileage";
 import MyBadge from "../components/Mypage/MyBadge";
 
 const Mypage = () => {
-  
+  const userId = useSelector((state) => state.auth.userId);
 
   return (
     <Fragment>
