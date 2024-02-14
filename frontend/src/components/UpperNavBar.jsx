@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import { useDispatch, useSelector } from "react-redux";
@@ -80,7 +80,8 @@ const UpperNavbar = () => {
             authActions.Login({
               token: sessionToken,
               refreshToken: sessionRefreshToken,
-              userId: userRes.data,
+              userId: userRes.data.userId,
+              nickname: userRes.data.nickname,
             })
           );
         } catch (error) {
