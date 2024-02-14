@@ -88,7 +88,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
                 <span className="mx-3 text-sm">{data.senderId}</span>
               </div>
               <div className=" p-1.5 text-sm text-center flex ">
-                {data &&
+                {data.position &&
                   data.position.map((role, idx) => (
                     <span
                       className="p-1 border bg-neutral-100 rounded-xl border-neutral-100"
