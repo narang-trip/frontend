@@ -9,7 +9,7 @@ import Plan from "../components/Planning/Plan";
 import Map from "../components/GoogleMap/Map";
 import SavePlanModal from "../components/modals/SavePlanModal";
 import ShowTime from "../components/Planning/ShowTime";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function PlanningPage() {
   let list = useSelector((state) => state.schedule);
@@ -18,6 +18,9 @@ export default function PlanningPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isCanModify, setIsCanModify] = useState(true);
+
+  const { planId } = useParams();
+  console.log("palnId : ", planId);
 
   console.log(list);
 
@@ -28,16 +31,18 @@ export default function PlanningPage() {
   }, [list.title]);
 
   useEffect(() => {
-    async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_PLAN_REQUEST_URI}/myList`
-        );
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    if (planId !== "") {
+      async () => {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan/${planId}`
+          );
+          console.log(response);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
   });
 
   useMemo(async () => {
