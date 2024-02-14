@@ -7,6 +7,7 @@ import { ModalPortal } from "../components/modals/ModalPortal";
 import NewPlan from "../components/modals/NewPlan";
 import PlanSummary from "../components/Planning/PlanSummary";
 import { scheduleActions } from "../store/scheduleSlice";
+import { placesActions } from "../store/placeSlice";
 
 const MyPlan = () => {
   const [pageNo, setPageNo] = useState(0);
@@ -15,6 +16,7 @@ const MyPlan = () => {
   const dispatch = useDispatch();
 
   dispatch(scheduleActions.reset());
+  dispatch(placesActions.reset());
 
   const { ref, inView } = useInView({
     threshold: 0, // div태그가 보일 때 inView가 true로 설정
@@ -66,6 +68,19 @@ const MyPlan = () => {
   const CloseNewPlanModal = () => {
     setIsNewPlanOpen(false);
   };
+
+  useEffect(() => {
+    // 모달이 열렸을 때 스크롤 막기 위함
+    if (isNewPlanOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isNewPlanOpen]);
 
   return (
     <div className="relative">

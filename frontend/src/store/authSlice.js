@@ -5,7 +5,7 @@ const initialState = {
   token: null,
   refreshToken: null,
   userId : "",
-  alertAmount : 0,
+  alertAmount : -2,
 };
 const authSlice = createSlice({
   name: "auth",
