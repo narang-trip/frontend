@@ -6,6 +6,8 @@ import { ko } from "date-fns/locale";
 import axios from "axios";
 
 import TripSummaryMini from "../Trip/Read/TripSummaryMini";
+import "react-datepicker/dist/react-datepicker.css"
+import "../../css/DatePicker.css"
 
 const SmallPlan = () => {
   const [dateRange, setDateRange] = useState([null, null]);
@@ -15,7 +17,6 @@ const SmallPlan = () => {
   const [tripData, setTripData] = useState([]);
 
   const userId = useSelector((state) => state.auth.userId);
-  // const userId = "4c81d009-3270-3163-bd0e-86b257730661";
   const [requestData, setRequestData] = useState({
     userId: userId,
   });
@@ -110,7 +111,7 @@ const SmallPlan = () => {
           dateFormat="yy/MM/dd"
           monthsShown={2}
           inline
-          className="p-1 text-sm border rounded-sm w-44 border-neutral-300 text-neutral-700"
+          className=""
         />
       </div>
       <div className="flex flex-wrap justify-center">
