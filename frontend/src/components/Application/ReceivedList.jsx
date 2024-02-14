@@ -5,16 +5,6 @@ import ReceiveRequestsInfo from "./ReceiveRequestsInfo";
 export default function ReceivedList({ tripData }) {
   const [receivedData, setReceivedData] = useState(null);
 
-  const decodePosition = (encodedPosition) => {
-    try {
-      const decodedPosition = JSON.parse(decodeURIComponent(window.atob(encodedPosition)));
-      return decodedPosition;
-    } catch (error) {
-      console.error("오류 발생", error);
-      return encodedPosition;
-    }
-  };
-
   const fetchRequestData = async () => {
     try {
       const response = await axios.get(
@@ -22,8 +12,16 @@ export default function ReceivedList({ tripData }) {
       );
 
       const decodedData = response.data.alertList.map((item) => ({
-        ...item,
-        position: decodePosition(item.position),
+        id: item.id,
+        tripId: item.tripId,
+        tripName: item.tripName,
+        senderId: item.senderId,
+        senderName: item.senderName,
+        position: JSON.parse(decodeURIComponent(window.atob(item.position))),
+        aspiration: item.aspiration,
+        alertType: item.alertType,
+        usageId: item.usageId,
+        read: item.read,
       }));
 
       setReceivedData(decodedData);
