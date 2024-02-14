@@ -134,6 +134,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         .setPrice(tripGrpcResponse.getTripDeposit())
                         .build());
 
+<<<<<<< HEAD
                 System.out.println("===================paymentInfo=================");
                 System.out.println(paymentResponse.toString());
 
@@ -142,6 +143,12 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                     돈이 넉넉한 경우
                     여행 못 찾는 경우에 대해서 확인.
                  */
+=======
+                UUID usageId = alertAttendRequest.getUsageId();
+                if(usageId == null){
+                    usageId = paymentResponse.getRecordId();
+                }
+>>>>>>> origin/feature_plan
 
                 // DB Alert 테이블에 데이터 저장하기
                 Alert alert = new Alert(UUID.randomUUID().toString(),
@@ -152,8 +159,13 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alertAttendRequest.getPosition(),
                         alertAttendRequest.getAspiration(),
                         alertAttendRequest.getAlertType(),
+<<<<<<< HEAD
                         alertAttendRequest.isRead());
 
+=======
+                        alertAttendRequest.isRead(),
+                        alertAttendRequest.getUsageId());
+>>>>>>> origin/feature_plan
                 alertRepository.save(alert);
 
                 String receiver = alertAttendRequest.getReceiverId();
@@ -168,7 +180,8 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alertAttendRequest.getPosition(),
                         alertAttendRequest.getAspiration(),
                         alertAttendRequest.getAlertType(),
-                        alertAttendRequest.isRead());
+                        alertAttendRequest.isRead(),
+                        alertAttendRequest.getUsageId());
                 emitters.forEach(
                         (key, emitter) -> {
                             // 데이터 캐시 저장
@@ -216,7 +229,8 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alert.getPosition(),
                         alert.getAspiration(),
                         alert.getAlertType(),
-                        alert.isRead());
+                        alert.isRead(),
+                        alert.getUsageId());
                 emitters.forEach(
                         (key, emitter) -> {
                             // 데이터 캐시 저장
@@ -283,7 +297,8 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alert.getPosition(),
                         alert.getAspiration(),
                         alert.getAlertType(),
-                        alert.isRead()
+                        alert.isRead(),
+                        alert.getUsageId()
                 ))
                 .collect(Collectors.toList());
     }
