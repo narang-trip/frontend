@@ -95,10 +95,6 @@ const SmallPlan = () => {
     }
   }, [inView, requestData]);
 
-  useEffect(() => {
-    getMyList();
-  }, []);
-
   // 날짜 포함하면
   return (
     <Fragment>
