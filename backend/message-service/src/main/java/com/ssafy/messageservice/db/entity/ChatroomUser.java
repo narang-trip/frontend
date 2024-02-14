@@ -3,8 +3,6 @@ package com.ssafy.messageservice.db.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @Table(name="ChatroomUser")

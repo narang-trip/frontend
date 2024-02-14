@@ -1,15 +1,11 @@
 package com.ssafy.messageservice.api.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -31,6 +27,6 @@ public class AlertListResponse {
         private String aspiration;
         private String alertType;
         private boolean isRead;
-        private UUID usageId;
+        private String usageId;
     }
 }
