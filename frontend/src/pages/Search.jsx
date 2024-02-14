@@ -69,11 +69,9 @@ const SearchPage = () => {
         }
       );
 
-      console.log(requestData);
-      console.log(response.data);
       // 가져올 항목이 없으면 중단
       if (response.data.content.length === 0) {
-        setIsEmpty(true);
+       return;
       }
 
       // 새로운 데이터를 기존 데이터에 추가
