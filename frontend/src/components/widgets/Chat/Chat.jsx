@@ -146,13 +146,15 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
   };
 
   const getNicknameById = (id) => {
+    console.log(userId);
+    console.table(userList);
     for (let i = 0; i < userList.length; i++) {
       if (userList[i].id === id) {
         return userList[i].nickname;
       }
     }
     // 해당 id를 가진 객체가 없을 경우 예외 처리
-    return "해당 id를 가진 객체를 찾을 수 없습니다.";
+    return "???";
   }
 
   return (
@@ -207,7 +209,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
 
             messageBoxClass += " justify-start my-1"; // 상대방은 왼쪽
             messageClass += " bg-white";
-            const otherUserNickname = getNicknameById(chat.chatId)
+            const otherUserNickname = getNicknameById(chat.chatId);
             return (
               <Fragment key={chat.chatId}>
                 <div className="ml-1 text-xs text-left">{otherUserNickname}</div>
