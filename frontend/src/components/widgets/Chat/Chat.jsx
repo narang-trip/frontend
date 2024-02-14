@@ -103,7 +103,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
               const messageBody = JSON.parse(message.body);
               console.log(messageBody);
               const chat = {
-                userId: messageBody.senderId,
+                userId: messageBody.userId,
                 sendTime: messageBody.sendTime,
                 content: messageBody.content,
               };
@@ -193,7 +193,6 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
               </div>
             );
           } else if (chat.userId === userId) {
-            console.log("내가 친건데 왜 안떠")
             messageBoxClass += " justify-end my-1"; // 본인인 건 오른쪽
             messageClass += " bg-yellow-200 border-yellow-300";
             return (
