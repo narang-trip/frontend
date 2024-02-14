@@ -21,16 +21,16 @@ const SavePlanModal = (props) => {
     const base64Incoding = window.btoa(
       encodeURIComponent(JSON.stringify(state))
     );
-    console.log(userState.userId);
-    console.log({
-      planId: "",
-      planName: title,
-      planDesc: desc,
-      lastModifiedDate: new Date(),
-      ownerId: userState.userId,
-      participantIds: [],
-      planInfo: base64Incoding,
-    });
+    // console.log(userState.userId);
+    // console.log({
+    //   planId: "",
+    //   planName: title,
+    //   planDesc: desc,
+    //   lastModifiedDate: new Date(),
+    //   ownerId: userState.userId,
+    //   participantIds: [],
+    //   planInfo: base64Incoding,
+    // });
     // window.sessionStorage.setItem("plan", JSON.stringify(state));
     try {
       const response = await axios.post(
