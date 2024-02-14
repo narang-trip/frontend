@@ -145,7 +145,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
   };
 
   return (
-    <div className="h-full w-full relative">
+    <div className="relative w-full h-full">
       <div className="absolute top-0 left-0 right-0">
         <div className="p-2">
           {chatroomName}
@@ -160,7 +160,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
       <div
         id="chats"
         ref={chatDivRef}
-        className="pt-5 pb-6 overflow-y-scroll h-full pr-4"
+        className="h-full pt-5 pb-6 pr-4 overflow-y-scroll"
       >
         <div ref={ref}></div>
         {chats.map((chat) => {
@@ -184,9 +184,9 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
             messageClass += " bg-yellow-200 border-yellow-300";
             return (
               <Fragment key={chat.chatId}>
-                <div className="text-xs text-right m-0 justify-end">나</div>
+                <div className="justify-end m-0 text-xs text-right">나</div>
                 <div className={messageBoxClass}>
-                  <div className="text-xs mr-1">{formattedDate}</div>
+                  <div className="mr-1 text-xs">{formattedDate}</div>
                   <div className={messageClass}>{chat.content}</div>
                 </div>
               </Fragment>
@@ -196,10 +196,10 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
             messageClass += " bg-white";
             return (
               <Fragment key={chat.chatId}>
-                <div className="text-xs ml-1 text-left">{chat.userId}</div>
+                <div className="ml-1 text-xs text-left">{chat.userId}</div>
                 <div className={messageBoxClass}>
                   <div className={messageClass}>{chat.content}</div>
-                  <div className="text-xs ml-1">{formattedDate}</div>
+                  <div className="ml-1 text-xs">{formattedDate}</div>
                 </div>
               </Fragment>
             );
@@ -209,7 +209,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack }) => {
 
       <form
         onSubmit={submitHandler}
-        className="absolute bottom-0 left-0 right-0 bg-white flex items-center"
+        className="absolute bottom-0 left-0 right-0 flex items-center bg-white"
       >
         <input
           type="text"

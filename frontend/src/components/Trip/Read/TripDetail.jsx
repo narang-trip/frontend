@@ -1,8 +1,8 @@
 import { Fragment, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { SlCalender, SlLocationPin, SlPeople, SlBadge } from "react-icons/sl";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import { ModalPortal } from "../../modals/ModalPortal";
 import ApplicationModal from "../../modals/ApplicationModal";
@@ -11,6 +11,7 @@ import DateFormatter from "../../DateFormatter";
 import TripParticipantsInfo from "./TripParticipantsInfo";
 
 export default function TripDetail() {
+  const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate();
   
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
@@ -67,7 +68,7 @@ export default function TripDetail() {
 
       // 모집글 작성자 여부 확인
       setIsLeader(
-        response.data.tripLeaderId === "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"
+        response.data.tripLeaderId === userId
       );
 
       // 모집글 참가자 여부 확인
@@ -76,7 +77,7 @@ export default function TripDetail() {
           response.data.participants.some(
             (participant) =>
               participant.participantId ===
-              "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"
+              userId
           )
         );
       }
