@@ -11,6 +11,7 @@ const UserInfo = () => {
   const [isExitOpen, setIsExitOpen] = useState(false);
   
   const userId = useSelector((state) => state.auth.userId);
+  // const userId = "4c81d009-3270-3163-bd0e-86b257730661";
   const [userData, setUserData] = useState([]);
 
   const Openmodify = () => {
