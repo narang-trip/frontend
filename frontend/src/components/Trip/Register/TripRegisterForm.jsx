@@ -86,6 +86,13 @@ export default function TripWriteForm() {
     }));
   };
 
+  const handlePlanChange = (selectedPlan) => {
+    setBoard((board) => ({
+      ...board,
+      tripPlanId: selectedPlan,
+    }));
+  };
+
   // 이미지 input이 변경될 때 호출되는 함수
   const handleImageChange = (e) => {
     console.log(e.target.files[0]);
@@ -309,14 +316,14 @@ export default function TripWriteForm() {
                     type="text"
                     name="planId"
                     placeholder="계획을 선택해주세요"
-                    value={planName}
+                    value={board.tripPlanId}
                     onClick={OpenPlanModal}
                     className="border rounded-sm border-neutral-300  p-1.5 w-2/3 text-neutral-700 placeholder:text-neutral-300 text-sm"
                     readOnly
                   ></input>
                   {isPlanOpen && (
                     <ModalPortal>
-                      <PlanModal onClose={ClosePlanModal} />
+                      <PlanModal onClose={ClosePlanModal} onSelectedPlanId={handlePlanChange} />
                     </ModalPortal>
                   )}
                 </div>
