@@ -5,8 +5,7 @@ import axios from "axios";
 export default function ReceiveRequestsInfo({ data, trip }) {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
-  const [position, setPosition] = useState([]);
-
+  const position = JSON.parse(decodeURIComponent(window.atob(data.position)));
   const userId = useSelector((state) => state.auth.userId);
   const handleAccept = async () => {
     try {
@@ -14,6 +13,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend/${data.id}/ACCEPT`
       );
 
+  
       const response2 = await axios.post(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/join`,
         {
@@ -73,8 +73,6 @@ export default function ReceiveRequestsInfo({ data, trip }) {
   useEffect(() => {
     setIsAccepted(false);
     setIsRejected(false);
-    setPosition(JSON.parse(decodeURIComponent(window.atob(data.position))));
-    console.log(position);
   }, [data]);
 
   return (
@@ -92,8 +90,8 @@ export default function ReceiveRequestsInfo({ data, trip }) {
                 <span className="mx-3 text-sm">{data.senderId}</span>
               </div>
               <div className=" p-1.5 text-sm text-center flex ">
-                {data &&
-                  position.map((role, idx) => (
+                {position &&
+                 position.map((role, idx) => (
                     <span
                       className="p-1 border bg-neutral-100 rounded-xl border-neutral-100"
                       key={idx}
