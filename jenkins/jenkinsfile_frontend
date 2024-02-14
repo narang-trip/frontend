@@ -13,8 +13,8 @@ pipeline {
         VITE_NAVER_REDIRECT_URI=credentials ('NAVER_REDIRECT_URI')
         VITE_NAVER_STATE=credentials ('NAVER_STATE')
 
-        VITE_CHAT_REQUEST_URI=credentials ('TRIP_REQUEST_URI')
-        VITE_TRIP_REQUEST_URI=credentials ('CHAT_REQUEST_URI')
+        VITE_CHAT_REQUEST_URI=credentials ('CHAT_REQUEST_URI')
+        VITE_TRIP_REQUEST_URI=credentials ('TRIP_REQUEST_URI')
         VITE_ALERT_REQUEST_URI=credentials ('ALERT_REQUEST_URI')
         VITE_USER_REQUEST_URI=credentials ('USER_REQUEST_URI')
         VITE_PLAN_REQUEST_URI=credentials ('PLAN_REQUEST_URI')
