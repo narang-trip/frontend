@@ -205,6 +205,10 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
 
         UpdateResult res = mongoTemplate.updateFirst(query, update, Trip.class);
 
+        /*
+            채팅
+         */
+
         return Optional.ofNullable(mongoTemplate.findById(userRequest.getTripID(), Trip.class))
                 .map(Trip::toTripResponse);
     }
@@ -430,7 +434,6 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
             responseObserver.onCompleted();
         }
         else {
-
             TripGrpcResponse response = TripGrpcResponse.newBuilder()
                     .setTripId(trip.get().get_id().toString())
                     .setTripLeaderId(trip.get().getTripLeaderId().toString())
