@@ -33,8 +33,8 @@ public class Alert {
     @Column(length = 50)
     private String receiverId;
 
-//    @Column
-//    private List<String> position;
+    @Column
+    private String position;
 
     @Column
     private String aspiration;
