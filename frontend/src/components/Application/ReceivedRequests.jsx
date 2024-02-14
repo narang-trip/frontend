@@ -1,5 +1,6 @@
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 import TripInfo from "./TripInfo";
@@ -7,6 +8,7 @@ import TripInfo from "./TripInfo";
 const ReceivedRequests = () => {
   const [pageNo, setPageNo] = useState(0);
   const [tripData, setTripData] = useState([]);
+  const userId = useSelector((state) => state.auth.userId);
 
   const { ref, inView } = useInView({
     threshold: 0, // div태그가 보일 때 inView가 true로 설정
@@ -21,7 +23,7 @@ const ReceivedRequests = () => {
       const response = await axios.post(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/recruit`,
         {
-          userId: "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5",
+          userId: userId,
           pageNo: pageNo
         },
         {
