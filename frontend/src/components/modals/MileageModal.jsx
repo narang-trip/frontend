@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import { ModalPortal } from "./ModalPortal";
 import BuyMileageModal from "./BuyMileage";
@@ -21,15 +22,15 @@ const MileageModal = ({ onClose }) => {
   const Change = (e) => {
     setOption(e);
   };
-
-  const user_id = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"; // 사용자 ID
+  const userId = useSelector((state) => state.auth.userId);
+  // const user_id = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"; // 사용자 ID
 
   // 충전 금액
   const [price, setPrice] = useState(0);
 
   const handleCharge = async () => {
     try {
-      const url = `http://localhost:3000/Mypage`;
+      const url = `https://i10a701.p.ssafy.io/Mypage`;
 
       const response = await axios.post(
         `https://i10a701.p.ssafy.io/api/payment/ready?user_id=${user_id}&price=${price}&return_url=${url}`
