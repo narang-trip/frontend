@@ -170,9 +170,9 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     @Override
     public Optional<TripResponse> joinTrip(UserRequest userRequest) {
 
-        Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripID()));
+        Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripId()));
 
-        Optional<Trip> trip = tripRepository.findById(userRequest.getTripID());
+        Optional<Trip> trip = tripRepository.findById(userRequest.getTripId());
 
         if (trip.isEmpty()) {
             System.out.println("파티 못 찾음");
@@ -192,7 +192,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
             return Optional.empty();
         }
 
-        Query query = new Query(Criteria.where("_id").is(userRequest.getTripID()));
+        Query query = new Query(Criteria.where("_id").is(userRequest.getTripId()));
 
         Trip.Participant participant
                 = Trip.Participant.builder()
@@ -209,16 +209,16 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
             채팅
          */
 
-        return Optional.ofNullable(mongoTemplate.findById(userRequest.getTripID(), Trip.class))
+        return Optional.ofNullable(mongoTemplate.findById(userRequest.getTripId(), Trip.class))
                 .map(Trip::toTripResponse);
     }
 
     @Override
     public boolean leaveTrip(UserRequest userRequest) {
 
-        Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripID()));
+        Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripId()));
 
-        Optional<Trip> trip = tripRepository.findById(userRequest.getTripID());
+        Optional<Trip> trip = tripRepository.findById(userRequest.getTripId());
 
         if (trip.isEmpty()) {
             System.out.println("파티 못 찾음");
@@ -239,7 +239,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
         }
 
         Query query = new Query(
-                Criteria.where("_id").is(userRequest.getTripID()));
+                Criteria.where("_id").is(userRequest.getTripId()));
 
         List<Trip.Participant> participants = trip.get().getParticipants().stream()
                 .filter(participant -> !participant.getParticipantId().equals(userRequest.getUserId()))
@@ -256,7 +256,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
 
    @Override
     public boolean deleteTrip(UserRequest userRequest) {
-        Query query = new Query(Criteria.where("_id").is(userRequest.getTripID()))
+        Query query = new Query(Criteria.where("_id").is(userRequest.getTripId()))
                 .addCriteria(Criteria.where("tripLeaderId").is(userRequest.getUserId()));
 
         DeleteResult res = mongoTemplate.remove(query, Trip.class);
