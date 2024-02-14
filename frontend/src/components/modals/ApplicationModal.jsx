@@ -87,7 +87,7 @@ const ApplicationModal = ({ data, onClose }) => {
 
   // 신청하기 버튼 눌렀을 때
   const handleSubmit = async () => {
-   
+  console.log(postData.position);
    
     try {
       const response = await axios.post(
