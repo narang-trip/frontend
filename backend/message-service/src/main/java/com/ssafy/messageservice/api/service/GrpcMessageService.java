@@ -1,6 +1,7 @@
 package com.ssafy.messageservice.api.service;
 
 
+import com.ssafy.messageservice.api.request.ChatroomRequest;
 import com.ssafy.messageservice.db.entity.Chatroom;
 import com.ssafy.messageservice.db.entity.ChatroomUser;
 import com.ssafy.messageservice.db.repository.ChatroomRepository;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class GrpcMessageService extends NarangGrpc.NarangImplBase {
 
     private final AlertService alertService;
+    private final ChatService chatService;
     private final ChatroomUserRepository chatroomUserRepository;
     private final ChatroomRepository chatroomRepository;
 
@@ -74,6 +76,23 @@ public class GrpcMessageService extends NarangGrpc.NarangImplBase {
             responseObserver.onNext(ChatroomUserPatchGrpcResponse.newBuilder().setResult(true).build());
         else
             responseObserver.onNext(ChatroomUserPatchGrpcResponse.newBuilder().setResult(false).build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void postChatRoom(ChatGrpcRequest request, StreamObserver<ChatGrpcResponse> responseObserver) {
+
+        String chatroomId = chatService.postChatroom(
+                ChatroomRequest.builder()
+                        .userId(request.getUserId())
+                        .chatroomName(request.getChatroomName())
+                        .build());
+
+        ChatGrpcResponse response = ChatGrpcResponse.newBuilder()
+                .setChatroomId(chatroomId)
+                .build();
+
+        responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 }
