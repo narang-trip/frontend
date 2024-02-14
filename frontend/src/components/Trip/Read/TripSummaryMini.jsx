@@ -28,17 +28,17 @@ const TripSummary = ({ trip }) => {
           className="flex w-[40rem] px-5 py-4 mx-1 my-4 transition border rounded-md itmes-center bg-neutral-100 border-neutral-200 hover:bg-neutral-200 hover: hover:ease-in-out hover:duration-200"
         >
           <div className="flex items-center">
+            <div className="flex flex-row items-center my-1.5 mr-2 text-sm">
+              <p className="text-xs">
+               {trip.tripName}
+              </p>
+            </div>
             <div className="relative overflow-hidden rounded-3xl">
               <img
                 src={trip.tripImgUrl}
                 alt="tripThumbnail"
-                className="w-10 h-10 mb-2 mr-3 transition-transform duration-300 ease-in-out transform scale-100 rounded-full"
+                className="w-10 h-10 mx-3 mb-2 transition-transform duration-300 ease-in-out transform scale-100 rounded-full"
               />
-            </div>
-            <div className="flex flex-row items-center my-1.5 text-sm">
-              <p className="text-xs">
-               {trip.tripName}
-              </p>
             </div>
             <div className="flex flex-row items-center my-1.5 text-sm">
               <SlCalender className="mx-2 " size="20" />
