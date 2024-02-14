@@ -80,7 +80,7 @@ const UpperNavbar = () => {
             authActions.Login({
               token: sessionToken,
               refreshToken: sessionRefreshToken,
-              userId: userRes.data.userId,
+              userId: userRes.data.id,
               nickname: userRes.data.nickname,
             })
           );
