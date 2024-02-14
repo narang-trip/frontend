@@ -27,7 +27,7 @@ public class AlertListResponse {
         private String tripName;
         private String senderId;
         private String senderName;
-        private List<String> position;
+//        private List<String> position;
         private String aspiration;
         private String alertType;
         private boolean isRead;
