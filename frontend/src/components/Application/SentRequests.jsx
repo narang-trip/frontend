@@ -49,7 +49,27 @@ export default function SentRequests() {
       if (item.alertType === "ACCEPT") {
         try {
           await axios.post(
-            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refundusage_id=${item.usageId}&departure_datetime=${formatDate(startDate)}`,
+            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund?usage_id=${
+              item.usageId
+            }&departure_datetime=${formatDate(startDate)}`
+          );
+          console.log("예약금 일부 환불 성공");
+        } catch (error) {
+          console.error("Error refunding deposit:", error);
+        }
+
+        try {
+          await axios.patch(
+            `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
+            {
+              tripId: item.tripId,
+              userId: item.senderId,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
           );
           console.log("예약금 일부 환불 성공");
         } catch (error) {
@@ -61,7 +81,9 @@ export default function SentRequests() {
         console.log(item.usageId);
         try {
           await axios.post(
-            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject?usage_id=${item.usageId}`,
+            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject?usage_id=${
+              item.usageId
+            }`
           );
           console.log("예약금 환불 성공");
         } catch (error) {
@@ -69,12 +91,12 @@ export default function SentRequests() {
         }
       }
 
-      // 취소에 대한 요청을 보내거나 삭제 로직을 구현합니다.
+      // 취소에 대한 요청을 보내거나 삭제 로직을 구현
       await axios.delete(
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/${item.id}`
       );
 
-      // 삭제 요청이 성공하면 해당 알림을 새로고침 없이 제거합니다.
+      // 삭제 요청이 성공하면 해당 알림을 새로고침 없이 제거
       setSentData((prevSentData) =>
         prevSentData.filter((i) => i.id !== item.id)
       );
