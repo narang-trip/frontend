@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import { ModalPortal } from "../modals/ModalPortal";
 import MileageModal from "../modals/MileageModal";
@@ -32,8 +33,8 @@ const Mileage = (props) => {
     };
   }, [isOpen]);
 
-
-  const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"
+  const userId = useSelector((state) => state.auth.userId);
+  // const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"
     // 잔액 조회
     const handleBalance = async () => {
       try {
