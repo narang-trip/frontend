@@ -96,7 +96,7 @@ public class KakaoPayService {
         if (approveResponse != null) {
             ChargeRecord chargeRecord = null;
 
-            UserMileage userMileage = userMileageRepository.findById(userId)
+            UserMileage userMileage = userMileageRepository.findByUserId(userId)
                     .orElseGet(() -> {
                         UserMileage newUserMileage = new UserMileage(userId, textEncryptor.encrypt(String.valueOf(0)));
                         return userMileageRepository.save(newUserMileage);
