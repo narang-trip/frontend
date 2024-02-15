@@ -203,7 +203,8 @@ public class MileageService extends NarangGrpc.NarangImplBase {
                     .setRecordId(record.getId().toString()).build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-        } else {
+        }
+        else {
             responseObserver.onError(new NoSuchElementException());
             responseObserver.onCompleted();
         }
