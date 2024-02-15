@@ -56,18 +56,14 @@ const ReceivedRequests = () => {
     }
   }, [inView]);
 
-  const clickHandler = (tripId) => {
-    navigate(`/detail/${tripId}`); // navigate 함수를 사용하여 경로 이동
-  };
+
 
   return (
     <Fragment>
       <div>
         {tripData &&
           tripData.map((trip, idx) => (
-            <button onClick={() => clickHandler(trip.tripId)} key={idx}>
-              <TripInfo tripData={trip} />
-            </button>
+              <TripInfo tripData={trip} key={idx} />
           ))}
       </div>
       <div ref={ref}></div>
