@@ -55,7 +55,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
       const response = await axios.post(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/reject`,
         {
-          tripId: trip.tripId,
+          tripId: data.tripId,
           userId: data.senderId,
           usageId: data.usageId,
           alertId: data.id
