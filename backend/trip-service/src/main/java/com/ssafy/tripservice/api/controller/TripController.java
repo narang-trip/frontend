@@ -7,6 +7,7 @@ import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.api.service.TripService;
 import com.ssafy.tripservice.db.entity.Trip;
+import com.ssafy.tripservice.exception.TripAlreadyJoinException;
 import com.ssafy.tripservice.exception.TripNotFoundException;
 import com.ssafy.tripservice.exception.TripTimeExceedException;
 import com.ssafy.tripservice.exception.TripsizeFullException;
@@ -19,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -213,7 +215,7 @@ public class TripController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
-    @ExceptionHandler({TripsizeFullException.class, TripTimeExceedException.class})
+    @ExceptionHandler({TripsizeFullException.class, TripTimeExceedException.class, TripAlreadyJoinException.class})
     public ResponseEntity<String> handleUnavailableTripException(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }

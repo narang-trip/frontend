@@ -18,5 +18,6 @@ public class UserRequest {
     private UUID tripId;
     private UUID userId;
     private String alertId;
+    private String usageId;
     private List<String> userRoles;
 }

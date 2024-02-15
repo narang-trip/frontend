@@ -10,6 +10,7 @@ import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.db.entity.QTrip;
 import com.ssafy.tripservice.db.entity.Trip;
 import com.ssafy.tripservice.db.repository.TripRepository;
+import com.ssafy.tripservice.exception.TripAlreadyJoinException;
 import com.ssafy.tripservice.exception.TripNotFoundException;
 import com.ssafy.tripservice.exception.TripTimeExceedException;
 import com.ssafy.tripservice.exception.TripsizeFullException;
@@ -17,6 +18,7 @@ import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.apache.coyote.BadRequestException;
 import org.narang.lib.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
@@ -187,6 +189,13 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
             throw new TripTimeExceedException();
         }
 
+        for (Trip.Participant p : trip.get().getParticipants()) {
+            if (p.getParticipantId().equals(userRequest.getUserId())) {
+                System.out.println("이미 있음");
+                throw new TripAlreadyJoinException();
+            }
+        }
+
         /*
             Alert Patch Request
             Chat Join Request
@@ -207,6 +216,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
         Trip.Participant participant
                 = Trip.Participant.builder()
                 .userRoles(userRequest.getUserRoles())
+                .usageId(userRequest.getUsageId())
                 .participantId(userRequest.getUserId())
                 .enrollmentDate(LocalDateTime.now())
                 .build();
@@ -252,7 +262,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
                 Criteria.where("_id").is(userRequest.getTripId()));
 
         List<Trip.Participant> participants = trip.get().getParticipants().stream()
-                .filter(participant -> !participant.getParticipantId().equals(userRequest.getUserId()))
+                .filter(participant -> ! participant.getParticipantId().equals(userRequest.getUserId()))
                 .toList();
 
         Update update = new Update();
@@ -261,7 +271,28 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
 
         UpdateResult res = mongoTemplate.upsert(query, update, Trip.class);
 
-        return res.getModifiedCount() != 0;
+        if (res.getModifiedCount() > 0) {
+            ChatroomUserPatchGrpcResponse response = chatBlockingStub.exileFromChatroom(ChatroomUserPatchGrpcRequest.newBuilder()
+                            .setUserId(userRequest.getUserId().toString())
+                            .setChatroomId(trip.get().getTripChatId().toString())
+                    .build());
+
+            for (Trip.Participant p : trip.get().getParticipants()) {
+                if (p.getParticipantId().equals(userRequest.getUserId())) {
+
+                    PaymentRefundGrpcResponse refundGrpcResponse = paymentBlockingStub.refundPaymentRecord(
+                            PaymentRefundGrpcRequest.newBuilder()
+                                    .setUsageId(p.getUsageId())
+                                    .setTripId(trip.get().get_id().toString())
+                                    .setDepartureDate(LocalDate.now().toString())
+                                    .build()
+                    );
+                    return refundGrpcResponse.getResult();
+                }
+            }
+        }
+
+        return false;
     }
 
    @Override
