@@ -72,7 +72,8 @@ export default function SentRequests() {
               },
             }
           );
-          console.log("예약금 일부 환불 성공");
+
+          console.log("여행 떠나기 성공");
         } catch (error) {
           console.error("Error refunding deposit:", error);
         }
