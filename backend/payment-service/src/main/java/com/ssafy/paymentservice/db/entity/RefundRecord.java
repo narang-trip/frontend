@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
-//@Setter
 public class RefundRecord extends BaseEntity{
     @Column
     private String userId;
