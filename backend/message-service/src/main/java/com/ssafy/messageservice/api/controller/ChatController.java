@@ -1,6 +1,7 @@
 package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.request.ChatroomRequest;
+import com.ssafy.messageservice.api.request.ChatroomUserRequest;
 import com.ssafy.messageservice.api.response.ChatListResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.api.service.ChatService;
@@ -39,4 +40,15 @@ public class ChatController {
     public ResponseEntity<String> postChatroom(@RequestBody ChatroomRequest chatroomRequest) {
         return ResponseEntity.ok(chatService.postChatroom(chatroomRequest));
     }
+
+    @DeleteMapping("/exile")
+    public ResponseEntity<Integer> deleteChatroomUser(@RequestBody ChatroomUserRequest chatroomUserRequest) {
+        return ResponseEntity.ok(chatService.exileFromChatroom(chatroomUserRequest));
+    }
+
+    // 채팅 생성 -> stomp으로 처리
+//    @PostMapping("/{chatroomId}/chat")
+//    public ResponseEntity<String> postChatMessageByChatroomId(@PathVariable String chatroomId) {
+//        return ResponseEntity.ok("success");
+//    }
 }
