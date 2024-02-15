@@ -1,9 +1,6 @@
 package com.ssafy.tripservice.api.service;
 
-import com.ssafy.tripservice.api.request.TripModifyRequest;
-import com.ssafy.tripservice.api.request.TripQueryRequest;
-import com.ssafy.tripservice.api.request.TripRequest;
-import com.ssafy.tripservice.api.request.UserRequest;
+import com.ssafy.tripservice.api.request.*;
 import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.db.entity.Trip;
@@ -42,4 +39,6 @@ public interface TripService {
     public Page<TripPageResponse> getTripsIveOwn(TripQueryRequest tripQueryRequest);
     public Page<TripPageResponse> getTripsIWant (TripQueryRequest tripQueryRequest);
     public long eraseWithdrawalUser(UUID userId);
+
+    public boolean rejectTripJoinRequest(UserRejectRequest request);
 }

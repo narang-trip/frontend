@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service @GrpcService
+@Service
 public class ChatService extends NarangGrpc.NarangImplBase {
     private final ChatRepositoryCustom chatRepositoryCustom;
     private final ChatRepository chatRepository;
@@ -70,23 +70,6 @@ public class ChatService extends NarangGrpc.NarangImplBase {
         chatroomUserRepository.save(user);
 
         return chatroomId;
-    }
-
-    @Override
-    public void postChatRoom(ChatGrpcRequest request, StreamObserver<ChatGrpcResponse> responseObserver) {
-
-        String chatroomId = postChatroom(
-                ChatroomRequest.builder()
-                        .userId(request.getUserId())
-                        .chatroomName(request.getChatroomName())
-                        .build());
-
-        ChatGrpcResponse response = ChatGrpcResponse.newBuilder()
-                .setChatroomId(chatroomId)
-                .build();
-
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
     }
 
     private String getName(String id) {

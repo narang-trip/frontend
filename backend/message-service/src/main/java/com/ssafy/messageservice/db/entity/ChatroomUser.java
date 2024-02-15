@@ -5,6 +5,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @Table(name="ChatroomUser")
 @Entity
 @AllArgsConstructor

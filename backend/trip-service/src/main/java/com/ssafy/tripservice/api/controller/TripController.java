@@ -2,14 +2,14 @@ package com.ssafy.tripservice.api.controller;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.ssafy.tripservice.api.request.TripModifyRequest;
-import com.ssafy.tripservice.api.request.TripQueryRequest;
-import com.ssafy.tripservice.api.request.TripRequest;
-import com.ssafy.tripservice.api.request.UserRequest;
+import com.ssafy.tripservice.api.request.*;
 import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.api.service.TripService;
 import com.ssafy.tripservice.db.entity.Trip;
+import com.ssafy.tripservice.exception.TripNotFoundException;
+import com.ssafy.tripservice.exception.TripTimeExceedException;
+import com.ssafy.tripservice.exception.TripsizeFullException;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -90,7 +90,6 @@ public class TripController {
         return  modifiedRes.isPresent() ?
                 ResponseEntity.ok(modifiedRes.get()) : ResponseEntity.badRequest().build();
     }
-
 
     @Operation(summary = "Trip 가입",
             responses = {
@@ -198,5 +197,25 @@ public class TripController {
     public ResponseEntity<Page<TripPageResponse>> getTripsIveOwn(
             @RequestBody TripQueryRequest tripQueryRequest) {
         return ResponseEntity.ok(tripService.getTripsIveOwn(tripQueryRequest));
+    }
+
+    @Operation(summary = "참여 거절",
+            responses = { @ApiResponse(responseCode = "200", description = "User Rejected Successfully")})
+    @PostMapping("/reject")
+    public ResponseEntity<?> rejectTripJoinRequest(@RequestBody UserRejectRequest request) {
+
+        boolean res = tripService.rejectTripJoinRequest(request);
+
+        return res ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+
+    @ExceptionHandler(TripNotFoundException.class)
+    public ResponseEntity<String> handleTripNotFoundException(TripNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler({TripsizeFullException.class, TripTimeExceedException.class})
+    public ResponseEntity<String> handleUnavailableTripException(RuntimeException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 }
