@@ -47,8 +47,23 @@ export default function TripDetail() {
   };
 
   // 취소하기 클릭
-  const handleCancelClick = () => {
-    
+  const handleCancelClick = async () => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`, {
+          tripId: tripId,
+          userId: userId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("예약금 환불 성공");
+    } catch (error) {
+      console.error("Error refunding deposit:", error);
+    }
     navigate("/applicantList");
   };
 
