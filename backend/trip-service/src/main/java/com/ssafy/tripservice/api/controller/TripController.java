@@ -200,7 +200,6 @@ public class TripController {
     }
 
     @Operation(summary = "참여 거절",
-            parameters = { @Parameter (name = "tripQueryRequest", description = "usageId, alertId") },
             responses = { @ApiResponse(responseCode = "200", description = "User Rejected Successfully")})
     @PostMapping("/reject")
     public ResponseEntity<?> rejectTripJoinRequest(@RequestBody UserRejectRequest request) {
