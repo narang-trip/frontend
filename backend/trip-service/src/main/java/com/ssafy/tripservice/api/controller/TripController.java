@@ -203,7 +203,7 @@ public class TripController {
             parameters = { @Parameter (name = "tripQueryRequest", description = "usageId, alertId") },
             responses = { @ApiResponse(responseCode = "200", description = "User Rejected Successfully")})
     @PostMapping("/reject")
-    public ResponseEntity<?> rejectTripJoinRequest(UserRejectRequest request) {
+    public ResponseEntity<?> rejectTripJoinRequest(@RequestBody UserRejectRequest request) {
 
         boolean res = tripService.rejectTripJoinRequest(request);
 
