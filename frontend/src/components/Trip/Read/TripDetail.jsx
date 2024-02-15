@@ -126,10 +126,6 @@ export default function TripDetail() {
     navigate(`/makeplan/${tripDetails.tripPlanId}`);
   };
 
-  const CreatePlan = () => {
-    navigate('/makeplan');
-  }
-
   useEffect(() => {
     fetchData();
   }, [tripId]);
@@ -282,9 +278,9 @@ export default function TripDetail() {
               <p className="mt-5 mb-3 text-base font-bold">일정 정보</p>
               <button
                 className="w-full py-3 text-sm font-medium rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10"
-                onClick={!tripDetails.tripPlanId && isLeader ? CreatePlan : OpenPlanDetail}
+                onClick={OpenPlanDetail}
               >
-                {!tripDetails.tripPlanId && isLeader ? "일정 생성 하기" : "일정 상세 보기"}
+                일정 상세 보기
               </button>
               <p className="mt-5 mb-3 text-base font-bold">여행 참여자 정보</p>
               <TripParticipantsInfo
