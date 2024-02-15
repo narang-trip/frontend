@@ -28,7 +28,7 @@ const AlertAnimation = ({ color }) => {
 };
 
 const UpperNavbar = () => {
-  const [emptyMessage, setEmptyMessage] = useState(true)
+  const [emptyMessage, setEmptyMessage] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [alertContent, setAlertContent] = useState("");
@@ -53,7 +53,9 @@ const UpperNavbar = () => {
               alertAmount: res.data.alertList.length,
             })
           );
-          setAlertContent(`현재 알림이 ${res.data.alertList.length}개 와 있습니다.`);
+          setAlertContent(
+            `현재 알림이 ${res.data.alertList.length}개 와 있습니다.`
+          );
         }
         console.log(res.data.alertList);
       } catch (error) {
@@ -162,7 +164,9 @@ const UpperNavbar = () => {
   const makeAlertContent = (event) => {
     switch (event.alertType) {
       case "REQUEST":
-        return `${event.senderName}님이 ${event.tripName}에 ${event.position} 포지션으로 참여를 희망합니다`;
+        return `${event.senderName}님이 ${event.tripName}에 ${JSON.parse(
+          decodeURIComponent(window.atob(event.position))
+        )} 포지션으로 참여를 희망합니다`;
       case "ACCEPT":
         return `${event.senderName}님이 ${event.tripName}의 참여를 허락했습니다.`;
       case "REFUSE":
@@ -193,7 +197,9 @@ const UpperNavbar = () => {
             {alertAmount > 0 && <AlertAnimation color={conceptColorClass} />}
             🔔
           </Link>
-          {!emptyMessage && <TalkBubble content={alertContent} isVisible={isVisible} />}
+          {!emptyMessage && (
+            <TalkBubble content={alertContent} isVisible={isVisible} />
+          )}
           <Dropdown />
         </div>
       )}
