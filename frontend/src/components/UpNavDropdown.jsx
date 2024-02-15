@@ -2,7 +2,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/authSlice";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -20,7 +20,10 @@ const Dropdown = () => {
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button>
-          <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
+          <ChevronDownIcon
+            className="-mr-1 h-5 w-5 text-gray-400"
+            aria-hidden="true"
+          />
         </Menu.Button>
       </div>
 
@@ -36,7 +39,7 @@ const Dropdown = () => {
           <div className="py-1">
             <Menu.Item>
               {({ active }) => (
-                <a
+                <NavLink
                   href="Mypage"
                   className={classNames(
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
@@ -44,7 +47,7 @@ const Dropdown = () => {
                   )}
                 >
                   Mypage
-                </a>
+                </NavLink>
               )}
             </Menu.Item>
             <form method="POST" action="#">
