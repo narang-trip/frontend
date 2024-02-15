@@ -34,7 +34,6 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     // 해당 회원과 관련된 모든 이벤트를 찾음
     @Override
     public Map<String, SseEmitter> findAllEmitterStartWithByUserId(String userId) {
-        log.info("findAllEmitterStartWithByUserId 호출");
         return emitters.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(userId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -42,7 +41,6 @@ public class EmitterRepositoryImpl implements EmitterRepository{
 
     @Override
     public Map<String, Object> findAllEventCacheStartWithByUserId(String userId) {
-        log.info("findAllEventCacheStartWithByUserId 호출");
         return eventCache.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(userId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -51,7 +49,6 @@ public class EmitterRepositoryImpl implements EmitterRepository{
     // 주어진 아이디의 emitter를 지움
     @Override
     public void deleteById(String id) {
-        log.info("EmitterRepositoryImpl deleteById 호출 id : {}", id);
         emitters.remove(id);
     }
 

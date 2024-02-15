@@ -81,11 +81,6 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         int refund_price = 0;
 
         int dayDifference = calculateDateDifference(LocalDate.now(), departureDate);
-        log.info("depatureDate : {}", departureDate);
-        log.info("depatureDate toString : {}", departureDate.toString());
-        log.info("LocalDate : {}", LocalDate.now());
-        log.info("LocalDate toString : {}", LocalDate.now().toString());
-        log.info("dayDifference : {}", dayDifference);
 
         RefundResponse refundResponse = new RefundResponse();
 

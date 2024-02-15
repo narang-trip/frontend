@@ -1,6 +1,5 @@
 package com.ssafy.messageservice.api.controller;
 
-import com.ssafy.messageservice.api.request.AlertAttendRequest;
 import com.ssafy.messageservice.api.request.ChatroomRequest;
 import com.ssafy.messageservice.api.response.ChatListResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
@@ -11,10 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 @Slf4j
 @CrossOrigin("*")
@@ -28,7 +23,6 @@ public class ChatController {
     // 채팅방 리스트
     @GetMapping("/list/{userId}")
     public ResponseEntity<ChatroomListResponse> getLatestChatsByUserId(@PathVariable String userId) {
-        log.info("getLatestChatsByUserId 호출");
         ChatroomListResponse chatroomListResponse = chatService.getLatestChatsByUserId(userId);
         return ResponseEntity.ok(chatroomListResponse);
     }
@@ -45,10 +39,4 @@ public class ChatController {
     public ResponseEntity<String> postChatroom(@RequestBody ChatroomRequest chatroomRequest) {
         return ResponseEntity.ok(chatService.postChatroom(chatroomRequest));
     }
-
-    // 채팅 생성 -> stomp으로 처리
-//    @PostMapping("/{chatroomId}/chat")
-//    public ResponseEntity<String> postChatMessageByChatroomId(@PathVariable String chatroomId) {
-//        return ResponseEntity.ok("success");
-//    }
 }

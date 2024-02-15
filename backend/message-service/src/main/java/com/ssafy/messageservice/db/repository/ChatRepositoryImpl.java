@@ -25,7 +25,6 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
     // 채팅방 리스트
     @Override
     public ChatroomListResponse getLatestChatsByUserId(String userId) {
-        log.info("getLatestChatsByUserId 호출. userId : {}", userId);
         // ChatroomUser 테이블에 가서 전달받은 userId값을 갖고 있는 chatroomId를 받아온다.
         List<ChatroomListResponse.ChatroomResponse> chatroomResponses = queryFactory
                 .selectDistinct(QChatroom.chatroom.chatroomId)
@@ -47,8 +46,6 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
     }
 
     private ChatroomListResponse.ChatroomResponse getLatestMessageForChatroom(String chatroomId, String userId) {
-        log.info("getLatestMessageForChatroom 호출");
-        log.info("chatRoomId : {}", chatroomId);
         // 해당 채팅방의 모든 메시지 중 가장 최근의 메시지 가져오기
         Chat latestMessage = queryFactory
                 .selectFrom(QChat.chat)
@@ -56,14 +53,11 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
                 .orderBy(QChat.chat.sendTime.desc()) // sendTime 기준으로 내림차순 정렬
                 .fetchFirst();
 
-        log.info("latestMessage : {}", latestMessage);
         // 해당 채팅방에 있는 모든 userId를 가져온다.
         List<String> userIds = chatroomUserRepository.findUserIdsByChatroomId(chatroomId);
-        log.info("userIds : {}", userIds.toArray());
         // userIds 값이 null일 수는 없다. 내가 존재하기 때문
         // user 테이블에 접근해서 채팅방에 있는 모든 user에 대한 정보 가져오기
         List<User> userList = userRepository.findAllByIdIn(userIds);
-        log.info("findAllByIdIn 이후 userList : {}", userList.toArray().toString());
 
         // chatroom Repo 처리해야 하는데 시간이 없음 .
         if (latestMessage == null)
@@ -81,15 +75,6 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
     }
     
     private ChatroomListResponse.ChatroomResponse mapToChatroomResponse(Chat chat, List<User> users) {
-        // 왜 Null인데 get 함 ?
-//        if (chat == null) {
-//            // 채팅이 없는 경우 처리
-//            return new ChatroomListResponse.ChatroomResponse(
-//                    chat.getChatroom().getChatroomId(),
-//                    chat.getChatroom().getChatroomName(),
-//                    null, users
-//            );
-//        }
 
         // user 테이블에 접근해서 sender에 대한 정보 가져오기
         Optional<User> senderInfo = userRepository.findById(chat.getUserId());
