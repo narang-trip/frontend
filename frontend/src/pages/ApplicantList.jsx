@@ -8,7 +8,9 @@ export default function ApplicantList() {
   const { isLogin } = useSelector((state) => state.auth);
   // 받은 요청 목록인지, 보낸 요청 목록인지 확인
   const [selectedOption, setSelectedOption] = useState("sent");
+  const { concept, conceptColor } = useSelector((state) => state.concept);
 
+  
   // 누른 옵션에 따라 selectedOption 값 설정
   const handleOptionChange = (option) => {
     setSelectedOption(option);
@@ -46,7 +48,7 @@ export default function ApplicantList() {
           </div>
         ) : (
           <div className="flex items-start w-full h-full">
-            <div className="mx-auto mt-24 text-xl font-bold text-center ">
+            <div className={`mx-auto mt-24 text-xl font-bold text-center animate-bounce text-${conceptColor}-400`}>
               로그인을 해주세요
             </div>
           </div>
