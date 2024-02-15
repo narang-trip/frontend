@@ -1,5 +1,5 @@
 .pac-container {
-  background-color: rgb(216, 121, 121);
+  background-color: white;
   z-index: 1000;
   max-height: 200px;
   overflow-y: auto;
@@ -8,10 +8,10 @@
 }
 
 .pac-item {
-  padding: 8px;
+  padding: 6px;
   cursor: pointer;
 }
 
 .pac-item:hover {
-  background-color: #f5f5f5;
+  background-color: #bebdbd;
 }
