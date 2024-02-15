@@ -3,23 +3,18 @@ import { SlLocationPin, SlPeople, SlInfo } from "react-icons/sl";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 import DateFormatter from "../DateFormatter";
-
 export default function SentRequests() {
   const [sentData, setSentData] = useState(null);
   const [selectedType, setSelectedType] = useState("ALL");
   const [startDate, setStartDate] = useState(null);
   const userId = useSelector((state) => state.auth.userId);
-
   const navigate = useNavigate();
-
   const fetchSentData = async () => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/list/send/${userId}`
       );
-
       const updatedSentData = await Promise.all(
         response.data.alertList.map(async (item) => {
           // 각 tripId에 대한 추가 정보를 가져오기
@@ -28,44 +23,37 @@ export default function SentRequests() {
           return { ...item, tripInfo };
         })
       );
-
       setSentData(updatedSentData);
     } catch (error) {
       console.error("요청 데이터를 불러오는 중 에러 발생:", error);
     }
   };
-
   const fetchTripInfo = async (tripId) => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
       );
-
-      setStartDate(DateFormatter({ dateString: response.data.departureDate }));
-      console.log("날짜1" + startDate);
-      console.log("날짜2" + response.data.departureDate);
+   
       
       return response.data;
     } catch (error) {
       console.error("여행 정보를 불러오는 중 에러 발생:", error);
     }
   };
-
   const handleCancel = async (item) => {
     try {
       // 예약금 환불이 필요한 경우
       if (item.alertType === "ACCEPT") {
-        try {
-          await axios.post(
-            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund?usage_id=${
-              item.usageId
-            }&departure_datetime=${startDate}&trip_id=${item.tripId}`
-          );
-          console.log("예약금 일부 환불 성공");
-        } catch (error) {
-          console.error("Error refunding deposit:", error);
-        }
-
+        // try {
+        //   await axios.post(
+        //     `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund?usage_id=${
+        //       item.usageId
+        //     }&departure_datetime=${item.tripInfo.departureDate}&trip_id=${item.tripId}`
+        //   );
+        //   console.log("예약금 일부 환불 성공");
+        // } catch (error) {
+        //   console.error("Error refunding deposit:", error);
+        // }
         
         try {
           await axios.patch(
@@ -80,13 +68,11 @@ export default function SentRequests() {
               },
             }
           );
-
           console.log("여행 떠나기 성공");
         } catch (error) {
           console.error("Error refunding deposit:", error);
         }
       }
-
       if (item.alertType === "REQUEST") {
         console.log(item.usageId);
         try {
@@ -100,12 +86,10 @@ export default function SentRequests() {
           console.error("Error refunding deposit:", error);
         }
       }
-
       // 취소에 대한 요청을 보내거나 삭제 로직을 구현
       await axios.delete(
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/${item.id}`
       );
-
       // 삭제 요청이 성공하면 해당 알림을 새로고침 없이 제거
       setSentData((prevSentData) =>
         prevSentData.filter((i) => i.id !== item.id)
@@ -114,7 +98,6 @@ export default function SentRequests() {
       console.error("에러 발생", error);
     }
   };
-
   // 요청중, 수락, 거절에 따라서 색깔 구분
   const getColorClass = (alertType) => {
     switch (alertType) {
@@ -128,15 +111,12 @@ export default function SentRequests() {
         return "";
     }
   };
-
   useEffect(() => {
     fetchSentData();
   }, []);
-
   const tripDetailHandler = (tripId) => {
     navigate(`/detail/${tripId}`);
   };
-
   return (
     <Fragment>
       <div className="flex justify-center">
@@ -255,7 +235,6 @@ export default function SentRequests() {
                           </div>
                         </div>
                       </div>
-
                       <button onClick={() => handleCancel(item)}>취소</button>
                     </div>
                   )
