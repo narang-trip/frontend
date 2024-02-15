@@ -24,7 +24,8 @@ public class TripPageResponse {
         private LocalDate returnDate;
         private UUID tripLeaderId;
         private Integer viewCnt;
-        private Integer tripParticipantsSize;
+        private Integer tripMaxParticipantsSize;
+        private Integer tripCurrParticipantsSize;
         private Integer tripAgeUpperBound;
         private Integer tripAgeLowerBound;
         private String tripConcept;
