@@ -17,6 +17,7 @@ import com.ssafy.tripservice.exception.TripTimeExceedException;
 import com.ssafy.tripservice.exception.TripsizeFullException;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.apache.coyote.BadRequestException;
@@ -37,6 +38,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Transactional
 @Service @GrpcService
+@Slf4j
 public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripService  {
 
     private final MongoOperations mongoTemplate;
@@ -237,9 +239,13 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     @Override
     public Optional<TripRefundResponse> leaveTrip(UserRequest userRequest) {
 
+        log.info(userRequest.toString());
+
         Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripId()));
 
         Optional<Trip> trip = tripRepository.findById(userRequest.getTripId());
+
+        log.info(trip.toString());
 
         if (trip.isEmpty()) {
             System.out.println("파티 못 찾음");
@@ -250,6 +256,9 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
             return Optional.empty();
         }
         for (Trip.Participant p : trip.get().getParticipants()) {
+
+            log.info(p.toString());
+
             if (p.getParticipantId().equals(userRequest.getUserId())) {
 
                 System.out.println("파티 이미 나갔음");
