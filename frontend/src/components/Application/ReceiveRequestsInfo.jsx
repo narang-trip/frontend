@@ -27,7 +27,8 @@ export default function ReceiveRequestsInfo({ data, trip }) {
         {
           tripId: trip.tripId,
           userId: data.senderId,
-          userRoles: data.position,
+          alertId: data.id,
+          userRoles: data.position
         },
         {
           headers: {
@@ -37,8 +38,8 @@ export default function ReceiveRequestsInfo({ data, trip }) {
       );
 
       // 서버 응답을 이용해 필요한 작업 수행
-      console.log("서버 응답:", response1.data);
-      console.log("서버 응답:", response2.data);
+      console.log("서버 응답1:", response1.data);
+      console.log("서버 응답2:", response2.data);
 
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(true);
