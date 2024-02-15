@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import SearchBox from "./SearchBox";
@@ -6,23 +7,19 @@ import Markers from "./Markers";
 import PlaceCard from "./PlaceCard";
 import { useDispatch } from "react-redux";
 import { placesActions } from "../../store/placeSlice";
-
 const Map = ({ isCanModify }) => {
   const containerStyle = {
     width: "300px",
     height: "300px",
   };
-
   const center = {
     lat: 37.5012647456244,
     lng: 127.03958123605,
   };
-
   const options = {
     mimZoom: 4,
     maxZoom: 18,
   };
-
   const myStyles = [
     {
       featureType: "poi",
@@ -30,33 +27,27 @@ const Map = ({ isCanModify }) => {
       stylers: [{ visibility: "off" }],
     },
   ];
-
   const dispatch = useDispatch();
   const [map, setMap] = useState("");
   const [markers, setMarkers] = useState([]);
   const [sortedPath, setSortedPath] = useState([]);
   const [sortedMarkers, setSortedMarkers] = useState([]);
-
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_GOOGLEMAP_API_KEY,
     libraries: ["places"],
   });
-
   const onLoad = useCallback(
     function callback(map) {
       const bounds = new window.google.maps.LatLngBounds(center);
       map.fitBounds(bounds);
-
       setMap(map);
     },
     [center]
   );
-
   const onUnmount = useCallback(function callback() {
     setMap(null);
   }, []);
-
   // 거리 계산
   const calculateDistance = (p1, p2) => {
     const R = 6378137;
@@ -72,21 +63,17 @@ const Map = ({ isCanModify }) => {
     const d = R * c;
     return d;
   };
-
   // 최근접 이웃 알고리즘
   const nearestNeighbor = (markers) => {
     const n = markers.length;
     const visited = Array(n).fill(false);
     const path = [];
     let current = 0;
-
     path.push(current);
     visited[current] = true;
-
     for (let i = 0; i < n - 1; i++) {
       let nearestNeighbor = -1;
       let minDistance = Number.MAX_SAFE_INTEGER;
-
       for (let j = 0; j < n; j++) {
         if (
           !visited[j] &&
@@ -100,7 +87,6 @@ const Map = ({ isCanModify }) => {
           );
         }
       }
-
       if (nearestNeighbor !== -1) {
         path.push(nearestNeighbor);
         visited[nearestNeighbor] = true;
@@ -110,7 +96,6 @@ const Map = ({ isCanModify }) => {
     console.log("path" + path);
     return path;
   };
-
   const handlePlaceSelected = useCallback(
     (place) => {
       const newMarkers = [
@@ -121,12 +106,9 @@ const Map = ({ isCanModify }) => {
           placeId: place.placeId,
         },
       ];
-
       setMarkers(newMarkers);
-
       // Places API로 세부 정보 요청
       const placesService = new window.google.maps.places.PlacesService(map);
-
       const request = {
         placeId: place.placeId,
         fields: [
@@ -141,7 +123,6 @@ const Map = ({ isCanModify }) => {
           "url",
         ],
       };
-
       const placeResult = {
         name: "",
         photo: "",
@@ -153,7 +134,6 @@ const Map = ({ isCanModify }) => {
         url: "",
         loca: [],
       };
-
       placesService.getDetails(request, (result, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
           console.log(result);
@@ -173,22 +153,18 @@ const Map = ({ isCanModify }) => {
             result.geometry.location.lat(),
             result.geometry.location.lng(),
           ];
-
           if (result.opening_hours && result.opening_hours.weekday_text) {
             placeResult.weekdayText = result.opening_hours.weekday_text;
           }
-
           console.log(placeResult.weekdayText);
         } else {
           console.error("Error fetching place details:", status);
         }
-
         dispatch(placesActions.setSearchResults(placeResult));
       });
     },
     [markers, map]
   );
-
   useEffect(() => {
     if (markers.length >= 2) {
       const path = nearestNeighbor(markers);
@@ -197,7 +173,6 @@ const Map = ({ isCanModify }) => {
       console.log(sortedMarkers);
     }
   }, [markers]);
-
   useEffect(() => {
     if (sortedPath.length > 0) {
       setSortedMarkers(sortedPath.map((index) => markers[index]));
@@ -205,16 +180,12 @@ const Map = ({ isCanModify }) => {
     console.log(markers);
     console.log(sortedMarkers);
   }, [sortedPath, markers]);
-
   const [directionsInfoArr, setDirectionsInfoArr] = useState([]);
-
   const handleDirectionsInfoUpdate = (directionsInfo) => {
     setDirectionsInfoArr((prevArr) => [...prevArr, directionsInfo]);
   };
-
   return isLoaded ? (
     <div className="flex-col w-1/4 h-full pt-10">
-      <span className="mb-1 text-sm">장소 검색</span>
       <SearchBox
         map={map}
         onPlaceSelected={handlePlaceSelected}
@@ -253,5 +224,4 @@ const Map = ({ isCanModify }) => {
     </div>
   ) : null;
 };
-
 export default React.memo(Map);

@@ -1,7 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
 export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
@@ -14,21 +13,18 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
     const day = date.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
-
   const fetchUserData = async () => {
     try {
       // API에서 데이터 가져오는 요청
       const response = await axios.get(
         `${import.meta.env.VITE_USER_REQUEST_URI}/profile/${data.senderId}`
       );
-
       // 가져온 데이터를 state에 업데이트
       setUserData(response.data);
     } catch (error) {
       console.error("데이터 가져오기 실패:", error);
     }
   };
-
   const handleAccept = async () => {
     try {
       const response = await axios.patch(
@@ -37,24 +33,21 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
           tripId: trip.tripId,
           userId: data.senderId,
           alertId: data.id,
-          userRoles: data.position
+          userRoles: data.position,
+          usageId: data.usageId
         },
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
-
       );
       
       // const response1 = await axios.patch(
       //   `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend/${data.id}/ACCEPT`
       // );
-
-
       // 서버 응답을 이용해 필요한 작업 수행
       console.log("서버 응답:", response.data);
-
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(true);
       setIsRejected(false);
@@ -64,7 +57,6 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
       console.error("서버 응답 에러", error);
     }
   };
-
   const handleReject = async () => {
     try {
       const response = await axios.post(
@@ -81,18 +73,14 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
           },
         }
       );
-
       console.log("서버응답 : ", response.data);
       // const response1 = await axios.patch(
       //   `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend/${data.id}/REJECT`
       // );
-
       // const response2 =  await axios.post(
       //   `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refundusage_id=${data.usageId}&departure_datetime=${formatDate(trip.departureDate)}`,
       // );
-
   
-
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(false);
       setIsRejected(true);
@@ -102,14 +90,12 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
       console.error("서버 응답 에러", error);
     }
   };
-
   // useEffect를 사용하여 데이터가 갱신될 때마다 수락, 거절 상태 초기화
   useEffect(() => {
     fetchUserData();
     setIsAccepted(false);
     setIsRejected(false);
   }, [data]);
-
   return (
     <Fragment>
       <div className="flex flex-wrap justify-center w-full">
@@ -120,7 +106,7 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
                 <img
                   className="inline-block w-8 h-8 rounded-full ring-2 ring-white"
                   src={userData.profile_url}
-                  alt=""
+                  alt="프로필사진"
                 />
                 <span className="mx-3 text-sm">{data.senderName}</span>
               </div>
@@ -140,7 +126,6 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
               <p>{data.aspiration}</p>
             </div>
           </div>
-
           <div className="flex items-center">
             <button
               className="items-center px-6 py-3 mx-2 text-xs font-medium text-green-700 rounded-md bg-green-50 ring-1 ring-inset ring-green-600/20"
