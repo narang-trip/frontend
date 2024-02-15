@@ -14,5 +14,5 @@ public interface ChatroomUserRepository extends JpaRepository<ChatroomUser, Stri
     List<String> findUserIdsByChatroomId(@Param("chatroomId") String chatroomId);
 
     @Query("DELETE FROM ChatroomUser cu WHERE cu.chatroom.chatroomId = :chatroomId AND cu.userId = :userId")
-    int deleteChatroomUserByChatroomIdAndUserId(@Param("chatroomId") String chatroomId, @Param("userId") String userId);
+    int deleteChatroomUserByChatroomAndUserId(@Param("chatroomId") String chatroomId, @Param("userId") String userId);
 }
