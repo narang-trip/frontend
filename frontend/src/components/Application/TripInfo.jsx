@@ -5,6 +5,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 
 import DateFormatter from "../DateFormatter";
 import ReceivedList from "./ReceivedList";
+import { useNavigate } from "react-router-dom";
 
 export default function TripInfo({ tripData }) {
   // 내가 작성한 글 목록 -> 드롭다운 버튼으로 신청자 목록 확인 가능하도록
@@ -15,6 +16,7 @@ export default function TripInfo({ tripData }) {
   const [departureDate, setDepartureDate] = useState(null);
   const [returnDate, setReturnDate] = useState(null);
 
+  const navigate = useNavigate();
   // 신청자 목록 확인 가능하도록
   const handleViewClick = () => {
     setViewOpen(!viewOpen);
@@ -26,6 +28,10 @@ export default function TripInfo({ tripData }) {
     setDepartureDate(DateFormatter({ dateString: tripData.departureDate }));
     setReturnDate(DateFormatter({ dateString: tripData.returnDate }));
   }, [tripData]);
+
+  const clickHandler = (tripId) => {
+    navigate(`/detail/${tripId}`);
+  };
 
   return (
     <Fragment>
@@ -40,9 +46,9 @@ export default function TripInfo({ tripData }) {
                 <img src={tripData.tripImgUrl} className="w-40 h-32 rounded-3xl" />
               </div>
               <div className="col-span-2">
-                <p className="my-1.5 text-sm font-bold text-center">
+                <button onClick={clickHandler} className="my-1.5 text-sm font-bold text-center">
                   {tripData.tripName}
-                </p>
+                </button>
                 <div className="flex flex-row items-center my-1.5 text-sm">
                   <SlCalender className="mx-3 " size="24" />
                   <div>
