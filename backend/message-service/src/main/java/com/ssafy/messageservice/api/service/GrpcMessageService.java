@@ -2,6 +2,7 @@ package com.ssafy.messageservice.api.service;
 
 
 import com.ssafy.messageservice.api.request.ChatroomRequest;
+import com.ssafy.messageservice.api.request.ChatroomUserRequest;
 import com.ssafy.messageservice.db.entity.Chatroom;
 import com.ssafy.messageservice.db.entity.ChatroomUser;
 import com.ssafy.messageservice.db.repository.ChatroomRepository;
@@ -78,16 +79,17 @@ public class GrpcMessageService extends NarangGrpc.NarangImplBase {
     public void exileFromChatroom(ChatroomUserPatchGrpcRequest request, StreamObserver<ChatroomUserPatchGrpcResponse> responseObserver) {
 
         log.info(request.toString());
+        chatService.exileFromChatroom(
+                ChatroomUserRequest.builder()
+                        .chatroomId(request.getChatroomId())
+                        .userId(request.getUserId())
+                        .build()
+        );
 
         Optional<Chatroom> chatroom = chatroomRepository.findById(request.getChatroomId());
 
-        chatroom.ifPresent(value -> log.info(value.toString()));
+        chatroom.ifPresent(value -> log.info("NOT DELETED : " + value.toString()));
 
-        chatroom.ifPresent(value -> chatroomUserRepository.delete(ChatroomUser.builder()
-                .chatroom(value)
-                .userId(request.getUserId())
-                .build()));
-        
         responseObserver.onNext(ChatroomUserPatchGrpcResponse.newBuilder().setResult(true).build());
         responseObserver.onCompleted();
     }
