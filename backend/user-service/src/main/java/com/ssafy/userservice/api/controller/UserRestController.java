@@ -10,14 +10,12 @@ import com.ssafy.userservice.db.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +26,6 @@ public class UserRestController {
 
     @GetMapping("/getuser")
     public ResponseEntity<?> getUser(@AuthenticationPrincipal UserDetails userDetails){
-        log.info("userDetails : {}", userDetails);
-        log.info(userDetails.getUsername());
         try {
             Auth auth = userService.getAuth(userDetails.getUsername()).getBody();
             User user = userService.getUser(auth.getId()).getBody();
@@ -45,7 +41,6 @@ public class UserRestController {
 
     @PostMapping("/login/oauth/{provider}")
     public ResponseEntity<?> oauthLogin(@PathVariable String provider, @RequestParam("code") String code, HttpServletResponse response) {
-        log.info("oauthLogin {} 호출", provider);
         try {
             User user = oAuth2Service.oauth2Login(provider, code, response);
             return ResponseEntity.ok().build();

@@ -31,7 +31,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         if (oAuth2User.getAuth().getAuthority() == Authority.USER) {
             String accessToken = jwtService.createAccessToken(oAuth2User.getAuth().getId());
             response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-            log.info("my =================> OAuth2LoginSuccessHandler -> onAuthenticationSuccess");
             response.sendRedirect("https://i10a701.p.ssafy.io"); // 가입 화면으로 보내기
 
             // AccessToken만 추가
@@ -42,7 +41,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private void loginSuccess(HttpServletResponse response, PrincipalDetails oAuth2User) throws IOException {
-        log.info("loginsuccess 호출");
         String userId = oAuth2User.getAuth().getId();
         String accessToken = jwtService.createAccessToken(userId);
         String refreshToken = jwtService.createRefreshToken();
