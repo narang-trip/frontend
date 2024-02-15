@@ -118,7 +118,7 @@ public class PaymentController {
     @PostMapping("/reject")
     public ResponseEntity reject(@RequestParam("usage_id") String usageId){
         try {
-            RefundResponse refundResponse = mileageService.rejectMileage(usageId);
+            RefundResponse refundResponse = mileageService.rejectMileageWithResponse(usageId);
             return new ResponseEntity<>(refundResponse, HttpStatus.OK);
         }
         catch (NoSuchElementException e){
