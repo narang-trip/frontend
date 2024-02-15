@@ -74,14 +74,16 @@ export default function TripDetail() {
         {
           data: {
             tripId: tripDetails.tripId,
-            userId: tripDetails.tripLeaderId
+            userId: tripDetails.tripLeaderId,
           },
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-      console.log(response);
+      if (response.status === 200) {
+        alert("삭제되었습니다!");
+      }
     } catch (error) {
       console.error("삭제 불가능", error);
     }
