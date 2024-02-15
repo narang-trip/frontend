@@ -98,9 +98,10 @@ public class PaymentController {
     @PostMapping("/refund")
     public ResponseEntity refund(
             @RequestParam("usage_id") String usageId,
+            @RequestParam("trip_id") String tripId,
             @RequestParam("departure_datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureDateTime) {
         try {
-            RefundRecord refundRecord = mileageService.cancelMileage(usageId, departureDateTime);
+            RefundRecord refundRecord = mileageService.cancelMileage(usageId, tripId, departureDateTime);
             return new ResponseEntity<>(refundRecord, HttpStatus.OK);
         }
         catch (BusinessLogicException e){
