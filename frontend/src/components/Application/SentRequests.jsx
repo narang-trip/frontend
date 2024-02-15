@@ -29,7 +29,9 @@ export default function SentRequests() {
       console.error("요청 데이터를 불러오는 중 에러 발생:", error);
     }
   };
+
   const fetchTripInfo = async (tripId) => {
+    console.log(tripId);
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
