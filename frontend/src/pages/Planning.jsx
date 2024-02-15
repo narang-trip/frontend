@@ -268,7 +268,7 @@ export default function PlanningPage() {
   }, [isSavePlanOpen]);
 
   return (
-    <Fragment>
+    <div className="h-full">
       <ShowTime />
       <div className="relative h-full pl-10">
         <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
@@ -307,6 +307,6 @@ export default function PlanningPage() {
           </ModalPortal>
         )}
       </div>
-    </Fragment>
+    </div>
   );
 }
