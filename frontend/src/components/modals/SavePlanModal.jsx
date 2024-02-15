@@ -97,6 +97,7 @@ const SavePlanModal = (props) => {
               type="text"
               value={title}
               onChange={onChangeTitle}
+              maxLength="14"
             />
           </div>
           <label className="text-lg">간단한 계획 소개</label>
