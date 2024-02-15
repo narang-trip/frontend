@@ -44,23 +44,19 @@ const ReceivedRequests = () => {
     }
   }, [pageNo]);
 
-  // inView가 true일때 데이터를 가져옴
   useEffect(() => {
-      getMyList();
+    getMyList();
   }, [pageNo]);
 
 
 
   return (
     <Fragment>
-      <div>
-        {tripData &&
-          tripData.map((trip, idx) => {
-            console.log(`idx : ${idx}`)
-            console.table(trip);
-            return <TripInfo tripData={trip} key={idx} />
-          })}
-      </div>
+      {tripData &&
+        tripData.map((trip, idx) => {
+          console.log(`idx : ${idx}`)
+          return <TripInfo tripData={trip} key={idx} />
+        })}
     </Fragment>
   );
 };
