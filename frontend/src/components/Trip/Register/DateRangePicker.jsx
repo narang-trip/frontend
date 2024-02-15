@@ -13,6 +13,7 @@ export default function DateRangePicker({ dateRange, onChange }) {
         startDate={dateRange[0]}
         endDate={dateRange[1]}
         onChange={onChange}
+        minDate={new Date()} // 과거 날짜 disable
         dateFormat="yy/MM/dd"
         className="w-full p-2 text-sm border rounded-sm border-neutral-300 text-neutral-700 placeholder:text-neutral-300"
       />
