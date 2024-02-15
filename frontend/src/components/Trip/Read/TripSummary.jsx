@@ -30,11 +30,15 @@ const TripSummary = ({ trip }) => {
 
   const tripDestination = useMemo(() => {
     const tripDestinationString = `${trip.continent}, ${trip.country}, ${trip.city}`;
-    return tripDestinationString.length > 18 ? tripDestinationString.slice(0, 17) + "..." : tripDestinationString;
-  }, [trip.continent, trip.country, trip.city ]);
+    return tripDestinationString.length > 18
+      ? tripDestinationString.slice(0, 17) + "..."
+      : tripDestinationString;
+  }, [trip.continent, trip.country, trip.city]);
 
   const tripDescShortened = useMemo(() => {
-    return trip.tripDesc.length > 18 ? trip.tripDesc.slice(0, 17) + "..." : trip.tripDesc;
+    return trip.tripDesc.length > 18
+      ? trip.tripDesc.slice(0, 17) + "..."
+      : trip.tripDesc;
   }, [trip.tripDesc]);
 
   useEffect(() => {
@@ -44,7 +48,7 @@ const TripSummary = ({ trip }) => {
 
   return (
     <Fragment>
-      <div className="w-4/12 rounded-l">
+      <div className="w-[30%] rounded-l">
         <button
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -62,7 +66,11 @@ const TripSummary = ({ trip }) => {
                 <div className="absolute inset-0 flex flex-col items-end justify-end bg-black text-neutral-800 bg-opacity-20">
                   <div className="flex flex-row items-center my-3 mr-4 text-sm font-semibold">
                     <SlPeople className="mx-3" size="16" />
-                    <p className="text-sm"> {trip.tripCurrParticipantsSize} / {trip.tripMaxParticipantsSize} </p>
+                    <p className="text-sm">
+                      {" "}
+                      {trip.tripCurrParticipantsSize} /{" "}
+                      {trip.tripMaxParticipantsSize}{" "}
+                    </p>
                     <SlEye className="mx-3" size="16" />
                     <p className="text-sm">{trip.viewCnt}</p>
                   </div>
@@ -82,7 +90,9 @@ const TripSummary = ({ trip }) => {
               </div>
               <div className="flex flex-row items-center my-1.5 text-sm">
                 <SlInfo className="mx-2 " size="16" />
-                <p className="inline-flex flex-wrap items-start text-xs text-start">{tripDescShortened}</p>
+                <p className="inline-flex flex-wrap items-start text-xs text-start">
+                  {tripDescShortened}
+                </p>
               </div>
             </div>
           </div>
