@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -102,9 +103,9 @@ public class PaymentController {
     public ResponseEntity refund(
             @RequestParam("usage_id") String usageId,
             @RequestParam("trip_id") String tripId,
-            @RequestParam("departure_datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureDateTime) {
+            @RequestParam("departure_datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate departureDate) {
         try {
-            RefundResponse refundResponse = mileageService.cancelMileage(usageId, tripId, departureDateTime);
+            RefundResponse refundResponse = mileageService.cancelMileage(usageId, tripId, departureDate);
             return new ResponseEntity<>(refundResponse, HttpStatus.OK);
         }
         catch (BusinessLogicException e){
