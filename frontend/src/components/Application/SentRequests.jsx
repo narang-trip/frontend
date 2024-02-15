@@ -30,6 +30,7 @@ export default function SentRequests() {
     }
   };
   const fetchTripInfo = async (tripId) => {
+    console.log("fetchTripInfo 의 tripId : ", tripId)
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
@@ -192,10 +193,10 @@ export default function SentRequests() {
                         >
                           <div className="grid grid-cols-5">
                             <div className="col-span-1 m-2">
-                              {/* <img
+                              <img
                               src={item.tripInfo.tripImgUrl}
                               className="w-20 h-20 rounded-2xl"
-                            /> */}
+                            />
                             </div>
                             <div className="col-span-3">
                               <button
