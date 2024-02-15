@@ -183,7 +183,7 @@ export default function SentRequests() {
             {sentData && sentData.length > 0 ? (
               sentData.map(
                 (item, idx) => {
-                  console.table(trip);
+                  console.table(item);
                   return (selectedType === "ALL" ||
                     item.alertType === selectedType) && (
                       <div className="flex justify-between" key={idx}>
