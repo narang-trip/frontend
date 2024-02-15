@@ -43,7 +43,8 @@ public class ChatController {
 
     @DeleteMapping("/exile")
     public ResponseEntity<Void> deleteChatroomUser(@RequestBody ChatroomUserRequest chatroomUserRequest) {
-        return ResponseEntity.ok(chatService.exileFromChatroom(chatroomUserRequest));
+        chatService.exileFromChatroom(chatroomUserRequest);
+        return ResponseEntity.ok().build();
     }
 
     // 채팅 생성 -> stomp으로 처리
