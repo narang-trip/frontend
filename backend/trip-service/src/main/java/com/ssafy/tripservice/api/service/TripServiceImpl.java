@@ -245,7 +245,9 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
 
         Optional<Trip> trip = tripRepository.findById(userRequest.getTripId());
 
-        log.info(trip.toString());
+        if (trip.isPresent())
+            log.info(trip.get().toString());
+        else log.error("trip Not Found");
 
         if (trip.isEmpty()) {
             System.out.println("파티 못 찾음");

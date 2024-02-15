@@ -76,12 +76,12 @@ public class GrpcMessageService extends NarangGrpc.NarangImplBase {
     @Override
     public void exileFromChatroom(ChatroomUserPatchGrpcRequest request, StreamObserver<ChatroomUserPatchGrpcResponse> responseObserver) {
 
-        int result = chatroomUserRepository.deleteChatroomUserByChatroomIdAndUserId(request.getChatroomId(), request.getUserId());
+        chatroomUserRepository.delete(ChatroomUser.builder()
+                .id(request.getChatroomId())
+                .userId(request.getUserId())
+                .build());
 
-        if (result > 0)
-            responseObserver.onNext(ChatroomUserPatchGrpcResponse.newBuilder().setResult(true).build());
-        else
-            responseObserver.onNext(ChatroomUserPatchGrpcResponse.newBuilder().setResult(false).build());
+        responseObserver.onNext(ChatroomUserPatchGrpcResponse.newBuilder().setResult(true).build());
         responseObserver.onCompleted();
     }
 
