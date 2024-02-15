@@ -144,7 +144,7 @@ export default function SentRequests() {
                 onClick={() => setSelectedType("ALL")}
               >
                 ALL
-              </button>
+              </button> 
               <button
                 className={`p-3 text-sm rounded-full ${
                   selectedType === "REQUEST"

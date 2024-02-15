@@ -1,7 +1,8 @@
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState,  } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; 
 
 import TripInfo from "./TripInfo";
 
@@ -9,8 +10,9 @@ const ReceivedRequests = () => {
   const [pageNo, setPageNo] = useState(0);
   const [tripData, setTripData] = useState([]);
   const userId = useSelector((state) => state.auth.userId);
-    // const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"; // 사용자 ID
+  // const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"; // 사용자 ID
 
+  const navigate = useNavigate();
 
   const { ref, inView } = useInView({
     threshold: 0, // div태그가 보일 때 inView가 true로 설정
@@ -22,18 +24,17 @@ const ReceivedRequests = () => {
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/recruit`,
         {
           userId: userId,
-          pageNo: pageNo
+          pageNo: pageNo,
         },
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
-      )
+      );
 
       // 가져올 항목이 없으면 중단
       if (response.data.content.length === 0) {
-
         console.log("데이터 없음💢");
         return;
       }
@@ -47,7 +48,6 @@ const ReceivedRequests = () => {
     }
   }, [pageNo]);
 
-
   // inView가 true일때 데이터를 가져옴
   useEffect(() => {
     if (inView) {
@@ -56,12 +56,19 @@ const ReceivedRequests = () => {
     }
   }, [inView]);
 
+  const clickHandler = (tripId) => {
+    navigate(`/detail/${tripId}`); // navigate 함수를 사용하여 경로 이동
+  };
+
   return (
     <Fragment>
       <div>
-        {tripData && tripData.map((trip, idx) => (
-          <TripInfo tripData={trip} key={idx} />
-        ))}
+        {tripData &&
+          tripData.map((trip, idx) => (
+            <button onClick={() => clickHandler(trip.tripId)} key={idx}>
+              <TripInfo tripData={trip} />
+            </button>
+          ))}
       </div>
       <div ref={ref}></div>
     </Fragment>
