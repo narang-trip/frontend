@@ -42,6 +42,8 @@ export default function SentRequests() {
       );
 
       setStartDate(DateFormatter({ dateString: response.data.departureDate }));
+      console.log("날짜" + startDate);
+      
       return response.data;
     } catch (error) {
       console.error("여행 정보를 불러오는 중 에러 발생:", error);
@@ -109,14 +111,6 @@ export default function SentRequests() {
     } catch (error) {
       console.error("에러 발생", error);
     }
-  };
-
-  // 날짜 포맷
-  const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    return `${year}-${month}-${day}`;
   };
 
   // 요청중, 수락, 거절에 따라서 색깔 구분
