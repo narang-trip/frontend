@@ -2,12 +2,15 @@ import { Fragment, useState, useEffect } from "react";
 import { SlLocationPin, SlPeople, SlInfo } from "react-icons/sl";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function SentRequests() {
   const [sentData, setSentData] = useState(null);
   const [selectedType, setSelectedType] = useState("ALL");
   const [startDate, setStartDate] = useState(null);
   const userId = useSelector((state) => state.auth.userId);
+
+  const navigate = useNavigate();
 
   const fetchSentData = async () => {
     try {
@@ -131,6 +134,10 @@ export default function SentRequests() {
     fetchSentData();
   }, []);
 
+  const tripDetailHandler = (tripId) => {
+    navigate(`/detail/${tripId}`);
+  }
+
   return (
     <Fragment>
       <div className="flex justify-center">
@@ -207,9 +214,9 @@ export default function SentRequests() {
                             />
                           </div>
                           <div className="col-span-3">
-                            <p className="mb-1 text-sm font-semibold">
+                            <button onClick={() =>tripDetailHandler(item.tripInfo.tripId)} className="mb-1 text-sm font-semibold">
                               {item.tripInfo.tripName}
-                            </p>
+                            </button>
                             <div className="ml-1 text-start">
                               <div className="flex items-center">
                                 <SlLocationPin className="mr-3" size="14" />
