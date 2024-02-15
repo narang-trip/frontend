@@ -31,7 +31,7 @@ export default function SentRequests() {
   };
 
   const fetchTripInfo = async (tripId) => {
-    console.log(tripId);
+    console.log("fetchTripInfo 의 tripId : ", tripId)
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
