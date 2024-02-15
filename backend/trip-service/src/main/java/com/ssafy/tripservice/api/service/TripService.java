@@ -46,4 +46,6 @@ public interface TripService {
     public boolean rejectTripJoinRequest(UserRejectRequest request);
 
     List<TripSimpleResponse> getAllTripIds();
+
+    void putAllTripImgs();
 }
