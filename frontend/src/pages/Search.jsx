@@ -51,6 +51,7 @@ const SearchPage = () => {
     tripRoles: positionList,
     tripContinent: continents,
     participantsSize: 0,
+    querySttDate: formatDate(new Date())
   });
 
   const { ref, inView } = useInView({
@@ -230,6 +231,7 @@ const SearchPage = () => {
               onChange={handleDateChange}
               onClear={handleDateClear}
               dateFormat="yy/MM/dd"
+              minDate={new Date()}
               className="p-1 text-sm border rounded-sm w-44 border-neutral-300 text-neutral-700"
             />
           </div>
