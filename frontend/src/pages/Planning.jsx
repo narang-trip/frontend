@@ -228,6 +228,7 @@ export default function PlanningPage() {
     if (planId !== undefined) {
       doModifyPlan();
       setIsCanModify(false);
+      setCheckuser(true);
     } else {
       setIsSavePlanOpen(true);
     }
@@ -238,6 +239,7 @@ export default function PlanningPage() {
 
   const modifyPlan = () => {
     setIsCanModify(true);
+    setCheckuser(false);
   };
 
   const deletePlan = async () => {
