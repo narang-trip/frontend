@@ -17,7 +17,7 @@ const DayPlan = (props) => {
   return (
     <div
       ref={divRef}
-      className="relative bg-amber-200 h-full w-60 rounded-xl p-2 overflow-hidden"
+      className="relative h-full p-2 overflow-hidden bg-amber-100 w-60 rounded-xl"
     >
       {props.index + 1} 일
       {list[props.index].map((data, index) => (
@@ -27,7 +27,7 @@ const DayPlan = (props) => {
           key={index}
         />
       ))}
-      <div className="absolute pointer-events-none top-0 left-0 h-full w-full z-10">
+      <div className="absolute top-0 left-0 z-10 w-full h-full pointer-events-none">
         <TimeLine />
       </div>
     </div>
