@@ -42,7 +42,6 @@ export default function SentRequests() {
       );
 
       setStartDate(response.data.departureDate);
-      console.log("날짜1" + startDate);
       console.log("날짜2" + response.data.departureDate);
       
       return response.data;
