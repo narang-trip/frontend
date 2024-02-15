@@ -65,7 +65,7 @@ const ReceivedRequests = () => {
       <div>
         {tripData &&
           tripData.map((trip, idx) => (
-            <button onClick={() => clickHandler(trip.content[0].tripId)} key={idx}>
+            <button onClick={() => clickHandler(trip.tripId)} key={idx}>
               <TripInfo tripData={trip} />
             </button>
           ))}
