@@ -47,12 +47,13 @@ export default function TripDetail() {
 
   // 취소하기 클릭
   const handleCancelClick = async () => {
+    
     try {
-      await axios.post(
+      await axios.patch(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
         {
           tripId: tripId,
-          userId: userId,
+          userId: userId
         },
         {
           headers: {
@@ -60,7 +61,7 @@ export default function TripDetail() {
           },
         }
       );
-      console.log("예약금 환불 성공");
+      console.log("트립 떠나기 성공");
     } catch (error) {
       console.error("Error refunding deposit:", error);
     }
