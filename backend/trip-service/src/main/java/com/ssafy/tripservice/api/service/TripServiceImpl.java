@@ -6,6 +6,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.ssafy.tripservice.api.request.*;
 import com.ssafy.tripservice.api.response.TripPageResponse;
+import com.ssafy.tripservice.api.response.TripRefundResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.db.entity.QTrip;
 import com.ssafy.tripservice.db.entity.Trip;
@@ -234,7 +235,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     }
 
     @Override
-    public boolean leaveTrip(UserRequest userRequest) {
+    public Optional<TripRefundResponse> leaveTrip(UserRequest userRequest) {
 
         Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripId()));
 
@@ -242,11 +243,11 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
 
         if (trip.isEmpty()) {
             System.out.println("파티 못 찾음");
-            return false;
+            return Optional.empty();
         }
         if (trip.get().getTripLeaderId().equals(userRequest.getUserId())) {
             System.out.println("너가 리더 잖아");
-            return false;
+            return Optional.empty();
         }
         if (trip.get().getParticipants().stream()
                 .noneMatch(participant -> participant.getParticipantId().equals(userRequest.getUserId()))) {
@@ -255,7 +256,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
                 System.out.println(p);
 
             System.out.println("파티 이미 나갔음");
-            return false;
+            return Optional.empty();
         }
 
         Query query = new Query(
@@ -287,12 +288,18 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
                                     .setDepartureDate(LocalDate.now().toString())
                                     .build()
                     );
-                    return refundGrpcResponse.getResult();
+                    return Optional.of(
+                            TripRefundResponse.builder()
+                                    .message(refundGrpcResponse.getMessage())
+                                    .price(refundGrpcResponse.getRefundPrice())
+                                    .result(refundGrpcResponse.getResult())
+                                .build()
+                    );
                 }
             }
         }
 
-        return false;
+        return Optional.empty();
     }
 
    @Override
