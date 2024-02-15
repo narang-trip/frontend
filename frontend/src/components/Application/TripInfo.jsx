@@ -46,7 +46,7 @@ export default function TripInfo({ tripData }) {
                 <img src={tripData.tripImgUrl} className="w-40 h-32 rounded-3xl" />
               </div>
               <div className="col-span-2">
-                <button onClick={clickHandler} className="my-1.5 text-sm font-bold text-center">
+                <button onClick={() => clickHandler(tripData.tripId)} className="my-1.5 text-sm font-bold text-center">
                   {tripData.tripName}
                 </button>
                 <div className="flex flex-row items-center my-1.5 text-sm">
