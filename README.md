@@ -1,43 +1,203 @@
-<div align="center">
-  <br />
-  <img src="./readme_assets/drawingdream_logo.png" alt="DrawingDream" />
-  <br />
-  <h1>세상에서 가장 편한 학교</h1>
-  <br />
-</div>
 
-## 목차
+# 목차
 
 1. [**서비스 소개**](#1)
-2. [**기술 스택**](#2)
-3. [**시스템 아키텍처**](#3)
-4. [**주요기능 및 데모영상**](#4)
-5. [**UCC 보러가기**](#5)
-6. [**협업 관리**](#6)
-7. [**개발 멤버 소개**](#7)
-8. [**프로젝트 기간**](#8)
-9. [**프로젝트 관련 문서**](#9)
+2. [**기획 배경**](#2)
+7. [**개발 멤버**](#3)
+3. [**기능 소개**](#4)
+4. [**시연 영상**](#5)
+5. [**기술 스택**](#6)
+6. [**프로젝트 일정 및 산출물**](#7)
+6. [**회고**](#8)
 
 <br/>
 
+---
+
+<br/>
 
 <div id="1"></div>
 
-## 💡 서비스 소개
+# 🛫서비스 소개
 
-### 세상에서 가장 편한 학교, 드로잉 드림에서 여러분의 꿈을 그려 보세요.
+## 서비스 설명
 
-> 학교에 가지 않고 등교를 하는 세상이 찾아왔습니다. <br />
-코로나-19가 앞당긴 비대면 시대, 이제는 너무나 익숙해져 버린 우리의 일상입니다. <br />
-드로잉 드림은 단순한 비대면 수업 플랫폼을 넘어서 학생들의 생활 공간이 되는 학교라는 “공간”에 초점을 맞추었습니다.
->
-#### 모두에게 필요한 맞춤형 학습 도우미, Drawing Dream에서 등교부터 하교까지 함께 하세요! 
+### 개요
 
-<br/>
+- 한줄 소개 : **`사용자 맞춤형`** 여행 **`동행 모집`** 플랫폼
+- 서비스 명 : **`나랑`**
+
+### 타겟 🎯
+
+- 시간과 돈은 준비되어 있는데 지인과 시간 맞추기 힘든 사람들
+- 자신이 부족한 역할을 채워 완성도 있는 여행을 가고싶은 사람들
+- 재미있고 새로운 여행을 가고싶은 사람들
+
+  > 👉 \*\* **여행을 가고 싶은 모든 사람들!** \*\*
 
 <div id="2"></div>
 
-## 🛠️ 기술 스택
+# 🛫기획 배경
+
+## 배경
+
+여행을 가는 건 좋은건데 시간이 맞는 지인이 없거나, 홀로 계획 세우고 오히려 일처럼 느껴질 때가 있습니다. **`나랑`**은 이러한 불편함에 편리함을 제공하고 언제든지 떠날 준비가 되어있는 사람들과 함께 여행을 갈 수 있도록 하고자 하였습니다.
+<br/>
+<br/>
+우리의 여행 동행 모집 서비스 장점은 다음과 같습니다. 먼저, 필요한 역할을 구하고 자신있는 역할을 지원하기 때문에 서로의 장단점을 채워주는 동행을 구해 여행을 떠날 수 있습니다. 또한 실시간 채팅을 통해 소통하고, 서로 계획을 함께 작성 및 수정하며 서로 여행에서 추구하는 점을 맞춰나가 성공적인 여행을 떠날 수 있습니다.
+
+## 목적 ☁
+
+**여행을 떠나고 싶을 때, 언제든 나에게 필요한 동행을 구해서 떠나자!**
+
+## 의의
+
+- 찬구. 가족 이외의 새로운 사람들과 함께하는 여행에 대한 설렘 호기심 기대감
+- 자신있는 역할을 지원하고, 부족한 역할을 채워 여행의 완성도 상승 
+- 함께 가는 사람들끼리 여행 일정을 공유해서 수정 및 계획 가능
+
+<div id="3"></div>
+
+# 🛫개발 멤버 및 일정 소개
+
+## 📆 프로젝트 기간
+### 24.01.08 ~ 24.02.16
+- 기획 및 설계 : 24.01.08 ~ 24.01.17
+- 프로젝트 구현 : 24.01.18 ~ 24.02.15
+- 버그 수정 및 산출물 정리 : 24.02.14 ~ 24.02.16
+
+<br />
+
+<table>
+    <tr>
+        <td height="140px" align="center"> <a href="https://github.com/yhc-key">
+            <img src="https://avatars.githubusercontent.com/yhc-key" width="140px" /> <br><br> 👑 조용환 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/">
+            <img src="https://avatars.githubusercontent.com/" width="140px" /> <br><br> ⛑ 구본승 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/se2develop">
+            <img src="https://avatars.githubusercontent.com/se2develop" width="140px" /> <br><br> ⛑ 노세희 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/youngkimi">
+            <img src="https://avatars.githubusercontent.com/youngkimi" width="140px" /> <br><br> ⛑ 김영섭 <br>(Back-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/">
+            <img src="./assets/윤재정장.png" width="140px" /> <br><br> ⛑ 송윤재 <br>(Back-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/">
+            <img src="https://avatars.githubusercontent.com/" width="140px" /> <br><br> ⛑ 조예진 <br>(Back-End) </a> <br></td>
+    </tr>
+    <tr>
+        <td align="center">UI/UX<br/>React<br/>WebSocket</td>
+        <td align="center">UI/UX<br/>React</td>
+        <td align="center">UI/UX<br/>React</td>
+        <td align="center">REST API<br/>CI/CD<br/>Infra<br/></td>
+        <td align="center">REST API<br/>Database</td>
+        <td align="center">REST API<br/>Database</td>
+    </tr>
+</table>
+
+<div id="4"></div>
+
+# 🛫기능 소개
+
+![기능소개-01](./assets/기능소개_01.PNG)
+![기능소개-02](./assets/기능소개_02.PNG)
+![기능소개-03](./assets/기능소개_03.PNG)
+![기능소개-04](./assets/기능소개_04.PNG)
+![기능소개-05](./assets/기능소개_05.PNG)
+![기능소개-06](./assets/기능소개_06.PNG)
+![기능소개-07](./assets/기능소개_07.PNG)
+![기능소개-08](./assets/기능소개_08.PNG)
+![기능소개-09](./assets/기능소개_09.PNG)
+![기능소개-10](./assets/기능소개_10.PNG)
+![기능소개-11](./assets/기능소개_11.PNG)
+
+
+<div id="5"></div>
+
+# 🛫시연 영상
+
+## 회원가입 및 로그인
+
+![시연영상_01_로그인](./assets/시연영상_01_로그인.GIF)
+
+## 메인화면
+
+![시연영상_02_메인](./assets/시연영상_02_메인.GIF)
+
+## 마이페이지
+
+![시연영상_03_마이페이지](./assets/시연영상_03_마이페이지.GIF)
+
+## 동행글 작성
+
+![시연영상_04_동행글작성](./assets/시연영상_04_동행글작성.GIF)
+
+## 동행글 필터링
+
+![시연영상_05_동행글필터링](./assets/시연영상_05_동행글필터링.GIF)
+
+## 동행 신청하기
+
+![시연영상_06_동행신청](./assets/시연영상_06_동행신청.GIF)
+
+## 신청 현황 보기
+
+![시연영상_07_신청현황](./assets/시연영상_07_신청현황.GIF)
+
+## 알림 후 신청 수락
+
+![시연영상_08_신청수락](./assets/시연영상_08_신청수락.GIF)
+
+## 계획표 만들기
+
+![시연영상_09_계획표](./assets/시연영상_09_계획표.GIF)
+
+## 실시간 채팅 기능
+
+![시연영상_10_채팅](./assets/시연영상_10_채팅.GIF)
+
+## 인피니티 스크롤 & 역 인피니티 스크롤
+
+![시연영상_11_역인피니티](./assets/시연영상_11_역인피니티.GIF)
+
+## 마일리지 충전
+
+![시연영상_12_마일리지](./assets/시연영상_12_마일리지.GIF)
+
+
+<div id="6"></div>
+
+# 🛫기술 스택
+
+## 1. Web Socket
+
+### web Socket이란?
+
+![webSocket](https://upload.wikimedia.org/wikipedia/commons/1/10/Websocket_connection.png)
+
+<aside>
+
+> 웹 소켓은 사용자의 브라우저와 서버 사이의 메세지를 교환하기 위한 통신 기술입니다.
+
+Socket Connection을 유지한 채, 실시간으로 양방향 통신 혹은 데이터 전송이 가능하고, 상태 프로토콜, 클라이언트와 서버가 한 번 연결되면 같은 연결을 이용해 통신하기 대문에 TCP 커넥션 비용을 아낄 수 있습니다.
+
+### 적용
+
+`나랑` 에서는 실시간 상태 공유를 위해 모집글 별 채팅방 기능에 webSocket을 사용합니다.
+
+
+## 2. SSE(Server-Sent Event)
+
+> SSE는 웹 애플리케이션, 서버에서 클라이언트로 단뱡향으로 실시간 이벤트를 전송하는 웹 기술입니다.
+
+서버에서 발생하는 업데이트나 알림 등을 실시간으로 클라이언트에게 전달할 수 있습니다. 재연결 기능을 제공하기 때문에 연결이 끊어졌을 때 자동으로 연결하고, 기존의 폴링 방식과 비교했을 때 효율적이며, 서버와 클라이언트 간의 불필요한 통신을 최소화합니다.
+
+### 적용
+
+`나랑` 에서는 실시간 상태 공유를 위해 신청 요청, 수락, 거절 알림 기능에 SSE를 사용합니다.
+
+
+
+## 3. 개발 환경
+
 
 <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=#007396" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/JSON Web Tokens-000000?style=for-the-badge&logo=JSON Web Tokens&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/><br>
 <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=NGINX&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/><br>
@@ -51,13 +211,13 @@
 | 공통     | 형상관리                    | Gitlab               | \-          |
 |          | 이슈관리                    | Jira                 | \-          |
 |          | 커뮤니케이션                  | Mattermost, Notion   | \-          |
-| BackEnd  | DB                      | MySQL                | 5.7         |
+| BackEnd  | DB                      | MySQL                |             |
+|          | DB                      | MongoDB              |             |
 |          |                         | JPA                  | \-          |
-|          |                         | QueryDSL             | \-          |
-|          | Java                    | Zulu                 | 8.33.0.1    |
+|          | Java                    | OpenJDK              | 17.0.9      |
 |          | Spring                  | Spring               | 5.3.6       |
-|          |                         | Spring Boot          | 2.4.5       |
-|          | IDE                     | Eclipse              | JEE 2020-06 |
+|          |                         | Spring Boot          | 3.2.1       |
+|          | IDE                     | IntelliJ             | 23.3.2      |
 |          | Cloud Storage           | AWS S3               | \-          |
 |          | Build                   | Gradle               | 7.3.2       |
 |          | WebRTC                  | Kurento Media Server | 6.16        |
@@ -65,174 +225,64 @@
 |          | API Docs                | Swagger2             | 3.0.0       |
 | FrontEnd | HTML5                   |                      | \-          |
 |          | CSS3                    |                      | \-          |
-|          | JavaScript(ES6)         |                      |\-           |
-|          | React                   | React                | 17.0.2      |
-|          | React                   | Redux                | 7.2.6       |
-|          | React                   | Redux-thunk          | 2.4.1       |
-|          |                         | styled-components    | 5.3.3       |
-|          |                         | framer-motion        | 6.0.0       |
-|          |                         | apexcharts           | 3.33.0      |
-|          |                         | toast-ui/react-editor      | 3.1.2       |
-|          |                         | toast-ui/react-calendar    | 1.0.6       |
-|          | WebSocket               | @stomp/stompjs       | 6.1.2       |
-|          | WebSocket               | stompjs              | 2.3.3       |
-|          | WebSocket               | sockjs-client        | 1.5.2       |
-|          | IDE                     | Visual Studio Code   | 1.63.2      |
-| Server   | 서버                      | AWS EC2              | \-          |
-|          | 플랫폼                     | Ubuntu               | 20.04.3 LTS |
-|          | 배포                      | Docker               | 20.10.12    |
-|          | 배포                      | Jenkins              | 2.319.2     |
+|          | JavaScript(ES6)         |                      | \-          |
+|          | React                   | React                | 18.2.0      |
+|          | React                   | react-router-dom     | 6.21.2      |
+|          |                         | @reduxjs/toolkit     | 2.0.1       |
+|          |                         | react-beautiful-dnd  | 13.1.1      |
+|          |                         | react-calendar       | 4.8.0       |
+|          |                         | react-datepicker     | 5.0.0       |
+|          |                         | tailwindCSS          | 3.4.1       |
+|          | WebSocket               | @stomp/stompjs       | \-          |
+|          | WebSocket               | stompjs              | \-          |
+|          | WebSocket               | sockjs-client        | 1.6.1       |
+|          | IDE                     | Visual Studio Code   | 1.85.2      |
+| Server   | 서버                    | AWS EC2              | \-          |
+|          | 플랫폼                  | Ubuntu               | \-          |
+|          | 배포                    | Docker               | 25.10.1     |
+|          | 배포                    | Jenkins              | \-          |
 
-</details>
+## 4. CI/CD 배포 환경
 
-<br />
-
-<div id="3"></div>
-
-## 🗂️ 시스템 아키텍처
-
-|                              시스템 구성                           |
-| :------------------------------------------------------------------------------: |
-| ![image](https://user-images.githubusercontent.com/8343301/154484342-36cff26d-a96b-4d52-8be0-4383aad54510.png) |
-
-
-|                              CI/CD 배포 흐름도                           |
-| :------------------------------------------------------------------------------: |
-| ![image](https://user-images.githubusercontent.com/8343301/154471327-63b80f5d-b724-4365-b30b-0dfe04b7f4f8.png) |
-
-|                              디렉토리 구조                       |
-| :------------------------------------------------------------------------------: |
-| ![image](https://user-images.githubusercontent.com/8343301/154848775-fc6afad1-816a-44b9-bc07-e1ce2af2c5b4.png) |
-
-<br />
-
-<div id="4"></div>
-
-## 🖥️ 주요기능
-
-### 온라인수업
-- 선생님이 수업을 개설하면 해당 수업을 수강하는 학생이 수업에 참여할 수 있습니다.
-- 사용자는 비디오, 오디오 ON/OFF를 설정할 수 있습니다.
-- 선생님은 원활한 수업진행을 위해 화면공유를 할 수 있습니다. 
-
-### 수업 알림
-- 교사가 시간표에 맞춰 온라인 수업을 개설하면, 해당 수업을 수강하는 학생의 화면에 수업알림 모달창이 나타납니다.
-- 또한, 수업 자료(첨부파일)를 확인할 수 있으며, [지금 들어가기] 버튼을 통해 해당 온라인수업에 입장할 수 있습니다.
-
-|                              온라인 수업 및 수업알림                       |
-| :---------------------------------------------------------------------------: |
-|  <img src="./readme_assets/onlineclass.gif" alt="온라인수업" />  |
-
-### 채팅
-- 학생, 선생님과 채팅이 가능하며, 지난 채팅 기록도 확인 가능합니다.
-- 다른 유저가 채팅을 보내면 채팅 아이콘(말풍선)에 알림 표시가 나타납니다.
-
-|                              채팅                       |
-| :---------------------------------------------------------------------------: |
-|  <img src="./readme_assets/chat.gif" alt="채팅" />  |
-
-### 알림장
-- 교사는 알림장(공지)을 작성할 수 있습니다.
-- 카테고리 설정으로, 원하는 학생(학교 전체, 학년, 반)에게 보여지도록 설정합니다.
-- toast-ui 에디터를 사용해서 글을 쉽게 편집할 수 있으며, Drag&Drop 으로 편리하게 첨부파일을 추가할 수 있습니다.  
-
-|                              알림장(선생님)                  |
-| :---------------------------------------------------------------------------: |
-|  <img src="./readme_assets/notice_teacher.gif" alt="알림장(선생님) " />  |
-
-|                              알림장(학생)                  |
-| :---------------------------------------------------------------------------: |
-|  <img src="./readme_assets/notice_student.gif" alt="알림장(학생) " />  |
-    
-### 홈 화면(위젯) 설정 
-- 메인 페이지에서 [설정 > 홈 화면 설정] 을 클릭하면 홈 화면에 배치되는 위젯들을 관리할 수 있습니다.
-- 배치를 원하는 위젯을 원하는 순서로 구성할 수 있습니다.
-
-|                              홈 화면 설정                      |
-| :---------------------------------------------------------------------------: |
-|  <img src="./readme_assets/widget.gif" alt="홈 화면 설정" />  |
-
-### 다크모드 지원
-- 사용자의 눈 건강 및 취향을 고려하여 다크모드를 지원합니다.
-- 메인 페이지에서 [설정 > 다크모드 on/off] 를 클릭하면 다크모드를 적용할 수 있습니다. 
-
-|                              다크모드                     |
-| :---------------------------------------------------------------------------: |
-|  <img src="./readme_assets/dark_mode.gif" alt="다크모드" />  |
-
-<br/>
-
-<div id="5"></div>
-
-## 🎥 [UCC 보러가기](https://youtu.be/Rg4kOlrdI78) 
-
-<br />
-
-<div id="6"></div>
-
-## 👥 협업 관리 
-
-|                            Jira BurnDown Chart                      |
-| :---------------------------------------------------------------------------: |
-|  <img src="./readme_assets/a607_Jira.png" alt="Jira BurnDown Chart" />  |
-
-|                            Notion                      |
-| :---------------------------------------------------------------------------: |
-|  <img src="./readme_assets/a607_Notion.png" alt="Notion" />  |
-
-<br />
+![기술스택_02](./assets/a701_CICD.PNG)
 
 <div id="7"></div>
 
-## 👪 개발 멤버 소개 
-<table>
-    <tr>
-        <td height="140px" align="center"> <a href="https://github.com/Jubi-in">
-            <img src="https://avatars.githubusercontent.com/Jubi-in" width="140px" /> <br><br> 👑 인주비 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/unilion">
-            <img src="https://avatars.githubusercontent.com/unilion" width="140px" /> <br><br> 🙂 장준범 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/jejinmyeong">
-            <img src="https://avatars.githubusercontent.com/jejinmyeong" width="140px" /> <br><br> 😆 제진명 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/kibum414">
-            <img src="https://avatars.githubusercontent.com/kibum414" width="140px" /> <br><br> 😁 박기범 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/changhyuns">
-            <img src="https://avatars.githubusercontent.com/changhyuns" width="140px" /> <br><br> 🙄 손창현 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/dayaeLee777">
-            <img src="https://avatars.githubusercontent.com/dayaeLee777" width="140px" /> <br><br> 😶 이다예 <br>(Back-End) </a> <br></td>
-    </tr>
-    <tr>
-        <td align="center">UI/UX<br/>React<br/>WebRTC<br/>WebSocket</td>
-        <td align="center">UI/UX<br/>React</td>
-        <td align="center">UI/UX<br/>React</td>
-        <td align="center">REST API<br/>WebRTC<br/>WebSocket</td>
-        <td align="center">REST API<br/>CI/CD<br/>Infra<br/></td>
-        <td align="center">REST API<br/>Database<br/>S3<br/></td>
-    </tr>
-</table>
+# 🛫프로젝트 산출물
 
-<br />
+## 프로젝트 진행
+### 1. Git flow
+---
+Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woowahan.com/2553/)을 참고했습니다. front 와 back 으로 나누어 `faature`의 하위 브랜치를 사용하였으며 `develop` 브랜치와 `develop_frontend` 브랜치로 merge 하여 사용했습니다.<br>
+`commit message`는 `feat: 기능 구현 내용` 과 같이 통일하여 작성했습니다.<br>
+
+### 2. Jira
+---
+매주 월요일 오전 금주의 진행 이슈를 백로그에 등록했습니다. 전주에 완료하지 못한 이슈나, 앞으로 진행할 이슈들을 추가하였습니다.
+- 에픽은 개발, 미팅, 학습 등으로 구성했습니다.
+- 스토리는 명확한 전달을 위하여 `API 명세서 작성`와 같이 작성했습니다.
+- 작업현황을 지라에 반영함으로써 각 팀원이 어떤 작업을 하고있는지, 일정에 딜레이가 있는지 한 눈에 확인할 수 있었습니다.<br>
+![jiar](./assets/A701_jira.png)
+
+## 프로젝트 산출물
+### 1. Figma
+[![figma](./assets/a701_figma.PNG)](https://www.figma.com/file/Ig653eosD7BMcO7vaSbXcc/%EB%82%98%EB%9E%91?type=design&node-id=0%3A1&mode=design&t=xQdRy5vecULzInJH-1)
+<br>
+
+### 2. ERD
+![erd](./assets/a701_ERD.png)
+<br>
+
+### 3. API 문서
+[![api](./assets/a701_api.PNG)](hhttps://cheddar-cloudberry-278.notion.site/API-12102a6f33ee4c719a7052d4aee29b9c)
 
 <div id="8"></div>
 
-## 📆 프로젝트 기간
-### 22.1.10 ~ 22.2.18
-- 기획 및 설계 : 22.1.10 ~ 19
-- 프로젝트 구현 : 22.1.20 ~ 22.2.15
-- 버그 수정 및 산출물 정리 : 22.2.16 ~ 18
+# 🛫회고
 
-<br />
-
-<div id="9"></div>
-
-## 📋 프로젝트 관련 문서
-|  구분  |  링크  |
-| :--------------- | :---------------: |
-| 공통코드 | [공통코드 바로가기](/docs/공통코드.md) |
-| 와이어프레임 | [와이어프레임 바로가기](/docs/와이어프레임.md) |
-| 컨벤션목록 | [컨벤션목록 바로가기](/docs/컨벤션목록.md) |
-| 테스트데이터 | [테스트데이터 바로가기](/docs/테스트데이터.md) |
-| ERD | [ERD 바로가기](/docs/ERD.md) |
-| 빌드/배포 | [빌드/배포 바로가기](/exec/01_서울_6반_A607_빌드및배포.pdf) |
-| 외부서비스 정보 | [외부서비스 정보 바로가기](/exec/02_서울_6반_A607_외부서비스_정보.pdf) |
-| 시연 시나리오 | [시연 시나리오 바로가기](/exec/04_서울_6반_A607_시연시나리오.pdf) |
-| 발표자료 | [발표자료 바로가기](/docs/서울_6반_A607_발표자료.pdf) |
+- [조용환](https://github.com/rrkcl7733) : 
+- [구본승](https://github.com/letgodchan0) : 
+- [노세희](https://github.com/se2develop) : 
+- [김영섭](https://github.com/2weeks0) : 
+- [송윤재](https://github.com/abcxj123) : 
+- [조예진](https://github.com/) : 
