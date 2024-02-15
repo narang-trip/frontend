@@ -60,7 +60,7 @@ public class GrpcMessageService extends NarangGrpc.NarangImplBase {
 
         Optional<ChatroomUser> result = Optional.of(chatroomUserRepository.save(ChatroomUser.builder()
                         .chatroom(chatroom.get())
-                        .id(request.getUserId())
+                        .userId(request.getUserId())
                         .build()));
 
         responseObserver.onNext(ChatroomUserPatchGrpcResponse.newBuilder().setResult(true).build());
