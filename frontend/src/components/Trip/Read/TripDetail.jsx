@@ -73,7 +73,7 @@ export default function TripDetail() {
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip`,
         {
           tripId: tripDetails.tripId,
-          userId: userId
+          userId: tripDetails.tripLeaderId
         },
         {
           headers: {
@@ -82,10 +82,10 @@ export default function TripDetail() {
         }
       );
       console.log(response);
-      navigate("/search");
     } catch (error) {
       console.error("삭제 불가능", error);
     }
+    navigate("/search");
   };
 
   // useEffect (여행 상세 정보 로딩)
