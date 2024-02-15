@@ -179,7 +179,7 @@ const Chat = ({ chatroomName, chatroomId, navigateBack, userList }) => {
           const formattedDate = `${kstDate.getHours()}시 ${kstDate.getMinutes()}분`;
           let messageBoxClass = "w-full flex m-3 items-end";
           let messageClass =
-            "text-sm rounded-lg border p-2 max-w-[80%] break-words";
+            "text-sm text-left rounded-lg border p-2 max-w-[80%] break-words";
           if (chat.userId === "관리자") {
             messageBoxClass += " justify-center"; // 관리자 일 땐 가운데
             messageClass += " bg-gray-200 w-[80%] border-gray-200";
