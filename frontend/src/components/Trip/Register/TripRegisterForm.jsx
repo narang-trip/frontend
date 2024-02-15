@@ -295,6 +295,7 @@ export default function TripWriteForm() {
                     onChange={handleChange}
                     required
                     step="1000"
+                    min={0}
                     className="border rounded-sm border-neutral-300 p-1.5 w-1/4 text-neutral-700 placeholder:text-neutral-300 text-sm"
                   />
                 </div>
