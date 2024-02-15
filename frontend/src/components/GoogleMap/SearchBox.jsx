@@ -24,6 +24,11 @@ const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
     }
   }, [onPlaceSelected]);
 
+    // 검색 버튼을 클릭할 때도 handleOnPlacesChanged 함수를 호출하도록 추가
+    const handleSearchButtonClick = () => {
+      handleOnPlacesChanged();
+    };
+
   useEffect(() => {
     if (map) {
       searchBox.current = new window.google.maps.places.SearchBox(
@@ -43,15 +48,15 @@ const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
   return (
     <div className="flex flex-col">
       <div className="text-base font-medium">장소 검색</div>
-      <div className="flex flex-row">
+      <div className="flex flex-row justify-around">
         <input
           ref={input}
-          placeholder="장소를 검색해주세요"
+          placeholder="장소를 입력해주세요"
           type="text"
           disabled={!isCanModify}
-          className="w-2/3 border rounded border-neutral-200"
+          className="w-3/4 border rounded-sm border-neutral-300"
         />
-        <button>검색</button>
+        <button onClick={handleSearchButtonClick} className="p-1 rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10 hover:bg-neutral-100">검색</button>
       </div>
     </div>
   );
