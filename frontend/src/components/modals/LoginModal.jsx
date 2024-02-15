@@ -8,10 +8,11 @@ const LoginModal = (props) => {
   const kakaoRedirectURI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
   const naverClientId = import.meta.env.VITE_NAVER_CLIENT_ID;
   const naverRedirectURI = import.meta.env.VITE_NAVER_REDIRECT_URI;
-  const naverState = "flase";
+  const naverState = "false";
   const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
-  const kakaoLoginURI2 =
-    `${import.meta.env.VITE_USER_REQUEST_URI}/oauth2/authorization/kakao`;
+  const kakaoLoginURI2 = `${
+    import.meta.env.VITE_USER_REQUEST_URI
+  }/oauth2/authorization/kakao`;
   // const kakaoLoginURI3 =
   //   `https://i10a701.p.ssafy.io/oauth2/authorization/kakao`;
   // const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
@@ -38,7 +39,7 @@ const LoginModal = (props) => {
           e.stopPropagation();
         }}
       >
-          <div className="font-spoqa">
+        <div className="font-spoqa">
           <div className="flex justify-end mr-1">
             <button
               className="mb-4 text-xl font-semibold hover:text-red-600"
@@ -47,7 +48,9 @@ const LoginModal = (props) => {
               <IoMdClose />
             </button>
           </div>
-          <p className="mb-10 text-xl font-extrabold text-center">나랑 로그인🛫</p>
+          <p className="mb-10 text-xl font-extrabold text-center">
+            나랑 로그인🛫
+          </p>
           <div className="flex flex-col items-center">
             <a href={naverLoginURI2}>
               <img
