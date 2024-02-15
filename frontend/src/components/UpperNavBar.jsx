@@ -177,7 +177,7 @@ const UpperNavbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 flex items-center justify-between w-full p-4 bg-stone-100">
+    <header className="sticky top-0 z-40 flex items-center justify-between w-full p-4 bg-stone-100 ">
       <div className="ml-5">
         <img
           src="/narang_logo.png"
