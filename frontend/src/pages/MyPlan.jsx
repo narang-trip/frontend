@@ -92,19 +92,32 @@ const MyPlan = () => {
       >
         계획 만들기
       </button>
-      <>
-        <div className="flex text-xl">
-          <p className="w-1/6">이름</p>
-          <p className="w-1/2">설명</p>
-          <p className="w-1/6">일정</p>
-          <p className="w-1/6">수정날짜</p>
+      {planData.length === 0 ? (
+        <>
+          <p className="my-2 pt-6 text-xl font-bold text-center">
+            작성한 계획이 없어요
+          </p>
+          {/* <div className="relative w-1/3 h-48 rounded-lg bg-yellow-100 p-2 shadow-lg hover:shadow-xl hover:shadow-orange-200">
+            <div className="flex flex-col w-full border border-yellow-200 h-full rounded-lg bg-white">
+              <div className="flex justify-center">
+                <div className="w-1/2 h-6 rounded-b-md border-b-8 border-yellow-200  bg-yellow-100"></div>
+              </div>
+              <div className="flex-col">
+                <p className="text-2xl pt-1">걸어가</p>
+                <p className="text-sm pt-4">0박1일</p>
+                <p className="text-sm pt-1">걸어가라고</p>
+                <p className="absolute text-sm bottom-2 right-2">2024.02.15</p>
+              </div>
+            </div>
+          </div> */}
+        </>
+      ) : (
+        <div className="flex flex-wrap justify-start">
+          {planData.map((plan, idx) => (
+            <PlanSummary plan={plan} key={idx} />
+          ))}
         </div>
-      </>
-      <div className="flex flex-col gap-2">
-        {planData.map((plan, idx) => (
-          <PlanSummary plan={plan} key={idx} />
-        ))}
-      </div>
+      )}
       {isNewPlanOpen && (
         <ModalPortal>
           <NewPlan onClose={CloseNewPlanModal} />
