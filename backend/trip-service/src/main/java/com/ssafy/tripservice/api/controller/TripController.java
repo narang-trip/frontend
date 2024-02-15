@@ -218,6 +218,12 @@ public class TripController {
         return ResponseEntity.ok(tripService.getAllTripIds());
     }
 
+    @PutMapping("/tripImgModify")
+    public ResponseEntity<Void> putTripsImg() {
+        tripService.putAllTripImgs();
+        return ResponseEntity.ok().build();
+    }
+
     @ExceptionHandler(TripNotFoundException.class)
     public ResponseEntity<String> handleTripNotFoundException(TripNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
