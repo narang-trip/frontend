@@ -1,57 +1,238 @@
-## 1. Commit Convention
- :clipboard: Form 
- 
-	> Type: [Subject] <- 변경 사항에 대한 짧은 요약
-	> 
-	> [Body] <- 무엇을, 왜 변경했는지 설명
-	> 
-	> [Footer] <- 이슈 트래커
-	
-:pushpin: Example
+<div align="center">
+  <br />
+  <img src="./readme_assets/drawingdream_logo.png" alt="DrawingDream" />
+  <br />
+  <h1>세상에서 가장 편한 학교</h1>
+  <br />
+</div>
 
- 	> Feat: "회원 가입 기능 구현"
-	> 
-	> 로그인에 필요한 회원 정보를 등록하기 위해 소셜 계정을 회원으로 등록 할 수 있게 함.
-	> 
-	> Resolved: #123
-		Ref: #456
-		Related to: #48, #45
+## 목차
 
+1. [**서비스 소개**](#1)
+2. [**기술 스택**](#2)
+3. [**시스템 아키텍처**](#3)
+4. [**주요기능 및 데모영상**](#4)
+5. [**UCC 보러가기**](#5)
+6. [**협업 관리**](#6)
+7. [**개발 멤버 소개**](#7)
+8. [**프로젝트 기간**](#8)
+9. [**프로젝트 관련 문서**](#9)
 
-
-
-### 1.1 태그 유형
-|Tag            |Description					|
-|---------------|-------------------------------|
-|Feat 			|`새로운 기능을 추가하는 경우`     |
-|Fix 			|`버그를 고친 경우`           	|
-|Docs  			|`문서를 수정한 경우` 		    |
-|Style 			|`코드 포맷 변경, 세미콜론 누락, 코드 수정이 없는 경우`	|
-|Refactor 		|`코드 리펙토링`  			    |
-|Test  			|`테스트 코드` 				    |
-|Rename			|`파일명(or 폴더명)을 수정한 경우` |
-|Remove 		|`코드(파일)의 삭제가 있을 때`     |
-|Comment  		|`필요한 주석 추가 및 변경`    	|
-
-### 1.2 이슈 트래커 유형
-|Tag            |Description							|
-|---------------|-------------------------------|
-|Fixes 			|`이슈 수정 중(아직 해결되지 않은 경우)`     |
-|Resolves 		|`이슈를 해결했을 때 사용`        	|
-|Ref   			|`참고할 이슈가 있을 때 사용` 		    |
-|Related to 	|`해당 커밋에 관련된 이슈번호 (아직 해결되지 않은 경우)`	|	
+<br/>
 
 
-## 2. Git Flow
->   **feature > develop > release > hotfix > master**
--   위 순서들은 왼쪽으로 갈수록 포괄적인 가지이며 master branch를 병합할 경우 그 왼쪽에 있는 hotfix 등 모든 가지들에 있는 커밋들도 병합하도록 구성하게 된다.
--   5가지 중, **항시 유지되는 메인 브랜치 master, develop**  2가지와 **merge 되면 사라지는 보조 브랜치 feature, release, hotfix** 3가지로 구성된다.
+<div id="1"></div>
+
+## 💡 서비스 소개
+
+### 세상에서 가장 편한 학교, 드로잉 드림에서 여러분의 꿈을 그려 보세요.
+
+> 학교에 가지 않고 등교를 하는 세상이 찾아왔습니다. <br />
+코로나-19가 앞당긴 비대면 시대, 이제는 너무나 익숙해져 버린 우리의 일상입니다. <br />
+드로잉 드림은 단순한 비대면 수업 플랫폼을 넘어서 학생들의 생활 공간이 되는 학교라는 “공간”에 초점을 맞추었습니다.
+>
+#### 모두에게 필요한 맞춤형 학습 도우미, Drawing Dream에서 등교부터 하교까지 함께 하세요! 
+
+<br/>
+
+<div id="2"></div>
+
+## 🛠️ 기술 스택
+
+<img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=#007396" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/JSON Web Tokens-000000?style=for-the-badge&logo=JSON Web Tokens&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/><br>
+<img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=NGINX&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/><br>
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Node.js-339939?style=for-the-badge&logo=Node.js&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <br>
+<img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/GitLab-FCA121?style=for-the-badge&logo=GitLab&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <br/>
+
+<details><summary> <b> 상세 기술스택 및 버전</b> </summary>
+
+| 구분       | 기술스택                    | 상세내용                 | 버전          |
+| -------- | ----------------------- | -------------------- | ----------- |
+| 공통     | 형상관리                    | Gitlab               | \-          |
+|          | 이슈관리                    | Jira                 | \-          |
+|          | 커뮤니케이션                  | Mattermost, Notion   | \-          |
+| BackEnd  | DB                      | MySQL                | 5.7         |
+|          |                         | JPA                  | \-          |
+|          |                         | QueryDSL             | \-          |
+|          | Java                    | Zulu                 | 8.33.0.1    |
+|          | Spring                  | Spring               | 5.3.6       |
+|          |                         | Spring Boot          | 2.4.5       |
+|          | IDE                     | Eclipse              | JEE 2020-06 |
+|          | Cloud Storage           | AWS S3               | \-          |
+|          | Build                   | Gradle               | 7.3.2       |
+|          | WebRTC                  | Kurento Media Server | 6.16        |
+|          | WebRTC                  | Kurento              | \-          |
+|          | API Docs                | Swagger2             | 3.0.0       |
+| FrontEnd | HTML5                   |                      | \-          |
+|          | CSS3                    |                      | \-          |
+|          | JavaScript(ES6)         |                      |\-           |
+|          | React                   | React                | 17.0.2      |
+|          | React                   | Redux                | 7.2.6       |
+|          | React                   | Redux-thunk          | 2.4.1       |
+|          |                         | styled-components    | 5.3.3       |
+|          |                         | framer-motion        | 6.0.0       |
+|          |                         | apexcharts           | 3.33.0      |
+|          |                         | toast-ui/react-editor      | 3.1.2       |
+|          |                         | toast-ui/react-calendar    | 1.0.6       |
+|          | WebSocket               | @stomp/stompjs       | 6.1.2       |
+|          | WebSocket               | stompjs              | 2.3.3       |
+|          | WebSocket               | sockjs-client        | 1.5.2       |
+|          | IDE                     | Visual Studio Code   | 1.63.2      |
+| Server   | 서버                      | AWS EC2              | \-          |
+|          | 플랫폼                     | Ubuntu               | 20.04.3 LTS |
+|          | 배포                      | Docker               | 20.10.12    |
+|          | 배포                      | Jenkins              | 2.319.2     |
+
+</details>
+
+<br />
+
+<div id="3"></div>
+
+## 🗂️ 시스템 아키텍처
+
+|                              시스템 구성                           |
+| :------------------------------------------------------------------------------: |
+| ![image](https://user-images.githubusercontent.com/8343301/154484342-36cff26d-a96b-4d52-8be0-4383aad54510.png) |
 
 
-|Branch            |Description							|
-|---------------|-------------------------------|
-|master  			|`라이브 서버에 제품으로 출시되는 브랜치`     |
-|develop 		|`다음 출시 버전을 대비하여 개발하는 브랜치`        	|
-|feature   			|`추가 기능 개발 브랜치. develop 브랜치에 들어간다` 		    |
-|release 	|`다음 버전 출시를 준비하는 브랜치. develop 브랜치를 release 브랜치로 옮긴 후 QA, 테스트를 진행하고 master 브랜치로 합친다`	|	
-|hotfix    			|`master 브랜치에서 발생한 버그를 수정하는 브랜치` 		    |
+|                              CI/CD 배포 흐름도                           |
+| :------------------------------------------------------------------------------: |
+| ![image](https://user-images.githubusercontent.com/8343301/154471327-63b80f5d-b724-4365-b30b-0dfe04b7f4f8.png) |
+
+|                              디렉토리 구조                       |
+| :------------------------------------------------------------------------------: |
+| ![image](https://user-images.githubusercontent.com/8343301/154848775-fc6afad1-816a-44b9-bc07-e1ce2af2c5b4.png) |
+
+<br />
+
+<div id="4"></div>
+
+## 🖥️ 주요기능
+
+### 온라인수업
+- 선생님이 수업을 개설하면 해당 수업을 수강하는 학생이 수업에 참여할 수 있습니다.
+- 사용자는 비디오, 오디오 ON/OFF를 설정할 수 있습니다.
+- 선생님은 원활한 수업진행을 위해 화면공유를 할 수 있습니다. 
+
+### 수업 알림
+- 교사가 시간표에 맞춰 온라인 수업을 개설하면, 해당 수업을 수강하는 학생의 화면에 수업알림 모달창이 나타납니다.
+- 또한, 수업 자료(첨부파일)를 확인할 수 있으며, [지금 들어가기] 버튼을 통해 해당 온라인수업에 입장할 수 있습니다.
+
+|                              온라인 수업 및 수업알림                       |
+| :---------------------------------------------------------------------------: |
+|  <img src="./readme_assets/onlineclass.gif" alt="온라인수업" />  |
+
+### 채팅
+- 학생, 선생님과 채팅이 가능하며, 지난 채팅 기록도 확인 가능합니다.
+- 다른 유저가 채팅을 보내면 채팅 아이콘(말풍선)에 알림 표시가 나타납니다.
+
+|                              채팅                       |
+| :---------------------------------------------------------------------------: |
+|  <img src="./readme_assets/chat.gif" alt="채팅" />  |
+
+### 알림장
+- 교사는 알림장(공지)을 작성할 수 있습니다.
+- 카테고리 설정으로, 원하는 학생(학교 전체, 학년, 반)에게 보여지도록 설정합니다.
+- toast-ui 에디터를 사용해서 글을 쉽게 편집할 수 있으며, Drag&Drop 으로 편리하게 첨부파일을 추가할 수 있습니다.  
+
+|                              알림장(선생님)                  |
+| :---------------------------------------------------------------------------: |
+|  <img src="./readme_assets/notice_teacher.gif" alt="알림장(선생님) " />  |
+
+|                              알림장(학생)                  |
+| :---------------------------------------------------------------------------: |
+|  <img src="./readme_assets/notice_student.gif" alt="알림장(학생) " />  |
+    
+### 홈 화면(위젯) 설정 
+- 메인 페이지에서 [설정 > 홈 화면 설정] 을 클릭하면 홈 화면에 배치되는 위젯들을 관리할 수 있습니다.
+- 배치를 원하는 위젯을 원하는 순서로 구성할 수 있습니다.
+
+|                              홈 화면 설정                      |
+| :---------------------------------------------------------------------------: |
+|  <img src="./readme_assets/widget.gif" alt="홈 화면 설정" />  |
+
+### 다크모드 지원
+- 사용자의 눈 건강 및 취향을 고려하여 다크모드를 지원합니다.
+- 메인 페이지에서 [설정 > 다크모드 on/off] 를 클릭하면 다크모드를 적용할 수 있습니다. 
+
+|                              다크모드                     |
+| :---------------------------------------------------------------------------: |
+|  <img src="./readme_assets/dark_mode.gif" alt="다크모드" />  |
+
+<br/>
+
+<div id="5"></div>
+
+## 🎥 [UCC 보러가기](https://youtu.be/Rg4kOlrdI78) 
+
+<br />
+
+<div id="6"></div>
+
+## 👥 협업 관리 
+
+|                            Jira BurnDown Chart                      |
+| :---------------------------------------------------------------------------: |
+|  <img src="./readme_assets/a607_Jira.png" alt="Jira BurnDown Chart" />  |
+
+|                            Notion                      |
+| :---------------------------------------------------------------------------: |
+|  <img src="./readme_assets/a607_Notion.png" alt="Notion" />  |
+
+<br />
+
+<div id="7"></div>
+
+## 👪 개발 멤버 소개 
+<table>
+    <tr>
+        <td height="140px" align="center"> <a href="https://github.com/Jubi-in">
+            <img src="https://avatars.githubusercontent.com/Jubi-in" width="140px" /> <br><br> 👑 인주비 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/unilion">
+            <img src="https://avatars.githubusercontent.com/unilion" width="140px" /> <br><br> 🙂 장준범 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/jejinmyeong">
+            <img src="https://avatars.githubusercontent.com/jejinmyeong" width="140px" /> <br><br> 😆 제진명 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/kibum414">
+            <img src="https://avatars.githubusercontent.com/kibum414" width="140px" /> <br><br> 😁 박기범 <br>(Back-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/changhyuns">
+            <img src="https://avatars.githubusercontent.com/changhyuns" width="140px" /> <br><br> 🙄 손창현 <br>(Back-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/dayaeLee777">
+            <img src="https://avatars.githubusercontent.com/dayaeLee777" width="140px" /> <br><br> 😶 이다예 <br>(Back-End) </a> <br></td>
+    </tr>
+    <tr>
+        <td align="center">UI/UX<br/>React<br/>WebRTC<br/>WebSocket</td>
+        <td align="center">UI/UX<br/>React</td>
+        <td align="center">UI/UX<br/>React</td>
+        <td align="center">REST API<br/>WebRTC<br/>WebSocket</td>
+        <td align="center">REST API<br/>CI/CD<br/>Infra<br/></td>
+        <td align="center">REST API<br/>Database<br/>S3<br/></td>
+    </tr>
+</table>
+
+<br />
+
+<div id="8"></div>
+
+## 📆 프로젝트 기간
+### 22.1.10 ~ 22.2.18
+- 기획 및 설계 : 22.1.10 ~ 19
+- 프로젝트 구현 : 22.1.20 ~ 22.2.15
+- 버그 수정 및 산출물 정리 : 22.2.16 ~ 18
+
+<br />
+
+<div id="9"></div>
+
+## 📋 프로젝트 관련 문서
+|  구분  |  링크  |
+| :--------------- | :---------------: |
+| 공통코드 | [공통코드 바로가기](/docs/공통코드.md) |
+| 와이어프레임 | [와이어프레임 바로가기](/docs/와이어프레임.md) |
+| 컨벤션목록 | [컨벤션목록 바로가기](/docs/컨벤션목록.md) |
+| 테스트데이터 | [테스트데이터 바로가기](/docs/테스트데이터.md) |
+| ERD | [ERD 바로가기](/docs/ERD.md) |
+| 빌드/배포 | [빌드/배포 바로가기](/exec/01_서울_6반_A607_빌드및배포.pdf) |
+| 외부서비스 정보 | [외부서비스 정보 바로가기](/exec/02_서울_6반_A607_외부서비스_정보.pdf) |
+| 시연 시나리오 | [시연 시나리오 바로가기](/exec/04_서울_6반_A607_시연시나리오.pdf) |
+| 발표자료 | [발표자료 바로가기](/docs/서울_6반_A607_발표자료.pdf) |
