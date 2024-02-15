@@ -3,48 +3,39 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SlCalender, SlLocationPin, SlPeople, SlBadge } from "react-icons/sl";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
 import { ModalPortal } from "../../modals/ModalPortal";
 import ApplicationModal from "../../modals/ApplicationModal";
 import TripUpdateModal from "../../modals/TripUpdateModal";
 import DateFormatter from "../../DateFormatter";
 import TripParticipantsInfo from "./TripParticipantsInfo";
-
 export default function TripDetail() {
   const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate();
-
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [isLeader, setIsLeader] = useState(false);
   const [isParticipant, setIsParcitipant] = useState(false);
-
   const { tripId } = useParams();
   const [tripDetails, setTripDetails] = useState(null);
   const [departureDate, setDepartureDate] = useState(null);
   const [returnDate, setReturnDate] = useState(null);
-
   // 신청모달 open
   const OpenApplicationModal = () => {
     setIsApplicationOpen(true);
   };
-
   // 신청모달 close
   const CloseApplicationModal = () => {
     setIsApplicationOpen(false);
   };
-
   // 수정모달 open
   const OpenUpdateModal = () => {
     setIsUpdateOpen(true);
   };
-
   // 수정모달 close
   const CloseUpdateModal = () => {
     setIsUpdateOpen(false);
     fetchData(); // 수정된 정보를 다시 불러오는 함수
   };
-
   // 취소하기 클릭
   const handleCancelClick = async () => {
     // try {
@@ -66,35 +57,34 @@ export default function TripDetail() {
     // }
     navigate("/applicantList");
   };
-
   const handleDeleteClick = async () => {
     try {
       const response = await axios.delete(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip`,
         {
-          tripId: tripId,
-          userId: userId,
-        },
-        {
+          data: {
+            tripId: tripDetails.tripId,
+            userId: tripDetails.tripLeaderId,
+          },
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-      console.log(response);
-      navigate("/search");
+      if (response.status === 200) {
+        alert("삭제되었습니다!");
+      }
     } catch (error) {
       console.error("삭제 불가능", error);
     }
+    navigate("/search");
   };
-
   // useEffect (여행 상세 정보 로딩)
   const fetchData = async () => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
       );
-
       // 상세 정보 저장
       setTripDetails(response.data);
       console.log(response.data.participants.length);
@@ -103,10 +93,8 @@ export default function TripDetail() {
         DateFormatter({ dateString: response.data.departureDate })
       );
       setReturnDate(DateFormatter({ dateString: response.data.returnDate }));
-
       // 모집글 작성자 여부 확인
       setIsLeader(response.data.tripLeaderId === userId);
-
       // 모집글 참가자 여부 확인
       if (!isLeader) {
         setIsParcitipant(
@@ -119,15 +107,12 @@ export default function TripDetail() {
       console.error("게시판 상세정보를 가져오는 중 에러 발생:", error);
     }
   };
-
   const OpenPlanDetail = () => {
     navigate(`/makeplan/${tripDetails.tripPlanId}`);
   };
-
   useEffect(() => {
     fetchData();
   }, [tripId]);
-
   // useEffect (모달 열렸을 때 스크롤 막기)
   useEffect(() => {
     if (isApplicationOpen || isUpdateOpen) {
@@ -135,12 +120,10 @@ export default function TripDetail() {
     } else {
       document.body.style.overflow = "auto";
     }
-
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isApplicationOpen, isUpdateOpen]);
-
   return (
     <Fragment>
       <div className="grid grid-cols-3 gap-3">
@@ -276,11 +259,11 @@ export default function TripDetail() {
               <p className="mt-5 mb-3 text-base font-bold">일정 정보</p>
               <button
                 className="w-full py-3 text-sm font-medium rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10"
-                onClick={!tripDetails.tripPlanId && isLeader ? CreatePlan : OpenPlanDetail}
+                onClick={OpenPlanDetail}
               >
                 일정 상세 보기
               </button>
-              <p className="mb-3 text-base font-bold">여행 참여자 정보</p>
+              <p className="mt-5 mb-3 text-base font-bold">여행 참여자 정보</p>
               <TripParticipantsInfo
                 participants={tripDetails.participants}
                 leaderId={tripDetails.tripLeaderId}

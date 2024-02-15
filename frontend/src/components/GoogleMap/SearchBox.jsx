@@ -41,13 +41,19 @@ const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
   }, [map, handleOnPlacesChanged]);
 
   return (
-    <input
-      ref={input}
-      placeholder="장소를 검색해주세요"
-      type="text"
-      disabled={!isCanModify}
-      className="w-2/3 border rounded border-neutral-200"
-    />
+    <div className="flex flex-col">
+      <div className="text-base font-medium">장소 검색</div>
+      <div className="flex flex-row">
+        <input
+          ref={input}
+          placeholder="장소를 검색해주세요"
+          type="text"
+          disabled={!isCanModify}
+          className="w-2/3 border rounded border-neutral-200"
+        />
+        <button>검색</button>
+      </div>
+    </div>
   );
 };
 
