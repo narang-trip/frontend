@@ -21,6 +21,12 @@ export default function PlanningPage() {
   const navigate = useNavigate();
   const [isCanModify, setIsCanModify] = useState(true);
   const [res, setRes] = useState();
+  let checkuser = false;
+  if (res.data.ownerId === curUserId) checkuser = true;
+  for (let i = 0; i < res.data.participantIds.length; i++) {
+    if (res.data.participantIds[i].participantId === curUserId)
+      checkuser = true;
+  }
 
   const { planId } = useParams();
 
@@ -227,18 +233,7 @@ export default function PlanningPage() {
   };
 
   const modifyPlan = () => {
-    //
-    let checkuser = false;
-    if (res.data.ownerId === curUserId) checkuser = true;
-    for (let i = 0; i < res.data.participantIds.length; i++) {
-      if (res.data.participantIds[i].participantId === curUserId)
-        checkuser = true;
-    }
-    if (!checkuser) {
-      alert("수정권한이 없습니다.");
-    } else {
-      setIsCanModify(true);
-    }
+    setIsCanModify(true);
   };
 
   const deletePlan = async () => {
@@ -284,20 +279,26 @@ export default function PlanningPage() {
             저장하기
           </button>
         ) : (
-          <div className="absolute flex top-0 right-0 gap-2">
-            <button
-              className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
-              onClick={modifyPlan}
-            >
-              수정하기
-            </button>
-            <button
-              className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
-              onClick={deletePlan}
-            >
-              삭제하기
-            </button>
-          </div>
+          <>
+            {checkuser ? (
+              <div className="absolute flex top-0 right-0 gap-2">
+                <button
+                  className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+                  onClick={modifyPlan}
+                >
+                  수정하기
+                </button>
+                <button
+                  className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
+                  onClick={deletePlan}
+                >
+                  삭제하기
+                </button>
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
         )}
         {isSavePlanOpen && (
           <ModalPortal>
