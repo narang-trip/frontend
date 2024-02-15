@@ -61,7 +61,6 @@ const ReceivedRequests = () => {
             return <TripInfo tripData={trip} key={idx} />
           })}
       </div>
-      <div ref={ref}></div>
     </Fragment>
   );
 };
