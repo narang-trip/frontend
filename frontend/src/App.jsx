@@ -10,7 +10,7 @@ import ApplicantList from "./pages/ApplicantList";
 import TripRegisterPage from "./pages/TripResgister";
 import TripDetailPage from "./pages/TripDetail";
 import KakaoLogin from "./pages/KakaoLogin";
-import NaverLogin from "./pages/NaverLogin";
+import NaverLogin from "./pages/NaverLogin";``
 import Mypage from "./pages/Mypage";
 import MyPlan from "./pages/MyPlan";
 
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       {
-        path: "/planning",
+        path: "/MyPlan",
         element: <MyPlan />,
       },
       {
