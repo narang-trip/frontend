@@ -72,8 +72,8 @@ export default function TripDetail() {
       const response = await axios.delete(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip`,
         {
-          tripId: tripId,
-          userId: userId,
+          tripId: tripDetails.tripId,
+          userId: userId
         },
         {
           headers: {
