@@ -17,13 +17,13 @@ const PlaceCard = () => {
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
                 >
-                  <div className="flex rounded-lg overflow-hidden bg-white">
+                  <div className="flex overflow-hidden bg-white rounded-lg">
                     <img className="w-20 h-20" src={place.photo} />
                     <div className="flex-col">
-                      <h4>{place.name}</h4>
-                      <p>{place.businessStatus}</p>
-                      <p>{place.formattedAddress}</p>
-                      <p>{place.rating}</p>
+                      <div className="text-xs font-semibold">{place.name}</div>
+                      <div className="text-xs">{place.businessStatus}</div>
+                      <div className="text-xs">{place.formattedAddress}</div>
+                      <div className="text-xs">{place.rating}</div>
                     </div>
                   </div>
                 </div>
