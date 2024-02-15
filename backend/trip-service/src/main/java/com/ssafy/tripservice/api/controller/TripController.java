@@ -6,6 +6,7 @@ import com.ssafy.tripservice.api.request.*;
 import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripRefundResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
+import com.ssafy.tripservice.api.response.TripSimpleResponse;
 import com.ssafy.tripservice.api.service.TripService;
 import com.ssafy.tripservice.db.entity.Trip;
 import com.ssafy.tripservice.exception.TripAlreadyJoinException;
@@ -210,6 +211,12 @@ public class TripController {
     public ResponseEntity<Page<TripPageResponse>> getTripsIveOwn(
             @RequestBody TripQueryRequest tripQueryRequest) {
         return ResponseEntity.ok(tripService.getTripsIveOwn(tripQueryRequest));
+    }
+
+    @GetMapping("/allTripId")
+    public ResponseEntity<List<TripSimpleResponse>> getAllTripIds(
+            @RequestBody TripQueryRequest tripQueryRequest) {
+        return ResponseEntity.ok(tripService.getAllTripIds());
     }
 
     @ExceptionHandler(TripNotFoundException.class)
