@@ -60,7 +60,7 @@ export default function SentRequests() {
             `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
             {
               tripId: item.tripId,
-              userId: userId,
+              userId: item.senderId,
               usageId: item.usageId
             },
             {
