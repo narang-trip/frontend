@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.ssafy.tripservice.api.request.*;
 import com.ssafy.tripservice.api.response.TripPageResponse;
+import com.ssafy.tripservice.api.response.TripRefundResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.api.service.TripService;
 import com.ssafy.tripservice.db.entity.Trip;
@@ -113,11 +114,12 @@ public class TripController {
                     @ApiResponse(responseCode = "200", description = "User Canceled Successfully"),
                     @ApiResponse(responseCode = "400", description = "User Not Canceled")})
     @PatchMapping("/trip/leave")
-    public ResponseEntity<Void> patchTripLeave(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<TripRefundResponse> patchTripLeave(@RequestBody UserRequest userRequest) {
 
-        if (tripService.leaveTrip(userRequest))
-            return ResponseEntity.ok().build();
-        return ResponseEntity.badRequest().build();
+        Optional<TripRefundResponse>  response = tripService.leaveTrip(userRequest);
+
+        return response.map(tripRefundResponse -> ResponseEntity.ok().body(tripRefundResponse))
+                .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "참여 거절",
