@@ -284,7 +284,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
                     PaymentRefundGrpcResponse refundGrpcResponse = paymentBlockingStub.refundPaymentRecord(
                             PaymentRefundGrpcRequest.newBuilder()
                                     .setUsageId(p.getUsageId())
-                                    .setTripId(trip.get().get_id().toString())
+                                    .setTripId(userRequest.getTripId().toString())
                                     .setDepartureDate(LocalDate.now().toString())
                                     .build()
                     );
