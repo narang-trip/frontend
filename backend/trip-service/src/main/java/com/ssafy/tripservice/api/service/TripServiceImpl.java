@@ -335,8 +335,6 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     @Override
     public Page<TripPageResponse> getTripsIveBeen(TripQueryRequest tripQueryRequest) {
 
-        System.out.println(tripQueryRequest);
-
         final int pageSize = 4;
 
         PageRequest pageRequest = PageRequest.of(
@@ -392,8 +390,6 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
 
     @Override
     public Page<TripPageResponse> getTripsIWant(TripQueryRequest tripQueryRequest) {
-
-        System.out.println(tripQueryRequest);
 
         final int pageSize = 9;
 
