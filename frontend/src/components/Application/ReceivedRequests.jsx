@@ -10,9 +10,19 @@ const ReceivedRequests = () => {
   const [pageNo, setPageNo] = useState(0);
   const [tripData, setTripData] = useState([]);
   const userId = useSelector((state) => state.auth.userId);
-  // const userId = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"; // 사용자 ID
-
   const navigate = useNavigate();
+
+  const fetchRequestData = async (tripId) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_ALERT_REQUEST_URI}/trip/${tripId}`
+      );
+      return response.data.alertList.length > 0; // Returns true if alertList has items
+    } catch (error) {
+      console.error("Error fetching request data:", error);
+      return false; // Assume no alerts if there's an error
+    }
+  };
 
   const getMyList = useCallback(async () => {
     try {
@@ -35,8 +45,16 @@ const ReceivedRequests = () => {
         return;
       }
 
+      const filteredTrips = [];
+      for (const trip of response.data.content) {
+        const hasAlerts = await fetchRequestData(trip.tripId);
+        if (hasAlerts) {
+          filteredTrips.push(trip);
+        }
+      }
+
       // 새로운 데이터를 기존 데이터에 추가
-      setTripData((prevData) => [...prevData, ...response.data.content]); // 가져온 데이터를 상태로 설정
+      setTripData((prevData) => [...prevData, ...filteredTrips]); // 가져온 데이터를 상태로 설정
       // 페이지 번호 증가
       setPageNo((prevPageNo) => prevPageNo + 1);
     } catch (error) {
@@ -47,8 +65,6 @@ const ReceivedRequests = () => {
   useEffect(() => {
     getMyList();
   }, [pageNo]);
-
-
 
   return (
     <Fragment>

@@ -10,13 +10,13 @@ export default function ApplicantList() {
   const [selectedOption, setSelectedOption] = useState("sent");
   const { concept, conceptColor } = useSelector((state) => state.concept);
 
-  
+
   // 누른 옵션에 따라 selectedOption 값 설정
   const handleOptionChange = (option) => {
     setSelectedOption(option);
   };
 
-  useEffect(() => {}, [selectedOption]);
+  useEffect(() => { }, [selectedOption]);
 
   return (
     <Fragment>
@@ -24,22 +24,20 @@ export default function ApplicantList() {
         {isLogin ? (
           <div className="flex flex-row p-6 justify-evenly">
             <div
-              className={`flex flex-row rounded-3xl p-3 hover:font-semibold hover:bg-amber-300 hover:bg-opacity-70 ${
-                selectedOption === "sent"
+              className={`flex flex-row rounded-3xl p-3 hover:font-semibold hover:bg-amber-300 hover:bg-opacity-70 ${selectedOption === "sent"
                   ? " bg-amber-300 bg-opacity-70  font-semibold transition ease-in-out scale-105 duration-200"
                   : " bg-stone-300 "
-              }`}
+                }`}
               onClick={() => handleOptionChange("sent")}
             >
               <RiUserSharedLine className="mx-3 " size="24" />
               <button className="text-sm">보낸 요청 목록</button>
             </div>
             <div
-              className={`flex flex-row rounded-3xl p-3 hover:font-semibold hover:bg-amber-300 hover:bg-opacity-70 ${
-                selectedOption === "received"
+              className={`flex flex-row rounded-3xl p-3 hover:font-semibold hover:bg-amber-300 hover:bg-opacity-70 ${selectedOption === "received"
                   ? " bg-amber-300 bg-opacity-70  font-semibold transition ease-in-out scale-105 duration-200"
                   : " bg-stone-300 "
-              }`}
+                }`}
               onClick={() => handleOptionChange("received")}
             >
               <RiUserReceivedLine className="mx-3 " size="24" />
@@ -55,10 +53,10 @@ export default function ApplicantList() {
         )}
 
         {isLogin &&
-          (selectedOption === "received" ? (
-            <ReceivedRequests />
-          ) : (
+          (selectedOption !== "received" ? (
             <SentRequests />
+          ) : (
+            <ReceivedRequests />
           ))}
       </div>
     </Fragment>
