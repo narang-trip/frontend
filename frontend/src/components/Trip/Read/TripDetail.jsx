@@ -276,11 +276,7 @@ export default function TripDetail() {
               <p className="mt-5 mb-3 text-base font-bold">일정 정보</p>
               <button
                 className="w-full py-3 text-sm font-medium rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10"
-<<<<<<< HEAD
-                onClick={OpenPlanDetail}
-=======
                 onClick={!tripDetails.tripPlanId && isLeader ? CreatePlan : OpenPlanDetail}
->>>>>>> 7763734 (Feat: 수정)
               >
                 일정 상세 보기
               </button>
