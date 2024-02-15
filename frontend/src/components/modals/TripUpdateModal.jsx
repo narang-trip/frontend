@@ -127,7 +127,7 @@ const TripEditModal = ({ data, onClose }) => {
               onChange={(e) =>
                 setBoard({ ...board, description: e.target.value })
               }
-              className="w-full text-xs rounded-sm resize-none h-32 p-1.5 border border-neutral-300 ext-neutral-700"
+              className="w-full text-xs rounded-md resize-none h-32 p-1.5 border border-neutral-300 ext-neutral-700"
               name="description"
             />
             <div className="flex justify-end mt-4">
