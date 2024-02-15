@@ -20,6 +20,7 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -66,7 +67,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         return usageRecord;
     }
 
-    public RefundResponse cancelMileage(String usage_id, String trip_id, LocalDateTime departureDateTime){
+    public RefundResponse cancelMileage(String usage_id, String trip_id, LocalDate departureDate){
         log.info("cancelMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
@@ -79,7 +80,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         int price = usageRecord.getPrice();
         int refund_price = 0;
         
-        long dayDifference = calculateDateDifference(LocalDateTime.now(), departureDateTime);
+        long dayDifference = calculateDateDifference(LocalDate.now(), departureDate);
 
         RefundResponse refundResponse = new RefundResponse();
 
@@ -183,7 +184,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         userMileageRepository.save(userMileage);
     }
 
-    private Long calculateDateDifference(LocalDateTime startDate, LocalDateTime endDate) {
+    private Long calculateDateDifference(LocalDate startDate, LocalDate endDate) {
         Duration duration = Duration.between(startDate, endDate);
         return duration.toDays();
     }
