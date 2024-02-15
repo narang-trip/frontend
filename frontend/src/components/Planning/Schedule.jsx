@@ -79,7 +79,7 @@ const Schedule = (props) => {
                 style={scheduleCSS}
                 className="relative z-30 flex flex-col w-56 overflow-hidden text-sm bg-white rounded-xl"
               >
-                <div className={`mb-4 absolute right-0 ${visible}`}>
+                <div className={`mb-4 w-full absolute right-0 ${visible}`}>
                   <button
                     className="text-xl font-semibold hover:text-red-600"
                     onClick={removeSchedule}
@@ -108,7 +108,7 @@ const Schedule = (props) => {
                       분
                     </p>
                     <textarea
-                      className="w-32 resize-none"
+                      className="w-32 text-xs resize-none"
                       name="comment"
                       id="comment"
                       placeholder="간단한 메모"
@@ -116,7 +116,7 @@ const Schedule = (props) => {
                       value={text}
                       disabled={!isCanModify}
                     />
-                    <p>다음 장소까지 {schedule.distance} 분</p>
+                    <p className="text-xs">다음 장소까지 {schedule.distance} 분</p>
                   </div>
                 </div>
               </div>
