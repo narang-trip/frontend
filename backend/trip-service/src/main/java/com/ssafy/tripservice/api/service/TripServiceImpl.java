@@ -546,6 +546,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     @Override
     public void putAllTripImgs() {
         List<Trip> triplist = tripRepository.findAll();
+        int random = 0;
 
         List<String> country_code_list = List.of (
                 "한국", "KR",
@@ -591,6 +592,8 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
                 "우루과이", "UY",
                 "볼리비아", "BO");
 
+
+
         for (Trip trip : triplist) {
 
             Query query = new Query(Criteria.where("_id").is(trip.get_id()));
@@ -600,7 +603,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
                     Update update = new Update().set("tripImgUrl",
                             "https://youngkimi-bucket-01.s3.ap-northeast-2.amazonaws.com/"
                             +
-                            country_code_list.get(i + 1) + new Random().nextInt(1, 3)
+                            country_code_list.get(i + 1) + (++random % 2 + 1)
                             +
                             ".jpg"
                     );
