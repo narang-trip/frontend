@@ -75,9 +75,9 @@ function MainNavigation() {
           </li>
           <li className="transition-all duration-300 py-7">
             <NavLink
-              to="/planning"
+              to="/MyPlan"
               className={`flex items-center justify-center ${
-                isActive("/planning")
+                isActive("/MyPlan")
                   ? "text-amber-500 text-opacity-50 font-extrabold"
                   : "hover:text-amber-500 hover:font-bold"
               }`}
