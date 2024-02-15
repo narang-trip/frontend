@@ -13,7 +13,7 @@ const TripRegisterPage = () => {
           <RegisterForm />
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center h-full">
+        <div className="flex flex-col justify-center items-center h-1/2">
           <p
             className={`text-lg font-semibold animate-bounce text-${conceptColor}-400`}
           >
