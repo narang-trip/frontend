@@ -42,7 +42,7 @@ const TripSummaryMain = ({ trip }) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleViewClick}
-        className="flex px-3 py-4 mx-3 my-4 align-top border rounded-3xl shadow-lg border-stone-400 border-2"
+        className="flex px-3 py-4 mx-3 my-4 align-top border rounded-3xl shadow-lg border-stone-400 border-r-4 border-b-4"
       >
         <div className="grid grid-cols-2 gap-1">
           <div className="relative overflow-hidden group rounded-3xl col-span-1">
