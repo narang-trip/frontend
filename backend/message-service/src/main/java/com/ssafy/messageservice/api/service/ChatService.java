@@ -78,8 +78,8 @@ public class ChatService extends NarangGrpc.NarangImplBase {
         }
     }
 
-    public int exileFromChatroom(ChatroomUserRequest chatroomUserRequest) {
-        return  chatroomUserRepository.deleteChatroomUserByChatroomAndUserId(
+    public void exileFromChatroom(ChatroomUserRequest chatroomUserRequest) {
+        chatroomUserRepository.deleteChatroomUserByChatroomAndUserId(
                                 chatroomUserRequest.getChatroomId(), chatroomUserRequest.getUserId());
     }
 }

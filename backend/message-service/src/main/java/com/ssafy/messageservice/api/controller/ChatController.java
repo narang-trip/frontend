@@ -42,7 +42,7 @@ public class ChatController {
     }
 
     @DeleteMapping("/exile")
-    public ResponseEntity<Integer> deleteChatroomUser(@RequestBody ChatroomUserRequest chatroomUserRequest) {
+    public ResponseEntity<Void> deleteChatroomUser(@RequestBody ChatroomUserRequest chatroomUserRequest) {
         return ResponseEntity.ok(chatService.exileFromChatroom(chatroomUserRequest));
     }
 
