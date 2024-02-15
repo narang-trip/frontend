@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { placesActions } from "../../store/placeSlice";
 const Map = ({ isCanModify }) => {
   const containerStyle = {
-    width: "300px",
+    width: "200px",
     height: "300px",
   };
   const center = {
