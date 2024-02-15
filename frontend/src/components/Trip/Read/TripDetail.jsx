@@ -14,7 +14,6 @@ export default function TripDetail() {
   const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate();
 
-
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [isLeader, setIsLeader] = useState(false);
@@ -50,7 +49,8 @@ export default function TripDetail() {
   const handleCancelClick = async () => {
     try {
       await axios.post(
-        `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`, {
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
+        {
           tripId: tripId,
           userId: userId,
         },
@@ -119,7 +119,6 @@ export default function TripDetail() {
     }
   };
 
-  
   const OpenPlanDetail = () => {
     navigate(`/makeplan/${tripDetails.tripPlanId}`);
   };
