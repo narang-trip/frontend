@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import DateFormatter from "../../DateFormatter";
+import DateFormatter from "../DateFormatter";
 
 export default function SentRequests() {
   const [sentData, setSentData] = useState(null);
