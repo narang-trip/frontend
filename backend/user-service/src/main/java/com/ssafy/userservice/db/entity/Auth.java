@@ -28,8 +28,6 @@ public class Auth extends BaseEntity {
     @Column
     private String refreshToken;
 
-
-
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
     }

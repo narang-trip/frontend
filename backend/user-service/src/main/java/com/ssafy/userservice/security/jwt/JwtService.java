@@ -1,8 +1,5 @@
 package com.ssafy.userservice.security.jwt;
 
-
-//import com.example.logincomplete.domain.auth.exception.AuthNotFoundException;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.ssafy.userservice.db.repository.AuthRepository;
@@ -14,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -89,19 +85,6 @@ public class JwtService {
         response.setHeader(accessHeader, BEARER + accessToken);
         log.info("Access Token sent in header");
     }
-//    public void sendAccessToken(HttpServletResponse response, String accessToken) {
-//        log.info("sendAccessToken() 호출");
-//        response.setStatus(HttpServletResponse.SC_OK);
-////        response.setHeader(accessHeader, accessToken);
-//        try {
-//            response.getWriter().write("{\"access_token\": \"" + accessToken + "\"}");
-//            response.getWriter().flush();
-//            response.getWriter().close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        log.info("재발급된 Access Token : {}", accessToken);
-//    }
     public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
         log.info("sendRefreshToken() 호출");
         response.setHeader(refreshHeader, BEARER + refreshToken);
@@ -165,37 +148,6 @@ public class JwtService {
             return Optional.empty();
         }
     }
-
-    /**
-     * AccessToken 헤더 설정
-     */
-//    public void setAccessTokenHeader(HttpServletResponse response, String accessToken)  {
-//        log.info("setAccessTokenHeader() 호출");
-////        response.setHeader(accessHeader, accessToken);
-//        try {
-//            response.getWriter().write("{\"access_token\": \"" + accessToken + "\"}");
-//            response.getWriter().flush();
-//            response.getWriter().close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        log.info("재발급된 Access Token : {}", accessToken);
-//    }
-//
-//    /**
-//     * RefreshToken 헤더 설정
-//     */
-//    public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {
-//        log.info("setRefreshTokenHeader() 호출");
-////        response.setHeader(refreshHeader, refreshToken);
-//        try {
-//            response.getWriter().write("{\"refresh_token\": \"" + refreshToken + "\"}");
-//            response.getWriter().flush();
-//            response.getWriter().close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     /**
      * RefreshToken DB 저장(업데이트)

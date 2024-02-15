@@ -15,7 +15,6 @@ import com.ssafy.userservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -27,14 +26,9 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class UserService extends DefaultOAuth2UserService {
-    private final BCryptPasswordEncoder encoder;
     private final UserRepository userRepository;
     private final AuthRepository authRepository;
     private final RoleRepository roleRepository;
-
-    public Optional<User> getTest(String id){
-        return userRepository.findById(id);
-    }
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -65,7 +59,6 @@ public class UserService extends DefaultOAuth2UserService {
         int ageRange = userInfo.getAgeRange();
         String nickname = userInfo.getNickName();
 
-//        System.out.println(oAuth2User.getAttributes());
         Optional<Auth> findAuth = authRepository.findById(id);
         User user = null;
         Auth auth = null;
