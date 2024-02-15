@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) {
+const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
   const userId = useSelector((state) => state.auth.userId);
@@ -145,3 +145,5 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
     </Fragment>
   );
 }
+
+export default ReceiveRequestsInfo;
