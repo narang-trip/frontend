@@ -14,10 +14,6 @@ const ReceivedRequests = () => {
 
   const navigate = useNavigate();
 
-  const { ref, inView } = useInView({
-    threshold: 0, // div태그가 보일 때 inView가 true로 설정
-  });
-
   const getMyList = useCallback(async () => {
     try {
       const response = await axios.post(
@@ -50,11 +46,8 @@ const ReceivedRequests = () => {
 
   // inView가 true일때 데이터를 가져옴
   useEffect(() => {
-    if (inView || pageNo <= 1) {
-      console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
       getMyList();
-    }
-  }, [inView, pageNo]);
+  }, [pageNo]);
 
 
 
