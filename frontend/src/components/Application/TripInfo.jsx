@@ -35,6 +35,7 @@ export default function TripInfo({ tripData }) {
 
   return (
     <Fragment>
+      {tripData && (
       <div className="w-full text-center rounded-l">
         <ul>
           <button
@@ -90,6 +91,7 @@ export default function TripInfo({ tripData }) {
           </div>
         </ul>
       </div>
+      )}
     </Fragment>
   );
 }
