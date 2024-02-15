@@ -41,7 +41,7 @@ public class TripRequest {
                 .tripName(this.tripName)
                 .tripDesc(this.tripDesc)
                 .tripImgUrl(this.tripImgUrl)
-                .recruitDate(this.recruitDate)
+                .recruitDate(LocalDateTime.now())
                 .continent(this.continent)
                 .country(this.country)
                 .city(this.city)

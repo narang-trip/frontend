@@ -70,7 +70,7 @@ public class AlertController {
     public ResponseEntity<AlertSendListResponse> getSendAlertList(@PathVariable String senderId) {
         log.info("/list/send/{} 호출 ", senderId);
         List<AlertSendListResponse.AlertSendResponse> alertResponses = alertService.getAlertsBySenderId(senderId);
-        log.info("alertResponses 가져온 개수 {}", alertResponses.size());
+        
         if(alertResponses == null){
             AlertSendListResponse response = new AlertSendListResponse();
             response.setAlertList(Collections.emptyList());

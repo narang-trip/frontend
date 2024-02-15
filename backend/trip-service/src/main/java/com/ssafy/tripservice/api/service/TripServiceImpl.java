@@ -4,15 +4,15 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import com.ssafy.tripservice.api.request.TripModifyRequest;
-import com.ssafy.tripservice.api.request.TripQueryRequest;
-import com.ssafy.tripservice.api.request.TripRequest;
-import com.ssafy.tripservice.api.request.UserRequest;
+import com.ssafy.tripservice.api.request.*;
 import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.db.entity.QTrip;
 import com.ssafy.tripservice.db.entity.Trip;
 import com.ssafy.tripservice.db.repository.TripRepository;
+import com.ssafy.tripservice.exception.TripNotFoundException;
+import com.ssafy.tripservice.exception.TripTimeExceedException;
+import com.ssafy.tripservice.exception.TripsizeFullException;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.client.inject.GrpcClient;
@@ -170,29 +170,39 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     @Override
     public Optional<TripResponse> joinTrip(UserRequest userRequest) {
 
-        Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripID()));
+        Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripId()));
 
-        Optional<Trip> trip = tripRepository.findById(userRequest.getTripID());
+        Optional<Trip> trip = tripRepository.findById(userRequest.getTripId());
 
         if (trip.isEmpty()) {
             System.out.println("파티 못 찾음");
-            return Optional.empty();
+            throw new TripNotFoundException();
         }
         if (trip.get().getParticipants().size() >= trip.get().getTripParticipantsSize()) {
             System.out.println("파티 꽉 참");
-            return Optional.empty();
-        }
-        if (trip.get().getParticipants().stream()
-                .anyMatch(participant -> participant.getParticipantId().equals(userRequest.getUserId()))) {
-            System.out.println("파티 이미 가입함");
-            return Optional.empty();
+            throw new TripsizeFullException();
         }
         if (trip.get().getDepartureDate().isBefore(LocalDate.now())) {
             System.out.println("파티 이미 출발함");
-            return Optional.empty();
+            throw new TripTimeExceedException();
         }
 
-        Query query = new Query(Criteria.where("_id").is(userRequest.getTripID()));
+        /*
+            Alert Patch Request
+            Chat Join Request
+         */
+
+        AlertPatchGrpcResponse response = chatBlockingStub.acceptJoinRequestType(
+                AlertPatchGrpcRequest.newBuilder()
+                        .setAlertId(userRequest.getAlertId())
+                        .setAlertType("ACCEPT").build());
+
+        ChatroomUserPatchGrpcResponse chatRoomJoinResponse = chatBlockingStub.joinIntoChatroom(ChatroomUserPatchGrpcRequest.newBuilder()
+                        .setChatroomId(trip.get().getTripChatId().toString())
+                        .setUserId(userRequest.getUserId().toString())
+                        .build());
+
+        Query query = new Query(Criteria.where("_id").is(userRequest.getTripId()));
 
         Trip.Participant participant
                 = Trip.Participant.builder()
@@ -209,16 +219,16 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
             채팅
          */
 
-        return Optional.ofNullable(mongoTemplate.findById(userRequest.getTripID(), Trip.class))
+        return Optional.ofNullable(mongoTemplate.findById(userRequest.getTripId(), Trip.class))
                 .map(Trip::toTripResponse);
     }
 
     @Override
     public boolean leaveTrip(UserRequest userRequest) {
 
-        Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripID()));
+        Query cntQuery = new Query(Criteria.where("_id").is(userRequest.getTripId()));
 
-        Optional<Trip> trip = tripRepository.findById(userRequest.getTripID());
+        Optional<Trip> trip = tripRepository.findById(userRequest.getTripId());
 
         if (trip.isEmpty()) {
             System.out.println("파티 못 찾음");
@@ -239,7 +249,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
         }
 
         Query query = new Query(
-                Criteria.where("_id").is(userRequest.getTripID()));
+                Criteria.where("_id").is(userRequest.getTripId()));
 
         List<Trip.Participant> participants = trip.get().getParticipants().stream()
                 .filter(participant -> !participant.getParticipantId().equals(userRequest.getUserId()))
@@ -256,7 +266,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
 
    @Override
     public boolean deleteTrip(UserRequest userRequest) {
-        Query query = new Query(Criteria.where("_id").is(userRequest.getTripID()))
+        Query query = new Query(Criteria.where("_id").is(userRequest.getTripId()))
                 .addCriteria(Criteria.where("tripLeaderId").is(userRequest.getUserId()));
 
         DeleteResult res = mongoTemplate.remove(query, Trip.class);
@@ -325,8 +335,6 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     @Override
     public Page<TripPageResponse> getTripsIveBeen(TripQueryRequest tripQueryRequest) {
 
-        System.out.println(tripQueryRequest);
-
         final int pageSize = 4;
 
         PageRequest pageRequest = PageRequest.of(
@@ -383,8 +391,6 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     @Override
     public Page<TripPageResponse> getTripsIWant(TripQueryRequest tripQueryRequest) {
 
-        System.out.println(tripQueryRequest);
-
         final int pageSize = 9;
 
         PageRequest pageRequest = PageRequest.of(
@@ -397,6 +403,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
                         .tripRoles.any().in(tripQueryRequest.getTripRoles())
                         .and(QTrip.trip.departureDate.before(tripQueryRequest.getQueryEndDate())
                                 .and(QTrip.trip.returnDate.after(tripQueryRequest.getQuerySttDate())))
+                        .and(QTrip.trip.departureDate.after(LocalDate.now()))
                         .and(QTrip.trip.tripParticipantsSize.goe(tripQueryRequest.getParticipantsSize()))
                         .and(QTrip.trip.tripConcept.in(tripQueryRequest.getTripConcept()))
                         .and(QTrip.trip.continent.in(tripQueryRequest.getTripContinent())), pageRequest);
@@ -457,5 +464,27 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         }
+    }
+
+    @Override
+    public boolean rejectTripJoinRequest(UserRejectRequest request) {
+
+        // Alert Toggle
+        AlertPatchGrpcResponse alertResponse =  chatBlockingStub.rejectJoinRequestType(
+                AlertPatchGrpcRequest.newBuilder()
+                        .setAlertId(request.getAlertId())
+                        .setAlertType("REJECT")
+                        .build()
+        );
+
+        if (! alertResponse.getResult()) return false;
+        // Refund
+        PaymentRefundGrpcResponse response =  paymentBlockingStub.cancelPaymentRecord(
+                PaymentRefundGrpcRequest.newBuilder()
+                .setUsageId(request.getUsageId())
+                .build()
+        );
+
+        return response.getResult();
     }
 }

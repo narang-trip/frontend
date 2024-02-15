@@ -203,14 +203,11 @@ public class MileageService extends NarangGrpc.NarangImplBase {
                     .setRecordId(record.getId().toString()).build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-        }
-        else {
+        } else {
             responseObserver.onError(new NoSuchElementException());
             responseObserver.onCompleted();
         }
     }
-<<<<<<< Updated upstream
-=======
 
     @Override
     public void cancelPaymentRecord(PaymentRefundGrpcRequest request, StreamObserver<PaymentRefundGrpcResponse> responseObserver) {
@@ -224,5 +221,5 @@ public class MileageService extends NarangGrpc.NarangImplBase {
                 .build());
         responseObserver.onCompleted();
     }
->>>>>>> Stashed changes
+
 }
