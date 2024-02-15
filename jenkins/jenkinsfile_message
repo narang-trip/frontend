@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     environment {
         service = "message-service"
     }
@@ -27,7 +26,6 @@ pipeline {
             steps {
                 // 빌드된 JAR 파일 도커 이미지로 생성 
                 // sh('docker ps -a | grep '${service}' | awk \'{print $1}\'' )
-
                 // message (Port 8084)
                 // sh('(docker ps -a | grep '8084' | awk \'{print $1}\') | xargs docker stop || true' )
                 // sh('chmod +x ./jenkins/port-refresh-message.sh')
@@ -35,14 +33,12 @@ pipeline {
                 // 이미지 생성 중 . . .
                 echo 'No ${service} running . . . About to Build a image . . .'
                 sh 'docker build -t ${service} -f ./backend/${service}/Dockerfile .'
-
                 // 메세지 서비스 네트워크 연결 끊고 종료
                 echo 'Removing Existing Containers . . . Wait a Sec . . .' 
                 sh '(docker network disconnect Narang ${service} && docker stop ${service}) | true'
                 sh 'docker rm ${service} | true'
-
                 // 해당 이미지로 컨테이너 생성 중 . . . 
-                sh 'docker run -it --name ${service} --net Narang -e MYSQL_URL=${MYSQL_URL} -e MYSQL_USERNAME=${MYSQL_USERNAME} -e MYSQL_PASSWORD=${MYSQL_PASSWORD} -d ${service} && docker start ${service}'
+                sh 'docker run -it --name ${service} --net Narang -d ${service} && docker start ${service}'
             }
         }
     }
