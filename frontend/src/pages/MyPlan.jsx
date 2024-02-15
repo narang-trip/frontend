@@ -13,6 +13,7 @@ const MyPlan = () => {
   const [planData, setPlanData] = useState([]);
   const [isNewPlanOpen, setIsNewPlanOpen] = useState(false);
   const { isLogin, userId } = useSelector((state) => state.auth);
+  const { conceptColor } = useSelector((state) => state.concept);
   const dispatch = useDispatch();
 
   dispatch(scheduleActions.reset());
