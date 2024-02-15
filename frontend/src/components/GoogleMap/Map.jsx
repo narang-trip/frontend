@@ -9,8 +9,8 @@ import { useDispatch } from "react-redux";
 import { placesActions } from "../../store/placeSlice";
 const Map = ({ isCanModify }) => {
   const containerStyle = {
-    width: "200px",
-    height: "300px",
+    width: "210px",
+    height: "250px",
   };
   const center = {
     lat: 37.5012647456244,
