@@ -19,9 +19,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -51,10 +48,6 @@ public class KakaoPayService {
         parameters.add("approval_url", "https://i10a701.p.ssafy.io/api/payment/success" + "?user_id=" + userId + "&return_url=" + returnUrl); // 성공 시 redirect url
         parameters.add("cancel_url", "https://i10a701.p.ssafy.io/api/payment/cancel" + "?user_id=" + userId); // 취소 시 redirect url
         parameters.add("fail_url", "https://i10a701.p.ssafy.io/api/payment/fail"); // 실패 시 redirect url
-
-//        parameters.add("approval_url", "http://localhost:8082/api/payment/success" + "?user_id=" + userId + "&return_url=" + returnUrl); // 성공 시 redirect url
-//        parameters.add("cancel_url", "http://localhost:8082/api/payment/cancel" + "?user_id=" + userId); // 취소 시 redirect url
-//        parameters.add("fail_url", "http://localhost:8082/api/payment/fail"); // 실패 시 redirect url
 
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
@@ -101,11 +94,6 @@ public class KakaoPayService {
                         UserMileage newUserMileage = new UserMileage(userId, textEncryptor.encrypt(String.valueOf(0)));
                         return userMileageRepository.save(newUserMileage);
                     });
-
-            /*
-                todo
-                    프론트에서 넘겨준 마일리지와 db에 저장된 마일리지 비교 필요
-             */
 
             String encryptedMileage = userMileage.getEncryptedMileage();
             // 암호화된 마일리지 복호화

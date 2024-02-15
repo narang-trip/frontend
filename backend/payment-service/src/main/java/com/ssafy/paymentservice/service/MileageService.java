@@ -19,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -77,11 +75,17 @@ public class MileageService extends NarangGrpc.NarangImplBase {
             throw new IllegalStateException("이미 환불된 기록입니다.");
         }
 
+
         String user_id = usageRecord.getUserId();
         int price = usageRecord.getPrice();
         int refund_price = 0;
 
         int dayDifference = calculateDateDifference(LocalDate.now(), departureDate);
+        log.info("depatureDate : {}", departureDate);
+        log.info("depatureDate toString : {}", departureDate.toString());
+        log.info("LocalDate : {}", LocalDate.now());
+        log.info("LocalDate toString : {}", LocalDate.now().toString());
+        log.info("dayDifference : {}", dayDifference);
 
         RefundResponse refundResponse = new RefundResponse();
 
