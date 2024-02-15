@@ -41,7 +41,7 @@ export default function SentRequests() {
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
       );
 
-      setStartDate( DateFormatter({ dateString: response.data.departureDate }));
+      setStartDate(DateFormatter({ dateString: response.data.departureDate }));
       return response.data;
     } catch (error) {
       console.error("여행 정보를 불러오는 중 에러 발생:", error);
@@ -68,7 +68,7 @@ export default function SentRequests() {
             `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
             {
               tripId: item.tripId,
-              userId: item.senderId
+              userId: item.senderId,
             },
             {
               headers: {
