@@ -99,7 +99,7 @@ const MyPlan = () => {
           </p>
         </>
       ) : (
-        <div className="flex flex-wrap justify-start gap-2">
+        <div className="flex flex-wrap justify-start px-1">
           {planData.map((plan, idx) => (
             <PlanSummary plan={plan} key={idx} />
           ))}
