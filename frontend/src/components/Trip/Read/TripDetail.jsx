@@ -277,7 +277,7 @@ export default function TripDetail() {
             <div>
               <p className="mt-5 mb-3 text-base font-bold">일정 정보</p>
               <button
-                className="w-full py-3 text-sm font-medium rounded-md text-neutral-700 bg-indigo-50 ring-1 ring-inset ring-neutral-700/10"
+                className="w-full py-3 text-sm font-medium rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10"
                 onClick={OpenPlanDetail}
               >
                 일정 상세 보기
