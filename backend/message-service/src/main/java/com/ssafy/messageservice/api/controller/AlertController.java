@@ -1,14 +1,12 @@
 package com.ssafy.messageservice.api.controller;
 
 import com.ssafy.messageservice.api.request.AlertAttendRequest;
-import com.ssafy.messageservice.api.request.ChatroomRequest;
 import com.ssafy.messageservice.api.response.AlertListResponse;
 import com.ssafy.messageservice.api.response.AlertSendListResponse;
 import com.ssafy.messageservice.api.service.AlertService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -28,9 +26,6 @@ public class AlertController {
     @GetMapping(value = "/subscribe/{userId}", produces = "text/event-stream")
     public ResponseEntity<SseEmitter> subscribe(@PathVariable String userId,
                                 @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
-
-        log.info("controller에서 subscribe 호출 userId : {}, lastEventId : {}", userId, lastEventId);
-
         if (lastEventId.isEmpty()) {
             return new ResponseEntity<>(alertService.subscribe(userId, ""), HttpStatus.OK);
         }else{
@@ -68,7 +63,6 @@ public class AlertController {
     // senderId의 지금까지의 알림 리스트 보내주기
     @GetMapping(value = "/list/send/{senderId}")
     public ResponseEntity<AlertSendListResponse> getSendAlertList(@PathVariable String senderId) {
-        log.info("/list/send/{} 호출 ", senderId);
         List<AlertSendListResponse.AlertSendResponse> alertResponses = alertService.getAlertsBySenderId(senderId);
         
         if(alertResponses == null){

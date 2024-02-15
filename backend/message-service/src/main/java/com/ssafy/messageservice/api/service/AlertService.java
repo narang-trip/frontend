@@ -11,8 +11,6 @@ import com.ssafy.messageservice.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
-import net.devh.boot.grpc.server.service.GrpcService;
-import org.apache.coyote.BadRequestException;
 import org.narang.lib.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,10 +46,8 @@ public class AlertService extends NarangGrpc.NarangImplBase {
      * @return SseEmitter - 서버에서 보낸 이벤트 Emitter
      */
     public SseEmitter subscribe(String userId, String lastEventId) {
-        log.info("subscribe 호출 userId : {}", userId);
         String emitterId = userId + "_" + System.currentTimeMillis();
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
-        log.info("emitter : {}", emitter.toString());
 
         // Emitter가 완료될 때(모든 데이터가 성공적으로 전송된 상태) Emitter를 삭제
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
@@ -78,9 +74,9 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                     .name("sse")
                     .data(data)
             );
-            System.out.println("sse!" + data);
+            log.info("sse!" + data);
         } catch (IOException exception) {
-            System.out.println("연결 오류");
+            log.error("연결 오류");
             emitterRepository.deleteById(emitterId);
         }
     }
@@ -101,24 +97,24 @@ public class AlertService extends NarangGrpc.NarangImplBase {
             boolean exists = alertRepository.existsByTripIdAndSenderId(alertAttendRequest.getTripId(), alertAttendRequest.getSenderId());
 
             if (exists)
-                System.out.println("ALREADY PARTICIPATED");
+                log.error("ALREADY PARTICIPATED");
             else
-                System.out.println("TRY TO PARTICIPATE . . .");
+                log.info("TRY TO PARTICIPATE . . .");
 
             if(!exists) {
 
                 /*
                  여행 정보 Get
                  */
-                System.out.println("TRIP REQUEST . . .");
+                log.info("TRIP REQUEST . . .");
                 TripGrpcResponse tripGrpcResponse = tripBlockingStub.getTripById(TripGrpcRequest.newBuilder()
                         .setTripId(alertAttendRequest.getTripId()).build());
 
-                System.out.println("===================tripInfo=================");
-                System.out.println(tripGrpcResponse.toString());
+                log.info("===================tripInfo=================");
+                log.info(tripGrpcResponse.toString());
 
                 if (tripGrpcResponse.getTripApplicantsSize() >= tripGrpcResponse.getTripParticipantsSize()) {
-                    System.out.println("PARTY FULL ... CANNOT ATTEND");
+                    log.error("PARTY FULL ... CANNOT ATTEND");
                     throw new NoSuchElementException();
                 }
 
@@ -130,10 +126,9 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         .setPrice(tripGrpcResponse.getTripDeposit())
                         .build());
 
-                System.out.println("===================paymentInfo=================");
-                System.out.println(paymentResponse.toString());
+                log.info("===================paymentInfo=================");
+                log.info(paymentResponse.toString());
 
-                log.info("넘어왔다..");
                 String usageId = paymentResponse.getRecordId();
 
                 // DB Alert 테이블에 데이터 저장하기
@@ -148,10 +143,6 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alertAttendRequest.isRead(),
                         usageId);
                 alertRepository.save(alert);
-                log.info("alert : {}", alert.getAlertType());
-                log.info(alert.getId());
-                log.info(alert.getSenderId());
-                log.info(alert.getPosition());
 
                 String receiver = alertAttendRequest.getReceiverId();
                 String eventId = receiver + "_" + System.currentTimeMillis();
@@ -228,14 +219,13 @@ public class AlertService extends NarangGrpc.NarangImplBase {
 
         }catch (Exception e){
             // DB에 저장된 senderId를 사용해야 함
-            System.out.println("알림 보내기를 실패했습니다.");
+            log.error("알림 보내기를 실패했습니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send alert");
         }
     }
 
     // userId별로 알림 리스트 보내주기
     public List<AlertListResponse.AlertResponse> getAlertsByReceiverId(String receiverId) {
-        log.info("getAlertsByReceiverId 호출");
         List<Alert> alerts = alertRepository.findByReceiverId(receiverId);
         if(alerts.isEmpty()){
             return null;
@@ -248,7 +238,6 @@ public class AlertService extends NarangGrpc.NarangImplBase {
     // senderId별로 알림 리스트 보내주기
     public List<AlertSendListResponse.AlertSendResponse> getAlertsBySenderId(String senderId) {
         List<Alert> alerts = alertRepository.findBySenderId(senderId);
-        log.info("가져온 알람 개수 : {}", alerts.size());
         if(alerts.isEmpty()){
             return null;
         }
