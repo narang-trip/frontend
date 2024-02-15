@@ -72,22 +72,20 @@ export default function TripDetail() {
       const response = await axios.delete(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip`,
         {
-          data: {
-            tripId: tripDetails.tripId,
-            userId: tripDetails.tripLeaderId,
-          },
+          tripId: tripId,
+          userId: userId,
+        },
+        {
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-      if (response.status === 200) {
-        alert("삭제되었습니다!");
-      }
+      console.log(response);
+      navigate("/search");
     } catch (error) {
       console.error("삭제 불가능", error);
     }
-    navigate("/search");
   };
 
   // useEffect (여행 상세 정보 로딩)
@@ -282,7 +280,7 @@ export default function TripDetail() {
               >
                 일정 상세 보기
               </button>
-              <p className="mt-5 mb-3 text-base font-bold">여행 참여자 정보</p>
+              <p className="mb-3 text-base font-bold">여행 참여자 정보</p>
               <TripParticipantsInfo
                 participants={tripDetails.participants}
                 leaderId={tripDetails.tripLeaderId}

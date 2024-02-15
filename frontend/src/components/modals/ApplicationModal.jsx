@@ -82,7 +82,7 @@ const ApplicationModal = ({ data, onClose }) => {
     position: window.btoa(encodeURIComponent(JSON.stringify(selectedPositions))),
     aspiration: comment,
     alertType: "REQUEST",
-    read: false
+    read: false,
   };
 
   // 신청하기 버튼 눌렀을 때

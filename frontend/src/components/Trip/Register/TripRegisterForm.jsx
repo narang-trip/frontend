@@ -371,7 +371,6 @@ export default function TripWriteForm() {
                     onChange={handleChange}
                     className="w-full text-xs  rounded-sm resize-none h-4/5 p-1.5 border border-neutral-300 ext-neutral-700"
                     name="description"
-                    required
                   />
                 </div>
               </div>
