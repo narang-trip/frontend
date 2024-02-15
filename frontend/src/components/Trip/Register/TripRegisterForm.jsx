@@ -375,7 +375,7 @@ export default function TripWriteForm() {
                 </div>
               </div>
               <div className="flex justify-around col-start-2 mt-10 mb-5">
-                <button className="px-6 py-2 rounded-md text-stone-800 bg-stone-500 hover:text-stone-950">
+                <button className="px-6 py-2 text-indigo-700 rounded-md bg-indigo-50 ring-1 ring-inset ring-indigo-700/10 hover:bg-indigo-100">
                   저장
                 </button>
               </div>

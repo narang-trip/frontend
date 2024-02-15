@@ -45,12 +45,21 @@ const SearchPage = () => {
 
   const [pageNo, setPageNo] = useState(0);
   const [tripData, setTripData] = useState([]);
+  
+  // 날짜 포맷
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   const [requestData, setRequestData] = useState({
     tripConcept: conceptList,
     tripRoles: positionList,
     tripContinent: continents,
     participantsSize: 0,
+    querySttDate: formatDate(new Date())
   });
 
   const { ref, inView } = useInView({
@@ -85,13 +94,6 @@ const SearchPage = () => {
   }, [pageNo, requestData]);
 
 
-  // 날짜 포맷
-  const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
 
   // 날짜 변경
   const handleDateChange = (range) => {
@@ -230,6 +232,7 @@ const SearchPage = () => {
               onChange={handleDateChange}
               onClear={handleDateClear}
               dateFormat="yy/MM/dd"
+              minDate={new Date()}
               className="p-1 text-sm border rounded-sm w-44 border-neutral-300 text-neutral-700"
             />
           </div>
