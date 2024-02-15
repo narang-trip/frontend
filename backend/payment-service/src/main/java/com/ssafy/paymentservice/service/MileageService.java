@@ -224,4 +224,17 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         responseObserver.onCompleted();
     }
 
+    @Override
+    public void refundPaymentRecord(PaymentRefundGrpcRequest request, StreamObserver<PaymentRefundGrpcResponse> responseObserver) {
+
+        RefundResponse response =
+        cancelMileage(request.getUsageId(), request.getTripId(), LocalDate.parse(request.getDepartureDate()));
+
+        responseObserver.onNext(PaymentRefundGrpcResponse.newBuilder()
+                .setResult(true)
+                .setMessage(response.getMessage())
+                .setRefundPrice(response.getRefundPrice())
+                .build());
+        responseObserver.onCompleted();
+    }
 }
