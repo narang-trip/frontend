@@ -209,4 +209,20 @@ public class MileageService extends NarangGrpc.NarangImplBase {
             responseObserver.onCompleted();
         }
     }
+<<<<<<< Updated upstream
+=======
+
+    @Override
+    public void cancelPaymentRecord(PaymentRefundGrpcRequest request, StreamObserver<PaymentRefundGrpcResponse> responseObserver) {
+
+        RefundResponse record = rejectMileageWithResponse(request.getUsageId());
+
+        responseObserver.onNext(PaymentRefundGrpcResponse.newBuilder()
+                .setResult(true)
+                .setMessage(record.getMessage())
+                .setRefundPrice(record.getRefundPrice())
+                .build());
+        responseObserver.onCompleted();
+    }
+>>>>>>> Stashed changes
 }
