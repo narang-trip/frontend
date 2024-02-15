@@ -24,10 +24,6 @@ const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
     }
   }, [onPlaceSelected]);
 
-    // 검색 버튼을 클릭할 때도 handleOnPlacesChanged 함수를 호출하도록 추가
-    const handleSearchButtonClick = () => {
-      handleOnPlacesChanged();
-    };
 
   useEffect(() => {
     if (map) {
@@ -53,9 +49,9 @@ const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
           placeholder="장소를 입력해주세요"
           type="text"
           disabled={!isCanModify}
-          className="w-3/4 border rounded-sm border-neutral-300"
+          className="w-full border rounded-sm border-neutral-300"
         />
-        <button onClick={handleSearchButtonClick} className="p-1 rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10 hover:bg-neutral-100">검색</button>
+        {/* <button onClick={handleSearchButtonClick} className="p-1 rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10 hover:bg-neutral-100">검색</button> */}
       </div>
     </div>
   );

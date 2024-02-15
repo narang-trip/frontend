@@ -18,8 +18,8 @@ const PlaceCard = () => {
                   {...provided.dragHandleProps}
                 >
                   <div className="flex overflow-hidden bg-white rounded-lg">
-                    <img className="w-20 h-20" src={place.photo} />
                     <div className="flex-col">
+                    <img className="h-20 w-60" src={place.photo} />
                       <div className="text-xs font-semibold">{place.name}</div>
                       <div className="text-xs">{place.businessStatus}</div>
                       <div className="text-xs">{place.formattedAddress}</div>
