@@ -16,7 +16,7 @@ const PlanSummary = ({ plan }) => {
 
   return (
     <div
-      className="relative w-1/3 h-48 rounded-lg bg-yellow-100 p-2 shadow-lg gap-2 hover:shadow-xl hover:shadow-orange-200"
+      className="relative w-1/3 h-48 rounded-lg bg-yellow-100 p-2 shadow-lg hover:shadow-xl hover:shadow-orange-200"
       onClick={goPlan}
     >
       <div className="flex flex-col w-full border border-yellow-200 h-full rounded-lg bg-white">
