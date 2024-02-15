@@ -45,6 +45,14 @@ const SearchPage = () => {
 
   const [pageNo, setPageNo] = useState(0);
   const [tripData, setTripData] = useState([]);
+  
+  // 날짜 포맷
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   const [requestData, setRequestData] = useState({
     tripConcept: conceptList,
@@ -86,13 +94,6 @@ const SearchPage = () => {
   }, [pageNo, requestData]);
 
 
-  // 날짜 포맷
-  const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
 
   // 날짜 변경
   const handleDateChange = (range) => {
