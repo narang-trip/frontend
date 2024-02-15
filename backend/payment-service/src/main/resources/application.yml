@@ -3,9 +3,9 @@ spring:
     name: payment-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://i10a701.p.ssafy.io:3306/narangdb?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    username: root
-    password: ssafy
+    url: ${MYSQL_URL}
+    username: ${MYSQL_NAME}
+    password: ${MYSQL_PASSWORD}
   jpa:
     properties:
       hibernate:
