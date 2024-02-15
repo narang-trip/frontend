@@ -62,7 +62,7 @@ const TripSummary = ({ trip }) => {
                 <div className="absolute inset-0 flex flex-col items-end justify-end bg-black text-neutral-800 bg-opacity-20">
                   <div className="flex flex-row items-center my-3 mr-4 text-sm font-semibold">
                     <SlPeople className="mx-3" size="16" />
-                    <p className="text-sm">2 / {trip.tripParticipantsSize} </p>
+                    <p className="text-sm"> {trip.tripCurrParticipantsSize} / {trip.tripMaxParticipantsSize} </p>
                     <SlEye className="mx-3" size="16" />
                     <p className="text-sm">{trip.viewCnt}</p>
                   </div>
