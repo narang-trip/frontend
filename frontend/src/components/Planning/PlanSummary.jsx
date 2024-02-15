@@ -16,15 +16,24 @@ const PlanSummary = ({ plan }) => {
 
   return (
     <div
-      className="flex text-xl w-full rounded-full py-1 bg-amber-100"
+      className="relative w-1/3 h-48 rounded-lg bg-yellow-100 p-2 shadow-lg hover:shadow-xl hover:shadow-orange-200"
       onClick={goPlan}
     >
-      <p className="w-1/6">{plan.planName}</p>
-      <p className="w-1/2">{plan.planDesc}</p>
-      <p className="w-1/6">
-        {day - 1}박{day}일
-      </p>
-      <p className="w-1/6">{plan.lastModifiedDate}</p>
+      <div className="flex flex-col w-full border border-yellow-200 h-full rounded-lg bg-white">
+        <div className="flex justify-center">
+          <div className="w-1/2 h-6 rounded-b-md border-b-8 border-yellow-200  bg-yellow-100"></div>
+        </div>
+        <div className="flex-col">
+          <p className="text-2xl pt-1">{plan.planName}</p>
+          <p className="text-sm pt-4">{plan.planDesc}</p>
+          <p className="text-sm pt-1">
+            {day - 1}박{day}일
+          </p>
+          <p className="absolute text-sm bottom-2 right-2">
+            {plan.lastModifiedDate}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

@@ -22,10 +22,6 @@ const router = createBrowserRouter([
     // errorElement: <ErrorPage />,
     children: [
       {
-        path: "/planning",
-        element: <MyPlan />,
-      },
-      {
         path: "/makeplan",
         element: <PlanningPage />,
       },
@@ -62,6 +58,10 @@ const router = createBrowserRouter([
     // errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
+      {
+        path: "/planning",
+        element: <MyPlan />,
+      },
       {
         path: "login/oauth2/code/kakao",
         element: <KakaoLogin />,
