@@ -11,7 +11,7 @@ import Map from "../components/GoogleMap/Map";
 import SavePlanModal from "../components/modals/SavePlanModal";
 import ShowTime from "../components/Planning/ShowTime";
 
-export default function PlanningPage() {
+const MakePlanPage = () => {
   let list = useSelector((state) => state.schedule);
   const card = useSelector((state) => state.places);
   //
@@ -40,7 +40,7 @@ export default function PlanningPage() {
   }, [list]);
 
   const setInitSchedule = async () => {
-    console.log("Planning.jsx 26 planId", planId);
+    console.log("MakePlanPage.jsx 26 planId", planId);
     if (planId !== undefined) {
       setIsCanModify(false);
       try {
@@ -54,13 +54,13 @@ export default function PlanningPage() {
             JSON.parse(decodeURIComponent(window.atob(response.data.planInfo)))
           )
         );
-        console.log("Planning.jsx 57", curUserId);
+        console.log("MakePlan.jsx 57", curUserId);
         if (response.data.ownerId === curUserId) setCheckuser(true);
         for (let i = 0; i < response.data.participantIds.length; i++) {
           if (response.data.participantIds[i].participantId === curUserId)
             setCheckuser(true);
         }
-        console.log("Planning.jsx 63", checkuser);
+        console.log("MakePlan.jsx 63", checkuser);
       } catch (error) {
         console.log("Error : ", error);
         alert("삭제되었거나 없는 계획입니다.");
@@ -310,3 +310,5 @@ export default function PlanningPage() {
     </div>
   );
 }
+
+export default MakePlanPage;
