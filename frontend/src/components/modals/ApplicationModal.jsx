@@ -209,6 +209,7 @@ const ApplicationModal = ({ data, onClose }) => {
                   <textarea
                     value={comment}
                     onChange={handleChangeComment}
+                    required
                     className=" outline-none w-full text-xs resize-none h-[4rem] p-1.5"
                   />
                 </div>

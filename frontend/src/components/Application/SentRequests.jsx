@@ -3,13 +3,14 @@ import { SlLocationPin, SlPeople, SlInfo } from "react-icons/sl";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import DateFormatter from "../DateFormatter";
+
 export default function SentRequests() {
   const [sentData, setSentData] = useState(null);
   const [selectedType, setSelectedType] = useState("ALL");
-  const [startDate, setStartDate] = useState(null);
+
   const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate();
+
   const fetchSentData = async () => {
     try {
       const response = await axios.get(
@@ -33,8 +34,7 @@ export default function SentRequests() {
       const response = await axios.get(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
       );
-   
-      
+
       return response.data;
     } catch (error) {
       console.error("여행 정보를 불러오는 중 에러 발생:", error);
@@ -61,7 +61,7 @@ export default function SentRequests() {
             {
               tripId: item.tripId,
               userId: userId,
-              usageId: item.usageId
+              usageId: item.usageId,
             },
             {
               headers: {
@@ -115,9 +115,17 @@ export default function SentRequests() {
   useEffect(() => {
     fetchSentData();
   }, []);
+
+  const shortenDescription = (description) => {
+    return description.length > 18
+      ? description.slice(0, 17) + "..."
+      : description;
+  };
+
   const tripDetailHandler = (tripId) => {
     navigate(`/detail/${tripId}`);
   };
+
   return (
     <Fragment>
       <div className="flex justify-center">
@@ -213,14 +221,16 @@ export default function SentRequests() {
                               <div className="flex items-center">
                                 <SlPeople className="mr-3" size="14" />
                                 <p className="text-sm">
-                                  {item.tripInfo.participants.length} /{" "}
+                                  {item && item.tripInfo.participants.length} /{" "}
                                   {item.tripInfo.tripParticipantsSize}
                                 </p>
                               </div>
                               <div className="flex items-center">
                                 <SlInfo className="mr-3" size="14" />
                                 <p className="text-sm">
-                                  {item.tripInfo.tripDesc}
+                                  {item.tripInfo.tripDesc.length > 18
+                                    ? shortenDescription(item.tripInfo.tripDesc)
+                                    : item.tripInfo.tripDesc}
                                 </p>
                               </div>
                             </div>
