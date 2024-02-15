@@ -12,7 +12,7 @@ import { placesActions } from "../store/placeSlice";
 const MyPlan = () => {
   const [planData, setPlanData] = useState([]);
   const [isNewPlanOpen, setIsNewPlanOpen] = useState(false);
-  const userId = useSelector((state) => state.auth).userId;
+  const { isLogin, userId } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   dispatch(scheduleActions.reset());
@@ -84,33 +84,43 @@ const MyPlan = () => {
   }, [isNewPlanOpen]);
 
   return (
-    <div className="relative">
-      <p className="my-2 text-2xl font-bold text-center">나의 계획</p>
-      <button
-        className="absolute top-0 right-0 px-2 py-3 mr-2 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-800/10"
-        onClick={makePlan}
-      >
-        계획 만들기
-      </button>
-      {planData.length === 0 ? (
-        <>
-          <p className="pt-6 my-2 text-xl font-bold text-center">
-            작성한 계획이 없어요
-          </p>
-        </>
-      ) : (
-        <div className="flex flex-wrap justify-start gap-4">
-          {planData.map((plan, idx) => (
-            <PlanSummary plan={plan} key={idx} />
-          ))}
+    <Fragment>
+      {isLogin ? (
+        <div className="flex items-start w-full h-full">
+          <div className={`mx-auto mt-24 text-xl font-bold text-center animate-bounce text-${conceptColor}-400`}>
+            로그인을 해주세요
+          </div>
         </div>
-      )}
-      {isNewPlanOpen && (
-        <ModalPortal>
-          <NewPlan onClose={CloseNewPlanModal} />
-        </ModalPortal>
-      )}
-    </div>
+      ) :
+        <div className="relative">
+          <p className="my-2 text-2xl font-bold text-center">나의 계획</p>
+          <button
+            className="absolute top-0 right-0 px-2 py-3 mr-2 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-800/10"
+            onClick={makePlan}
+          >
+            계획 만들기
+          </button>
+          {planData.length === 0 ? (
+            <>
+              <p className="pt-6 my-2 text-xl font-bold text-center">
+                작성한 계획이 없어요
+              </p>
+            </>
+          ) : (
+            <div className="flex flex-wrap justify-start gap-4">
+              {planData.map((plan, idx) => (
+                <PlanSummary plan={plan} key={idx} />
+              ))}
+            </div>
+          )}
+          {isNewPlanOpen && (
+            <ModalPortal>
+              <NewPlan onClose={CloseNewPlanModal} />
+            </ModalPortal>
+          )}
+        </div>}
+    </Fragment >
+
   );
 };
 

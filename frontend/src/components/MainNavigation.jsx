@@ -86,9 +86,6 @@ function MainNavigation() {
               <span className="text-base text-nowrap">여행 계획</span>
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/Mypage">Mypage</NavLink>
-          </li>
         </ul>
       </nav>
     </div>
