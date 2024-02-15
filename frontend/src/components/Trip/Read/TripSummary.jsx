@@ -78,6 +78,11 @@ const TripSummary = ({ trip }) => {
               )}
             </div>
             <div>
+            <div className="flex flex-row items-center my-1.5 text-sm">
+                <p className="text-xs font-semibold ml-7">
+                  {trip.tripName}
+                </p>
+              </div>
               <div className="flex flex-row items-center my-1.5 text-sm">
                 <SlCalender className="mx-2 " size="16" />
                 <p className="text-xs">
