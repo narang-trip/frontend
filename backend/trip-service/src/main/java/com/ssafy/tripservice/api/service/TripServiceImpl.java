@@ -21,14 +21,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.apache.coyote.BadRequestException;
 import org.narang.lib.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.*;
 import org.springframework.data.mongodb.core.query.*;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -110,14 +108,9 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
         Optional<Trip> trip = Optional.ofNullable(mongoTemplate.findById(tripRequest.getTripId(), Trip.class));
 
         if (trip.isEmpty()) {
-            System.out.println("그런거 없음");
+            log.error("Trip not found...");
             return Optional.empty();
         }
-
-//        if (trip.get().getParticipants().size() > tripRequest.getTripParticipantsSize()) {
-//            System.out.println("누구 쫓아 내야함");
-//            return Optional.empty();
-//        }
 
         Optional<String> uploadTripImgRes = Optional.of("https://youngkimi-bucket-01.s3.ap-northeast-2.amazonaws.com/airplain.jpg");
 
@@ -134,7 +127,6 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
         update.set("tripName", tripRequest.getTripName());
         update.set("tripDesc", tripRequest.getTripDesc());
         update.set("tripImgUrl", uploadTripImgRes.get());
-//        update.set("tripParticipantsSize", tripRequest.getTripParticipantsSize());
 
         return Optional.ofNullable(mongoTemplate.findAndModify(query, update, Trip.class))
                 .map(Trip::toTripResponse);
@@ -182,21 +174,21 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
         Optional<Trip> trip = tripRepository.findById(userRequest.getTripId());
 
         if (trip.isEmpty()) {
-            System.out.println("파티 못 찾음");
+            log.error("Trip not found...");
             throw new TripNotFoundException();
         }
         if (trip.get().getParticipants().size() >= trip.get().getTripParticipantsSize()) {
-            System.out.println("파티 꽉 참");
+            log.error("Trip is full...");
             throw new TripsizeFullException();
         }
         if (trip.get().getDepartureDate().isBefore(LocalDate.now())) {
-            System.out.println("파티 이미 출발함");
+            log.error("Trip already departed...");
             throw new TripTimeExceedException();
         }
 
         for (Trip.Participant p : trip.get().getParticipants()) {
             if (p.getParticipantId().equals(userRequest.getUserId())) {
-                System.out.println("이미 있음");
+                log.error("Already participated...");
                 throw new TripAlreadyJoinException();
             }
         }
@@ -248,15 +240,15 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
         Optional<Trip> trip = tripRepository.findById(userRequest.getTripId());
 
         if (trip.isPresent())
-            log.info(trip.get().toString());
-        else log.error("trip Not Found");
+            log.info("Trip : {}", trip.get().toString());
+        else log.error("Trip Not Found");
 
         if (trip.isEmpty()) {
-            System.out.println("파티 못 찾음");
+            log.error("Trip not found...");
             return Optional.empty();
         }
         if (trip.get().getTripLeaderId().equals(userRequest.getUserId())) {
-            System.out.println("너가 리더 잖아");
+            log.error("Leader cannot leave...");
             return Optional.empty();
         }
 
@@ -329,7 +321,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
         DeleteResult res = mongoTemplate.remove(query, Trip.class);
 
         if (res.getDeletedCount() == 0)
-            System.out.println("그런 파티 없어요");
+            log.error("Trip not found...");
         return res.getDeletedCount() != 0;
     }
 
@@ -493,13 +485,13 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     public void getTripById(org.narang.lib.TripGrpcRequest request, StreamObserver<org.narang.lib.TripGrpcResponse> responseObserver) {
         Optional<Trip> trip = tripRepository.findById(UUID.fromString(request.getTripId()));
 
-        System.out.println("REQUEST RECIVED >>>>> ");
-        System.out.println("REQUEST RESULT >>>>> ");
+        log.info("REQUEST RECIVED >>>>> ");
+        log.info("REQUEST RESULT >>>>> ");
         if (trip.isPresent()) {
-            System.out.println("REQUEST RESULT EXISTS ");
+            log.info("REQUEST RESULT EXISTS ");
         }
         else {
-            System.out.println("REQUEST RESULT NOT EXISTS");
+            log.info("REQUEST RESULT NOT EXISTS");
         }
 
         if (trip.isEmpty()) {
