@@ -176,7 +176,7 @@ export default function TripDetail() {
                     </div>
                     <div className="flex flex-row items-center my-3 text-sm">
                       <SlBadge className="mx-3 text-neutral-400" size="24" />
-                      <div className="flex flex-wrap justify-between">
+                      <div className="flex flex-wrap justify-start">
                         {tripDetails.tripRoles &&
                           tripDetails.tripRoles.map((role, index) => (
                             <span
