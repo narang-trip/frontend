@@ -72,22 +72,20 @@ export default function TripDetail() {
       const response = await axios.delete(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip`,
         {
-          data: {
-            tripId: tripDetails.tripId,
-            userId: tripDetails.tripLeaderId,
-          },
+          tripId: tripId,
+          userId: userId,
+        },
+        {
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-      if (response.status === 200) {
-        alert("삭제되었습니다!");
-      }
+      console.log(response);
+      navigate("/search");
     } catch (error) {
       console.error("삭제 불가능", error);
     }
-    navigate("/search");
   };
 
   // useEffect (여행 상세 정보 로딩)
@@ -125,10 +123,6 @@ export default function TripDetail() {
   const OpenPlanDetail = () => {
     navigate(`/makeplan/${tripDetails.tripPlanId}`);
   };
-
-  const CreatePlan = () => {
-    navigate('/makeplan');
-  }
 
   useEffect(() => {
     fetchData();
@@ -282,11 +276,15 @@ export default function TripDetail() {
               <p className="mt-5 mb-3 text-base font-bold">일정 정보</p>
               <button
                 className="w-full py-3 text-sm font-medium rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10"
+<<<<<<< HEAD
+                onClick={OpenPlanDetail}
+=======
                 onClick={!tripDetails.tripPlanId && isLeader ? CreatePlan : OpenPlanDetail}
+>>>>>>> 7763734 (Feat: 수정)
               >
-                {!tripDetails.tripPlanId && isLeader ? "일정 생성 하기" : "일정 상세 보기"}
+                일정 상세 보기
               </button>
-              <p className="mt-5 mb-3 text-base font-bold">여행 참여자 정보</p>
+              <p className="mb-3 text-base font-bold">여행 참여자 정보</p>
               <TripParticipantsInfo
                 participants={tripDetails.participants}
                 leaderId={tripDetails.tripLeaderId}

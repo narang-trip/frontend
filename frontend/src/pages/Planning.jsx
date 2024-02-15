@@ -12,8 +12,6 @@ import SavePlanModal from "../components/modals/SavePlanModal";
 import ShowTime from "../components/Planning/ShowTime";
 
 export default function PlanningPage() {
-  const { isLogin } = useSelector((state) => state.auth);
-  const { conceptColor } = useSelector((state) => state.concept);
   let list = useSelector((state) => state.schedule);
   const card = useSelector((state) => state.places);
   //
@@ -270,55 +268,45 @@ export default function PlanningPage() {
   }, [isSavePlanOpen]);
 
   return (
-    <Fragment>
-      {!isLogin ? (
-        <div className="flex flex-col justify-center items-center h-full">
-          <p className={`text-lg font-semibold animate-bounce text-${conceptColor}-400`}>
-            로그인을 해주세요
-          </p>
-        </div>
-      ) : (
-        <div>
-          <ShowTime />
-          <div className="relative h-full pl-10">
-            <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-              <div className="flex h-full">
-                <Plan isCanModify={isCanModify} />
-                <Map isCanModify={isCanModify} />
-              </div>
-            </DragDropContext>
-            {isCanModify && (
-              <button
-                className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
-                onClick={savePlan}
-              >
-                저장하기
-              </button>
-            )}
-            {checkuser && (
-              <div className="absolute flex top-0 right-0 gap-2">
-                <button
-                  className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
-                  onClick={modifyPlan}
-                >
-                  수정하기
-                </button>
-                <button
-                  className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
-                  onClick={deletePlan}
-                >
-                  삭제하기
-                </button>
-              </div>
-            )}
-            {isSavePlanOpen && (
-              <ModalPortal>
-                <SavePlanModal onClose={CloseSavePlanModal} planId={planId} />
-              </ModalPortal>
-            )}
+    <div className="h-full">
+      <ShowTime />
+      <div className="relative h-full pl-10">
+        <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+          <div className="flex h-full">
+            <Plan isCanModify={isCanModify} />
+            <Map isCanModify={isCanModify} />
           </div>
-        </div>
-      )}
-    </Fragment>
-  )
-            }
+        </DragDropContext>
+        {isCanModify && (
+          <button
+            className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+            onClick={savePlan}
+          >
+            저장하기
+          </button>
+        )}
+        {checkuser && (
+          <div className="absolute flex top-0 right-0 gap-2">
+            <button
+              className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+              onClick={modifyPlan}
+            >
+              수정하기
+            </button>
+            <button
+              className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
+              onClick={deletePlan}
+            >
+              삭제하기
+            </button>
+          </div>
+        )}
+        {isSavePlanOpen && (
+          <ModalPortal>
+            <SavePlanModal onClose={CloseSavePlanModal} planId={planId} />
+          </ModalPortal>
+        )}
+      </div>
+    </div>
+  );
+}

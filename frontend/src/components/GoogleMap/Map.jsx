@@ -214,7 +214,7 @@ const Map = ({ isCanModify }) => {
 
   return isLoaded ? (
     <div className="flex-col w-1/4 h-full pt-10">
-      <h1>Google Map</h1>
+      <span className="mb-1 text-sm">장소 검색</span>
       <SearchBox
         map={map}
         onPlaceSelected={handlePlaceSelected}

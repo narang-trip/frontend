@@ -8,14 +8,12 @@ import NewPlan from "../components/modals/NewPlan";
 import PlanSummary from "../components/Planning/PlanSummary";
 import { scheduleActions } from "../store/scheduleSlice";
 import { placesActions } from "../store/placeSlice";
-import { Fragment } from "react";
 
 const MyPlan = () => {
   const [planData, setPlanData] = useState([]);
   const [isNewPlanOpen, setIsNewPlanOpen] = useState(false);
-  const { isLogin, userId } = useSelector((state) => state.auth);
+  const userId = useSelector((state) => state.auth).userId;
   const dispatch = useDispatch();
-  const { conceptColor } = useSelector((state) => state.concept);
 
   dispatch(scheduleActions.reset());
   dispatch(placesActions.reset());
@@ -86,45 +84,33 @@ const MyPlan = () => {
   }, [isNewPlanOpen]);
 
   return (
-    <Fragment>
-      {!isLogin ? (
-        <div className="flex flex-col justify-center items-center h-full">
-          <p
-            className={`text-lg font-semibold animate-bounce text-${conceptColor}-400`}
-          >
-            로그인을 해주세요
+    <div className="relative">
+      <p className="my-2 text-2xl font-bold text-center">나의 계획</p>
+      <button
+        className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+        onClick={makePlan}
+      >
+        계획 만들기
+      </button>
+      {planData.length === 0 ? (
+        <>
+          <p className="my-2 pt-6 text-xl font-bold text-center">
+            작성한 계획이 없어요
           </p>
-        </div>
+        </>
       ) : (
-        <div className="relative">
-          <p className="my-2 text-2xl font-bold text-center">나의 계획</p>
-          <button
-            className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
-            onClick={makePlan}
-          >
-            계획 만들기
-          </button>
-          {planData.length === 0 ? (
-            <>
-              <p className="my-2 pt-6 text-xl font-bold text-center">
-                작성한 계획이 없어요
-              </p>
-            </>
-          ) : (
-            <div className="flex flex-wrap justify-between gap-4">
-              {planData.map((plan, idx) => (
-                <PlanSummary plan={plan} key={idx} />
-              ))}
-            </div>
-          )}
-          {isNewPlanOpen && (
-            <ModalPortal>
-              <NewPlan onClose={CloseNewPlanModal} />
-            </ModalPortal>
-          )}
+        <div className="flex flex-wrap justify-between gap-4">
+          {planData.map((plan, idx) => (
+            <PlanSummary plan={plan} key={idx} />
+          ))}
         </div>
       )}
-    </Fragment>
+      {isNewPlanOpen && (
+        <ModalPortal>
+          <NewPlan onClose={CloseNewPlanModal} />
+        </ModalPortal>
+      )}
+    </div>
   );
 };
 

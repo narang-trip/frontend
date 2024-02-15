@@ -46,6 +46,7 @@ const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
       placeholder="장소를 검색해주세요"
       type="text"
       disabled={!isCanModify}
+      className="w-2/3 border rounded border-neutral-200"
     />
   );
 };
