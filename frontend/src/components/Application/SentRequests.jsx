@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import DateFormatter from "../../DateFormatter";
+
 export default function SentRequests() {
   const [sentData, setSentData] = useState(null);
   const [selectedType, setSelectedType] = useState("ALL");
@@ -12,7 +14,6 @@ export default function SentRequests() {
 
   const navigate = useNavigate();
 
-  
   const fetchSentData = async () => {
     try {
       const response = await axios.get(
@@ -40,7 +41,7 @@ export default function SentRequests() {
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
       );
 
-      setStartDate(response.data.departureDate);
+      setStartDate( DateFormatter({ dateString: response.data.departureDate }));
       return response.data;
     } catch (error) {
       console.error("여행 정보를 불러오는 중 에러 발생:", error);
@@ -53,7 +54,9 @@ export default function SentRequests() {
       if (item.alertType === "ACCEPT") {
         try {
           await axios.post(
-            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund?usage_id=${item.usageId}&departure_datetime=${startDate}&trip_id=${item.tripId}`
+            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund?usage_id=${
+              item.usageId
+            }&departure_datetime=${startDate}&trip_id=${item.tripId}`
           );
           console.log("예약금 일부 환불 성공");
         } catch (error) {
@@ -136,7 +139,7 @@ export default function SentRequests() {
 
   const tripDetailHandler = (tripId) => {
     navigate(`/detail/${tripId}`);
-  }
+  };
 
   return (
     <Fragment>
@@ -153,7 +156,7 @@ export default function SentRequests() {
                 onClick={() => setSelectedType("ALL")}
               >
                 ALL
-              </button> 
+              </button>
               <button
                 className={`p-3 text-sm rounded-full ${
                   selectedType === "REQUEST"
@@ -214,7 +217,12 @@ export default function SentRequests() {
                             />
                           </div>
                           <div className="col-span-3">
-                            <button onClick={() =>tripDetailHandler(item.tripInfo.tripId)} className="mb-1 text-sm font-semibold">
+                            <button
+                              onClick={() =>
+                                tripDetailHandler(item.tripInfo.tripId)
+                              }
+                              className="mb-1 text-sm font-semibold"
+                            >
                               {item.tripInfo.tripName}
                             </button>
                             <div className="ml-1 text-start">
