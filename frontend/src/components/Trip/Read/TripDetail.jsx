@@ -72,20 +72,22 @@ export default function TripDetail() {
       const response = await axios.delete(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip`,
         {
-          tripId: tripDetails.tripId,
-          userId: userId
-        },
-        {
+          data: {
+            tripId: tripDetails.tripId,
+            userId: tripDetails.tripLeaderId,
+          },
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-      console.log(response);
-      navigate("/search");
+      if (response.status === 200) {
+        alert("삭제되었습니다!");
+      }
     } catch (error) {
       console.error("삭제 불가능", error);
     }
+    navigate("/search");
   };
 
   // useEffect (여행 상세 정보 로딩)
@@ -275,7 +277,7 @@ export default function TripDetail() {
             <div>
               <p className="mt-5 mb-3 text-base font-bold">일정 정보</p>
               <button
-                className="w-full py-3 text-sm font-medium rounded-md text-neutral-700 bg-indigo-50 ring-1 ring-inset ring-neutral-700/10"
+                className="w-full py-3 text-sm font-medium rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10"
                 onClick={OpenPlanDetail}
               >
                 일정 상세 보기
