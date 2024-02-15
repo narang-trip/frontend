@@ -13,6 +13,7 @@ import org.narang.lib.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @GrpcService
@@ -52,16 +53,21 @@ public class GrpcMessageService extends NarangGrpc.NarangImplBase {
 
         if (chatroom.isEmpty()) {
 
-            chatroom = Optional.of(chatroomRepository.save(Chatroom.builder()
+            Chatroom newRoom = Chatroom.builder()
                     .chatroomId(request.getChatroomId())
                     .chatroomName("나랑 여행 채팅방")
-                    .build()));
+                    .build();
+
+            chatroomRepository.save(newRoom);
         }
 
-        Optional<ChatroomUser> result = Optional.of(chatroomUserRepository.save(ChatroomUser.builder()
-                        .chatroom(chatroom.get())
-                        .userId(request.getUserId())
-                        .build()));
+        ChatroomUser chatroomUser = ChatroomUser.builder()
+                .chatroom(chatroom.get())
+                .userId(request.getUserId())
+                .id(UUID.randomUUID().toString())
+                .build();
+
+        Optional<ChatroomUser> result = Optional.of(chatroomUserRepository.save(chatroomUser));
 
         responseObserver.onNext(ChatroomUserPatchGrpcResponse.newBuilder().setResult(true).build());
         responseObserver.onCompleted();
