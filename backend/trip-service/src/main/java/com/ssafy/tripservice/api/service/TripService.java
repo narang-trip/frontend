@@ -2,6 +2,7 @@ package com.ssafy.tripservice.api.service;
 
 import com.ssafy.tripservice.api.request.*;
 import com.ssafy.tripservice.api.response.TripPageResponse;
+import com.ssafy.tripservice.api.response.TripRefundResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
 import com.ssafy.tripservice.db.entity.Trip;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public interface TripService {
     List<TripResponse> getAvailableTrips();
     Optional<TripResponse> getTripById(UUID tripId);
     Optional<TripResponse> joinTrip(UserRequest userRequest);
-    boolean leaveTrip(UserRequest userRequest);
+    Optional<TripRefundResponse> leaveTrip(UserRequest userRequest);
     boolean deleteTrip(UserRequest userRequest);
     public Page<TripPageResponse> getAvailableTripPages(int pageNo);
     public List<TripResponse> getBannerTrips(String tripConcept);
