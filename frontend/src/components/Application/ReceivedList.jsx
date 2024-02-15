@@ -31,6 +31,11 @@ export default function ReceivedList({ tripData }) {
     }
   };
 
+  
+  const updateReceivedData = async () => {
+    await fetchRequestData();
+  };
+
   useEffect(() => {
     fetchRequestData();
   }, [tripData.tripId]);
@@ -39,7 +44,7 @@ export default function ReceivedList({ tripData }) {
     <Fragment>
       {receivedData &&
         receivedData.map((data, index) => (
-          <ReceiveRequestsInfo key={index} data={data} trip={tripData} />
+          <ReceiveRequestsInfo key={index} data={data} trip={tripData} updateReceivedData={updateReceivedData} />
         ))}
     </Fragment>
   );

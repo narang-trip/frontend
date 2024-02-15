@@ -12,6 +12,7 @@ export default function SentRequests() {
 
   const navigate = useNavigate();
 
+  
   const fetchSentData = async () => {
     try {
       const response = await axios.get(
@@ -52,7 +53,7 @@ export default function SentRequests() {
       if (item.alertType === "ACCEPT") {
         try {
           await axios.post(
-            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund?usage_id=${item.usageId}&departure_datetime=${formatDate(startDate)}&trip_id=${item.tripId}`
+            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund?usage_id=${item.usageId}&departure_datetime=${startDate}&trip_id=${item.tripId}`
           );
           console.log("예약금 일부 환불 성공");
         } catch (error) {
@@ -64,7 +65,7 @@ export default function SentRequests() {
             `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
             {
               tripId: item.tripId,
-              userId: item.senderId,
+              userId: item.senderId
             },
             {
               headers: {
@@ -72,7 +73,8 @@ export default function SentRequests() {
               },
             }
           );
-          console.log("예약금 일부 환불 성공");
+
+          console.log("여행 떠나기 성공");
         } catch (error) {
           console.error("Error refunding deposit:", error);
         }
