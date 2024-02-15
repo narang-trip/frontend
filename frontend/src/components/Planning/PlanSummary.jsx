@@ -24,9 +24,9 @@ const PlanSummary = ({ plan }) => {
           <div className="w-1/2 h-6 rounded-b-md border-b-8 border-yellow-200  bg-yellow-100"></div>
         </div>
         <div className="flex-col">
-          <p className="text-2xl justify-center pt-1">{plan.planName}</p>
-          <p className="text-sm justify-center pt-4">{plan.planDesc}</p>
-          <p className="text-sm justify-center pt-1">
+          <p className="text-2xl place-content-center pt-1">{plan.planName}</p>
+          <p className="text-sm place-content-center pt-4">{plan.planDesc}</p>
+          <p className="text-sm place-content-center pt-1">
             {day - 1}박{day}일
           </p>
           <p className="absolute text-sm bottom-2 right-2">
