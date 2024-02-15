@@ -75,9 +75,9 @@ function MainNavigation() {
           </li>
           <li className="transition-all duration-300 py-7">
             <NavLink
-              to="/MakePlan"
+              to="/MyPlan"
               className={`flex items-center justify-center ${
-                isActive("/MakePlan")
+                isActive("/MyPlan")
                   ? "text-amber-500 text-opacity-50 font-extrabold"
                   : "hover:text-amber-500 hover:font-bold"
               }`}
@@ -85,9 +85,6 @@ function MainNavigation() {
               <LiaCalendarDaySolid className="w-6 h-6 ml-0 mr-3" />
               <span className="text-base text-nowrap">여행 계획</span>
             </NavLink>
-          </li>
-          <li>
-            <NavLink to="/Mypage">Mypage</NavLink>
           </li>
         </ul>
       </nav>
