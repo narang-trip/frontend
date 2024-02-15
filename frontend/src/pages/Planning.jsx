@@ -63,6 +63,8 @@ export default function PlanningPage() {
         console.log("Planning.jsx 63", checkuser);
       } catch (error) {
         console.log("Error : ", error);
+        alert("삭제되었거나 없는 계획입니다.");
+        navigate(-1);
       }
     }
   };
@@ -226,6 +228,7 @@ export default function PlanningPage() {
     if (planId !== undefined) {
       doModifyPlan();
       setIsCanModify(false);
+      setCheckuser(true);
     } else {
       setIsSavePlanOpen(true);
     }
@@ -236,6 +239,7 @@ export default function PlanningPage() {
 
   const modifyPlan = () => {
     setIsCanModify(true);
+    setCheckuser(false);
   };
 
   const deletePlan = async () => {
@@ -247,7 +251,7 @@ export default function PlanningPage() {
     } catch (error) {
       console.log("삭제중 Error: ", error);
     }
-    navigate("/planning");
+    navigate(-1);
   };
 
   useEffect(() => {

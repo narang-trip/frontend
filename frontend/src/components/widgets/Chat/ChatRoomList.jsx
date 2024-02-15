@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
 
-import Button from "../../../ui/Button";
+import ButtonChatRoom from "../../../ui/ButtonChatRoom";
 
 const LoadingDiv = () => {
   return <div className="flex flex-col justify-center items-center h-full">
@@ -43,9 +43,9 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
     <div className="w-auto h-full overflow-auto">
       {chatroomList.chatroomList.length > 0 && chatroomList.chatroomList.map((chatroom) => (
         <div key={chatroom.chatroomId}>
-          <button onClick={() => enterChatroomHandler(chatroom)} className={`w-[90%] m-1 bg-${conceptColor}-200 rounded-full hover:bg-${conceptColor}-500`}>
+          <ButtonChatRoom onClick={() => enterChatroomHandler(chatroom)} className={`w-[90%] m-1 bg-${conceptColor}-200 rounded-full hover:bg-${conceptColor}-400`}>
             {chatroom.chatroomName}
-          </button>
+          </ButtonChatRoom>
         </div>
       ))}
       {isLoading && <LoadingDiv />}
