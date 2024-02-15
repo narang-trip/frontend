@@ -47,7 +47,6 @@ export default function TripDetail() {
 
   // 취소하기 클릭
   const handleCancelClick = async () => {
-    
     // try {
     //   await axios.patch(
     //     `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
@@ -73,8 +72,8 @@ export default function TripDetail() {
       const response = await axios.delete(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip`,
         {
-          tripId: tripId,
-          userId: userId,
+          tripId: tripDetails.tripId,
+          userId: userId
         },
         {
           headers: {
@@ -83,8 +82,9 @@ export default function TripDetail() {
         }
       );
       console.log(response);
+      navigate("/search");
     } catch (error) {
-      console.error("게시판 상세정보를 가져오는 중 에러 발생:", error);
+      console.error("삭제 불가능", error);
     }
   };
 
