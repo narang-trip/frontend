@@ -2,7 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-export default function ReceiveRequestsInfo({ data, trip }) {
+export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
   const userId = useSelector((state) => state.auth.userId);
@@ -31,6 +31,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
             "Content-Type": "application/json",
           },
         }
+
       );
       
       // const response1 = await axios.patch(
@@ -44,6 +45,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(true);
       setIsRejected(false);
+      await updateReceivedData();
     } catch (error) {
       // 오류 처리
       console.error("서버 응답 에러", error);
@@ -55,7 +57,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
       const response = await axios.post(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/reject`,
         {
-          tripId: trip.tripId,
+          tripId: data.tripId,
           userId: data.senderId,
           usageId: data.usageId,
           alertId: data.id
@@ -81,6 +83,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(false);
       setIsRejected(true);
+      await updateReceivedData();
     } catch (error) {
       // 오류 처리
       console.error("서버 응답 에러", error);
