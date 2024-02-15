@@ -1,8 +1,8 @@
-import { Fragment, useCallback, useEffect, useState,  } from "react";
+import { Fragment, useCallback, useEffect, useState, } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 import TripInfo from "./TripInfo";
 
@@ -50,7 +50,7 @@ const ReceivedRequests = () => {
 
   // inView가 true일때 데이터를 가져옴
   useEffect(() => {
-    if (inView) {
+    if (inView || pageNo <= 1) {
       console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
       getMyList();
     }
@@ -60,12 +60,12 @@ const ReceivedRequests = () => {
 
   return (
     <Fragment>
-      <div>
-        {tripData &&
-          tripData.map((trip, idx) => (
-              <TripInfo tripData={trip} key={idx} />
-          ))}
-      </div>
+      {tripData &&
+        tripData.map((trip, idx) => {
+          console.log(`idx : ${idx}`)
+        console.table(trip);
+      <TripInfo tripData={trip} key={idx} />
+    })}
       <div ref={ref}></div>
     </Fragment>
   );
