@@ -102,7 +102,7 @@ const SearchPage = () => {
     // 요청 데이터 업데이트
     setRequestData((prevData) => ({
       ...prevData,
-      querySttDate: range[0] ? formatDate(range[0]) : "1970-01-01",
+      querySttDate: range[0] ? formatDate(range[0]) :  formatDate(new Date()),
       queryEndDate: range[1] ? formatDate(range[1]) : "2030-12-31",
     }));
   };
@@ -115,7 +115,7 @@ const SearchPage = () => {
     // 요청 데이터 업데이트
     setRequestData((prevData) => ({
       ...prevData,
-      querySttDate: "1970-01-01",
+      querySttDate: formatDate(new Date()),
       queryEndDate: "2030-12-31",
     }));
   };

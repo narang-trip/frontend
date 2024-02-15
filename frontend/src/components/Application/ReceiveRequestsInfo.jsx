@@ -18,11 +18,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
   
   const handleAccept = async () => {
     try {
-      const response1 = await axios.patch(
-        `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend/${data.id}/ACCEPT`
-      );
-
-      const response2 = await axios.patch(
+      const response = await axios.patch(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/join`,
         {
           tripId: trip.tripId,
@@ -36,10 +32,14 @@ export default function ReceiveRequestsInfo({ data, trip }) {
           },
         }
       );
+      
+      // const response1 = await axios.patch(
+      //   `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend/${data.id}/ACCEPT`
+      // );
+
 
       // 서버 응답을 이용해 필요한 작업 수행
-      console.log("서버 응답1:", response1.data);
-      console.log("서버 응답2:", response2.data);
+      console.log("서버 응답:", response.data);
 
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(true);
@@ -52,17 +52,31 @@ export default function ReceiveRequestsInfo({ data, trip }) {
 
   const handleReject = async () => {
     try {
-      const response1 = await axios.patch(
-        `${import.meta.env.VITE_TRIP_REQUEST_URI}/attend/${data.id}/REJECT`
+      const response = await axios.post(
+        `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/reject`,
+        {
+          tripId: trip.tripId,
+          userId: data.senderId,
+          usageId: data.usageId,
+          alertId: data.id
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
 
-      const response2 =  await axios.post(
-        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refundusage_id=${data.usageId}&departure_datetime=${formatDate(trip.departureDate)}`,
-      );
+      console.log("서버응답 : ", response.data);
+      // const response1 = await axios.patch(
+      //   `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend/${data.id}/REJECT`
+      // );
 
-      // 서버 응답을 이용해 필요한 작업 수행
-      console.log("서버 응답:", response1.data);
-      console.log(response2.data);
+      // const response2 =  await axios.post(
+      //   `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refundusage_id=${data.usageId}&departure_datetime=${formatDate(trip.departureDate)}`,
+      // );
+
+  
 
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(false);
