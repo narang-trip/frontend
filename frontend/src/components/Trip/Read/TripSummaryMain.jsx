@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   SlCalender,
   SlLocationPin,
@@ -37,7 +37,7 @@ const TripSummaryMain = ({ trip }) => {
   };
 
   return (
-    <div className="w-12/12 rounded-l">
+    <div className="w-12/12 rounded-l scale-100 hover:scale-125">
       <button
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
