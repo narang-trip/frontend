@@ -302,7 +302,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
                             PaymentRefundGrpcRequest.newBuilder()
                                     .setUsageId(p.getUsageId())
                                     .setTripId(userRequest.getTripId().toString())
-                                    .setDepartureDate(LocalDate.now().toString())
+                                    .setDepartureDate(trip.get().getDepartureDate().toString())
                                     .build()
                     );
                     return Optional.of(
