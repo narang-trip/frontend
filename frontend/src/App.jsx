@@ -12,7 +12,6 @@ import TripDetailPage from "./pages/TripDetail";
 import KakaoLogin from "./pages/KakaoLogin";
 import NaverLogin from "./pages/NaverLogin";
 import Mypage from "./pages/Mypage";
-import SubscribeTestPage from "./pages/SubscribeTest";
 import MyPlan from "./pages/MyPlan";
 
 const router = createBrowserRouter([
@@ -44,10 +43,6 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <SearchPage />,
-      },
-      {
-        path: "/sub",
-        element: <SubscribeTestPage />,
       },
     ],
   },
