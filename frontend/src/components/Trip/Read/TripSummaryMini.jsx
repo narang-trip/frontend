@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { SlCalender, SlLocationPin, SlInfo } from "react-icons/sl";
+import { SlCalender, SlLocationPin } from "react-icons/sl";
 import { useNavigate } from "react-router-dom";
 
 import DateFormatter from "../../DateFormatter";
