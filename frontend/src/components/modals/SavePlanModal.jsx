@@ -49,7 +49,7 @@ const SavePlanModal = (props) => {
     } catch (error) {
       console.log(error);
     }
-    navigate("/planning");
+    navigate("/MakePlan");
     props.onClose();
   };
 

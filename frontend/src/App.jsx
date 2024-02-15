@@ -5,7 +5,7 @@ import RootLayout from "./pages/Root";
 import RootLayoutOffWidgets from "./pages/RootOffWidgets";
 import ErrorPage from "./pages/Error";
 import SearchPage from "./pages/Search";
-import PlanningPage from "./pages/Planning";
+import MakePlanPage from "./pages/MakePlan";
 import ApplicantList from "./pages/ApplicantList";
 import TripRegisterPage from "./pages/TripResgister";
 import TripDetailPage from "./pages/TripDetail";
@@ -22,11 +22,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/makeplan",
-        element: <PlanningPage />,
+        element: <MakePlanPage />,
       },
       {
         path: "/makeplan/:planId",
-        element: <PlanningPage />,
+        element: <MakePlanPage />,
       },
       {
         path: "/Mypage",
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       {
-        path: "/planning",
+        path: "/MyPlan",
         element: <MyPlan />,
       },
       {
