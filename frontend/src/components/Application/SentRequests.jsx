@@ -41,7 +41,7 @@ export default function SentRequests() {
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
       );
 
-      setStartDate(DateFormatter({ dateString: response.data.departureDate }));
+      setStartDate(response.data.departureDate);
       console.log("날짜1" + startDate);
       console.log("날짜2" + response.data.departureDate);
       
