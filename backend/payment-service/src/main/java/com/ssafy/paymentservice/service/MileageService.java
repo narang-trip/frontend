@@ -57,8 +57,8 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         log.info("useMileage 호출. user_id : {}, price : {}", user_id, price);
         UserMileage userMileage = userMileageRepository.findByUserId(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
-        price *= -1;
-        setMileage(userMileage, price);
+
+        setMileage(userMileage, price * (-1));
 
         UsageRecord usageRecord = new UsageRecord(user_id, price,
                 Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage())));
@@ -121,7 +121,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         return refundResponse;
     }
 
-    public RefundResponse rejectMileage(String usage_id){
+    public RefundResponse rejectMileageWithResponse(String usage_id){
         log.info("rejectMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
@@ -146,6 +146,30 @@ public class MileageService extends NarangGrpc.NarangImplBase {
 
         refundRecordRepository.save(refundRecord);
         return refundResponse;
+    }
+
+    public RefundRecord rejectMileage(String usage_id){
+        log.info("rejectMileage 호출. usage_id : {}", usage_id);
+        UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
+                .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
+        if(usageRecord.getRefundStatus()){
+            throw new IllegalStateException("이미 환불된 기록입니다.");
+        }
+        String user_id = usageRecord.getUserId();
+        int price = usageRecord.getPrice();
+
+        UserMileage userMileage = userMileageRepository.findByUserId(user_id)
+                .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
+
+        setMileage(userMileage, price);
+
+        usageRecord.setRefundStatus(true);
+
+        RefundRecord refundRecord = new RefundRecord(user_id, price,
+                Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage())));
+
+        refundRecordRepository.save(refundRecord);
+        return refundRecord;
     }
 
     private void setMileage(UserMileage userMileage, int price){
