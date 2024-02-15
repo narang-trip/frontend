@@ -46,8 +46,7 @@ const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
   }, [map, handleOnPlacesChanged]);
 
   return (
-    <div className="flex flex-col">
-      <div className="text-base font-medium">장소 검색</div>
+    <div className="flex flex-col my-2">
       <div className="flex flex-row justify-around">
         <input
           ref={input}
