@@ -63,7 +63,7 @@ const TripListContent = () => {
 const TripList = () => {
   return (
     <div className="w-full h-[43svh] m-auto">
-      <TripListContent />
+      {/* <TripListContent /> */}
     </div>
   );
 };
