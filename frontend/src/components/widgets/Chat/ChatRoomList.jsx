@@ -43,7 +43,7 @@ const ChatRoomList = ({ onChatRoomSelect }) => {
     <div className="w-auto h-full overflow-auto">
       {chatroomList.chatroomList.length > 0 && chatroomList.chatroomList.map((chatroom) => (
         <div key={chatroom.chatroomId}>
-          <Button onClick={() => enterChatroomHandler(chatroom)} className={`w-[90%] m-1 bg-${conceptColor}-200 rounded-full`}>
+          <Button onClick={() => enterChatroomHandler(chatroom)} className={`w-[90%] m-1 bg-${conceptColor}-200 rounded-full hover:bg-${conceptColor}-400`}>
             {chatroom.chatroomName}
           </Button>
         </div>
