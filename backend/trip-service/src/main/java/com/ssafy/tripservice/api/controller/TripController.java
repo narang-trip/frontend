@@ -214,8 +214,7 @@ public class TripController {
     }
 
     @GetMapping("/allTripId")
-    public ResponseEntity<List<TripSimpleResponse>> getAllTripIds(
-            @RequestBody TripQueryRequest tripQueryRequest) {
+    public ResponseEntity<List<TripSimpleResponse>> getAllTripIds() {
         return ResponseEntity.ok(tripService.getAllTripIds());
     }
 
