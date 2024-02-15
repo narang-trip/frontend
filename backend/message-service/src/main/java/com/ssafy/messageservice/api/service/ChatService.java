@@ -1,6 +1,7 @@
 package com.ssafy.messageservice.api.service;
 
 import com.ssafy.messageservice.api.request.ChatroomRequest;
+import com.ssafy.messageservice.api.request.ChatroomUserRequest;
 import com.ssafy.messageservice.api.response.ChatListResponse;
 import com.ssafy.messageservice.api.response.ChatroomListResponse;
 import com.ssafy.messageservice.db.entity.Chat;
@@ -75,5 +76,10 @@ public class ChatService extends NarangGrpc.NarangImplBase {
         else{
             return sender.get().getNickname();
         }
+    }
+
+    public int exileFromChatroom(ChatroomUserRequest chatroomUserRequest) {
+        return  chatroomUserRepository.deleteChatroomUserByChatroomAndUserId(
+                                chatroomUserRequest.getChatroomId(), chatroomUserRequest.getUserId());
     }
 }
