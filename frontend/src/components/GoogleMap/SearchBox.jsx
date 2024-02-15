@@ -1,5 +1,7 @@
 import { useCallback, useRef, useEffect, useState } from "react";
 
+import "../../css/SearchBox.css";
+
 const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
   const input = useRef(null);
   const searchBox = useRef(null);
