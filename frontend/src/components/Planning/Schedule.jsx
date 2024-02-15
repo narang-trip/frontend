@@ -79,15 +79,13 @@ const Schedule = (props) => {
                 style={scheduleCSS}
                 className="relative z-30 flex flex-col w-56 overflow-hidden text-sm bg-white rounded-xl"
               >
-                <div className="flex mb-2">
-                  <div className={` right-0 ${visible}`}>
-                    <button
-                      className="text-xl font-semibold hover:text-red-600"
-                      onClick={removeSchedule}
-                    >
-                      <IoMdClose />
-                    </button>
-                  </div>
+                <div className={`mb-4 absolute right-0 ${visible}`}>
+                  <button
+                    className="text-xl font-semibold hover:text-red-600"
+                    onClick={removeSchedule}
+                  >
+                    <IoMdClose />
+                  </button>
                 </div>
                 <div className="flex">
                   <img
@@ -118,9 +116,7 @@ const Schedule = (props) => {
                       value={text}
                       disabled={!isCanModify}
                     />
-                    <p className="text-xs">
-                      다음 장소까지 {schedule.distance} 분
-                    </p>
+                    <p className="text-xs">다음 장소까지 {schedule.distance} 분</p>
                   </div>
                 </div>
               </div>
