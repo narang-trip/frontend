@@ -255,16 +255,21 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
             System.out.println("너가 리더 잖아");
             return Optional.empty();
         }
+
+        boolean exist = false;
+
         for (Trip.Participant p : trip.get().getParticipants()) {
 
             log.info(p.toString());
 
             if (p.getParticipantId().equals(userRequest.getUserId())) {
-
-                System.out.println("파티 이미 나갔음");
-                return Optional.empty();
+                exist = true;
+                break;
             }
         }
+
+        if (! exist)
+            return Optional.empty();
 
         Query query = new Query(
                 Criteria.where("_id").is(userRequest.getTripId()));
