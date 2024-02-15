@@ -118,6 +118,15 @@ public class TripController {
         return ResponseEntity.badRequest().build();
     }
 
+    @Operation(summary = "참여 거절",
+            responses = { @ApiResponse(responseCode = "200", description = "User Rejected Successfully")})
+    @PostMapping("/trip/reject")
+    public ResponseEntity<?> rejectTripJoinRequest(@RequestBody UserRejectRequest request) {
+
+        boolean res = tripService.rejectTripJoinRequest(request);
+
+        return res ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
 
     /*
         Just For Test
@@ -197,16 +206,6 @@ public class TripController {
     public ResponseEntity<Page<TripPageResponse>> getTripsIveOwn(
             @RequestBody TripQueryRequest tripQueryRequest) {
         return ResponseEntity.ok(tripService.getTripsIveOwn(tripQueryRequest));
-    }
-
-    @Operation(summary = "참여 거절",
-            responses = { @ApiResponse(responseCode = "200", description = "User Rejected Successfully")})
-    @PostMapping("/reject")
-    public ResponseEntity<?> rejectTripJoinRequest(@RequestBody UserRejectRequest request) {
-
-        boolean res = tripService.rejectTripJoinRequest(request);
-
-        return res ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @ExceptionHandler(TripNotFoundException.class)
