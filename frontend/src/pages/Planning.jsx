@@ -54,6 +54,13 @@ export default function PlanningPage() {
             JSON.parse(decodeURIComponent(window.atob(response.data.planInfo)))
           )
         );
+        console.log("Planning.jsx 57", curUserId);
+        if (response.data.ownerId === curUserId) checkuser = true;
+        for (let i = 0; i < response.data.participantIds.length; i++) {
+          if (response.data.participantIds[i].participantId === curUserId)
+            checkuser = true;
+        }
+        console.log("Planning.jsx 63", checkuser);
       } catch (error) {
         console.log("Error : ", error);
       }
@@ -62,11 +69,6 @@ export default function PlanningPage() {
 
   useEffect(() => {
     setInitSchedule();
-    if (res.data.ownerId === curUserId) checkuser = true;
-    for (let i = 0; i < res.data.participantIds.length; i++) {
-      if (res.data.participantIds[i].participantId === curUserId)
-        checkuser = true;
-    }
   }, [planId]);
 
   useMemo(async () => {
@@ -271,34 +273,29 @@ export default function PlanningPage() {
             <Map isCanModify={isCanModify} />
           </div>
         </DragDropContext>
-        {isCanModify ? (
+        {isCanModify && (
           <button
             className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
             onClick={savePlan}
           >
             저장하기
           </button>
-        ) : (
-          <>
-            {checkuser ? (
-              <div className="absolute flex top-0 right-0 gap-2">
-                <button
-                  className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
-                  onClick={modifyPlan}
-                >
-                  수정하기
-                </button>
-                <button
-                  className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
-                  onClick={deletePlan}
-                >
-                  삭제하기
-                </button>
-              </div>
-            ) : (
-              <></>
-            )}
-          </>
+        )}
+        {!isCanModify && checkuser && (
+          <div className="absolute flex top-0 right-0 gap-2">
+            <button
+              className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+              onClick={modifyPlan}
+            >
+              수정하기
+            </button>
+            <button
+              className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
+              onClick={deletePlan}
+            >
+              삭제하기
+            </button>
+          </div>
         )}
         {isSavePlanOpen && (
           <ModalPortal>
