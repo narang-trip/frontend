@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -79,8 +80,8 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         String user_id = usageRecord.getUserId();
         int price = usageRecord.getPrice();
         int refund_price = 0;
-        
-        long dayDifference = calculateDateDifference(LocalDate.now(), departureDate);
+
+        int dayDifference = calculateDateDifference(LocalDate.now(), departureDate);
 
         RefundResponse refundResponse = new RefundResponse();
 
@@ -184,9 +185,9 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         userMileageRepository.save(userMileage);
     }
 
-    private Long calculateDateDifference(LocalDate startDate, LocalDate endDate) {
-        Duration duration = Duration.between(startDate, endDate);
-        return duration.toDays();
+    private int calculateDateDifference(LocalDate startDate, LocalDate endDate) {
+        Period period = Period.between(startDate, endDate);
+        return period.getDays();
     }
     /*
         Trip 아니고 Chat 에 들어가야 함 ...
