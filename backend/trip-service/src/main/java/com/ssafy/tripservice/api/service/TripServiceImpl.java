@@ -403,6 +403,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
                         .tripRoles.any().in(tripQueryRequest.getTripRoles())
                         .and(QTrip.trip.departureDate.before(tripQueryRequest.getQueryEndDate())
                                 .and(QTrip.trip.returnDate.after(tripQueryRequest.getQuerySttDate())))
+                        .and(QTrip.trip.departureDate.after(LocalDate.now()))
                         .and(QTrip.trip.tripParticipantsSize.goe(tripQueryRequest.getParticipantsSize()))
                         .and(QTrip.trip.tripConcept.in(tripQueryRequest.getTripConcept()))
                         .and(QTrip.trip.continent.in(tripQueryRequest.getTripContinent())), pageRequest);
