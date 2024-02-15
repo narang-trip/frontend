@@ -54,10 +54,9 @@ export default function PlanningPage() {
             JSON.parse(decodeURIComponent(window.atob(response.data.planInfo)))
           )
         );
-        console.log("Planning.jsx 57", res);
-        if (res.data.ownerId === curUserId) checkuser = true;
-        for (let i = 0; i < res.data.participantIds.length; i++) {
-          if (res.data.participantIds[i].participantId === curUserId)
+        if (response.data.ownerId === curUserId) checkuser = true;
+        for (let i = 0; i < response.data.participantIds.length; i++) {
+          if (response.data.participantIds[i].participantId === curUserId)
             checkuser = true;
         }
       } catch (error) {
