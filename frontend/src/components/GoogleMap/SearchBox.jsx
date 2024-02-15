@@ -51,7 +51,7 @@ const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
           placeholder="장소를 입력해주세요"
           type="text"
           disabled={!isCanModify}
-          className="w-full border rounded-sm border-neutral-300"
+          className="w-full p-2 text-sm border rounded-sm border-neutral-300"
         />
         {/* <button onClick={handleSearchButtonClick} className="p-1 rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10 hover:bg-neutral-100">검색</button> */}
       </div>

@@ -191,7 +191,6 @@ const Map = ({ isCanModify }) => {
         onPlaceSelected={handlePlaceSelected}
         isCanModify={isCanModify}
       />
-      <hr />
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
