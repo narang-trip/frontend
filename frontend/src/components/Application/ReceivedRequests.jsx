@@ -57,7 +57,7 @@ const ReceivedRequests = () => {
   }, [inView]);
 
   const clickHandler = (tripId) => {
-    navigate(`/detail${tripId}`); // navigate 함수를 사용하여 경로 이동
+    navigate(`/detail/${tripId}`); // navigate 함수를 사용하여 경로 이동
   };
 
   return (
