@@ -470,16 +470,17 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     public boolean rejectTripJoinRequest(UserRejectRequest request) {
 
         // Alert Toggle
-        AlertPatchGrpcResponse alertReponse =  chatBlockingStub.rejectJoinRequestType(
+        AlertPatchGrpcResponse alertResponse =  chatBlockingStub.rejectJoinRequestType(
                 AlertPatchGrpcRequest.newBuilder()
                         .setAlertId(request.getAlertId())
                         .setAlertType("REJECT")
                         .build()
         );
 
-        if (! alertReponse.getResult()) return false;
+        if (! alertResponse.getResult()) return false;
         // Refund
-        PaymentRefundGrpcResponse response =  paymentBlockingStub.cancelPaymentRecord(PaymentRefundGrpcRequest.newBuilder()
+        PaymentRefundGrpcResponse response =  paymentBlockingStub.cancelPaymentRecord(
+                PaymentRefundGrpcRequest.newBuilder()
                 .setUsageId(request.getUsageId())
                 .build()
         );
