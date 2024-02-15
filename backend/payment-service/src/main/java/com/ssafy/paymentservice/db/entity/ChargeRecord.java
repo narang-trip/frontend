@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-//@Setter
 public class ChargeRecord {
     @Id
     private String aid; // 요청 고유 번호
