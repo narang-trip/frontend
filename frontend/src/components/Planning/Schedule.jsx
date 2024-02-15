@@ -77,11 +77,11 @@ const Schedule = (props) => {
             >
               <div
                 style={scheduleCSS}
-                className="relative flex flex-col bg-white w-56 rounded-xl overflow-hidden text-sm z-30"
+                className="relative z-30 flex flex-col w-56 overflow-hidden text-sm bg-white rounded-xl"
               >
-                <div className={`absolute right-0 ${visible}`}>
+                <div className={`mb-4 absolute right-0 ${visible}`}>
                   <button
-                    className="mb-4 text-xl font-semibold hover:text-red-600"
+                    className="text-xl font-semibold hover:text-red-600"
                     onClick={removeSchedule}
                   >
                     <IoMdClose />
@@ -95,10 +95,10 @@ const Schedule = (props) => {
                     alt="이미지"
                   />
                   <div>
-                    <p>{schedule.title}</p>
-                    <p>
+                    <p className="text-xs">{schedule.title}</p>
+                    <p className="text-xs">
                       <input
-                        className="w-20"
+                        className="w-20 px-1 text-right"
                         type="number"
                         value={t}
                         onChange={timeChange}
@@ -108,7 +108,7 @@ const Schedule = (props) => {
                       분
                     </p>
                     <textarea
-                      className="resize-none w-32"
+                      className="w-32 resize-none"
                       name="comment"
                       id="comment"
                       placeholder="간단한 메모"

@@ -31,14 +31,16 @@ const PlaceCard = () => {
                       <div className="ml-2 text-sm font-semibold">
                         {place.name}
                       </div>
-                      <div className="my-1 border border-neutral-200"></div>
+                      <div className="mx-2 my-1 border border-neutral-200"></div>
                       <div className="ml-2 text-xs">{place.businessStatus}</div>
-                      <div className="my-1 border border-neutral-200"></div>
+                      <div className="mx-2 my-1 border border-neutral-200"></div>
 
-                      <div className="ml-2 text-xs">{place.formattedAddress}</div>
-                      <div className="my-1 border border-neutral-200"></div>
+                      <div className="ml-2 text-xs">
+                        {place.formattedAddress}
+                      </div>
+                      <div className="mx-2 my-1 border border-neutral-200"></div>
 
-                      <div className="ml-2 text-xs">⭐ {" "} {place.rating}</div>
+                      <div className="mb-1 ml-2 text-xs">⭐ {place.rating}</div>
                     </div>
                   </div>
                 </div>
