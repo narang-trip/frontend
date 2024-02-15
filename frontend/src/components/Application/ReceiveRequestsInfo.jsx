@@ -37,8 +37,7 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
           tripId: trip.tripId,
           userId: data.senderId,
           alertId: data.id,
-          userRoles: data.position,
-          usageId: data.usageId
+          userRoles: data.position
         },
         {
           headers: {
@@ -121,7 +120,7 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
                 <img
                   className="inline-block w-8 h-8 rounded-full ring-2 ring-white"
                   src={userData.profile_url}
-                  alt="프로필사진"
+                  alt=""
                 />
                 <span className="mx-3 text-sm">{data.senderName}</span>
               </div>
