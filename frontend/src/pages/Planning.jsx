@@ -273,34 +273,29 @@ export default function PlanningPage() {
             <Map isCanModify={isCanModify} />
           </div>
         </DragDropContext>
-        {isCanModify ? (
+        {isCanModify && (
           <button
             className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
             onClick={savePlan}
           >
             저장하기
           </button>
-        ) : (
-          <>
-            {checkuser ? (
-              <div className="absolute flex top-0 right-0 gap-2">
-                <button
-                  className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
-                  onClick={modifyPlan}
-                >
-                  수정하기
-                </button>
-                <button
-                  className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
-                  onClick={deletePlan}
-                >
-                  삭제하기
-                </button>
-              </div>
-            ) : (
-              <></>
-            )}
-          </>
+        )}
+        {!isCanModify && checkuser && (
+          <div className="absolute flex top-0 right-0 gap-2">
+            <button
+              className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+              onClick={modifyPlan}
+            >
+              수정하기
+            </button>
+            <button
+              className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
+              onClick={deletePlan}
+            >
+              삭제하기
+            </button>
+          </div>
         )}
         {isSavePlanOpen && (
           <ModalPortal>
