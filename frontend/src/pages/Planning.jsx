@@ -1,7 +1,7 @@
 import { DragDropContext } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Fragment } from "react";
 import axios from "axios";
 
 import { scheduleActions } from "../store/scheduleSlice";
@@ -268,7 +268,7 @@ export default function PlanningPage() {
   }, [isSavePlanOpen]);
 
   return (
-    <>
+    <Fragment>
       <ShowTime />
       <div className="relative h-full pl-10">
         <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
@@ -307,6 +307,6 @@ export default function PlanningPage() {
           </ModalPortal>
         )}
       </div>
-    </>
+    </Fragment>
   );
 }
