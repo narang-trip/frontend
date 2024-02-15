@@ -22,11 +22,6 @@ export default function PlanningPage() {
   const [isCanModify, setIsCanModify] = useState(true);
   const [res, setRes] = useState();
   let checkuser = false;
-  if (res.data.ownerId === curUserId) checkuser = true;
-  for (let i = 0; i < res.data.participantIds.length; i++) {
-    if (res.data.participantIds[i].participantId === curUserId)
-      checkuser = true;
-  }
 
   const { planId } = useParams();
 
@@ -59,6 +54,11 @@ export default function PlanningPage() {
             JSON.parse(decodeURIComponent(window.atob(response.data.planInfo)))
           )
         );
+        if (res.data.ownerId === curUserId) checkuser = true;
+        for (let i = 0; i < res.data.participantIds.length; i++) {
+          if (res.data.participantIds[i].participantId === curUserId)
+            checkuser = true;
+        }
       } catch (error) {
         console.log("Error : ", error);
       }
