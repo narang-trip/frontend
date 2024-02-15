@@ -194,10 +194,10 @@ export default function SentRequests() {
                         >
                           <div className="grid grid-cols-5">
                             <div className="col-span-1 m-2">
-                              {/* <img
-                              src={item.tripInfo.tripImgUrl}
+                              <img
+                              src={item.tripInfo && item.tripInfo.tripImgUrl}
                               className="w-20 h-20 rounded-2xl"
-                            /> */}
+                            />
                             </div>
                             <div className="col-span-3">
                               <button
