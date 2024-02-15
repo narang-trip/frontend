@@ -48,6 +48,7 @@ export default function TripDetail() {
 
   // 취소하기 클릭
   const handleCancelClick = () => {
+    
     navigate("/applicantList");
   };
 

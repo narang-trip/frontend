@@ -2,11 +2,11 @@ import { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-export default function ReceiveRequestsInfo({ data, trip }) {
+export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) {
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
   const userId = useSelector((state) => state.auth.userId);
-
+  const [userData, setUserData] = useState([]);
    // 날짜 포맷
    const formatDate = (date) => {
     const year = date.getFullYear();
@@ -15,7 +15,20 @@ export default function ReceiveRequestsInfo({ data, trip }) {
     return `${year}-${month}-${day}`;
   };
 
-  
+  const fetchUserData = async () => {
+    try {
+      // API에서 데이터 가져오는 요청
+      const response = await axios.get(
+        `${import.meta.env.VITE_USER_REQUEST_URI}/profile/${data.senderId}`
+      );
+
+      // 가져온 데이터를 state에 업데이트
+      setUserData(response.data);
+    } catch (error) {
+      console.error("데이터 가져오기 실패:", error);
+    }
+  };
+
   const handleAccept = async () => {
     try {
       const response = await axios.patch(
@@ -31,6 +44,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
             "Content-Type": "application/json",
           },
         }
+
       );
       
       // const response1 = await axios.patch(
@@ -44,6 +58,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(true);
       setIsRejected(false);
+      await updateReceivedData();
     } catch (error) {
       // 오류 처리
       console.error("서버 응답 에러", error);
@@ -55,7 +70,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
       const response = await axios.post(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/reject`,
         {
-          tripId: trip.tripId,
+          tripId: data.tripId,
           userId: data.senderId,
           usageId: data.usageId,
           alertId: data.id
@@ -81,6 +96,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(false);
       setIsRejected(true);
+      await updateReceivedData();
     } catch (error) {
       // 오류 처리
       console.error("서버 응답 에러", error);
@@ -89,6 +105,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
 
   // useEffect를 사용하여 데이터가 갱신될 때마다 수락, 거절 상태 초기화
   useEffect(() => {
+    fetchUserData();
     setIsAccepted(false);
     setIsRejected(false);
   }, [data]);
@@ -102,7 +119,7 @@ export default function ReceiveRequestsInfo({ data, trip }) {
               <div>
                 <img
                   className="inline-block w-8 h-8 rounded-full ring-2 ring-white"
-                  src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  src={userData.profile_url}
                   alt=""
                 />
                 <span className="mx-3 text-sm">{data.senderName}</span>
