@@ -51,7 +51,7 @@ export default function SentRequests() {
     }
   };
 
-  const handleCancel = async (item) => {
+  const handleCancel = async (item, startDate) => {
     try {
       // 예약금 환불이 필요한 경우
       if (item.alertType === "ACCEPT") {
