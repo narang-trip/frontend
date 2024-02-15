@@ -54,7 +54,7 @@ export default function SentRequests() {
         // } catch (error) {
         //   console.error("Error refunding deposit:", error);
         // }
-        
+        console.table(item);
         try {
           await axios.patch(
             `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
