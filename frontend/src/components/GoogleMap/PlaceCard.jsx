@@ -27,7 +27,7 @@ const PlaceCard = () => {
                 >
                   <div className="flex justify-center my-2 overflow-hidden bg-white border rounded-lg border-neutral-200">
                     <div className="flex-col ml-2 text-left">
-                      <img className="h-20 w-60" src={place.photo} />
+                      <img className="h-20 rounded-lg w-60" src={place.photo} />
                       <div className="text-base font-semibold">
                         {place.name}
                       </div>
