@@ -86,7 +86,7 @@ const MyPlan = () => {
 
   return (
     <Fragment>
-      {isLogin ? (
+      {!isLogin ? (
         <div className="flex items-start w-full h-full">
           <div className={`mx-auto mt-24 text-xl font-bold text-center animate-bounce text-${conceptColor}-400`}>
             로그인을 해주세요
