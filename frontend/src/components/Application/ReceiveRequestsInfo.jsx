@@ -6,7 +6,7 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
   const [isAccepted, setIsAccepted] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
   const userId = useSelector((state) => state.auth.userId);
-
+  const [userData, setUserData] = useState([]);
    // 날짜 포맷
    const formatDate = (date) => {
     const year = date.getFullYear();
@@ -15,7 +15,20 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
     return `${year}-${month}-${day}`;
   };
 
-  
+  const fetchUserData = async () => {
+    try {
+      // API에서 데이터 가져오는 요청
+      const response = await axios.get(
+        `${import.meta.env.VITE_USER_REQUEST_URI}/profile/${data.senderId}`
+      );
+
+      // 가져온 데이터를 state에 업데이트
+      setUserData(response.data);
+    } catch (error) {
+      console.error("데이터 가져오기 실패:", error);
+    }
+  };
+
   const handleAccept = async () => {
     try {
       const response = await axios.patch(
@@ -92,6 +105,7 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
 
   // useEffect를 사용하여 데이터가 갱신될 때마다 수락, 거절 상태 초기화
   useEffect(() => {
+    fetchUserData();
     setIsAccepted(false);
     setIsRejected(false);
   }, [data]);
@@ -105,7 +119,7 @@ export default function ReceiveRequestsInfo({ data, trip, updateReceivedData }) 
               <div>
                 <img
                   className="inline-block w-8 h-8 rounded-full ring-2 ring-white"
-                  src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  src={userData.profile_url}
                   alt=""
                 />
                 <span className="mx-3 text-sm">{data.senderName}</span>

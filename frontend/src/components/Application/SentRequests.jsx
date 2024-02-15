@@ -12,6 +12,7 @@ export default function SentRequests() {
 
   const navigate = useNavigate();
 
+  
   const fetchSentData = async () => {
     try {
       const response = await axios.get(
@@ -64,7 +65,7 @@ export default function SentRequests() {
             `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
             {
               tripId: item.tripId,
-              userId: item.senderId,
+              userId: item.senderId
             },
             {
               headers: {
