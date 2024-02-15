@@ -20,8 +20,8 @@ export default function PlanningPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isCanModify, setIsCanModify] = useState(true);
+  const [checkuser, setCheckuser] = useState(false);
   const [res, setRes] = useState();
-  let checkuser = false;
 
   const { planId } = useParams();
 
@@ -55,10 +55,10 @@ export default function PlanningPage() {
           )
         );
         console.log("Planning.jsx 57", curUserId);
-        if (response.data.ownerId === curUserId) checkuser = true;
+        if (response.data.ownerId === curUserId) setCheckuser(true);
         for (let i = 0; i < response.data.participantIds.length; i++) {
           if (response.data.participantIds[i].participantId === curUserId)
-            checkuser = true;
+            setCheckuser(true);
         }
         console.log("Planning.jsx 63", checkuser);
       } catch (error) {
