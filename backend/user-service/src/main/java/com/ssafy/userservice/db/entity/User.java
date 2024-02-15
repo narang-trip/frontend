@@ -1,7 +1,5 @@
 package com.ssafy.userservice.db.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

@@ -41,8 +41,8 @@ public class UserRestController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         }
-
     }
+
     @PostMapping("/login/oauth/{provider}")
     public ResponseEntity<?> oauthLogin(@PathVariable String provider, @RequestParam("code") String code, HttpServletResponse response) {
         log.info("oauthLogin {} 호출", provider);
@@ -52,7 +52,6 @@ public class UserRestController {
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
     }
 
     @PostMapping("/logout")

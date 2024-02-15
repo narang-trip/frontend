@@ -1,7 +1,5 @@
 package com.ssafy.userservice.api.request;
 
-
-import com.ssafy.userservice.db.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

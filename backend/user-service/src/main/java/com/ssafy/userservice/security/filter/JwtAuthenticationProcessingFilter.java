@@ -28,7 +28,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     private static final String NO_CHECK_URL = "/api/user/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
 
     private final JwtService jwtService;
-//    private final UserRepository userRepository;
     private final AuthRepository authRepository;
 
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
@@ -37,7 +36,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("doFilterInternal() 호출");
         log.info("request.getRequestURI() : {}", request.getRequestURI());
-//        filterChain.doFilter(request, response);
         if (request.getRequestURI().startsWith(NO_CHECK_URL)) {
             filterChain.doFilter(request, response);
             return;
@@ -46,9 +44,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 .filter(jwtService::isTokenValid)
                 .orElse(null);
         log.info("방금 받아온 refreshToken : {}", refreshToken);
-//        if (refreshToken != null) {
-//            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-//        }
         checkAccessTokenAndAuthentication(request, response, filterChain);
     }
 
@@ -112,12 +107,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         // 4. 추출한 아이디를 사용하여 사용자 정보 조회
         authRepository.findById(userId.get())
                 .ifPresent(this::saveAuthentication);
-
-//        jwtService.extractAccessToken(request)
-//                .filter(jwtService::isTokenValid)
-//                .flatMap(jwtService::extractId)
-//                .flatMap(authRepository::findById)
-//                .ifPresent(this::saveAuthentication);
 
         filterChain.doFilter(request, response);
     }
