@@ -53,7 +53,7 @@ export default function TripDetail() {
 
   const handleDeleteClick = async () => {
     try {
-      const response = await axios.get(
+      const response = await axios.delete(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip`,
         {
           tripId: tripId,
