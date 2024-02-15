@@ -219,7 +219,6 @@ const Map = ({ isCanModify }) => {
           </>
         )}
       </GoogleMap>
-      <hr></hr>
       <PlaceCard />
     </div>
   ) : null;

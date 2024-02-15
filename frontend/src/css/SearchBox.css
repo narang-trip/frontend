@@ -1,0 +1,17 @@
+.pac-container {
+  background-color: rgb(216, 121, 121);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pac-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.pac-item:hover {
+  background-color: #f5f5f5;
+}
