@@ -5,6 +5,7 @@ import com.ssafy.paymentservice.db.entity.UsageRecord;
 import com.ssafy.paymentservice.entity.KakaoApproveResponse;
 import com.ssafy.paymentservice.entity.KakaoCancelResponse;
 import com.ssafy.paymentservice.entity.KakaoReadyResponse;
+import com.ssafy.paymentservice.entity.RefundResponse;
 import com.ssafy.paymentservice.exception.BusinessLogicException;
 import com.ssafy.paymentservice.exception.ExceptionCode;
 import com.ssafy.paymentservice.service.KakaoPayService;
@@ -17,8 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -101,8 +104,8 @@ public class PaymentController {
             @RequestParam("trip_id") String tripId,
             @RequestParam("departure_datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureDateTime) {
         try {
-            RefundRecord refundRecord = mileageService.cancelMileage(usageId, tripId, departureDateTime);
-            return new ResponseEntity<>(refundRecord, HttpStatus.OK);
+            RefundResponse refundResponse = mileageService.cancelMileage(usageId, tripId, departureDateTime);
+            return new ResponseEntity<>(refundResponse, HttpStatus.OK);
         }
         catch (BusinessLogicException e){
             return new ResponseEntity<>(e.getExceptionCode().getMessage(), e.getExceptionCode().getHttpStatus());
@@ -115,8 +118,8 @@ public class PaymentController {
     @PostMapping("/reject")
     public ResponseEntity reject(@RequestParam("usage_id") String usageId){
         try {
-            RefundRecord refundRecord = mileageService.rejectMileage(usageId);
-            return new ResponseEntity<>(refundRecord, HttpStatus.OK);
+            RefundResponse refundResponse = mileageService.rejectMileage(usageId);
+            return new ResponseEntity<>(refundResponse, HttpStatus.OK);
         }
         catch (NoSuchElementException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
