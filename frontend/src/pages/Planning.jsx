@@ -279,22 +279,22 @@ const MakePlanPage = () => {
         </DragDropContext>
         {isCanModify && (
           <button
-            className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+            className="absolute top-0 right-0 py-3 mr-2 text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-800/10"
             onClick={savePlan}
           >
             저장하기
           </button>
         )}
         {checkuser && (
-          <div className="absolute flex top-0 right-0 gap-2">
+          <div className="absolute top-0 right-0 flex gap-2">
             <button
-              className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+              className="text-sm font-medium text-yellow-800 bg-yellow-200 rounded-md ring-1 ring-inset ring-yellow-800/10"
               onClick={modifyPlan}
             >
               수정하기
             </button>
             <button
-              className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
+              className="text-sm font-medium text-red-800 bg-red-200 rounded-md ring-1 ring-inset ring-red-800/10"
               onClick={deletePlan}
             >
               삭제하기
