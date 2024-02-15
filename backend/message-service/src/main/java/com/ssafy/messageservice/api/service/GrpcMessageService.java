@@ -77,7 +77,11 @@ public class GrpcMessageService extends NarangGrpc.NarangImplBase {
     @Override
     public void exileFromChatroom(ChatroomUserPatchGrpcRequest request, StreamObserver<ChatroomUserPatchGrpcResponse> responseObserver) {
 
+        log.info(request.toString());
+
         Optional<Chatroom> chatroom = chatroomRepository.findById(request.getChatroomId());
+
+        chatroom.ifPresent(value -> log.info(value.toString()));
 
         chatroom.ifPresent(value -> chatroomUserRepository.delete(ChatroomUser.builder()
                 .chatroom(value)
