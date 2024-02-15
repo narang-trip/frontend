@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -101,8 +98,6 @@ public class AlertService extends NarangGrpc.NarangImplBase {
 
     // 요청 알림 보내는 메소드
     public ResponseEntity<?> send(AlertAttendRequest alertAttendRequest) {
-        try{
-
             boolean exists = alertRepository.existsByTripIdAndSenderId(alertAttendRequest.getTripId(), alertAttendRequest.getSenderId());
 
             if (exists)
@@ -124,7 +119,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
 
                 if (tripGrpcResponse.getTripApplicantsSize() >= tripGrpcResponse.getTripParticipantsSize()) {
                     System.out.println("PARTY FULL ... CANNOT ATTEND");
-                    throw new BadRequestException();
+                    throw new NoSuchElementException();
                 }
 
                 /*
@@ -138,11 +133,6 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                 System.out.println("===================paymentInfo=================");
                 System.out.println(paymentResponse.toString());
 
-                /*
-                    돈이 부족한 경우와
-                    돈이 넉넉한 경우
-                    여행 못 찾는 경우에 대해서 확인.
-                 */
                 log.info("넘어왔다..");
                 String usageId = paymentResponse.getRecordId();
 
@@ -167,6 +157,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                 String eventId = receiver + "_" + System.currentTimeMillis();
                 Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(receiver);
                 // 알림을 보내는 response 값 데이터 넣어주기
+
                 AlertListResponse.AlertResponse alertResponse = new AlertListResponse.AlertResponse(alert.getId(),
                         alertAttendRequest.getTripId(),
                         alertAttendRequest.getTripName(),
@@ -177,6 +168,7 @@ public class AlertService extends NarangGrpc.NarangImplBase {
                         alertAttendRequest.getAlertType(),
                         alertAttendRequest.isRead(),
                         usageId);
+
                 emitters.forEach(
                         (key, emitter) -> {
                             // 데이터 캐시 저장
@@ -191,13 +183,6 @@ public class AlertService extends NarangGrpc.NarangImplBase {
             else{
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Data already exists");
             }
-
-        }catch (Exception e){
-            log.error(e.getMessage());
-            // DB에 저장된 senderId를 사용해야 함
-            System.out.println("알림 보내기를 실패했습니다.");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send alert");
-        }
     }
 
     // 수락/거절 알림 보내는 메소드
