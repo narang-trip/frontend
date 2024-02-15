@@ -1,7 +1,8 @@
-import { Fragment, useCallback, useEffect, useState, useNavigate } from "react";
+import { Fragment, useCallback, useEffect, useState,  } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; 
 
 import TripInfo from "./TripInfo";
 
