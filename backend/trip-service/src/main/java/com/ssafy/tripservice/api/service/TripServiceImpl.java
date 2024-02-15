@@ -284,6 +284,9 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
 
         UpdateResult res = mongoTemplate.upsert(query, update, Trip.class);
 
+        log.info(userRequest.getUserId().toString());
+        log.info(trip.get().getTripChatId().toString());
+
         if (res.getModifiedCount() > 0) {
             ChatroomUserPatchGrpcResponse response = chatBlockingStub.exileFromChatroom(ChatroomUserPatchGrpcRequest.newBuilder()
                             .setUserId(userRequest.getUserId().toString())
