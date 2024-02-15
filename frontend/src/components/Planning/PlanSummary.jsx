@@ -16,7 +16,7 @@ const PlanSummary = ({ plan }) => {
 
   return (
     <div
-      className="relative w-[30%] h-48 rounded-lg bg-yellow-100 p-2 shadow-lg hover:shadow-xl hover:shadow-orange-200"
+      className="relative w-[22%] h-48 rounded-lg bg-yellow-100 p-2 shadow-lg hover:shadow-xl hover:shadow-orange-200 hover:cursor-pointer"
       onClick={goPlan}
     >
       <div className="flex flex-col w-full border border-yellow-200 h-full rounded-lg bg-white">
@@ -24,9 +24,9 @@ const PlanSummary = ({ plan }) => {
           <div className="w-1/2 h-6 rounded-b-md border-b-8 border-yellow-200  bg-yellow-100"></div>
         </div>
         <div className="flex-col">
-          <p className="text-2xl place-content-center pt-1">{plan.planName}</p>
-          <p className="text-sm place-content-center pt-4">{plan.planDesc}</p>
-          <p className="text-sm place-content-center pt-1">
+          <p className="text-2xl text-center pt-1">{plan.planName}</p>
+          <p className="text-sm text-center pt-4">{plan.planDesc}</p>
+          <p className="text-sm text-center pt-1">
             {day - 1}박{day}일
           </p>
           <p className="absolute text-sm bottom-2 right-2">
