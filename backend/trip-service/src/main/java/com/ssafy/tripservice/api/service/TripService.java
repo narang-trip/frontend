@@ -4,9 +4,11 @@ import com.ssafy.tripservice.api.request.*;
 import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripRefundResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
+import com.ssafy.tripservice.api.response.TripSimpleResponse;
 import com.ssafy.tripservice.db.entity.Trip;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,4 +44,6 @@ public interface TripService {
     public long eraseWithdrawalUser(UUID userId);
 
     public boolean rejectTripJoinRequest(UserRejectRequest request);
+
+    List<TripSimpleResponse> getAllTripIds();
 }

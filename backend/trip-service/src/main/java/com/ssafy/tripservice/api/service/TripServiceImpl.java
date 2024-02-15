@@ -8,6 +8,7 @@ import com.ssafy.tripservice.api.request.*;
 import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripRefundResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
+import com.ssafy.tripservice.api.response.TripSimpleResponse;
 import com.ssafy.tripservice.db.entity.QTrip;
 import com.ssafy.tripservice.db.entity.Trip;
 import com.ssafy.tripservice.db.repository.TripRepository;
@@ -27,6 +28,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.*;
 import org.springframework.data.mongodb.core.query.*;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -541,5 +543,11 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
         );
 
         return response.getResult();
+    }
+
+    @Override
+    public List<TripSimpleResponse> getAllTripIds() {
+        return tripRepository.findAll()
+                .stream().map(Trip::toTripSimpleResponse).toList();
     }
 }

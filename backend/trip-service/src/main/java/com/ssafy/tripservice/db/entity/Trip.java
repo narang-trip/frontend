@@ -3,6 +3,7 @@ package com.ssafy.tripservice.db.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ssafy.tripservice.api.response.TripPageResponse;
 import com.ssafy.tripservice.api.response.TripResponse;
+import com.ssafy.tripservice.api.response.TripSimpleResponse;
 import jakarta.persistence.Entity;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -96,6 +97,14 @@ public class Trip extends BaseEntity{
                 .tripAgeUpperBound(this.tripAgeUpperBound)
                 .tripConcept(this.tripConcept)
                 .tripRoles(this.tripRoles)
+                .build();
+    }
+
+    public TripSimpleResponse toTripSimpleResponse() {
+        return TripSimpleResponse.builder()
+                .tripId(this.get_id())
+                .tripName(this.tripName)
+                .chatId(this.tripChatId)
                 .build();
     }
 }
