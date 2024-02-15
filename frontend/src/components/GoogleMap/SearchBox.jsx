@@ -42,8 +42,8 @@ const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
   }, [map, handleOnPlacesChanged]);
 
   return (
-    <div className="flex flex-col my-2">
-      <div className="flex flex-row justify-around">
+    <div className="flex flex-col justify-center my-2 itmes-center">
+      <div className="flex flex-row justify-center">
         <input
           ref={input}
           placeholder="장소를 입력해주세요"
