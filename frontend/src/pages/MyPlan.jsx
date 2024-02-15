@@ -87,19 +87,19 @@ const MyPlan = () => {
     <div className="relative">
       <p className="my-2 text-2xl font-bold text-center">나의 계획</p>
       <button
-        className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+        className="absolute top-0 right-0 px-2 py-1 text-xl text-white bg-yellow-400 border-2 border-yellow-600 rounded-md"
         onClick={makePlan}
       >
         계획 만들기
       </button>
       {planData.length === 0 ? (
         <>
-          <p className="my-2 pt-6 text-xl font-bold text-center">
+          <p className="pt-6 my-2 text-xl font-bold text-center">
             작성한 계획이 없어요
           </p>
         </>
       ) : (
-        <div className="flex flex-wrap justify-between gap-4">
+        <div className="flex flex-wrap justify-around gap-4">
           {planData.map((plan, idx) => (
             <PlanSummary plan={plan} key={idx} />
           ))}

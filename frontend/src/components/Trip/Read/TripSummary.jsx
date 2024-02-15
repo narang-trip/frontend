@@ -79,7 +79,7 @@ const TripSummary = ({ trip }) => {
             </div>
             <div>
             <div className="flex flex-row items-center my-1.5 text-sm">
-                <p className="ml-6 text-xs font-semibold">
+                <p className="text-xs font-semibold ml-7">
                   {trip.tripName}
                 </p>
               </div>
