@@ -31,6 +31,9 @@ public class MileageService extends NarangGrpc.NarangImplBase {
     private final UsageRecordRepository usageRecordRepository;
     private final RefundRecordRepository refundRecordRepository;
 
+    @GrpcClient("trip-service")
+    private NarangGrpc.NarangBlockingStub tripBlockingStub;
+
     @Autowired
     private TextEncryptor textEncryptor;
     public int getMileage(String user_id){
@@ -53,16 +56,8 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         log.info("useMileage 호출. user_id : {}, price : {}", user_id, price);
         UserMileage userMileage = userMileageRepository.findByUserId(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
-        String encryptedMileage = userMileage.getEncryptedMileage();
-        // 암호화된 마일리지 복호화
-        int current_mileage = Integer.parseInt(textEncryptor.decrypt(encryptedMileage));
-        int new_mileage = current_mileage - price;
-        if(new_mileage < 0){
-            throw new BusinessLogicException(ExceptionCode.PAY_NO_MONEY);
-        }
-        String newEncryptedMileage = textEncryptor.encrypt(String.valueOf(new_mileage));
-        userMileage.setEncryptedMileage(newEncryptedMileage);
-        userMileageRepository.save(userMileage);
+        price *= -1;
+        setMileage(userMileage, price);
 
         UsageRecord usageRecord = new UsageRecord(user_id, price,
                 Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage())));
@@ -70,7 +65,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         return usageRecord;
     }
 
-    public RefundRecord cancelMileage(String usage_id, LocalDateTime departureDateTime){
+    public RefundRecord cancelMileage(String usage_id, String trip_id, LocalDateTime departureDateTime){
         log.info("cancelMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
@@ -81,6 +76,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
 
         String user_id = usageRecord.getUserId();
         int price = usageRecord.getPrice();
+        int refund_price = 0;
         
         long dayDifference = calculateDateDifference(LocalDateTime.now(), departureDateTime);
 
@@ -89,21 +85,23 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         } else if(dayDifference > 6) { // 1주일 이상 남은 경우
             log.info("1주일 이상 남았으므로 50%({}원) 환불 처리됩니다.", price / 2);
             price /= 2;
+            refund_price = price;
         } else {
             log.info("1주일 이내 남았으므로 환불 처리되지 않습니다.");
+            refund_price = price;
             price = 0;
         }
+
+        TripGrpcResponse tripGrpcResponse = tripBlockingStub.getTripById(TripGrpcRequest.newBuilder()
+                .setTripId(trip_id).build());
+        UserMileage leaderMileage = userMileageRepository.findByUserId(tripGrpcResponse.getTripLeaderId())
+                .orElseThrow(() -> new NoSuchElementException("Leader mileage not found..."));
 
         UserMileage userMileage = userMileageRepository.findByUserId(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
 
-        String encryptedMileage = userMileage.getEncryptedMileage();
-        // 암호화된 마일리지 복호화
-        int current_mileage = Integer.parseInt(textEncryptor.decrypt(encryptedMileage));
-        int new_mileage = current_mileage + price;
-        String newEncryptedMileage = textEncryptor.encrypt(String.valueOf(new_mileage));
-        userMileage.setEncryptedMileage(newEncryptedMileage);
-        userMileageRepository.save(userMileage);
+        setMileage(leaderMileage, refund_price);
+        setMileage(userMileage, price);
 
         usageRecord.setRefundStatus(true);
 
@@ -112,6 +110,41 @@ public class MileageService extends NarangGrpc.NarangImplBase {
 
         refundRecordRepository.save(refundRecord);
         return refundRecord;
+    }
+
+    public RefundRecord rejectMileage(String usage_id){
+        log.info("rejectMileage 호출. usage_id : {}", usage_id);
+        UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
+                .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
+        if(usageRecord.getRefundStatus()){
+            throw new IllegalStateException("이미 환불된 기록입니다.");
+        }
+        String user_id = usageRecord.getUserId();
+        int price = usageRecord.getPrice();
+
+        UserMileage userMileage = userMileageRepository.findByUserId(user_id)
+                .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
+
+        setMileage(userMileage, price);
+
+        usageRecord.setRefundStatus(true);
+
+        RefundRecord refundRecord = new RefundRecord(user_id, price,
+                Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage())));
+
+        refundRecordRepository.save(refundRecord);
+        return refundRecord;
+    }
+
+    private void setMileage(UserMileage userMileage, int price){
+        String encryptedMileage = userMileage.getEncryptedMileage();
+        // 암호화된 마일리지 복호화
+        int current_mileage = Integer.parseInt(textEncryptor.decrypt(encryptedMileage));
+        int new_mileage = current_mileage + price;
+        if(new_mileage < 0){ throw new BusinessLogicException(ExceptionCode.PAY_NO_MONEY); }
+        String newEncryptedMileage = textEncryptor.encrypt(String.valueOf(new_mileage));
+        userMileage.setEncryptedMileage(newEncryptedMileage);
+        userMileageRepository.save(userMileage);
     }
 
     private Long calculateDateDifference(LocalDateTime startDate, LocalDateTime endDate) {
@@ -140,38 +173,6 @@ public class MileageService extends NarangGrpc.NarangImplBase {
             responseObserver.onCompleted();
         }
     }
-
-    public RefundRecord rejectMileage(String usage_id){
-        log.info("rejectMileage 호출. usage_id : {}", usage_id);
-        UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
-                .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
-        if(usageRecord.getRefundStatus()){
-            throw new IllegalStateException("이미 환불된 기록입니다.");
-        }
-        String user_id = usageRecord.getUserId();
-        int price = usageRecord.getPrice();
-
-        UserMileage userMileage = userMileageRepository.findByUserId(user_id)
-                .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
-
-        String encryptedMileage = userMileage.getEncryptedMileage();
-        // 암호화된 마일리지 복호화
-        int current_mileage = Integer.parseInt(textEncryptor.decrypt(encryptedMileage));
-        int new_mileage = current_mileage + price;
-        String newEncryptedMileage = textEncryptor.encrypt(String.valueOf(new_mileage));
-        userMileage.setEncryptedMileage(newEncryptedMileage);
-        userMileageRepository.save(userMileage);
-
-        usageRecord.setRefundStatus(true);
-        
-        RefundRecord refundRecord = new RefundRecord(user_id, price,
-                Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage())));
-
-        refundRecordRepository.save(refundRecord);
-
-        return refundRecord;
-    }
-
 
     @Override
     public void cancelPaymentRecord(PaymentRefundGrpcRequest request, StreamObserver<PaymentRefundGrpcResponse> responseObserver) {
