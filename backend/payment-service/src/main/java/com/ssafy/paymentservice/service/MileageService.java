@@ -6,6 +6,7 @@ import com.ssafy.paymentservice.db.entity.UserMileage;
 import com.ssafy.paymentservice.db.repository.RefundRecordRepository;
 import com.ssafy.paymentservice.db.repository.UsageRecordRepository;
 import com.ssafy.paymentservice.db.repository.UserMileageRepository;
+import com.ssafy.paymentservice.entity.RefundResponse;
 import io.grpc.stub.StreamObserver;
 import com.ssafy.paymentservice.exception.BusinessLogicException;
 import com.ssafy.paymentservice.exception.ExceptionCode;
@@ -65,7 +66,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         return usageRecord;
     }
 
-    public RefundRecord cancelMileage(String usage_id, String trip_id, LocalDateTime departureDateTime){
+    public RefundResponse cancelMileage(String usage_id, String trip_id, LocalDateTime departureDateTime){
         log.info("cancelMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
@@ -80,16 +81,24 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         
         long dayDifference = calculateDateDifference(LocalDateTime.now(), departureDateTime);
 
+        RefundResponse refundResponse = new RefundResponse();
+
         if(dayDifference > 13){ // 2주일 이상 남은 경우
             log.info("2주일 이상 남았으므로 전액({}원) 환불 처리됩니다.", price);
+            refundResponse.setMessage("2주일 이상 남았으므로 전액 환불 처리됩니다.");
+            refundResponse.setRefundPrice(price);
         } else if(dayDifference > 6) { // 1주일 이상 남은 경우
             log.info("1주일 이상 남았으므로 50%({}원) 환불 처리됩니다.", price / 2);
             price /= 2;
             refund_price = price;
+            refundResponse.setMessage("1주일 이상 남았으므로 50% 환불 처리됩니다.");
+            refundResponse.setRefundPrice(price);
         } else {
             log.info("1주일 이내 남았으므로 환불 처리되지 않습니다.");
             refund_price = price;
             price = 0;
+            refundResponse.setMessage("1주일 이내 남았으므로 환불 처리되지 않습니다.");
+            refundResponse.setRefundPrice(price);
         }
 
         TripGrpcResponse tripGrpcResponse = tripBlockingStub.getTripById(TripGrpcRequest.newBuilder()
@@ -109,10 +118,10 @@ public class MileageService extends NarangGrpc.NarangImplBase {
                 Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage())));
 
         refundRecordRepository.save(refundRecord);
-        return refundRecord;
+        return refundResponse;
     }
 
-    public RefundRecord rejectMileage(String usage_id){
+    public RefundResponse rejectMileage(String usage_id){
         log.info("rejectMileage 호출. usage_id : {}", usage_id);
         UsageRecord usageRecord = usageRecordRepository.findById(usage_id)
                 .orElseThrow(() -> new NoSuchElementException("Usage record not found..."));
@@ -121,6 +130,9 @@ public class MileageService extends NarangGrpc.NarangImplBase {
         }
         String user_id = usageRecord.getUserId();
         int price = usageRecord.getPrice();
+        RefundResponse refundResponse = new RefundResponse();
+        refundResponse.setRefundPrice(price);
+        refundResponse.setMessage("전액 환불 처리되었습니다.");
 
         UserMileage userMileage = userMileageRepository.findByUserId(user_id)
                 .orElseThrow(() -> new NoSuchElementException("User mileage not found..."));
@@ -133,7 +145,7 @@ public class MileageService extends NarangGrpc.NarangImplBase {
                 Integer.parseInt(textEncryptor.decrypt(userMileage.getEncryptedMileage())));
 
         refundRecordRepository.save(refundRecord);
-        return refundRecord;
+        return refundResponse;
     }
 
     private void setMileage(UserMileage userMileage, int price){
