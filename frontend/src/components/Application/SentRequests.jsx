@@ -41,6 +41,7 @@ export default function SentRequests() {
     }
   };
   const handleCancel = async (item) => {
+    console.table(item);
     try {
       // 예약금 환불이 필요한 경우
       if (item.alertType === "ACCEPT") {
@@ -54,7 +55,6 @@ export default function SentRequests() {
         // } catch (error) {
         //   console.error("Error refunding deposit:", error);
         // }
-        console.table(item);
         try {
           await axios.patch(
             `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
