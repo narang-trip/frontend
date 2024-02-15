@@ -54,18 +54,20 @@ const ReceivedRequests = () => {
       console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
       getMyList();
     }
-  }, [inView]);
+  }, [inView, pageNo]);
 
 
 
   return (
     <Fragment>
-      {tripData &&
-        tripData.map((trip, idx) => {
-          console.log(`idx : ${idx}`)
-        console.table(trip);
-      <TripInfo tripData={trip} key={idx} />
-    })}
+      <div>
+        {tripData &&
+          tripData.map((trip, idx) => {
+            console.log(`idx : ${idx}`)
+            console.table(trip);
+            return <TripInfo tripData={trip} key={idx} />
+          })}
+      </div>
       <div ref={ref}></div>
     </Fragment>
   );
