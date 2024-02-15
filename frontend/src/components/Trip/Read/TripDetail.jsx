@@ -48,7 +48,7 @@ export default function TripDetail() {
   // 취소하기 클릭
   const handleCancelClick = async () => {
     try {
-      await axios.post(
+      await axios.patch(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
         {
           tripId: tripId,
