@@ -42,6 +42,8 @@ export default function SentRequests() {
       );
 
       setStartDate(DateFormatter({ dateString: response.data.departureDate }));
+      console.log("날짜" + startDate);
+      
       return response.data;
     } catch (error) {
       console.error("여행 정보를 불러오는 중 에러 발생:", error);
