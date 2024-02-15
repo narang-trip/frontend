@@ -28,7 +28,7 @@ export default function TripWriteForm() {
     startDate: "",
     endDate: "",
     dateRange: "",
-    count: 1,
+    count: 2,
     myPosition: [],
     recruitPosition: [],
     planId: "",
@@ -283,6 +283,7 @@ export default function TripWriteForm() {
                     onChange={handleChange}
                     required
                     className="border rounded-sm border-neutral-300 p-1.5 w-1/6 text-neutral-700 placeholder:text-neutral-300 text-sm mr-10"
+                    min={2}
                     max={12}
                   />
                   <label className="mr-10 text-base font-medium">예약금</label>
@@ -293,6 +294,7 @@ export default function TripWriteForm() {
                     value={board.deposit}
                     onChange={handleChange}
                     required
+                    step="1000"
                     className="border rounded-sm border-neutral-300 p-1.5 w-1/4 text-neutral-700 placeholder:text-neutral-300 text-sm"
                   />
                 </div>
