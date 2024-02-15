@@ -169,10 +169,10 @@ const UpperNavbar = () => {
         )} 포지션으로 참여를 희망합니다`;
       case "ACCEPT":
         return `${event.senderName}님이 ${event.tripName}의 참여를 허락했습니다.`;
-      case "REFUSE":
+      case "REJECT":
         return `${event.tripName}의 참여가 거절당했습니다.`;
       default:
-        return "알 수 없는 알림입니다.";
+        return `${event.alertType} : 알 수 없는 알림입니다.`;
     }
   };
 

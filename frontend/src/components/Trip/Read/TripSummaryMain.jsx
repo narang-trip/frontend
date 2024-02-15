@@ -37,7 +37,7 @@ const TripSummaryMain = ({ trip }) => {
   };
 
   return (
-    <div className="w-12/12 rounded-l scale-100 hover:scale-125">
+    <div className="w-12/12 rounded-l ">
       <button
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
