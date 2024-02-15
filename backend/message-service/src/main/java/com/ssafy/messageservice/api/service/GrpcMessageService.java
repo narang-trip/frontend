@@ -8,6 +8,7 @@ import com.ssafy.messageservice.db.repository.ChatroomRepository;
 import com.ssafy.messageservice.db.repository.ChatroomUserRepository;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.narang.lib.*;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@GrpcService
+@GrpcService @Slf4j
 public class GrpcMessageService extends NarangGrpc.NarangImplBase {
 
     private final AlertService alertService;
@@ -76,11 +77,13 @@ public class GrpcMessageService extends NarangGrpc.NarangImplBase {
     @Override
     public void exileFromChatroom(ChatroomUserPatchGrpcRequest request, StreamObserver<ChatroomUserPatchGrpcResponse> responseObserver) {
 
-        chatroomUserRepository.delete(ChatroomUser.builder()
-                .id(request.getChatroomId())
-                .userId(request.getUserId())
-                .build());
+        Optional<Chatroom> chatroom = chatroomRepository.findById(request.getChatroomId());
 
+        chatroom.ifPresent(value -> chatroomUserRepository.delete(ChatroomUser.builder()
+                .chatroom(value)
+                .userId(request.getUserId())
+                .build()));
+        
         responseObserver.onNext(ChatroomUserPatchGrpcResponse.newBuilder().setResult(true).build());
         responseObserver.onCompleted();
     }
