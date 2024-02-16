@@ -14,7 +14,6 @@ const TripEditModal = ({ data, onClose }) => {
   const [imgUrl, setImgUrl] = useState("");
 
   const handleImageChange = (e) => {
-    console.log(e.target.files[0]);
     const file = e.target.files[0];
 
     setBoard((board) => ({
@@ -51,7 +50,6 @@ const TripEditModal = ({ data, onClose }) => {
         formData.append("tripImg", board.img);
       }
 
-      console.log(formData.get("tripImg"));
 
       // 데이터를 서버로 전송
       const response = await axios.patch(
@@ -63,8 +61,6 @@ const TripEditModal = ({ data, onClose }) => {
           },
         }
       );
-
-      console.log("서버 응답:", response.data);
 
       // 저장 후 모달 닫기
       onClose();

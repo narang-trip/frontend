@@ -40,7 +40,6 @@ const MakePlanPage = () => {
   }, [list]);
 
   const setInitSchedule = async () => {
-    console.log("MakePlanPage.jsx 26 planId", planId);
     if (planId !== undefined) {
       setIsCanModify(false);
       try {
@@ -48,21 +47,17 @@ const MakePlanPage = () => {
           `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan/${planId}`
         );
         setRes(response);
-        console.log("response.data : ", response.data);
         dispatch(
           scheduleActions.setSchedule(
             JSON.parse(decodeURIComponent(window.atob(response.data.planInfo)))
           )
         );
-        console.log("MakePlan.jsx 57", curUserId);
         if (response.data.ownerId === curUserId) setCheckuser(true);
         for (let i = 0; i < response.data.participantIds.length; i++) {
           if (response.data.participantIds[i].participantId === curUserId)
             setCheckuser(true);
         }
-        console.log("MakePlan.jsx 63", checkuser);
       } catch (error) {
-        console.log("Error : ", error);
         alert("삭제되었거나 없는 계획입니다.");
         navigate(-1);
       }
@@ -130,34 +125,6 @@ const MakePlanPage = () => {
     }
   }, [JSON.stringify(list.list)]);
 
-  // useMemo(() => {
-  //   // 현재 URL에서 Base64로 인코딩된 JSON 문자열 추출
-  //   let urlParams = new URL(document.URL).searchParams;
-  //   let base64EncodedString = urlParams.get("a");
-  //   if (base64EncodedString !== null) {
-  //     console.log(base64EncodedString);
-
-  //     // Base64 디코딩 후 UTF-8 디코딩하여 JSON 문자열 추출
-  //     let utf8EncodedString = atob(base64EncodedString);
-  //     console.log(utf8EncodedString);
-  //     let jsonString = decodeURIComponent(escape(utf8EncodedString));
-
-  //     // JSON 문자열을 JavaScript 객체로 변환
-  //     let getList = JSON.parse(jsonString);
-  //     console.log(getList.blackHeight);
-
-  //     if (getList.blackHeight !== 0) {
-  //       dispatch(scheduleActions.setSchedule(getList));
-  //       list = getList;
-  //       console.log(list);
-  //       window.history.pushState(
-  //         {},
-  //         null,
-  //         "/makeplan/?a=" + btoa(unescape(encodeURIComponent(JSON.stringify(list))))
-  //       );
-  //     }
-  //   }
-  // }, [list]);
   const onDragStart = (start) => {
     if (!isCanModify) {
       start.preventDefault();
@@ -171,7 +138,6 @@ const MakePlanPage = () => {
     const idx = Number(destination.droppableId.substr(4));
     if (source.droppableId === "PlaceCard") {
       // 추가;
-      console.log(card[source.index].loca);
       const schedule = {
         img: card[source.index].photo,
         title: card[source.index].name,
@@ -203,7 +169,6 @@ const MakePlanPage = () => {
     const base64Incoding = window.btoa(
       encodeURIComponent(JSON.stringify(list))
     );
-    console.log("res 테스트 : ", res);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_PLAN_REQUEST_URI}/update`,
@@ -217,9 +182,8 @@ const MakePlanPage = () => {
           planInfo: base64Incoding,
         }
       );
-      console.log("수정결과 : ", response);
     } catch (error) {
-      console.log("수정 Error : ", error);
+      console.error("수정 Error : ", error);
     }
   };
 
@@ -229,7 +193,6 @@ const MakePlanPage = () => {
       doModifyPlan();
       setIsCanModify(false);
       setCheckuser(true);
-
     } else {
       setIsSavePlanOpen(true);
     }
@@ -248,9 +211,8 @@ const MakePlanPage = () => {
       const response = await axios.delete(
         `${import.meta.env.VITE_PLAN_REQUEST_URI}/plan/${planId}`
       );
-      console.log("삭제결과 : ", response);
     } catch (error) {
-      console.log("삭제중 Error: ", error);
+      console.error("삭제중 Error: ", error);
     }
     navigate(-1);
   };
@@ -280,22 +242,22 @@ const MakePlanPage = () => {
         </DragDropContext>
         {isCanModify && (
           <button
-            className="absolute top-0 right-0 border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+            className="absolute top-0 right-0 px-2 py-1 text-xl text-white bg-yellow-400 border-2 border-yellow-600 rounded-md"
             onClick={savePlan}
           >
             저장하기
           </button>
         )}
         {checkuser && (
-          <div className="absolute flex top-0 right-0 gap-2">
+          <div className="absolute top-0 right-0 flex gap-2">
             <button
-              className="border-2 border-yellow-600 rounded-md bg-yellow-400 text-xl text-white px-2 py-1"
+              className="px-2 py-1 text-xl text-white bg-yellow-400 border-2 border-yellow-600 rounded-md"
               onClick={modifyPlan}
             >
               수정하기
             </button>
             <button
-              className="border-2 border-red-600 rounded-md bg-red-400 text-xl text-white px-2 py-1"
+              className="px-2 py-1 text-xl text-white bg-red-400 border-2 border-red-600 rounded-md"
               onClick={deletePlan}
             >
               삭제하기
@@ -310,6 +272,6 @@ const MakePlanPage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default MakePlanPage;

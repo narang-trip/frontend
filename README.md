@@ -1,11 +1,4 @@
-# 과제 목차
-
-[1. 조용환](#조용환)
-[2. 노세희](#노세희)
-[3. 김영섭](#김영섭)
-[4. 송윤재](#송윤재)
-[5. 조에진](#조예진)
-[6. 구본승](#구본승)
+```
 
 # 목차
 
@@ -324,3 +317,4 @@ Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woo
 - [노세희](https://github.com/se2develop) :
 - [김영섭](https://github.com/youngkimi) :
 - [송윤재](https://github.com/Song-YoonJae) :
+```

@@ -5,8 +5,6 @@ import { Fragment } from "react";
 import UpperNavbar from "../components/UpperNavBar";
 
 function RootLayout() {
-  // const navigation = useNavigation();
-
   return (
     <Fragment>
       <UpperNavbar />

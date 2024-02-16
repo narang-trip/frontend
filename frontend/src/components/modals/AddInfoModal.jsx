@@ -59,7 +59,6 @@ const AddInfoModal = ({ userId, data, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(userData);
     try {
       const response = await axios.patch(
         `${import.meta.env.VITE_USER_REQUEST_URI}/profile/${userId}`,
@@ -71,7 +70,6 @@ const AddInfoModal = ({ userId, data, onClose }) => {
         }
       );
 
-      console.log("요청 성공", response.data);
 
       // Close the modal after successful update
       onClose();
