@@ -1,20 +1,29 @@
-import { Fragment, useState } from "react";
+import axios from "axios";
+import { Fragment, useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import TripSummaryMain from "../components/Trip/Read/TripSummaryMain";
 
-const Carousel22 = () => {
+// 테스트용 주석입니다.
+const CarouselTemplete = ({ list }) => {
   const [transformValue, setTransformValue] = useState(0);
   const [itemWidth, setItemWidth] = useState(0);
+
+  const tmpList = [];
+  for (let i = 0; i < list.length; i += 2) {
+    tmpList.push(list.slice(i, i + 2));
+  }
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 4,
+      items: 3,
       slidesToSlide: 1, // optional, default to 1.
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
       items: 2,
-      slidesToSlide: 2, // optional, default to 1.
+      slidesToSlide: 1, // optional, default to 1.
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
@@ -35,41 +44,34 @@ const Carousel22 = () => {
     setItemWidth(currentWidth);
   };
   return (
-    <Fragment>
+    <div className="h-[40vh]">
       <Carousel
         swipeable={false}
-        draggable={false}
+        draggable={true}
         showDots={true}
         responsive={responsive}
         ssr={true} // means to render carousel on server-side.
         infinite={true}
         autoPlay={true}
-        autoPlaySpeed={2000}
+        autoPlaySpeed={3000}
         keyBoardControl={true}
         customTransition="transform 500ms ease-in-out 0s"
         transitionDuration={500}
-        containerClass="carousel-container"
+        containerClass="carousel-container w-full"
         removeArrowOnDeviceType={["tablet", "mobile"]}
         dotListClass="custom-dot-list-style"
         itemClass="carousel-item-padding-40-px"
       >
-        <div
-          id="carousel_item"
-          className="h-[200px] border border-black boder-solid flex flex-wrap"
-        >
-          <div className="w-[45%] h[auto] m-1 border border-solid border-black carousel-item"></div>
-          <div className="w-[45%] h[auto] m-1 border border-solid border-black"></div>
-          <div className="w-[45%] h[auto] m-1 border border-solid border-black"></div>
-          <div className="w-[45%] h[auto] m-1 border border-solid border-black"></div>
-        </div>
-        <div className="h-[200px] border border-black boder-solid">Item 2</div>
-        <div className="h-[200px] border border-black boder-solid">Item 3</div>
-        <div className="h-[200px] border border-black boder-solid">Item 4</div>
-        <div className="h-[200px] border border-black boder-solid">Item 5</div>
-        <div className="h-[200px] border border-black boder-solid">Item 6</div>
+        {tmpList.map((tripList, index) => (
+          <div key={index} className="h-full">
+            {tripList.map((trip, tripIndex) => (
+              <TripSummaryMain key={tripIndex} trip={trip} />
+            ))}
+          </div>
+        ))}
       </Carousel>
-    </Fragment>
+    </div>
   );
 };
 
-export default Carousel22;
+export default CarouselTemplete;

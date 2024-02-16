@@ -5,6 +5,22 @@ pipeline {
     environment {
         releaseServerAccount = 'ubuntu'
         releaseServerUri = 'i10a701.p.ssafy.io'
+        VITE_GOOGLEMAP_API_KEY=credentials ('GOOGLEMAP_API_KEY')
+        VITE_PLACES_API_KEY=credentials ('PLACES_API_KEY')
+        VITE_KAKAO_CLIENT_ID=credentials ('KAKAO_CLIENT_ID')
+        VITE_KAKAO_REDIRECT_URI=credentials ('KAKAO_REDIRECT_URI')
+        VITE_NAVER_CLIENT_ID=credentials ('NAVER_CLIENT_ID')
+        VITE_NAVER_REDIRECT_URI=credentials ('NAVER_REDIRECT_URI')
+        VITE_NAVER_STATE=credentials ('NAVER_STATE')
+
+        VITE_CHAT_REQUEST_URI=credentials ('CHAT_REQUEST_URI')
+        VITE_TRIP_REQUEST_URI=credentials ('TRIP_REQUEST_URI')
+        VITE_ALERT_REQUEST_URI=credentials ('ALERT_REQUEST_URI')
+        VITE_USER_REQUEST_URI=credentials ('USER_REQUEST_URI')
+        VITE_PLAN_REQUEST_URI=credentials ('PLAN_REQUEST_URI')
+        VITE_PAYMENT_REQUEST_URI=credentials ('PAYMENT_REQUEST_UR')
+        VITE_REQUEST_API=credentials ('REQUEST_API')
+
     }
     stages {
         stage('Checkout') {
@@ -29,17 +45,23 @@ pipeline {
         }
         stage('Docker Image Build') {
             steps {
-                // 빌드된 frontend 파일 도커 이미지로 생성 
-                
-                sh('(docker ps -a | grep "3000" | awk \'{print $1}\') | xargs docker stop || true' )
-
-                sh('chmod +x ./jenkins/port-refresh-frontend.sh')
-
-                // echo 'No trip-service running . . . About to Build a image . . .'
+                // 도커 컨테이너에 프론트앤드 있으면 중지
+                sh 'docker stop frontend || true'
+                // 도커 컨테이너에 프론트앤드 있으면 삭제
+                sh 'docker rm frontend || true'
+                // 
                 sh 'docker build -t frontend -f ./frontend/Dockerfile .'
                 // 배포 스크립트 실행 (예: Docker 컨테이너에 배포)
-                sh 'docker run -p 3000:3716 -d frontend'
+                sh 'docker run --name frontend -p 3000:3000 --network Narang -d frontend'
+                
+               
             }
         }
+        // stage('Restart Nginx') {
+        //     steps {
+        //          // 도커 nginx 재시작
+        //         sh 'docker restart nginx'
+        //     }
+        // }
     }
 }

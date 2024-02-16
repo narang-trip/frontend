@@ -1,23 +1,73 @@
+import { useRef } from "react";
+import axios from "axios";
+import { IoMdClose } from "react-icons/io";
+
 const LoginModal = (props) => {
+  const modalBG = useRef(null);
+  const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+  const kakaoRedirectURI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+  const naverClientId = import.meta.env.VITE_NAVER_CLIENT_ID;
+  const naverRedirectURI = import.meta.env.VITE_NAVER_REDIRECT_URI;
+  const naverState = "false";
+  const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
+  const kakaoLoginURI2 = `${
+    import.meta.env.VITE_USER_REQUEST_URI
+  }/oauth2/authorization/kakao`;
+  // const kakaoLoginURI3 =
+  //   `https://i10a701.p.ssafy.io/oauth2/authorization/kakao`;
+  // const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
+  const naverLoginURI2 = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=${naverState}&redirect_uri=${naverRedirectURI}`;
+
+  const kakaoLogin = async () => {
+    try {
+      const res = await axios.get(kakaoLoginURI2);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="justify-center">
-      <button className="" onClick={props.onClose}>
-        x
-      </button>
-      <h3 className="">로 그 인</h3>
-      <div className="flex flex-col">
-        <button>
-          <img
-            className="w-36 h-16 object-cover rounded-xl"
-            src="assets/kakao_login.png"
-          />
-        </button>
-        <button>
-          <img
-            className="w-36 h-16 object-cover rounded-xl"
-            src="assets/naver_login.png"
-          />
-        </button>
+    <div
+      className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-70"
+      onClick={props.onClose}
+      ref={modalBG}
+    >
+      <div
+        className="z-10 px-10 py-4 bg-white rounded-3xl w-96 h-80"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <div className="font-spoqa">
+          <div className="flex justify-end mr-1">
+            <button
+              className="mb-4 text-xl font-semibold hover:text-red-600"
+              onClick={props.onClose}
+            >
+              <IoMdClose />
+            </button>
+          </div>
+          <p className="mb-10 text-xl font-extrabold text-center">
+            나랑 로그인🛫
+          </p>
+          <div className="flex flex-col items-center">
+            <a href={naverLoginURI2}>
+              <img
+                className="object-cover  w-[200px] rounded-xl m-2"
+                src="assets/naver_login.png"
+                // onClick={naverLogin}
+              />
+            </a>
+            <a href={kakaoLoginURI}>
+              <img
+                className="object-cover w-[200px] rounded-xl m-2"
+                src="assets/kakao_login.png"
+                // onClick={kakaoLogin}
+              />
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );
