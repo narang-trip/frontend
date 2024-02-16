@@ -43,7 +43,6 @@ const ApplicationModal = ({ data, onClose }) => {
         }`
       );
 
-      console.log(response);
       setBalance(response.data);
     } catch (error) {
       console.error("에러 발생", error);
@@ -90,8 +89,12 @@ const ApplicationModal = ({ data, onClose }) => {
 
   // 신청하기 버튼 눌렀을 때
   const handleSubmit = async () => {
+<<<<<<< HEAD
     console.log(postData.position);
 
+=======
+   
+>>>>>>> b5b5154831c939a636318572de0a2d30f901bb8e
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend`,
@@ -130,15 +133,12 @@ const ApplicationModal = ({ data, onClose }) => {
         }&price=${price}&return_url=${url}`
       );
 
-      console.log(response.data.next_redirect_pc_url);
       // 서버 응답에서 리다이렉션 URL을 가져옴
       const redirectUrl = response.data.next_redirect_pc_url;
 
       // 리다이렉션 수행
       window.location.href = redirectUrl;
       handleBalance();
-
-      console.log("서버 응답:", response.data);
     } catch (error) {
       console.error("에러 발생:", error);
     }

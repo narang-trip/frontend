@@ -14,7 +14,7 @@ import TalkBubble from "../ui/TalkBubble";
 
 const AlertAnimation = ({ color }) => {
   return (
-    <span className="relative flex h-3 w-3">
+    <span className="relative flex w-3 h-3">
       <span
         className={`animate-ping absolute inline-flex h-full w-full rounded-full ${color} opacity-75`}
         style={{ right: -22, top: "-8px" }}
@@ -56,7 +56,6 @@ const UpperNavbar = () => {
             `현재 알림이 ${res.data.alertList.length}개 와 있습니다.`
           );
         }
-        console.log(res.data.alertList);
       } catch (error) {
         console.error(error);
       }
@@ -191,7 +190,7 @@ const UpperNavbar = () => {
         </button>
       )}
       {sessionToken !== null && (
-        <div className="flex justify-between space-x-4 relative">
+        <div className="relative flex justify-between space-x-4">
           <Link to="/applicantList" className="relative flex items-center">
             {alertAmount > 0 && <AlertAnimation color={conceptColorClass} />}
             🔔

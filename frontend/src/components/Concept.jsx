@@ -5,16 +5,21 @@ import ButtonConcept from "../ui/ButtonConcept";
 
 export default function Concept() {
   const dispatch = useDispatch();
+<<<<<<< HEAD
   const { concept: selectedConcept } = useSelector((state) => state.concept);
   const { conceptColor: selectedConceptColor } = useSelector(
     (state) => state.concept
   );
+=======
+  const {concept : selectedConcept} = useSelector((state) => state.concept)
+  const {conceptColor : selectedConceptColor} = useSelector((state) => state.concept)
+>>>>>>> b5b5154831c939a636318572de0a2d30f901bb8e
   const clickHandler = (concept) => {
     dispatch(conceptActions.changeConcept({ concept: concept }));
   };
 
   return (
-    <div className="flex justify-between mt-3 mx-4">
+    <div className="flex justify-between mx-4 mt-3">
       {conceptList.map((concept) => {
         const colorClass = conceptButtonColorObject[concept];
         const isSelected = concept === selectedConcept;

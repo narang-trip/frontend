@@ -3,7 +3,6 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 
 const PlaceCard = () => {
   const searchResults = useSelector((state) => state.places);
-  console.log(searchResults);
 
   return (
     <Droppable droppableId="PlaceCard">

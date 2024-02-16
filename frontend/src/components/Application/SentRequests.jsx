@@ -31,7 +31,6 @@ export default function SentRequests() {
   };
 
   const fetchTripInfo = async (tripId) => {
-    console.log("fetchTripInfo 의 tripId : ", tripId)
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/${tripId}`
@@ -43,20 +42,9 @@ export default function SentRequests() {
     }
   };
   const handleCancel = async (item) => {
-    console.table(item);
     try {
       // 예약금 환불이 필요한 경우
       if (item.alertType === "ACCEPT") {
-        // try {
-        //   await axios.post(
-        //     `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refund?usage_id=${
-        //       item.usageId
-        //     }&departure_datetime=${item.tripInfo.departureDate}&trip_id=${item.tripId}`
-        //   );
-        //   console.log("예약금 일부 환불 성공");
-        // } catch (error) {
-        //   console.error("Error refunding deposit:", error);
-        // }
         try {
           await axios.patch(
             `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
@@ -71,24 +59,23 @@ export default function SentRequests() {
               },
             }
           );
-          console.log("여행 떠나기 성공");
         } catch (error) {
           console.error("Error refunding deposit:", error);
         }
       }
       if (item.alertType === "REQUEST") {
-        console.log(item.usageId);
+  
         try {
           await axios.post(
-            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject?usage_id=${item.usageId
+            `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/reject?usage_id=${
+              item.usageId
             }`
           );
-          console.log("예약금 환불 성공");
         } catch (error) {
           console.error("Error refunding deposit:", error);
         }
       }
-      // 취소에 대한 요청을 보내거나 삭제 로직을 구현
+      // 취소에 대한 요청을 보내거나 삭제 로직
       await axios.delete(
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/${item.id}`
       );
@@ -134,19 +121,21 @@ export default function SentRequests() {
           <div>
             <div className="flex justify-around mb-4">
               <button
-                className={`p-3 text-sm rounded-full ${selectedType === "ALL"
-                  ? "text-neutral-700 font-extrabold transition ease-in-out scale-110 duration-200"
-                  : "font-medium"
-                  }`}
+                className={`p-3 text-sm rounded-full ${
+                  selectedType === "ALL"
+                    ? "text-neutral-700 font-extrabold transition ease-in-out scale-110 duration-200"
+                    : "font-medium"
+                }`}
                 onClick={() => setSelectedType("ALL")}
               >
                 ALL
               </button>
               <button
-                className={`p-3 text-sm rounded-full ${selectedType === "REQUEST"
-                  ? "text-blue-700 font-extrabold transition ease-in-out scale-110 duration-200"
-                  : "font-medium"
-                  }`}
+                className={`p-3 text-sm rounded-full ${
+                  selectedType === "REQUEST"
+                    ? "text-blue-700 font-extrabold transition ease-in-out scale-110 duration-200"
+                    : "font-medium"
+                }`}
                 onClick={() =>
                   setSelectedType((prev) =>
                     prev === "REQUEST" ? "ALL" : "REQUEST"
@@ -156,10 +145,11 @@ export default function SentRequests() {
                 REQUEST
               </button>
               <button
-                className={`p-3 text-sm rounded-full ${selectedType === "ACCEPT"
-                  ? "text-green-700 font-extrabold transition ease-in-out scale-110 duration-200"
-                  : "font-medium"
-                  }`}
+                className={`p-3 text-sm rounded-full ${
+                  selectedType === "ACCEPT"
+                    ? "text-green-700 font-extrabold transition ease-in-out scale-110 duration-200"
+                    : "font-medium"
+                }`}
                 onClick={() =>
                   setSelectedType((prev) =>
                     prev === "ACCEPT" ? "ALL" : "ACCEPT"
@@ -169,10 +159,11 @@ export default function SentRequests() {
                 ACCEPT
               </button>
               <button
-                className={`p-3 text-sm rounded-full ${selectedType === "REJECT"
-                  ? "text-red-700 font-extrabold transition ease-in-out scale-110 duration-200"
-                  : "font-medium"
-                  }`}
+                className={`p-3 text-sm rounded-full ${
+                  selectedType === "REJECT"
+                    ? "text-red-700 font-extrabold transition ease-in-out scale-110 duration-200"
+                    : "font-medium"
+                }`}
                 onClick={() =>
                   setSelectedType((prev) =>
                     prev === "REJECT" ? "ALL" : "REJECT"
@@ -183,71 +174,71 @@ export default function SentRequests() {
               </button>
             </div>
             {sentData && sentData.length > 0 ? (
-              sentData.map(
-                (item, idx) => {
-                  console.table(item);
-                  return (selectedType === "ALL" ||
+              sentData.map((item, idx) => {
+                return (
+                  (selectedType === "ALL" ||
                     item.alertType === selectedType) && (
-                      <div className="flex justify-between" key={idx}>
-                        <div
-                          className={`w-4/5 m-4 border border-neutral-400 rounded-lg p-2`}
-                        >
-                          <div className="grid grid-cols-5">
-                            <div className="col-span-1 m-2">
-                              <img
+                    <div className="flex justify-between" key={idx}>
+                      <div
+                        className={`w-4/5 m-4 border border-neutral-400 rounded-lg p-2`}
+                      >
+                        <div className="grid grid-cols-5">
+                          <div className="col-span-1 m-2">
+                            <img
                               src={item.tripInfo && item.tripInfo.tripImgUrl}
                               className="w-20 h-20 rounded-2xl"
                             />
-                            </div>
-                            <div className="col-span-3">
-                              <button
-                                onClick={() =>
-                                  tripDetailHandler(item.tripInfo.tripId)
-                                }
-                                className="mb-1 text-sm font-semibold"
-                              >
-                                {item.tripInfo.tripName}
-                              </button>
-                              <div className="ml-1 text-start">
-                                <div className="flex items-center">
-                                  <SlLocationPin className="mr-3" size="14" />
-                                  <p className="text-sm">
-                                    {item.tripInfo.continent},{" "}
-                                    {item.tripInfo.country}, {item.tripInfo.city}
-                                  </p>
-                                </div>
-                                <div className="flex items-center">
-                                  <SlPeople className="mr-3" size="14" />
-                                  <p className="text-sm">
-                                    {item && item.tripInfo.participants.length} /{" "}
-                                    {item.tripInfo.tripParticipantsSize}
-                                  </p>
-                                </div>
-                                <div className="flex items-center">
-                                  <SlInfo className="mr-3" size="14" />
-                                  <p className="text-sm">
-                                    {item.tripInfo.tripDesc.length > 18
-                                      ? shortenDescription(item.tripInfo.tripDesc)
-                                      : item.tripInfo.tripDesc}
-                                  </p>
-                                </div>
+                          </div>
+                          <div className="col-span-3">
+                            <button
+                              onClick={() =>
+                                tripDetailHandler(item.tripInfo.tripId)
+                              }
+                              className="mb-1 text-sm font-semibold"
+                            >
+                              {item.tripInfo.tripName}
+                            </button>
+                            <div className="ml-1 text-start">
+                              <div className="flex items-center">
+                                <SlLocationPin className="mr-3" size="14" />
+                                <p className="text-sm">
+                                  {item.tripInfo.continent},{" "}
+                                  {item.tripInfo.country}, {item.tripInfo.city}
+                                </p>
+                              </div>
+                              <div className="flex items-center">
+                                <SlPeople className="mr-3" size="14" />
+                                <p className="text-sm">
+                                  {item && item.tripInfo.participants.length} /{" "}
+                                  {item.tripInfo.tripParticipantsSize}
+                                </p>
+                              </div>
+                              <div className="flex items-center">
+                                <SlInfo className="mr-3" size="14" />
+                                <p className="text-sm">
+                                  {item.tripInfo.tripDesc.length > 18
+                                    ? shortenDescription(item.tripInfo.tripDesc)
+                                    : item.tripInfo.tripDesc}
+                                </p>
                               </div>
                             </div>
-                            <div className="flex items-center justify-center col-span-1">
-                              <p className={`${getColorClass(item.alertType)}`}>
-                                {item.alertType === "REQUEST"
-                                  ? "요청중"
-                                  : item.alertType === "ACCEPT"
-                                    ? "승인완료"
-                                    : "거절"}
-                              </p>
-                            </div>
+                          </div>
+                          <div className="flex items-center justify-center col-span-1">
+                            <p className={`${getColorClass(item.alertType)}`}>
+                              {item.alertType === "REQUEST"
+                                ? "요청중"
+                                : item.alertType === "ACCEPT"
+                                ? "승인완료"
+                                : "거절"}
+                            </p>
                           </div>
                         </div>
-                        <button onClick={() => handleCancel(item)}>취소</button>
                       </div>
-                    )
-                })
+                      <button onClick={() => handleCancel(item)}>취소</button>
+                    </div>
+                  )
+                );
+              })
             ) : (
               <div>아직 신청한 동행이 없습니다 !!</div>
             )}

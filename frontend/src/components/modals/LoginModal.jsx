@@ -9,7 +9,25 @@ const LoginModal = (props) => {
   const naverRedirectURI = import.meta.env.VITE_NAVER_REDIRECT_URI;
   const naverState = "false";
   const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
+<<<<<<< HEAD
   const naverLoginURI = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=${naverState}&redirect_uri=${naverRedirectURI}`;
+=======
+  const kakaoLoginURI2 = `${
+    import.meta.env.VITE_USER_REQUEST_URI
+  }/oauth2/authorization/kakao`;
+  // const kakaoLoginURI3 =
+  //   `https://i10a701.p.ssafy.io/oauth2/authorization/kakao`;
+  // const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
+  const naverLoginURI2 = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=${naverState}&redirect_uri=${naverRedirectURI}`;
+
+  const kakaoLogin = async () => {
+    try {
+      const res = await axios.get(kakaoLoginURI2);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+>>>>>>> b5b5154831c939a636318572de0a2d30f901bb8e
 
   return (
     <div
