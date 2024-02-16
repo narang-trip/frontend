@@ -229,7 +229,7 @@ const MakePlanPage = () => {
       doModifyPlan();
       setIsCanModify(false);
       setCheckuser(true);
-      navigate("/myplan");
+
     } else {
       setIsSavePlanOpen(true);
     }
