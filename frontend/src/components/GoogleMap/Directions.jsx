@@ -52,7 +52,6 @@ const Directions = ({ origin, destination, onDirectionsInfoUpdate }) => {
   };
 
   useEffect(() => {
-    // console.log("Directions updated:", setDirections);
   }, [setDirections]);
 
   return (

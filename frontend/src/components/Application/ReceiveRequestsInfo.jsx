@@ -43,9 +43,6 @@ const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
         }
       );
       
-      // const response1 = await axios.patch(
-      //   `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend/${data.id}/ACCEPT`
-      // );
       // 서버 응답을 이용해 필요한 작업 수행
       console.log("서버 응답:", response.data);
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
@@ -74,12 +71,6 @@ const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
         }
       );
       console.log("서버응답 : ", response.data);
-      // const response1 = await axios.patch(
-      //   `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend/${data.id}/REJECT`
-      // );
-      // const response2 =  await axios.post(
-      //   `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/refundusage_id=${data.usageId}&departure_datetime=${formatDate(trip.departureDate)}`,
-      // );
   
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(false);
