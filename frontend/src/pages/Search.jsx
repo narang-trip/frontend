@@ -196,7 +196,6 @@ const SearchPage = () => {
   useEffect(() => {
     // inView가 true일때 데이터를 가져옴
     if (inView) {
-      console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
       getBoardList();
     }
   }, [inView, requestData]);
