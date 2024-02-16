@@ -19,7 +19,6 @@ const ApplicationModal = ({ data, onClose }) => {
   const [price, setPrice] = useState(0);
 
   const userId = useSelector((state) => state.auth.userId);
-  // const userId = "4c81d009-3270-3163-bd0e-86b257730661"
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handleChangeComment = (e) => {
@@ -39,7 +38,9 @@ const ApplicationModal = ({ data, onClose }) => {
   const handleBalance = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${postData.senderId}`
+        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${
+          postData.senderId
+        }`
       );
 
       console.log(response);
@@ -79,7 +80,9 @@ const ApplicationModal = ({ data, onClose }) => {
     tripName: data.tripName,
     senderId: userId,
     receiverId: data.tripLeaderId,
-    position: window.btoa(encodeURIComponent(JSON.stringify(selectedPositions))),
+    position: window.btoa(
+      encodeURIComponent(JSON.stringify(selectedPositions))
+    ),
     aspiration: comment,
     alertType: "REQUEST",
     read: false,
@@ -87,8 +90,8 @@ const ApplicationModal = ({ data, onClose }) => {
 
   // 신청하기 버튼 눌렀을 때
   const handleSubmit = async () => {
-  console.log(postData.position);
-   
+    console.log(postData.position);
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/attend`,
@@ -99,12 +102,6 @@ const ApplicationModal = ({ data, onClose }) => {
           },
         }
       );
-
-      // const response2 = await axios.post(
-      //   `https://i10a701/p/ssafy/io/api/payment/use?user_id=${postData.senderId}&price=${data.tripDeposit}&trip_id=${data.tripId}`
-      // );
-
-      // console.log(response2);
 
       if (response.status === 200) {
         // 신청 성공 여부 true
@@ -123,10 +120,14 @@ const ApplicationModal = ({ data, onClose }) => {
     setIsRedirecting(true);
 
     try {
-      const url = `${import.meta.env.VITE_REQUEST_API}/detail/${postData.tripId}`;
+      const url = `${import.meta.env.VITE_REQUEST_API}/detail/${
+        postData.tripId
+      }`;
 
       const response = await axios.post(
-        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/ready?user_id=${postData.senderId}&price=${price}&return_url=${url}`
+        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/ready?user_id=${
+          postData.senderId
+        }&price=${price}&return_url=${url}`
       );
 
       console.log(response.data.next_redirect_pc_url);
