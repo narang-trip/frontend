@@ -11,8 +11,12 @@
 `npm install @react-google-maps/api`
 
 ### 기본 지도 띄우기 : GoogleMap.jsx
+<<<<<<< HEAD
  
  
+=======
+
+>>>>>>> develop_frontend
 ---
 
 - `React.memo`를 이용하여 변경시에만 작동하도록 설정

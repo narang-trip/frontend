@@ -1,6 +1,8 @@
 import { useCallback, useRef, useEffect, useState } from "react";
 
-const SearchBox = ({ map, onPlaceSelected }) => {
+import "../../css/SearchBox.css";
+
+const SearchBox = ({ map, onPlaceSelected, isCanModify }) => {
   const input = useRef(null);
   const searchBox = useRef(null);
   const [selectedPlaces, setSelectedPlaces] = useState([]);
@@ -24,6 +26,7 @@ const SearchBox = ({ map, onPlaceSelected }) => {
     }
   }, [onPlaceSelected]);
 
+
   useEffect(() => {
     if (map) {
       searchBox.current = new window.google.maps.places.SearchBox(
@@ -40,7 +43,20 @@ const SearchBox = ({ map, onPlaceSelected }) => {
     };
   }, [map, handleOnPlacesChanged]);
 
-  return <input ref={input} placeholder="장소를 검색해주세요" type="text" />;
+  return (
+    <div className="flex flex-col justify-center my-2 itmes-center">
+      <div className="flex flex-row justify-center">
+        <input
+          ref={input}
+          placeholder="장소를 입력해주세요"
+          type="text"
+          disabled={!isCanModify}
+          className="w-full p-2 text-sm border rounded-sm border-neutral-300"
+        />
+        {/* <button onClick={handleSearchButtonClick} className="p-1 rounded-md text-neutral-700 bg-neutral-50 ring-1 ring-inset ring-neutral-700/10 hover:bg-neutral-100">검색</button> */}
+      </div>
+    </div>
+  );
 };
 
 export default SearchBox;
