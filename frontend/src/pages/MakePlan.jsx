@@ -125,34 +125,6 @@ const MakePlanPage = () => {
     }
   }, [JSON.stringify(list.list)]);
 
-  // useMemo(() => {
-  //   // 현재 URL에서 Base64로 인코딩된 JSON 문자열 추출
-  //   let urlParams = new URL(document.URL).searchParams;
-  //   let base64EncodedString = urlParams.get("a");
-  //   if (base64EncodedString !== null) {
-  //     console.log(base64EncodedString);
-
-  //     // Base64 디코딩 후 UTF-8 디코딩하여 JSON 문자열 추출
-  //     let utf8EncodedString = atob(base64EncodedString);
-  //     console.log(utf8EncodedString);
-  //     let jsonString = decodeURIComponent(escape(utf8EncodedString));
-
-  //     // JSON 문자열을 JavaScript 객체로 변환
-  //     let getList = JSON.parse(jsonString);
-  //     console.log(getList.blackHeight);
-
-  //     if (getList.blackHeight !== 0) {
-  //       dispatch(scheduleActions.setSchedule(getList));
-  //       list = getList;
-  //       console.log(list);
-  //       window.history.pushState(
-  //         {},
-  //         null,
-  //         "/makeplan/?a=" + btoa(unescape(encodeURIComponent(JSON.stringify(list))))
-  //       );
-  //     }
-  //   }
-  // }, [list]);
   const onDragStart = (start) => {
     if (!isCanModify) {
       start.preventDefault();
@@ -221,7 +193,6 @@ const MakePlanPage = () => {
       doModifyPlan();
       setIsCanModify(false);
       setCheckuser(true);
-
     } else {
       setIsSavePlanOpen(true);
     }
@@ -301,6 +272,6 @@ const MakePlanPage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default MakePlanPage;
