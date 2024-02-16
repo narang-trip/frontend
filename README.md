@@ -72,13 +72,13 @@
     <tr>
         <td height="140px" align="center"> <a href="https://github.com/yhc-key">
             <img src="https://avatars.githubusercontent.com/yhc-key" width="140px" /> <br><br> 👑 조용환 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/">
-            <img src="https://avatars.githubusercontent.com/" width="140px" /> <br><br> ⛑ 구본승 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/kbs3103">
+            <img src="https://avatars.githubusercontent.com/kbs3103" width="140px" /> <br><br> ⛑ 구본승 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/se2develop">
             <img src="https://avatars.githubusercontent.com/se2develop" width="140px" /> <br><br> ⛑ 노세희 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/youngkimi">
             <img src="https://avatars.githubusercontent.com/youngkimi" width="140px" /> <br><br> ⛑ 김영섭 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/">
+        <td height="140px" align="center"> <a href="https://github.com/Song-YoonJae">
             <img src="./assets/윤재정장.png" width="140px" /> <br><br> ⛑ 송윤재 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/">
             <img src="https://avatars.githubusercontent.com/" width="140px" /> <br><br> ⛑ 조예진 <br>(Back-End) </a> <br></td>
@@ -262,19 +262,19 @@ Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woo
 - 에픽은 개발, 미팅, 학습 등으로 구성했습니다.
 - 스토리는 명확한 전달을 위하여 `API 명세서 작성`와 같이 작성했습니다.
 - 작업현황을 지라에 반영함으로써 각 팀원이 어떤 작업을 하고있는지, 일정에 딜레이가 있는지 한 눈에 확인할 수 있었습니다.<br>
-![jiar](./assets/A701_jira.png)
+![jiar](./assets/a701_jira.png)
 
 ## 프로젝트 산출물
 ### 1. Figma
-[![figma](./assets/a701_figma.PNG)](https://www.figma.com/file/Ig653eosD7BMcO7vaSbXcc/%EB%82%98%EB%9E%91?type=design&node-id=0%3A1&mode=design&t=xQdRy5vecULzInJH-1)
+[![figma](./assets/a701_Figma.PNG)](https://www.figma.com/file/Ig653eosD7BMcO7vaSbXcc/%EB%82%98%EB%9E%91?type=design&node-id=0%3A1&mode=design&t=xQdRy5vecULzInJH-1)
 <br>
 
 ### 2. ERD
-![erd](./assets/a701_ERD.png)
+![erd](./assets/a701_ERD.PNG)
 <br>
 
 ### 3. API 문서
-[![api](./assets/a701_api.PNG)](hhttps://cheddar-cloudberry-278.notion.site/API-12102a6f33ee4c719a7052d4aee29b9c)
+[![api](./assets/a701_API.PNG)](hhttps://cheddar-cloudberry-278.notion.site/API-12102a6f33ee4c719a7052d4aee29b9c)
 
 <div id="8"></div>
 
