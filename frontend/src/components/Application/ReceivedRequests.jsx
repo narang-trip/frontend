@@ -17,10 +17,10 @@ const ReceivedRequests = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/trip/${tripId}`
       );
-      return response.data.alertList.length > 0; // Returns true if alertList has items
+      return response.data.alertList.length > 0; 
     } catch (error) {
       console.error("Error fetching request data:", error);
-      return false; // Assume no alerts if there's an error
+      return false; 
     }
   };
 
