@@ -8,13 +8,6 @@ import { GoDotFill } from "react-icons/go";
 
 import "../../css/Calendar.css";
 
-const dayList = [
-  "2024-02-10",
-  "2024-02-21",
-  "2024-02-02",
-  "2024-02-14",
-  "2024-02-27",
-];
 // 체크용 더미데이터 실제로는 axios.get을 통해 api통신으로 받아올 예정
 const CalendarCp = () => {
   const { conceptColor } = useSelector((state) => state.concept);
