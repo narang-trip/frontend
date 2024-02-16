@@ -4,7 +4,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 import { ModalPortal } from "./ModalPortal";
-import BuyMileageModal from "./BuyMileage";
 
 const MileageModal = ({ onClose }) => {
   const modalBG = useRef("");
@@ -73,10 +72,6 @@ const MileageModal = ({ onClose }) => {
               className="p-1 mr-3 border rounded-md border-neutral-400"
             />
           </div>
-          {/* <button onClick={() => Change("use")}>사용내역</button>
-          <button onClick={() => Change("get")}>획득내역</button>
-          {option === "use" && <div>사용내역</div>}
-          {option === "get" && <div>획득내역</div>} */}
           <div className="flex justify-end">
             <button
               className="p-1 mx-2 border border-black rounded-lg"
@@ -91,12 +86,6 @@ const MileageModal = ({ onClose }) => {
               취소
             </button>
           </div>
-
-          {isOpen && (
-            <ModalPortal>
-              <BuyMileageModal onClose={ClosePayment} />
-            </ModalPortal>
-          )}
         </div>
       </div>
     </div>
