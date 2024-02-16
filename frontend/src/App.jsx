@@ -18,7 +18,6 @@ const router = createBrowserRouter([
   {
     path: "",
     element: <RootLayoutOffWidgets />,
-    // errorElement: <ErrorPage />,
     children: [
       {
         path: "/makeplan",

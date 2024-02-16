@@ -37,7 +37,6 @@ const UpperNavbar = () => {
   const { concept } = useSelector((state) => state.concept);
   const conceptColorClass = conceptTemaBannerColorObject[concept];
   const { isLogin, userId, alertAmount } = useSelector((state) => state.auth);
-  // const token = useSelector((state) => state.auth.token);
   const sessionToken = window.sessionStorage.getItem("token");
   const sessionRefreshToken = window.sessionStorage.getItem("refreshToken");
 
