@@ -17,10 +17,10 @@ const ReceivedRequests = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_ALERT_REQUEST_URI}/trip/${tripId}`
       );
-      return response.data.alertList.length > 0; // Returns true if alertList has items
+      return response.data.alertList.length > 0; 
     } catch (error) {
       console.error("Error fetching request data:", error);
-      return false; // Assume no alerts if there's an error
+      return false; 
     }
   };
 
@@ -41,7 +41,6 @@ const ReceivedRequests = () => {
 
       // 가져올 항목이 없으면 중단
       if (response.data.content.length === 0) {
-        console.log("데이터 없음💢");
         return;
       }
 
@@ -70,7 +69,6 @@ const ReceivedRequests = () => {
     <Fragment>
       {tripData &&
         tripData.map((trip, idx) => {
-          console.log(`idx : ${idx}`)
           return <TripInfo tripData={trip} key={idx} />
         })}
     </Fragment>

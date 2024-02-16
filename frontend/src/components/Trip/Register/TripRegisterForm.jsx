@@ -99,7 +99,6 @@ export default function TripWriteForm() {
 
   // 이미지 input이 변경될 때 호출되는 함수
   const handleImageChange = (e) => {
-    console.log(e.target.files[0]);
     const file = e.target.files[0];
 
     setBoard((board) => ({
@@ -139,7 +138,6 @@ export default function TripWriteForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(userId);
 
     const formData = new FormData();
 
@@ -187,8 +185,6 @@ export default function TripWriteForm() {
           },
         }
       );
-
-      console.log("서버 응답:", response.data);
 
       // 저장 후 이동할 페이지로 이동
       navigate(`/detail/${response.data.tripId}`);

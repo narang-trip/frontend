@@ -37,14 +37,12 @@ const MileageModal = ({ onClose }) => {
         }/ready?user_id=${userId}&price=${price}&return_url=${url}`
       );
 
-      console.log(response.data.next_redirect_pc_url);
       // 서버 응답에서 리다이렉션 URL을 가져옴
       const redirectUrl = response.data.next_redirect_pc_url;
 
       // 리다이렉션 수행
       window.location.href = redirectUrl;
-
-      console.log("서버 응답:", response.data);
+      
     } catch (error) {
       console.error("에러 발생:", error);
     }

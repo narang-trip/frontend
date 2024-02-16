@@ -40,7 +40,6 @@ const Mileage = (props) => {
         `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${userId}`
       );
 
-      console.log(response);
       setBalance(response.data);
     } catch (error) {
       console.error("에러 발생", error);

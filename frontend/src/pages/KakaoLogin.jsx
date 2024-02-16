@@ -46,7 +46,7 @@ const Login = () => {
 
         navigate("/");
       } catch (error) {
-        console.log("Error during POST request:", error);
+        console.error("Error during POST request:", error);
       }
     })();
   }, []);
