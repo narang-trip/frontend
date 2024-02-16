@@ -21,7 +21,6 @@ const LoginModal = (props) => {
   const kakaoLogin = async () => {
     try {
       const res = await axios.get(kakaoLoginURI2);
-      console.log(res);
     } catch (error) {
       console.log(error);
     }

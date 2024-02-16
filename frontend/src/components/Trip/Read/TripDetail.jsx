@@ -87,7 +87,6 @@ export default function TripDetail() {
       );
       // 상세 정보 저장
       setTripDetails(response.data);
-      console.log(response.data.participants.length);
       // 날짜 포맷 설정
       setDepartureDate(
         DateFormatter({ dateString: response.data.departureDate })
