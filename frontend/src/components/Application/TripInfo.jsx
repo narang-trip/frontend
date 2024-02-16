@@ -23,7 +23,6 @@ export default function TripInfo({ tripData }) {
   };
 
   useEffect(() => {
-    console.log(tripData)
     // 날짜 포맷 설정
     setDepartureDate(DateFormatter({ dateString: tripData.departureDate }));
     setReturnDate(DateFormatter({ dateString: tripData.returnDate }));

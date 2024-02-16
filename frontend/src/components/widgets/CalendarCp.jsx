@@ -46,7 +46,6 @@ const CalendarCp = () => {
   const onClickDayHandler = (value, event) => {
     setActiveDate(moment(value).format("YYYY-MM-DD")); // 클릭한 날짜를 상태에 저장
     if (event.target.textContent.includes("😂")) {
-      console.log("hi");
       navigate("/search");
     }
   };
@@ -83,7 +82,7 @@ const CalendarCp = () => {
   }, [dynamicColor]);
 
   return (
-    <div className="w-full flex justify-center items-center ">
+    <div className="flex items-center justify-center w-full ">
       <Calendar
         calendarType="gregory"
         onChange={setValue}

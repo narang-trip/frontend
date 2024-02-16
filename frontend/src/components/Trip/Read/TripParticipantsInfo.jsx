@@ -18,7 +18,6 @@ export default function TripParticipantsInfo({ participants, leaderId }) {
           `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${participant.participantId}`
         );
         const balanceData = balanceResponse.data;
-        console.log(balanceResponse.data);
 
         setUsersInfo((prevUsersInfo) => ({
           ...prevUsersInfo,

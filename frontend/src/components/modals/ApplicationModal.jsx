@@ -42,7 +42,6 @@ const ApplicationModal = ({ data, onClose }) => {
         `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/balance?user_id=${postData.senderId}`
       );
 
-      console.log(response);
       setBalance(response.data);
     } catch (error) {
       console.error("에러 발생", error);
@@ -87,7 +86,6 @@ const ApplicationModal = ({ data, onClose }) => {
 
   // 신청하기 버튼 눌렀을 때
   const handleSubmit = async () => {
-  console.log(postData.position);
    
     try {
       const response = await axios.post(
@@ -129,15 +127,12 @@ const ApplicationModal = ({ data, onClose }) => {
         `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/ready?user_id=${postData.senderId}&price=${price}&return_url=${url}`
       );
 
-      console.log(response.data.next_redirect_pc_url);
       // 서버 응답에서 리다이렉션 URL을 가져옴
       const redirectUrl = response.data.next_redirect_pc_url;
 
       // 리다이렉션 수행
       window.location.href = redirectUrl;
       handleBalance();
-
-      console.log("서버 응답:", response.data);
     } catch (error) {
       console.error("에러 발생:", error);
     }

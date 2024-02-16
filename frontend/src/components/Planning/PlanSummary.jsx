@@ -7,7 +7,6 @@ const PlanSummary = ({ plan }) => {
   const dispatch = useDispatch();
   const planInfo = JSON.parse(decodeURIComponent(window.atob(plan.planInfo)));
   const day = planInfo.time.totalDay;
-  console.log("day : ", day);
 
   const goPlan = () => {
     dispatch(scheduleActions.setSchedule(planInfo));

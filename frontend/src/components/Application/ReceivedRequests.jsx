@@ -41,7 +41,6 @@ const ReceivedRequests = () => {
 
       // 가져올 항목이 없으면 중단
       if (response.data.content.length === 0) {
-        console.log("데이터 없음💢");
         return;
       }
 
@@ -70,7 +69,6 @@ const ReceivedRequests = () => {
     <Fragment>
       {tripData &&
         tripData.map((trip, idx) => {
-          console.log(`idx : ${idx}`)
           return <TripInfo tripData={trip} key={idx} />
         })}
     </Fragment>
