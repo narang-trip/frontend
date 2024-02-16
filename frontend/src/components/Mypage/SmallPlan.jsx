@@ -90,7 +90,6 @@ const SmallPlan = () => {
   // inView가 true일때 데이터를 가져옴
   useEffect(() => {
     if (inView) {
-      console.log(`${pageNo} : 무한 스크롤 요청 🎃`);
       getMyList();
     }
   }, [inView, requestData, userId]);

@@ -42,8 +42,6 @@ const scheduleSlice = createSlice({
         0,
         action.payload.schedule
       );
-      // const tmpList = await calculateDurations(current(state.list));
-      // state.list = tmpList;
     },
     // 일정 움직이기
     moveSchedule: (state, action) => {
@@ -59,7 +57,6 @@ const scheduleSlice = createSlice({
     },
     // 저장된 계획 불러오기
     setSchedule: (state, action) => {
-      console.log("슬라이스안 setSchedule", action.payload);
       state.title = action.payload.title;
       state.time = action.payload.time;
       state.blackHeight = action.payload.blackHeight;
@@ -68,7 +65,6 @@ const scheduleSlice = createSlice({
     },
     // 여행 계획표의 시간 설정
     setTime: (state, action) => {
-      console.log(action.payload);
       state.time = action.payload;
       state.time.lineCnt = action.payload.totalTime / 30 + 1;
       // 설정한 날 만큼 빈칸으로 채워진 일정 생성

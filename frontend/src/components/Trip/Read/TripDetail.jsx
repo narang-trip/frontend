@@ -38,23 +38,6 @@ export default function TripDetail() {
   };
   // 취소하기 클릭
   const handleCancelClick = async () => {
-    // try {
-    //   await axios.patch(
-    //     `${import.meta.env.VITE_TRIP_REQUEST_URI}/trip/leave`,
-    //     {
-    //       tripId: tripId,
-    //       userId: userId
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   );
-    //   console.log("트립 떠나기 성공");
-    // } catch (error) {
-    //   console.error("Error refunding deposit:", error);
-    // }
     navigate("/applicantList");
   };
   const handleDeleteClick = async () => {
@@ -87,7 +70,6 @@ export default function TripDetail() {
       );
       // 상세 정보 저장
       setTripDetails(response.data);
-      console.log(response.data.participants.length);
       // 날짜 포맷 설정
       setDepartureDate(
         DateFormatter({ dateString: response.data.departureDate })

@@ -93,7 +93,6 @@ const Map = ({ isCanModify }) => {
         current = nearestNeighbor;
       }
     }
-    console.log("path" + path);
     return path;
   };
   const handlePlaceSelected = useCallback(
@@ -136,7 +135,6 @@ const Map = ({ isCanModify }) => {
       };
       placesService.getDetails(request, (result, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          console.log(result);
           placeResult.name = result.name;
           placeResult.photo =
             result.photos && result.photos.length > 0
@@ -156,7 +154,6 @@ const Map = ({ isCanModify }) => {
           if (result.opening_hours && result.opening_hours.weekday_text) {
             placeResult.weekdayText = result.opening_hours.weekday_text;
           }
-          console.log(placeResult.weekdayText);
         } else {
           console.error("Error fetching place details:", status);
         }
@@ -170,15 +167,12 @@ const Map = ({ isCanModify }) => {
       const path = nearestNeighbor(markers);
       setSortedPath(path);
       setSortedMarkers(sortedPath.map((index) => markers[index]));
-      console.log(sortedMarkers);
     }
   }, [markers]);
   useEffect(() => {
     if (sortedPath.length > 0) {
       setSortedMarkers(sortedPath.map((index) => markers[index]));
     }
-    console.log(markers);
-    console.log(sortedMarkers);
   }, [sortedPath, markers]);
   const [directionsInfoArr, setDirectionsInfoArr] = useState([]);
   const handleDirectionsInfoUpdate = (directionsInfo) => {

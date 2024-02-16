@@ -6,13 +6,13 @@ import axios from "axios";
 import CarouselTemplete from "../ui/Carousel";
 
 const LoadingDiv = () => {
-  return <div className="flex flex-col justify-center items-center h-full">
+  return <div className="flex flex-col items-center justify-center h-full">
     <ClipLoader />
   </div>
 }
 
 const NoDataMsg = ({ conceptColor }) => {
-  return <div className="flex flex-col justify-center items-center h-full">
+  return <div className="flex flex-col items-center justify-center h-full">
     <p className={`text-lg font-semibold animate-bounce text-${conceptColor}-400`}>모집글을 작성해 보세요</p>
   </div>
 }
