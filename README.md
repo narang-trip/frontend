@@ -177,7 +177,7 @@
 
 ## 1. Web Socket
 
-### web Socket이란?
+### Web Socket이란?
 
 ![webSocket](https://upload.wikimedia.org/wikipedia/commons/1/10/Websocket_connection.png)
 
@@ -200,6 +200,27 @@ Socket Connection을 유지한 채, 실시간으로 양방향 통신 혹은 데�
 ### 적용
 
 `나랑` 에서는 실시간 상태 공유를 위해 신청 요청, 수락, 거절 알림 기능에 SSE를 사용합니다.
+
+## 3. gRPC
+
+![gRPC](https://grpc.io/img/landing-2.svg)
+
+<aside>
+
+> gRPC는 Google에서 개발한 오픈 소스 원격 프로시저 호출(RPC) 시스템입니다
+
+각 Service는 자신의 데이터를 독점적으로 관리하고, 다른 Service는 해당 서비스에 요청합니다.
+
+gRPC는 Google에서 개발한 프로토콜 버퍼를 사용하여 통신 프로토콜을 정의합니다.
+프로토콜 버퍼는 효율적인 이진 직렬화 포맷으로 데이터의 효율적 전송과 저장을 도와줍니다.
+또한 프로토콜 버퍼를 통해 Server의 자원을 Client(Stub)가 사용할 수 있습니다.
+
+gRPC는 여러 가지 언어를 지원하며, 이를 통해 서로 다른 언어로 작성된 서비스 간에도 통신이 가능합니다.
+gRPC는 양방향 스트리밍을 지원하여 요청 없이도 데이터 전달이 가능하고, 클라이언트와 서버 간에 스트림을 열어 다중 Stub 스트리밍이 가능합니다.
+
+### 적용
+
+`나랑` 에서는 각 서비스 간 데이터 격리가 이루어져 있습니다. 네트워크 자원의 효율적 사용을 위해서 Micro Service 사이 통신에 gRPC를 사용합니다.
 
 ## 3. 개발 환경
 
@@ -226,6 +247,9 @@ Socket Connection을 유지한 채, 실시간으로 양방향 통신 혹은 데�
 |          | Build           | Gradle               | 7.3.2   |
 |          | WebRTC          | Kurento Media Server | 6.16    |
 |          | WebRTC          | Kurento              | \-      |
+|          | gRPC            | gRPC                 | 1.35.0  |
+|          |                 | protobuf             | 3.14.0  |
+|          |                 | protobufPlugin       | 0.8.14  |
 |          | API Docs        | Swagger2             | 3.0.0   |
 | FrontEnd | HTML5           |                      | \-      |
 |          | CSS3            |                      | \-      |
@@ -242,9 +266,8 @@ Socket Connection을 유지한 채, 실시간으로 양방향 통신 혹은 데�
 |          | WebSocket       | sockjs-client        | 1.6.1   |
 |          | IDE             | Visual Studio Code   | 1.85.2  |
 | Server   | 서버            | AWS EC2              | \-      |
-|          | 플랫폼          | Ubuntu               | \-      |
 |          | 배포            | Docker               | 25.10.1 |
-|          | 배포            | Jenkins              | \-      |
+|          | 배포            | Jenkins              | 2.444   |
 
 ## 4. CI/CD 배포 환경
 
@@ -272,7 +295,7 @@ Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woo
 - 에픽은 개발, 미팅, 학습 등으로 구성했습니다.
 - 스토리는 명확한 전달을 위하여 `API 명세서 작성`와 같이 작성했습니다.
 - 작업현황을 지라에 반영함으로써 각 팀원이 어떤 작업을 하고있는지, 일정에 딜레이가 있는지 한 눈에 확인할 수 있었습니다.<br>
-  ![jiar](./assets/a701_jira.png)
+  ![jira](./assets/a701_jira.png)
 
 ## 프로젝트 산출물
 
@@ -281,22 +304,23 @@ Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woo
 [![figma](./assets/a701_Figma.PNG)](https://www.figma.com/file/Ig653eosD7BMcO7vaSbXcc/%EB%82%98%EB%9E%91?type=design&node-id=0%3A1&mode=design&t=xQdRy5vecULzInJH-1)
 <br>
 
-### 2. ERD
+### 2. ERD / Architecture
+
+![artitecture](./assets/App_Architecture.png)
 
 ![erd](./assets/a701_ERD.PNG)
 <br>
 
 ### 3. API 문서
 
-[![api](./assets/a701_API.PNG)](hhttps://cheddar-cloudberry-278.notion.site/API-12102a6f33ee4c719a7052d4aee29b9c)
+[![api](./assets/a701_API.PNG)](https://cheddar-cloudberry-278.notion.site/API-12102a6f33ee4c719a7052d4aee29b9c)
 
 <div id="8"></div>
 
 # 🛫회고
 
-- [조용환](https://github.com/rrkcl7733) :
-- [구본승](https://github.com/letgodchan0) :
+- [조용환](https://github.com/yhc-key) :
+- [구본승](https://github.com/kbs3103) :
 - [노세희](https://github.com/se2develop) :
-- [김영섭](https://github.com/2weeks0) :
-- [송윤재](https://github.com/abcxj123) :
-- [조예진](https://github.com/) :
+- [김영섭](https://github.com/youngkimi) :
+- [송윤재](https://github.com/Song-YoonJae) :
