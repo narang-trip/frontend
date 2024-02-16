@@ -23,7 +23,6 @@ export default function TripInfo({ tripData }) {
   };
 
   useEffect(() => {
-    console.log(tripData)
     // 날짜 포맷 설정
     setDepartureDate(DateFormatter({ dateString: tripData.departureDate }));
     setReturnDate(DateFormatter({ dateString: tripData.returnDate }));
@@ -61,24 +60,6 @@ export default function TripInfo({ tripData }) {
                   <SlLocationPin className="mx-3 " size="24" />
                   <div> {tripData.continent}, {tripData.country}, {tripData.city}</div>
                 </div>
-                {/* <div className="flex flex-row items-center my-1.5 text-sm">
-                  <SlPeople className="mx-3" size="24" />
-                  <div> 2 / {tripData.tripParticipantsSize} </div>
-                </div> */}
-                {/* <div className="flex flex-row items-center my-1.5 text-sm">
-                  <SlBadge className="mx-3 " size="24" />
-                  <div className="flex flex-wrap justify-between">
-                    {tripData.tripRoles &&
-                      tripData.tripRoles.map((role, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2 py-1 m-0.5 text-sm font-medium rounded-full text-neutral-700 bg-stone-100 ring-1 ring-inset ring-stone-500"
-                        >
-                          {role}
-                        </span>
-                      ))}
-                  </div>
-                </div> */}
               </div>
             </div>
           </button>

@@ -15,9 +15,10 @@ const Login = () => {
     (async () => {
       try {
         const res = await axios.post(
-          `${import.meta.env.VITE_USER_REQUEST_URI}/login/oauth/kakao?code=${code}`
+          `${
+            import.meta.env.VITE_USER_REQUEST_URI
+          }/login/oauth/kakao?code=${code}`
         );
-        // console.log(res);
         auth = res.headers["authorization"];
         refreshAuth = res.headers["authorization-refresh"];
         try {
@@ -36,7 +37,7 @@ const Login = () => {
               token: res.headers.authorization,
               refreshToken: res.headers["authorization-refresh"],
               userId: userRes.data.id,
-              nickname: userRes.data.nickname
+              nickname: userRes.data.nickname,
             })
           );
         } catch (error) {
@@ -45,16 +46,12 @@ const Login = () => {
 
         navigate("/");
       } catch (error) {
-        console.log("Error during POST request:", error);
+        console.error("Error during POST request:", error);
       }
     })();
   }, []);
 
-
-  return (
-    <>
-    </>
-  );
+  return <></>;
 };
 
 export default Login;

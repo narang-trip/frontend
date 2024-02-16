@@ -21,32 +21,11 @@ const CalendarCp = () => {
     // 해당 날짜(하루)에 추가할 컨텐츠의 배열
     const contents = [];
     const formattedDate = moment(date).format("YYYY-MM-DD");
-
-    //   if (dayList.includes(formattedDate)) {
-    //     // date(각 날짜)가  리스트의 날짜와 일치하면 해당 컨텐츠(이모티콘) 추가
-
-    //     // const circleStyle = {
-    //     //   display: 'flex',
-    //     //   alignItems: 'center',
-    //     //   justifyContent: 'center',
-    //     //   width: '100%',
-    //     //   height: '100%',
-    //     //   borderRadius: '50%', // 동그라미 형태
-    //     //   border: '2px solid red', // 적용할 테두리 색상과 두께
-    //     // }
-
-    //     contents.push(
-    //       <div className={`text-${conceptColor}-400`} key={formattedDate}>
-    //         <GoDotFill />
-    //       </div>);
-    //   }
-    //   return <div key={formattedDate}>{contents}</div>; // 각 날짜마다 해당 요소가 들어감
   };
 
   const onClickDayHandler = (value, event) => {
     setActiveDate(moment(value).format("YYYY-MM-DD")); // 클릭한 날짜를 상태에 저장
     if (event.target.textContent.includes("😂")) {
-      console.log("hi");
       navigate("/search");
     }
   };
@@ -64,9 +43,6 @@ const CalendarCp = () => {
         additionalClass += " weekend-day"; // 주말 날짜에 적용할 클래스
       }
 
-      // if (dayList.includes(formattedDate)) {
-      //   additionalClass += ' circle-day'
-      // }
       return additionalClass;
     }
   };
@@ -83,7 +59,7 @@ const CalendarCp = () => {
   }, [dynamicColor]);
 
   return (
-    <div className="w-full flex justify-center items-center ">
+    <div className="flex items-center justify-center w-full ">
       <Calendar
         calendarType="gregory"
         onChange={setValue}
