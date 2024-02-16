@@ -5,15 +5,10 @@ import ButtonConcept from "../ui/ButtonConcept";
 
 export default function Concept() {
   const dispatch = useDispatch();
-<<<<<<< HEAD
   const { concept: selectedConcept } = useSelector((state) => state.concept);
   const { conceptColor: selectedConceptColor } = useSelector(
     (state) => state.concept
   );
-=======
-  const {concept : selectedConcept} = useSelector((state) => state.concept)
-  const {conceptColor : selectedConceptColor} = useSelector((state) => state.concept)
->>>>>>> b5b5154831c939a636318572de0a2d30f901bb8e
   const clickHandler = (concept) => {
     dispatch(conceptActions.changeConcept({ concept: concept }));
   };

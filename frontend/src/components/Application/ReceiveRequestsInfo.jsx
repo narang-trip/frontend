@@ -42,13 +42,7 @@ const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
           },
         }
       );
-<<<<<<< HEAD
 
-      // 서버 응답을 이용해 필요한 작업 수행
-      console.log("서버 응답:", response.data);
-=======
-      
->>>>>>> b5b5154831c939a636318572de0a2d30f901bb8e
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(true);
       setIsRejected(false);
@@ -74,12 +68,7 @@ const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
           },
         }
       );
-<<<<<<< HEAD
-      console.log("서버응답 : ", response.data);
 
-=======
-  
->>>>>>> b5b5154831c939a636318572de0a2d30f901bb8e
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(false);
       setIsRejected(true);
