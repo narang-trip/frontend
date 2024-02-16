@@ -45,12 +45,12 @@ const SearchPage = () => {
 
   const [pageNo, setPageNo] = useState(0);
   const [tripData, setTripData] = useState([]);
-  
+
   // 날짜 포맷
   const formatDate = (date) => {
     const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
 
@@ -59,7 +59,7 @@ const SearchPage = () => {
     tripRoles: positionList,
     tripContinent: continents,
     participantsSize: 0,
-    querySttDate: formatDate(new Date())
+    querySttDate: formatDate(new Date()),
   });
 
   const { ref, inView } = useInView({
@@ -80,7 +80,7 @@ const SearchPage = () => {
 
       // 가져올 항목이 없으면 중단
       if (response.data.content.length === 0) {
-       return;
+        return;
       }
 
       // 새로운 데이터를 기존 데이터에 추가
@@ -93,8 +93,6 @@ const SearchPage = () => {
     }
   }, [pageNo, requestData]);
 
-
-
   // 날짜 변경
   const handleDateChange = (range) => {
     setTripData([]);
@@ -104,7 +102,7 @@ const SearchPage = () => {
     // 요청 데이터 업데이트
     setRequestData((prevData) => ({
       ...prevData,
-      querySttDate: range[0] ? formatDate(range[0]) :  formatDate(new Date()),
+      querySttDate: range[0] ? formatDate(range[0]) : formatDate(new Date()),
       queryEndDate: range[1] ? formatDate(range[1]) : "2030-12-31",
     }));
   };
@@ -199,10 +197,6 @@ const SearchPage = () => {
       getBoardList();
     }
   }, [inView, requestData]);
-
-  // useEffect(() => {
-  //   window.scrollTo({ top: 0, behavior: "smooth" });
-  // }, [tripData]);
 
   return (
     <Fragment>

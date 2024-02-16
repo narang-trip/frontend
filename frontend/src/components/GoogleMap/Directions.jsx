@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { directionsActions } from "../../store/directionsSlice";
 
 const Directions = ({ origin, destination, onDirectionsInfoUpdate }) => {
-
   const [directions, setDirections] = useState();
   const count = useRef(0);
   const dispatch = useDispatch();
@@ -27,7 +26,8 @@ const Directions = ({ origin, destination, onDirectionsInfoUpdate }) => {
   const directionsCallback = (result, status) => {
     // 동일한 방향에 대해 여러 번의 콜백이 발생하는 경우에도 첫 번째 호출만 고려
     if (status === "OK" && count.current === 0) {
-      const { start_address, end_address, distance, duration } = result.routes[0].legs[0];
+      const { start_address, end_address, distance, duration } =
+        result.routes[0].legs[0];
 
       const directionsInfo = {
         startAddress: start_address,
@@ -45,8 +45,7 @@ const Directions = ({ origin, destination, onDirectionsInfoUpdate }) => {
     }
   };
 
-  useEffect(() => {
-  }, [setDirections]);
+  useEffect(() => {}, [setDirections]);
 
   return (
     <Fragment>

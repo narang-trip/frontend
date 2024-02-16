@@ -9,9 +9,8 @@ import LeaveUserModal from "../modals/LeaveUserModal";
 const UserInfo = () => {
   const [isModifyOpen, setIsModifyOpen] = useState(false);
   const [isExitOpen, setIsExitOpen] = useState(false);
-  
+
   const userId = useSelector((state) => state.auth.userId);
-  // const userId = "4c81d009-3270-3163-bd0e-86b257730661";
   const [userData, setUserData] = useState([]);
 
   const Openmodify = () => {
@@ -76,7 +75,9 @@ const UserInfo = () => {
         <button className="m-1 text-xs" onClick={Openmodify}>
           정보수정
         </button>
-        <button className="text-xs" onClick={OpenExit}>회원탈퇴</button>
+        <button className="text-xs" onClick={OpenExit}>
+          회원탈퇴
+        </button>
       </div>
       <div className="flex flex-col items-start ml-20">
         <div className="flex">
@@ -87,7 +88,8 @@ const UserInfo = () => {
         </div>
 
         <p className="m-1 text-sm">
-          {userData.userRoles && userData.userRoles.map((role) => role.roleName).join(", ")}
+          {userData.userRoles &&
+            userData.userRoles.map((role) => role.roleName).join(", ")}
         </p>
       </div>
       {isModifyOpen && (

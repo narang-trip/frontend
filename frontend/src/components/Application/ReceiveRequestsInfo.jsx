@@ -6,8 +6,8 @@ const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
   const [isRejected, setIsRejected] = useState(false);
   const userId = useSelector((state) => state.auth.userId);
   const [userData, setUserData] = useState([]);
-   // 날짜 포맷
-   const formatDate = (date) => {
+  // 날짜 포맷
+  const formatDate = (date) => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const day = date.getDate().toString().padStart(2, "0");
@@ -34,7 +34,7 @@ const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
           userId: data.senderId,
           alertId: data.id,
           userRoles: data.position,
-          usageId: data.usageId
+          usageId: data.usageId,
         },
         {
           headers: {
@@ -42,7 +42,7 @@ const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
           },
         }
       );
-      
+
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(true);
       setIsRejected(false);
@@ -60,7 +60,7 @@ const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
           tripId: data.tripId,
           userId: data.senderId,
           usageId: data.usageId,
-          alertId: data.id
+          alertId: data.id,
         },
         {
           headers: {
@@ -68,7 +68,7 @@ const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
           },
         }
       );
-  
+
       // 성공한 경우 상태를 업데이트하여 렌더링을 다시 실행
       setIsAccepted(false);
       setIsRejected(true);
@@ -132,6 +132,6 @@ const ReceiveRequestsInfo = ({ data, trip, updateReceivedData }) => {
       </div>
     </Fragment>
   );
-}
+};
 
 export default ReceiveRequestsInfo;

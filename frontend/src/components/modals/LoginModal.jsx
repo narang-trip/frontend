@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 
 const LoginModal = (props) => {
@@ -10,21 +9,7 @@ const LoginModal = (props) => {
   const naverRedirectURI = import.meta.env.VITE_NAVER_REDIRECT_URI;
   const naverState = "false";
   const kakaoLoginURI = `https://kauth.kakao.com/oauth/authorize?scope=account_email&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectURI}&response_type=code&prompt=login`;
-  const kakaoLoginURI2 = `${
-    import.meta.env.VITE_USER_REQUEST_URI
-  }/oauth2/authorization/kakao`;
-  // const kakaoLoginURI3 =
-  //   `https://i10a701.p.ssafy.io/oauth2/authorization/kakao`;
-  // const naverLoginURI = "https://i10a701.p.ssafy.io/oauth2/authorization/naver";
-  const naverLoginURI2 = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=${naverState}&redirect_uri=${naverRedirectURI}`;
-
-  const kakaoLogin = async () => {
-    try {
-      const res = await axios.get(kakaoLoginURI2);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const naverLoginURI = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=${naverState}&redirect_uri=${naverRedirectURI}`;
 
   return (
     <div
@@ -51,18 +36,16 @@ const LoginModal = (props) => {
             나랑 로그인🛫
           </p>
           <div className="flex flex-col items-center">
-            <a href={naverLoginURI2}>
+            <a href={naverLoginURI}>
               <img
                 className="object-cover  w-[200px] rounded-xl m-2"
                 src="assets/naver_login.png"
-                // onClick={naverLogin}
               />
             </a>
             <a href={kakaoLoginURI}>
               <img
                 className="object-cover w-[200px] rounded-xl m-2"
                 src="assets/kakao_login.png"
-                // onClick={kakaoLogin}
               />
             </a>
           </div>

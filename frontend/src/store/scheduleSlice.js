@@ -42,8 +42,6 @@ const scheduleSlice = createSlice({
         0,
         action.payload.schedule
       );
-      // const tmpList = await calculateDurations(current(state.list));
-      // state.list = tmpList;
     },
     // 일정 움직이기
     moveSchedule: (state, action) => {

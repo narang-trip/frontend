@@ -23,7 +23,6 @@ const MileageModal = ({ onClose }) => {
     setOption(e);
   };
   const userId = useSelector((state) => state.auth.userId);
-  // const user_id = "44cf8d0d-a5f4-3fb8-b7c9-2d3d77c679b5"; // 사용자 ID
 
   // 충전 금액
   const [price, setPrice] = useState(0);
@@ -33,7 +32,9 @@ const MileageModal = ({ onClose }) => {
       const url = `${import.meta.env.VITE_REQUEST_API}/Mypage`;
 
       const response = await axios.post(
-        `${import.meta.env.VITE_PAYMENT_REQUEST_URI}/ready?user_id=${userId}&price=${price}&return_url=${url}`
+        `${
+          import.meta.env.VITE_PAYMENT_REQUEST_URI
+        }/ready?user_id=${userId}&price=${price}&return_url=${url}`
       );
 
       // 서버 응답에서 리다이렉션 URL을 가져옴
@@ -71,27 +72,26 @@ const MileageModal = ({ onClose }) => {
               onChange={(e) => setPrice(e.target.value)}
               className="p-1 mr-3 border rounded-md border-neutral-400"
             />
-               
           </div>
           {/* <button onClick={() => Change("use")}>사용내역</button>
           <button onClick={() => Change("get")}>획득내역</button>
           {option === "use" && <div>사용내역</div>}
           {option === "get" && <div>획득내역</div>} */}
           <div className="flex justify-end">
-          <button
-            className="p-1 mx-2 border border-black rounded-lg"
-            onClick={handleCharge}
-          >
-            결제
-          </button>
-          <button
-            className="p-1 border border-black rounded-lg"
-            onClick={onClose}
-          >
-            취소
-          </button>
+            <button
+              className="p-1 mx-2 border border-black rounded-lg"
+              onClick={handleCharge}
+            >
+              결제
+            </button>
+            <button
+              className="p-1 border border-black rounded-lg"
+              onClick={onClose}
+            >
+              취소
+            </button>
           </div>
-   
+
           {isOpen && (
             <ModalPortal>
               <BuyMileageModal onClose={ClosePayment} />
