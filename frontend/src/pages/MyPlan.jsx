@@ -19,31 +19,6 @@ const MyPlan = () => {
   dispatch(scheduleActions.reset());
   dispatch(placesActions.reset());
 
-  // window.sessionStorage.setItem(
-  //   "plan",
-  //   JSON.stringify({
-  //     lastModifiedDate: "2024-02-14",
-  //     ownerId: "9d45d704-6312-3a99-bc42-1fdaf215f114",
-  //     participantIds: [],
-  //     planDesc: "걸어가라고",
-  //     planId: "fc203c93-7f7a-4614-84a1-303cccbe3745",
-  //     planInfo:
-  //       "JTdCJTIydGl0bGUlMjIlM0ElMjIlRUElQjElQjglRUMlOTYlQjQlRUElQjAlODAlMjIlMkMlMjJ0aW1lJTIyJTNBJTdCJTIydG90YWxEYXklMjIlM0ExJTJDJTIyc3RhcnRIb3VyJTIyJTNBMTAlMkMlMjJzdGFydE1pbnV0ZSUyMiUzQTAlMkMlMjJlbmRIb3VyJTIyJTNBMjIlMkMlMjJlbmRNaW51dGUlMjIlM0EwJTJDJTIydG90YWxUaW1lJTIyJTNBNzIwJTJDJTIybGluZUNudCUyMiUzQTI1JTJDJTIyYmxhY2tIZWlnaHQlMjIlM0ElMjIlMjIlN0QlMkMlMjJibGFja0hlaWdodCUyMiUzQTY0NiUyQyUyMmxpc3QlMjIlM0ElNUIlNUIlN0IlMjJpbWclMjIlM0ElMjJodHRwcyUzQSUyRiUyRm1hcHMuZ29vZ2xlYXBpcy5jb20lMkZtYXBzJTJGYXBpJTJGcGxhY2UlMkZqcyUyRlBob3RvU2VydmljZS5HZXRQaG90byUzRjFzQVRwbERKYkMyb2pGeHVZM1VRMmo2NHVQMnkxV0t5cGN3RjY0dnRiQ28wbG9SOW10dmJLbk10M3lnT2RHeV9BbGV2MHVQQnFLMzBhYmlBbmF3Q3RaSl9xXzdsZGtLUnRkTUxtQm1PZFR3WmVia0YwWU9xeUFfd3JkcGxpRjRneG9UWEMxR1NOaGt1TkdaRTJQU0VxZ1VXLVBBRVRBS2xDNWE4cUg0eUZmMWJDZWNXVU9DR1Y0JTI2M3UyMDAlMjY0dTIwMCUyNjVtMSUyNjJlMSUyNmNhbGxiYWNrJTNEbm9uZSUyNmtleSUzREFJemFTeUFfRldjXzlJcmljUXVGWVljdEtZVi1jeEktQ2RMQ29ISSUyNnRva2VuJTNEMTExMjE1JTIyJTJDJTIydGl0bGUlMjIlM0ElMjIlRUMlOTclQUQlRUMlODIlQkMlRUMlOTclQUQlRUMlOTUlOUUlMjIlMkMlMjJsb2NhJTIyJTNBJTVCMzcuNTAwNzkzOSUyQzEyNy4wMzY5NjU2JTVEJTJDJTIydGltZSUyMiUzQSUyMjEyMCUyMiUyQyUyMmNvbW1lbnQlMjIlM0ElMjIlMjIlMkMlMjJkaXN0YW5jZSUyMiUzQTQlN0QlMkMlNUIlNUQlMkMlN0IlMjJpbWclMjIlM0ElMjJodHRwcyUzQSUyRiUyRm1hcHMuZ29vZ2xlYXBpcy5jb20lMkZtYXBzJTJGYXBpJTJGcGxhY2UlMkZqcyUyRlBob3RvU2VydmljZS5HZXRQaG90byUzRjFzQVRwbERKYTlvYnZ3c0Y2T3NDMEJzazhJUDU2bVh6UUFLRWdVMHBzRm9aVVhRekRTVjM4Y0ZqZUJpQnV3eV9nOUJoRWdfYnBVVlc2ZnpVTGtVeHZWM1duak91V0lWdVZ3UHpmM1BWNlJnNDZaZ2tQZEpXa3hyZy1SUFZwZ3FCQmZnLUVpTy1JRVBqU0lQWWYzNlRtekFhNlhITmgtaFo0M2wydi1uYU9lX2dHY3lIdTZ4ZEsyJTI2M3UyMDAlMjY0dTIwMCUyNjVtMSUyNjJlMSUyNmNhbGxiYWNrJTNEbm9uZSUyNmtleSUzREFJemFTeUFfRldjXzlJcmljUXVGWVljdEtZVi1jeEktQ2RMQ29ISSUyNnRva2VuJTNEMjM3NjklMjIlMkMlMjJ0aXRsZSUyMiUzQSUyMiVFQSVCMCU5NSVFQiU4MiVBOCVFQyU5NyVBRCVFQyU4MiVBQyVFQSVCMSVCMCVFQiVBNiVBQyUyMiUyQyUyMmxvY2ElMjIlM0ElNUIzNy40OTc5MDUyJTJDMTI3LjAyNzU3NzclNUQlMkMlMjJ0aW1lJTIyJTNBJTIyMTIwJTIyJTJDJTIyY29tbWVudCUyMiUzQSUyMiUyMiU3RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCUyQyU1QiU1RCU1RCU1RCU3RA==",
-  //     planName: "걸어가",
-  //   })
-  // );
-
-  // const sessionData = JSON.parse(window.sessionStorage.getItem("plan"));
-  // console.log(sessionData);
-  // const list = decodeURIComponent(window.atob(sessionData.planInfo));
-  // const day = JSON.parse(list).time.totalDay;
-  // console.log(JSON.parse(list).time.totalDay);
-  // useMemo(() => {
-  //   if (sessionData !== null) {
-  //     setPlanData([sessionData]);
-  //   }
-  // }, [list]);
-
   const getUsersPlan = async () => {
     if (userId !== "") {
       try {
@@ -86,11 +61,13 @@ const MyPlan = () => {
     <Fragment>
       {!isLogin ? (
         <div className="flex items-start w-full h-full">
-          <div className={`mx-auto mt-24 text-xl font-bold text-center animate-bounce text-${conceptColor}-400`}>
+          <div
+            className={`mx-auto mt-24 text-xl font-bold text-center animate-bounce text-${conceptColor}-400`}
+          >
             로그인을 해주세요
           </div>
         </div>
-      ) :
+      ) : (
         <div className="relative">
           <p className="my-2 text-2xl font-bold text-center">나의 계획</p>
           <button
@@ -117,9 +94,9 @@ const MyPlan = () => {
               <NewPlan onClose={CloseNewPlanModal} />
             </ModalPortal>
           )}
-        </div>}
-    </Fragment >
-
+        </div>
+      )}
+    </Fragment>
   );
 };
 
