@@ -2,7 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import UserInfo from "../../Mypage/UserInfo";
 
-export default function TripParticipantsInfo({ participants, leaderId }) {
+const TripParticipantsInfo = ({ participants, leaderId }) => {
   const [usersInfo, setUsersInfo] = useState({});
   const [balances, setBalances] = useState({});
 
@@ -101,3 +101,5 @@ export default function TripParticipantsInfo({ participants, leaderId }) {
     </Fragment>
   );
 }
+
+export default TripParticipantsInfo

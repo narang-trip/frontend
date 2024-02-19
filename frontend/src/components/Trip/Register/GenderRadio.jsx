@@ -1,4 +1,4 @@
-export default function GenderRadio({ value, onChange }) {
+const GenderRadio = ({ value, onChange }) => {
   // 여행 테마
   const genderList = ["여성", "남성", "상관없음"];
   // 전체 conceptList어떻게 할지 같이 정해야함 -> redux-toolkit에 저장해야 할 것으로 보임
@@ -22,3 +22,4 @@ export default function GenderRadio({ value, onChange }) {
     </div>
   );
 }
+export default GenderRadio

@@ -2,7 +2,7 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
 
 
-export default function DateRangePicker({ dateRange, onChange }) {
+const DateRangePicker = ({ dateRange, onChange }) => {
   return (
     <div className="w-full my-2">
       <label className="mr-10 text-base font-medium">여행 기간</label>
@@ -20,3 +20,4 @@ export default function DateRangePicker({ dateRange, onChange }) {
     </div>
   );
 }
+export default DateRangePicker

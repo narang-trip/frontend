@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function SentRequests() {
+const SentRequests = () => {
   const [sentData, setSentData] = useState(null);
   const [selectedType, setSelectedType] = useState("ALL");
 
@@ -248,3 +248,5 @@ export default function SentRequests() {
     </Fragment>
   );
 }
+
+export default SentRequests

@@ -2,7 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import ReceiveRequestsInfo from "./ReceiveRequestsInfo";
 
-export default function ReceivedList({ tripData }) {
+const ReceivedList = ({ tripData }) => {
   const [receivedData, setReceivedData] = useState(null);
 
   const fetchRequestData = async () => {

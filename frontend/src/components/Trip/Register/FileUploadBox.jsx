@@ -1,6 +1,6 @@
 import { useState, Fragment } from "react";
 
-export default function FileUploadBox() {
+const FileUploadBox = () => {
   // 이미지 파일 자체의 상태
   const [file, setFile] = useState("");
   // 이미지 파일의 url
@@ -29,3 +29,4 @@ export default function FileUploadBox() {
     </Fragment>
   );
 }
+export default FileUploadBox

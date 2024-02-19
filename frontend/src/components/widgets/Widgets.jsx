@@ -6,7 +6,7 @@ import CalendarCp from "./CalendarCp";
 import ChatRoomList from "./Chat/ChatRoomList";
 import Chat from "./Chat/Chat";
 
-export default function Widgets() {
+const Widgets = () => {
   const {isLogin} = useSelector((state) => state.auth);
   const { conceptColor} = useSelector((state => state.concept))
   const [activeChatRoomList, setActiveChatRoomList] = useState(true);
@@ -47,3 +47,4 @@ export default function Widgets() {
     </div>
   );
 }
+export default Widgets

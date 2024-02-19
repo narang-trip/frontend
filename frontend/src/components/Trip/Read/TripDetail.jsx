@@ -8,7 +8,7 @@ import ApplicationModal from "../../modals/ApplicationModal";
 import TripUpdateModal from "../../modals/TripUpdateModal";
 import DateFormatter from "../../DateFormatter";
 import TripParticipantsInfo from "./TripParticipantsInfo";
-export default function TripDetail() {
+const TripDetail = () => {
   const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate();
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
@@ -259,3 +259,5 @@ export default function TripDetail() {
     </Fragment>
   );
 }
+
+export default TripDetail

@@ -1,4 +1,4 @@
-export default function ConceptSelect({ value, onChange }) {
+const ConceptSelect = ({ value, onChange }) => {
   // 여행 테마
   const conceptList = ["낭만", "건축", "모험", "자유", "쇼핑", "휴양", "핫플"];
   // 전체 conceptList어떻게 할지 같이 정해야함 -> redux-toolkit에 저장해야 할 것으로 보임
@@ -20,3 +20,5 @@ export default function ConceptSelect({ value, onChange }) {
     </div>
   );
 }
+
+export default ConceptSelect

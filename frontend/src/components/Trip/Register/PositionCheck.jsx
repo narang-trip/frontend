@@ -1,4 +1,4 @@
-export default function PositionCheck({ value, onChange }) {
+const PositionCheck = ({ value, onChange }) => {
   // 여행 테마
   const positionList = [
     "요리 강령술사",
@@ -56,3 +56,4 @@ export default function PositionCheck({ value, onChange }) {
     </div>
   );
 }
+export default PositionCheck

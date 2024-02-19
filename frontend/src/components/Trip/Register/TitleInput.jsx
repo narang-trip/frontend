@@ -1,4 +1,4 @@
-export default function TitleInput({ value, onChange }) {
+const TitleInput = ({ value, onChange }) => {
   return (
     <div className="w-full my-2">
       <label className="mr-10 text-base font-medium">여행 제목</label>
@@ -14,3 +14,4 @@ export default function TitleInput({ value, onChange }) {
     </div>
   );
 }
+export default TitleInput

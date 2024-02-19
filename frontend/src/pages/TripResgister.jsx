@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import RegisterForm from "../components/Trip/Register/TripRegisterForm";
 
-export default function TripRegisterPage() {
+const TripRegisterPage = () => {
   return (
     <Fragment>
         <div className="my-3">
@@ -10,3 +10,5 @@ export default function TripRegisterPage() {
     </Fragment>
   );
 }
+
+export default TripRegisterPage

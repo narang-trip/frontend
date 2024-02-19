@@ -12,7 +12,7 @@ import { ModalPortal } from "../../modals/ModalPortal.jsx";
 import ContinentModal from "../../modals/ContinentModal.jsx";
 import PlanModal from "../../modals/PlanModal.jsx";
 
-export default function TripWriteForm() {
+const TripWriteForm = () => {
   const userId = useSelector((state) => state.auth.userId);
   const [planName, setPlanName] = useState("");
 
@@ -383,3 +383,4 @@ export default function TripWriteForm() {
     </Fragment>
   );
 }
+export default TripWriteForm

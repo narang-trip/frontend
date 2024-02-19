@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { conceptActions } from "../store/conceptSlice";
 import ButtonConcept from "../ui/ButtonConcept";
 
-export default function Concept() {
+const Concept = () => {
   const dispatch = useDispatch();
   const { concept: selectedConcept } = useSelector((state) => state.concept);
   const { conceptColor: selectedConceptColor } = useSelector(
@@ -37,3 +37,5 @@ export default function Concept() {
     </div>
   );
 }
+
+export default Concept

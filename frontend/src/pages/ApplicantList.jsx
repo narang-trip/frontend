@@ -4,7 +4,7 @@ import { RiUserReceivedLine, RiUserSharedLine } from "react-icons/ri";
 import ReceivedRequests from "../components/Application/ReceivedRequests";
 import SentRequests from "../components/Application/SentRequests";
 
-export default function ApplicantList() {
+const ApplicantList = () => {
   const { isLogin } = useSelector((state) => state.auth);
   // 받은 요청 목록인지, 보낸 요청 목록인지 확인
   const [selectedOption, setSelectedOption] = useState("sent");
@@ -62,3 +62,5 @@ export default function ApplicantList() {
     </Fragment>
   );
 }
+
+export default ApplicantList

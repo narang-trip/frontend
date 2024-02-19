@@ -7,7 +7,7 @@ import DateFormatter from "../DateFormatter";
 import ReceivedList from "./ReceivedList";
 import { useNavigate } from "react-router-dom";
 
-export default function TripInfo({ tripData }) {
+const TripInfo =({ tripData }) => {
   // 내가 작성한 글 목록 -> 드롭다운 버튼으로 신청자 목록 확인 가능하도록
 
   // true면 해당 글의 신청목록 보여주고, false면 닫음
@@ -76,3 +76,5 @@ export default function TripInfo({ tripData }) {
     </Fragment>
   );
 }
+
+export default TripInfo
