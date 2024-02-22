@@ -73,7 +73,6 @@ logging:
       springframework:
         security: DEBUG
 
-
 jwt:
   secretKey: ${JWT_SECRETKEY}
   access:
