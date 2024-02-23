@@ -42,10 +42,10 @@ cloud:
     credentials:
       access-key: ${AWS_S3_ACCESSKEY}
       secret-key: ${AWS_S3_SECRETKEY}
-    bucket-name: ${AWS_S3_BUCKETNAME}
+    bucket_name: ${AWS_S3_BUCKETNAME}
     region: ${AWS_S3_REGION}
-    default-trip-img: ${AWS_S3_DEFAULT_TRIPIMG}
-    default-trip-path: ${AWS_S3_DEFAULT_TRIPPATH}
+    default_trip_img: ${AWS_S3_DEFAULT_TRIPIMG}
+    default_trip_path: ${AWS_S3_DEFAULT_TRIPPATH}
 
 logging:
   level:

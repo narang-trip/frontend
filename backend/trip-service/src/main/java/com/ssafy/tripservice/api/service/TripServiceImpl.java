@@ -47,13 +47,13 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     private final AmazonS3Client amazonS3Client;
     private final TripRepository tripRepository;
 
-    @Value("${cloud.aws.bucket-name}")
+    @Value("${cloud.aws.bucket_name}")
     String AWS_S3_BUCKET;
     @Value("${cloud.aws.region}")
     String AWS_S3_REGION;
-    @Value("${cloud.aws.default-trip-img}")
+    @Value("${cloud.aws.default_trip_img}")
     String AWS_S3_DEFAULT_IMG;
-    @Value("${cloud.aws.default-trip-path}")
+    @Value("${cloud.aws.default_trip_path}")
     String AWS_S3_DEFAULT_PATH;
 
     @GrpcClient("payment-service")
