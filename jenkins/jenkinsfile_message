@@ -38,7 +38,10 @@ pipeline {
                 sh '(docker network disconnect Narang ${service} && docker stop ${service}) | true'
                 sh 'docker rm ${service} | true'
                 // 해당 이미지로 컨테이너 생성 중 . . . 
-                sh 'docker run -it --name ${service} --net Narang -d ${service} && docker start ${service}'
+                sh 'docker run -it --name ${service} --net Narang \
+                -e MYSQL_USERNAME=${MYSQL_USERNAME} \
+                -e MYSQL_PASSWORD=${MYSQL_PASSWORD} \
+                -d ${service} && docker start ${service}'
             }
         }
     }
