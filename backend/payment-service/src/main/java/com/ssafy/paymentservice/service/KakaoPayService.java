@@ -7,6 +7,8 @@ import com.ssafy.paymentservice.entity.KakaoApproveResponse;
 import com.ssafy.paymentservice.entity.KakaoCancelResponse;
 import com.ssafy.paymentservice.entity.KakaoReadyResponse;
 import com.ssafy.paymentservice.db.repository.ChargeRecordRepository;
+import com.ssafy.paymentservice.exception.BusinessLogicException;
+import com.ssafy.paymentservice.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -55,12 +59,15 @@ public class KakaoPayService {
         // 외부에 보낼 url
         RestTemplate restTemplate = new RestTemplate();
 
-        kakaoReady = restTemplate.postForObject(
-                "https://kapi.kakao.com/v1/payment/ready",
-                requestEntity,
-                KakaoReadyResponse.class);
-
-        return kakaoReady;
+        try {
+            kakaoReady = restTemplate.postForObject(
+                    "https://kapi.kakao.com/v1/payment/ready",
+                    requestEntity,
+                    KakaoReadyResponse.class);
+            return kakaoReady;
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            throw new BusinessLogicException(ExceptionCode.PAY_CANCEL);
+        }
     }
 
     /**
@@ -138,12 +145,16 @@ public class KakaoPayService {
         // 외부에 보낼 url
         RestTemplate restTemplate = new RestTemplate();
 
-        KakaoCancelResponse cancelResponse = restTemplate.postForObject(
-                "https://kapi.kakao.com/v1/payment/cancel",
-                requestEntity,
-                KakaoCancelResponse.class);
+        try {
+            KakaoCancelResponse cancelResponse = restTemplate.postForObject(
+                    "https://kapi.kakao.com/v1/payment/cancel",
+                    requestEntity,
+                    KakaoCancelResponse.class);
 
-        return cancelResponse;
+            return cancelResponse;
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            throw new BusinessLogicException(ExceptionCode.PAY_CANCEL);
+        }
     }
     /**
      * 카카오 요구 헤더값

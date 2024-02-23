@@ -1,6 +1,5 @@
 package com.ssafy.paymentservice.controller;
 
-import com.ssafy.paymentservice.db.entity.RefundRecord;
 import com.ssafy.paymentservice.db.entity.UsageRecord;
 import com.ssafy.paymentservice.entity.KakaoApproveResponse;
 import com.ssafy.paymentservice.entity.KakaoCancelResponse;
@@ -10,7 +9,6 @@ import com.ssafy.paymentservice.exception.BusinessLogicException;
 import com.ssafy.paymentservice.exception.ExceptionCode;
 import com.ssafy.paymentservice.service.KakaoPayService;
 import com.ssafy.paymentservice.service.MileageService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -18,11 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -38,8 +33,14 @@ public class PaymentController {
     public ResponseEntity readyToKakaoPay(@RequestParam("user_id") String userId,
                                           @RequestParam("price") String price,
                                           @RequestParam("return_url") String returnUrl) {
-        KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(userId, price, returnUrl);
-        return new ResponseEntity<>(kakaoReady, HttpStatus.OK);
+        try {
+            KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(userId, price, returnUrl);
+            return new ResponseEntity<>(kakaoReady, HttpStatus.OK);
+        } catch (BusinessLogicException e){
+            return new ResponseEntity<>(e.getExceptionCode().getMessage(), e.getExceptionCode().getHttpStatus());
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to process KakaoPay ready", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -49,20 +50,32 @@ public class PaymentController {
     public ResponseEntity afterPayRequest(@RequestParam("pg_token") String pgToken,
                                           @RequestParam("user_id") String userId,
                                           @RequestParam("return_url") String returnUrl) {
-        KakaoApproveResponse kakaoApprove = kakaoPayService.approveResponse(pgToken, userId);
-        return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, returnUrl).body(null);
-//        return new ResponseEntity<>(returnUrl, HttpStatus.OK);
+        try {
+            KakaoApproveResponse kakaoApprove = kakaoPayService.approveResponse(pgToken, userId);
+            return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, returnUrl).body(null);
+        } catch (BusinessLogicException e){
+            return new ResponseEntity<>(e.getExceptionCode().getMessage(), e.getExceptionCode().getHttpStatus());
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to process KakaoPay success", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
      * 결제 진행 중 취소
      */
     @GetMapping("/cancel")
-    public ResponseEntity cancel(@RequestParam("t_id") String tid, @RequestParam("cancel_amount") int cancelAmount,
-                                 @RequestParam("tax_free") int taxFree, @RequestParam("user_id") String userId) {
-        System.out.println("cancel");
-        KakaoCancelResponse kakaoCancel = kakaoPayService.cancelResponse(tid, cancelAmount, taxFree, userId);
-        return new ResponseEntity<>(kakaoCancel, HttpStatus.OK);
+    public ResponseEntity cancel(@RequestParam("t_id") String tid,
+                                 @RequestParam("cancel_amount") int cancelAmount,
+                                 @RequestParam("tax_free") int taxFree,
+                                 @RequestParam("user_id") String userId) {
+        try{
+            KakaoCancelResponse kakaoCancel = kakaoPayService.cancelResponse(tid, cancelAmount, taxFree, userId);
+            return new ResponseEntity<>(kakaoCancel, HttpStatus.OK);
+        } catch (BusinessLogicException e){
+            return new ResponseEntity<>(e.getExceptionCode().getMessage(), e.getExceptionCode().getHttpStatus());
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to process KakaoPay cancel", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -78,7 +91,8 @@ public class PaymentController {
      * 마일리지 사용
      */
     @PostMapping("/use")
-    public ResponseEntity use(@RequestParam("user_id") String userId, @RequestParam("price") int price) {
+    public ResponseEntity use(@RequestParam("user_id") String userId,
+                              @RequestParam("price") int price) {
         try {
             UsageRecord usageRecord = mileageService.useMileage(userId, price);
             return new ResponseEntity<>(usageRecord, HttpStatus.OK);
@@ -100,10 +114,9 @@ public class PaymentController {
      * 예약금 환불
      */
     @PostMapping("/refund")
-    public ResponseEntity refund(
-            @RequestParam("usage_id") String usageId,
-            @RequestParam("trip_id") String tripId,
-            @RequestParam("departure_datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate departureDate) {
+    public ResponseEntity refund(@RequestParam("usage_id") String usageId,
+                                 @RequestParam("trip_id") String tripId,
+                                 @RequestParam("departure_datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate departureDate) {
         try {
             RefundResponse refundResponse = mileageService.cancelMileage(usageId, tripId, departureDate);
             return new ResponseEntity<>(refundResponse, HttpStatus.OK);
