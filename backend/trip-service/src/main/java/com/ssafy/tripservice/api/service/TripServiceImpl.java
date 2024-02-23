@@ -48,13 +48,13 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
     private final TripRepository tripRepository;
 
     @Value("${cloud.aws.bucket_name}")
-    String AWS_S3_BUCKET;
+    String AWS_BUCKET;
     @Value("${cloud.aws.region}")
-    String AWS_S3_REGION;
+    String AWS_REGION;
     @Value("${cloud.aws.default_trip_img}")
-    String AWS_S3_DEFAULT_IMG;
+    String AWS_DEFAULT_IMG;
     @Value("${cloud.aws.default_trip_path}")
-    String AWS_S3_DEFAULT_PATH;
+    String AWS_DEFAULT_PATH;
 
     @GrpcClient("payment-service")
     private NarangGrpc.NarangBlockingStub paymentBlockingStub;
@@ -68,7 +68,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
             Saving Img To AWS S3
          */
 
-        Optional<String> uploadTripImgRes = Optional.of(AWS_S3_DEFAULT_PATH+AWS_S3_DEFAULT_IMG);
+        Optional<String> uploadTripImgRes = Optional.of(AWS_DEFAULT_PATH+AWS_DEFAULT_IMG);
 
         if (tripImg != null) {
             uploadTripImgRes = uploadFile(tripImg);
@@ -123,7 +123,7 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
             return Optional.empty();
         }
 
-        Optional<String> uploadTripImgRes = Optional.of(AWS_S3_DEFAULT_PATH+AWS_S3_DEFAULT_IMG);
+        Optional<String> uploadTripImgRes = Optional.of(AWS_DEFAULT_PATH+AWS_DEFAULT_IMG);
 
         if (tripImg != null) {
             uploadTripImgRes = uploadFile(tripImg);
@@ -340,11 +340,11 @@ public class TripServiceImpl extends NarangGrpc.NarangImplBase implements TripSe
 
         try {
             String fileName = UUID.randomUUID().toString();
-            String fileUrl = AWS_S3_DEFAULT_PATH + fileName;
+            String fileUrl = AWS_DEFAULT_PATH + fileName;
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(img.getContentType());
             metadata.setContentLength(img.getSize());
-            amazonS3Client.putObject(AWS_S3_BUCKET, fileName, img.getInputStream(), metadata);
+            amazonS3Client.putObject(AWS_BUCKET, fileName, img.getInputStream(), metadata);
             return Optional.of(fileUrl.toString());
         } catch (IOException e) {
             e.printStackTrace();
