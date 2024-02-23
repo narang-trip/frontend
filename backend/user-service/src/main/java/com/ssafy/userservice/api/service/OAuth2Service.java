@@ -77,115 +77,67 @@ public class OAuth2Service {
     private String getAccessToken(String provider, String code){
         log.info("code : {}", code);
         return switch (provider){
-            case "kakao" -> getKakaoAccessToken(code);
-            case "naver" -> getNaverAccessToken(code);
+            case "kakao" -> getSocialAccessToken(code, kakaoClientId, kakaoClientSecret, kakaoRedirectUri, kakaoTokenUri);
+            case "naver" -> getSocialAccessToken(code, naverClientId, naverClientSecret, naverRedirectUri, naverTokenUri);
             default -> throw new InvalidSocialTypeException();
         };
     }
 
-    private String getKakaoAccessToken(String code){  // 카카오 API 호출을 위한 설정
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        log.info("client_id : {}", kakaoClientId);
-        log.info("client_secret : {}", kakaoClientSecret);
-        log.info("redirect_uri : {}", kakaoRedirectUri);
-        log.info("token_uri : {}", kakaoTokenUri);
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", kakaoClientId);
-        params.add("client_secret", kakaoClientSecret);
-        params.add("redirect_uri", kakaoRedirectUri);  // 등록한 카카오 애플리케이션 설정에 등록한 리다이렉트 URI
-        params.add("code", code);
-
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-
-        // 카카오 API에 POST 요청을 보내 토큰 획득
-        ResponseEntity<Map> response = restTemplate.postForEntity(kakaoTokenUri, request, Map.class);
-        log.info("getKakaoAccessToken에서 response {}", response);
-
-        // 응답에서 액세스 토큰 얻기
-        String accessToken = (String) response.getBody().get("access_token");
-        log.info("getKakaoAccessToken에서 accessToken {}", accessToken);
-
-        return accessToken;
-    }
-
-    private String getNaverAccessToken(String code){  // 카카오 API 호출을 위한 설정
+    private String getSocialAccessToken(String code, String clientId, String clientSecret, String redirectUri, String tokenUri) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", naverClientId);
-        params.add("client_secret", naverClientSecret);
-        params.add("redirect_uri", naverRedirectUri);  // 등록한 카카오 애플리케이션 설정에 등록한 리다이렉트 URI
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
+        params.add("redirect_uri", redirectUri);
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
-        // 카카오 API에 POST 요청을 보내 토큰 획득
-        ResponseEntity<Map> response = restTemplate.postForEntity(naverTokenUri, request, Map.class);
-        log.info("getNaverAccessToken에서 response {}", response);
+        ResponseEntity<Map> response = restTemplate.postForEntity(tokenUri, request, Map.class);
+        log.info("getSocialAccessToken에서 response {}", response);
 
-        // 응답에서 액세스 토큰 얻기
         String accessToken = (String) response.getBody().get("access_token");
-        log.info("getNaverAccessToken에서 accessToken {}", accessToken);
-
+        log.info("getSocialAccessToken에서 accessToken {}", accessToken);
         return accessToken;
     }
 
-    private OAuth2UserInfo getUserInfo(String provider, String accessToken){
+    public OAuth2UserInfo getUserInfo(String provider, String accessToken){
+        String userInfoUri = switch (provider) {
+            case "kakao" -> kakaoUserInfoUri;
+            case "naver" -> naverUserInfoUri;
+            default -> throw new InvalidSocialTypeException();
+        };
+
+        Map<String, Object> userInfo = getSocialUserInfo(accessToken, userInfoUri);
+
         return switch (provider) {
-            case "kakao" -> getKakaoUserInfo(accessToken);
-            case "naver" -> getNaverUserInfo(accessToken);
+            case "kakao" -> new KakaoUserInfo(userInfo);
+            case "naver" -> new NaverUserInfo((Map) userInfo.get("response"));
             default -> throw new InvalidSocialTypeException();
         };
     }
 
-    private OAuth2UserInfo getKakaoUserInfo(String accessToken){
+    private Map<String, Object> getSocialUserInfo(String accessToken, String userInfoUri){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
-        URI uri = UriComponentsBuilder.fromUriString(kakaoUserInfoUri)
+        URI uri = UriComponentsBuilder.fromUriString(userInfoUri)
                 .build()
                 .toUri();
 
         ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class);
-        Map<String, Object> userInfo;
+
         try {
-            userInfo = new ObjectMapper().readValue(response.getBody(), Map.class);
+            return new ObjectMapper().readValue(response.getBody(), Map.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        log.info("getKakaoUserInfo에서 userInfo {}", userInfo);
-        return new KakaoUserInfo(userInfo);
-    }
-
-    private OAuth2UserInfo getNaverUserInfo(String accessToken){
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + accessToken);
-        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
-
-        URI uri = UriComponentsBuilder.fromUriString(naverUserInfoUri)
-                .build()
-                .toUri();
-
-        ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, String.class);
-        Map<String, Object> userInfo;
-        try {
-            userInfo = new ObjectMapper().readValue(response.getBody(), Map.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        log.info("getNaverUserInfo에서 userInfo {}", userInfo);
-        return new NaverUserInfo((Map)userInfo.get("response"));
     }
 
     private void setTokensForUser(String userId, HttpServletResponse response, String refreshToken){
@@ -198,62 +150,67 @@ public class OAuth2Service {
     }
 
     private User registerUser(OAuth2UserInfo userInfo, HttpServletResponse response){
-        String provider = userInfo.getProvider();
         String providerId = userInfo.getProviderId();
         UUID uuid = UUID.nameUUIDFromBytes(providerId.getBytes());
         String id = uuid.toString();
-        String username = userInfo.getName();
-        String email = userInfo.getEmail();
-        String profileUrl = userInfo.getProfileUrl();
-        String gender = userInfo.getGender();
-        int ageRange = userInfo.getAgeRange();
-        String nickname = userInfo.getNickName();
-        List<Role> userRoles = new ArrayList<>();
 
         Optional<User> findUser = userRepository.findById(id);
-        User user = null;
-        Auth auth = null;
         String refreshToken = jwtService.createRefreshToken();
+        User user;
+
         if (findUser.isEmpty()) { //찾지 못했다면
             log.info("등록되지 않은 사용자입니다.");
-            userRoles.add(roleRepository.findByRoleName("여행 초보자"));
-            user = User.builder()
-                    .id(id)
-                    .nickname(nickname)
-                    .gender(gender)
-                    .ageRange(ageRange)
-                    .profile_url(profileUrl)
-                    .userRoles(userRoles)
-                    .build();
-            userRepository.save(user);
-            auth = Auth.builder()
-                    .id(id)
-                    .email(email)
-                    .name(username)
-                    .provider(provider)
-                    .providerId(providerId)
-                    .authority(Authority.USER)
-                    .refreshToken(refreshToken)
-                    .build();
-            authRepository.save(auth);
+            user = registerNewUser(id, userInfo);
+            registerNewAuth(id, userInfo, refreshToken);
         }
         else{
             log.info("{}는 등록된 사용자입니다", findUser.get().getNickname());
             user = findUser.get();
-            auth = Auth.builder()
-                    .id(id)
-                    .email(email)
-                    .name(username)
-                    .provider(provider)
-                    .providerId(providerId)
-                    .authority(Authority.USER)
-                    .refreshToken(refreshToken)
-                    .build();
-            authRepository.save(auth);
+            updateExistingAuth(id, refreshToken);
         }
         setTokensForUser(user.getId(), response, refreshToken);
         return user;
     }
+
+    private User registerNewUser(String id, OAuth2UserInfo userInfo) {
+        List<Role> userRoles = new ArrayList<>();
+        userRoles.add(roleRepository.findByRoleName("여행 초보자"));
+
+        User newUser = User.builder()
+                .id(id)
+                .nickname(userInfo.getName())
+                .gender(userInfo.getGender())
+                .ageRange(userInfo.getAgeRange())
+                .profile_url(userInfo.getProfileUrl())
+                .userRoles(userRoles)
+                .build();
+
+        userRepository.save(newUser);
+        return newUser;
+    }
+
+    private void registerNewAuth(String id, OAuth2UserInfo userInfo, String refreshToken) {
+        Auth newAuth = Auth.builder()
+                .id(id)
+                .email(userInfo.getEmail())
+                .name(userInfo.getName())
+                .provider(userInfo.getProvider())
+                .providerId(userInfo.getProviderId())
+                .authority(Authority.USER)
+                .refreshToken(refreshToken)
+                .build();
+
+        authRepository.save(newAuth);
+    }
+
+    private void updateExistingAuth(String id, String refreshToken) {
+        Auth existingAuth = authRepository.findById(id)
+                .orElseThrow(AuthNotFoundException::new);
+
+        existingAuth.setRefreshToken(refreshToken);
+        authRepository.save(existingAuth);
+    }
+
     public void logout(HttpServletRequest request) {
         String accessToken = jwtService.extractAccessToken(request).orElseThrow(InvalidTokenException::new);
         String id = jwtService.extractId(accessToken).orElseThrow(InvalidTokenException::new);

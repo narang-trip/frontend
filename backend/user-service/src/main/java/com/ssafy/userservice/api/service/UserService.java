@@ -34,63 +34,6 @@ public class UserService extends DefaultOAuth2UserService {
 
     private final EventProducer eventProducer;
 
-    @Override
-    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oAuth2User = super.loadUser(userRequest);
-        OAuth2UserInfo userInfo = null;
-        System.out.println(oAuth2User.getAttributes());
-        System.out.println(userRequest.getClientRegistration().getRegistrationId());
-
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        System.out.println("registrationId = " + registrationId);
-        if (registrationId.equals("naver")) {
-            userInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
-        } else if (registrationId.equals("kakao")) {
-            userInfo = new KakaoUserInfo(oAuth2User.getAttributes());
-        } else {
-            System.out.println("로그인 실패");
-        }
-        System.out.println("userInfo : \n" + userInfo);
-
-        String provider = userInfo.getProvider();
-        String providerId = userInfo.getProviderId();
-        UUID uuid = UUID.nameUUIDFromBytes(provider.getBytes());
-        String id = uuid.toString();
-        String username = userInfo.getName();
-        String email = userInfo.getEmail();
-        String profileUrl = userInfo.getProfileUrl();
-        String gender = userInfo.getGender();
-        int ageRange = userInfo.getAgeRange();
-        String nickname = userInfo.getNickName();
-
-        Optional<Auth> findAuth = authRepository.findById(id);
-        User user = null;
-        Auth auth = null;
-        if (findAuth.isEmpty()) { //찾지 못했다면
-            user = User.builder()
-                    .id(id)
-                    .nickname(nickname)
-                    .gender(gender)
-                    .ageRange(ageRange)
-                    .profile_url(profileUrl)
-                    .build();
-            userRepository.save(user);
-            auth = Auth.builder()
-                    .id(id)
-                    .email(email)
-                    .name(username)
-                    .provider(provider)
-                    .providerId(providerId)
-                    .authority(Authority.USER)
-                    .build();
-            authRepository.save(auth);
-        }
-        else{
-            auth =findAuth.get();
-        }
-        return new PrincipalDetails(auth, oAuth2User.getAttributes());
-    }
-
     // User 탈퇴
     public ResponseEntity<?> deleteUser(String id){
         Optional<User> findUser = userRepository.findById(id);
