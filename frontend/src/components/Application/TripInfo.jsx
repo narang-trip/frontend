@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { SlCalender, SlLocationPin, SlPeople, SlBadge } from "react-icons/sl";
+import { SlCalender, SlLocationPin } from "react-icons/sl";
 
 
 import DateFormatter from "../DateFormatter";

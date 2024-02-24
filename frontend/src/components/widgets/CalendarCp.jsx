@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import moment from "moment";
 import colors from "tailwindcss/colors";
-import { GoDotFill } from "react-icons/go";
 
 import "../../css/Calendar.css";
 
