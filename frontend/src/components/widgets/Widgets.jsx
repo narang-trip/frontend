@@ -30,7 +30,7 @@ export default function Widgets() {
     <div className="text-center relative ">
      
       <CalendarCp />
-      <div className="h-[42svh] mt-3 bg-blue-200/30 rounded-lg" ref={chatScrollRef}>
+      <div className="h-[42svh] mt-3 bg-blue-200/10 rounded-lg" ref={chatScrollRef}>
         {!isLogin && (
           <div className="flex flex-col justify-center items-center h-full">
           <p className={`text-lg font-semibold animate-bounce text-${conceptColor}-500`}>채팅을 사용하려면</p>
