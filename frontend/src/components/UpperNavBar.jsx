@@ -178,7 +178,7 @@ const UpperNavbar = () => {
     <header className="sticky top-0 z-40 flex items-center justify-between w-full p-4 bg-stone-100 ">
       <div className="ml-5">
         <img
-          src="/narang_logo.png"
+          src="/narang_logo.webp"
           width="44"
           height="44"
           className="hover:cursor-pointer"
