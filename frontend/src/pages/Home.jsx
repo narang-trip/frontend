@@ -45,7 +45,7 @@ const HomePage = () => {
               animate="visible"
               exit="exit"
               variants={textAnimation}
-              className="text-2xl"
+              className="text-2xl font-bold"
             >
               {mainConceptDescription.map((des, index) => {
                 return <div key={index}>{des}</div>;
