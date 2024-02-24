@@ -30,13 +30,13 @@ export const conceptTemaColorObject = {
 };
 
 export const conceptTemaBannerColorObject = {
-    "낭만": "bg-red-500 hover:bg-red-400",
-    "건축": "bg-teal-500 hover:bg-teal-400",
-    "모험": "bg-yellow-500 hover:bg-yellow-400",
-    "자유": "bg-sky-500 hover:bg-sky-400",
-    "쇼핑": "bg-violet-500 hover:bg-violet-400",
-    "휴양": "bg-emerald-500 hover:bg-emerald-400",
-    "핫플": "bg-rose-500 hover:bg-rose-400"
+    "낭만": "bg-red-600 hover:bg-red-400",
+    "건축": "bg-teal-600 hover:bg-teal-400",
+    "모험": "bg-yellow-600 hover:bg-yellow-400",
+    "자유": "bg-sky-600 hover:bg-sky-400",
+    "쇼핑": "bg-violet-600 hover:bg-violet-400",
+    "휴양": "bg-emerald-600 hover:bg-emerald-400",
+    "핫플": "bg-rose-600 hover:bg-rose-400"
 };
 
 export const conceptNeonColorObject = {
