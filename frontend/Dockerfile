@@ -1,7 +1,7 @@
 FROM nginx:latest
 
 # root에 /app/build 폴더 생성
-RUN mkdir /app/build
+RUN mkdir -p /app/build
 
 # work dir 고정
 WORKDIR /app/build
