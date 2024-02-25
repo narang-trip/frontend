@@ -44,6 +44,25 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin(), // JavaScript 코드 최적화
+      new CssMinimizerPlugin(), // CSS 코드 최적화
+      new ImageMinimizerPlugin({ // 이미지 최적화
+        minimizer: {
+          implementation: ImageMinimizerPlugin.imageminMinify,
+          options: {
+            plugins: [
+              ['imagemin-mozjpeg', { progressive: true }],
+              ['imagemin-pngquant', { quality: [0.6, 0.8] }],
+              ['imagemin-svgo'],
+            ],
+          },
+        },
+      }),
+    ],
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].css',
