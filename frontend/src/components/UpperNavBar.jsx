@@ -179,9 +179,7 @@ const UpperNavbar = () => {
       <div className="ml-5">
         <img
           src="/narang_logo.webp"
-          width="44"
-          height="44"
-          className="hover:cursor-pointer"
+          className="w-44 h-auto hover:cursor-pointer"
           onClick={navigateHome}
           alt="Home"
         />
