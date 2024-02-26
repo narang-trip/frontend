@@ -14,7 +14,7 @@ export default defineConfig({
     react(),
     compression( {
       include: [/\.(js)$/, /\.(css)$/],
-      threshold: 1400
+      threshold: 1000
     })
   ],
 });
