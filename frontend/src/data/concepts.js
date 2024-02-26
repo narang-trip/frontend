@@ -49,13 +49,13 @@ export const conceptNeonColorObject = {
     "핫플": "neon-rose "
 }
 export const conceptTextColorObject = {
-    "낭만": "text-red-600 ",
-    "건축": "text-teal-600 ",
-    "모험": "text-yellow-600 ",
-    "자유": "text-sky-600 ",
-    "쇼핑": "text-violet-600 ",
-    "휴양": "text-emerald-600 ",
-    "핫플": "text-rose-600 "
+    "낭만": "text-red-400",
+    "건축": "text-teal-400",
+    "모험": "text-yellow-400",
+    "자유": "text-sky-400",
+    "쇼핑": "text-violet-400",
+    "휴양": "text-emerald-400",
+    "핫플": "text-rose-400"
 }
 export const conceptChatRoomColorObject = {
     "낭만": "bg-red-200",
