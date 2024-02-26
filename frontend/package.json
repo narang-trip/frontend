@@ -57,7 +57,6 @@
     "tailwindcss": "^3.4.1",
     "terser-webpack-plugin": "^5.3.10",
     "vite": "^5.0.8",
-    "vite-plugin-inspector": "^1.0.4",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
   }

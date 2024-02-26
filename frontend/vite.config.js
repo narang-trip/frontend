@@ -14,6 +14,5 @@ export default defineConfig({
   plugins: [
     react(),
     visualizer({ open: true, gzipSize: true, brotliSize: true }), // Rollup 플러그인을 이렇게 추가
-    inspector(), // Vite 플러그인 인스펙터 추가
   ],
 });
