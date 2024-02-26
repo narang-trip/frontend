@@ -7,12 +7,15 @@ import {
   SlEye,
 } from "react-icons/sl";
 import { useNavigate } from "react-router-dom";
+import Resizer from 'react-image-file-resizer';
+
 import DateFormatter from "../../DateFormatter";
 
 const TripSummary = ({ trip }) => {
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [isHovered, setIsHovered] = useState(false);
+  const [optimizedImageUrl, setOptimizedImageUrl] = useState("");  
 
   const navigate = useNavigate();
 
@@ -44,7 +47,23 @@ const TripSummary = ({ trip }) => {
   useEffect(() => {
     setDepartureDate(DateFormatter({ dateString: trip.departureDate }));
     setReturnDate(DateFormatter({ dateString: trip.returnDate }));
-  }, [trip.departureDate, trip.returnDate]);
+  // 이미지 최적화
+  Resizer.imageFileResizer(
+    trip.tripImgUrl,
+    240, // 넓이
+    192, // 높이
+    'JPEG', // 포맷
+    100, // 품질 (0-100)
+    0, // 회전 각도 (0-360)
+    (uri) => {
+      setOptimizedImageUrl(uri);
+    },
+    'base64', // 반환 형식 ('base64', 'blob', 'file')
+    300, // 최대 파일 크기 (KB)
+    100 // 최대 이미지 높이 (px)
+  );
+}, [trip.departureDate, trip.returnDate, trip.tripImgUrl]);
+
 
   return (
     <Fragment>
@@ -58,9 +77,9 @@ const TripSummary = ({ trip }) => {
           <div className="grid">
             <div className="relative overflow-hidden group rounded-3xl">
               <img
-                src={trip.tripImgUrl}
+                src={optimizedImageUrl}
                 alt="tripThumbnail"
-                className="mb-2 transition-transform duration-300 ease-in-out transform scale-100 w-[15rem] h-[12rem] rounded-3xl group-hover:scale-125"
+                className="mb-2 transition-transform duration-300 ease-in-out transform scale-100 rounded-3xl group-hover:scale-125"
               />
               {isHovered && (
                 <div className="absolute inset-0 flex flex-col items-end justify-end bg-black text-neutral-800 bg-opacity-20">
