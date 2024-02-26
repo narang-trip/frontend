@@ -1,6 +1,4 @@
 import { useState, Fragment } from "react";
-import DatePicker from "react-datepicker";
-import { ko } from "date-fns/locale";
 
 import UserInfo from "../components/Mypage/UserInfo";
 import SmallPlan from "../components/Mypage/SmallPlan";

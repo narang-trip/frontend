@@ -1,16 +1,13 @@
 FROM nginx:latest
 
-# root에 /app 폴더 생성
-RUN mkdir /app
+# root에 /app/build 폴더 생성
+RUN mkdir -p /app/build
 
 # work dir 고정
-WORKDIR /app
-
-# work dir에 build 폴더 생성
-RUN mkdir ./build
+WORKDIR /app/build
 
 # host pc의 현재 경로의 build 폴더를 work dir의 build 폴더로 복사
-ADD ./frontend/dist ./build
+COPY ./frontend/dist .
 
 # nginx 설정 파일 복사
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf

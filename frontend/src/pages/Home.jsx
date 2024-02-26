@@ -11,11 +11,11 @@ const HomePage = () => {
   const [lineColor, setLineColor] = useState(colors.teal["400"]);
   const { concept, conceptColor } = useSelector((state) => state.concept);
   const mainConceptDescription = mainConceptDescriptions[concept];
-  const [className, setClassName] = useState(`bg-${conceptColor}-500`);
+  const [className, setClassName] = useState(`bg-${conceptColor}-600`);
 
   useEffect(() => {
     // conceptColor가 변경될 때마다 className 상태를 업데이트
-    const newClassName = `w-full h-[20%] bg-${conceptColor}-500 rounded-3xl flex text-white items-center justify-center transition-colors duration-700`;
+    const newClassName = `w-full h-[20%] bg-${conceptColor}-600 rounded-3xl flex text-white items-center justify-center transition-colors duration-700`;
     setClassName(newClassName);
     setLineColor(colors[conceptColor]["400"]);
   }, [conceptColor]);
@@ -45,7 +45,7 @@ const HomePage = () => {
               animate="visible"
               exit="exit"
               variants={textAnimation}
-              className="text-2xl"
+              className="text-2xl font-bold"
             >
               {mainConceptDescription.map((des, index) => {
                 return <div key={index}>{des}</div>;

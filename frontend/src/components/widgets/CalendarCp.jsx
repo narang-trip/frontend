@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import moment from "moment";
 import colors from "tailwindcss/colors";
-import { GoDotFill } from "react-icons/go";
 
 import "../../css/Calendar.css";
 
@@ -12,8 +11,8 @@ import "../../css/Calendar.css";
 const CalendarCp = () => {
   const { conceptColor } = useSelector((state) => state.concept);
   const dynamicColor = colors[conceptColor]
-    ? colors[conceptColor][400]
-    : colors.gray[400];
+    ? colors[conceptColor][600]
+    : colors.gray[600];
   const [value, setValue] = useState(new Date());
   const [activeDate, setActiveDate] = useState(null); // 클릭한 날짜를 저장할 상태
   const navigate = useNavigate();

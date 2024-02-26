@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadTrip } from "../actions/trip";
+import { loadTrip } from "../actions/trip.js";
 
 const initialState = {
   loadTripLoading: false,

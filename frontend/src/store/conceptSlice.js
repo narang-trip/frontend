@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { conceptTemaColorObject} from "../data/concepts"
+import { conceptTemaColorObject} from "../data/concepts.js"
 const initialState = {
   concept: "건축",
   conceptColor: "teal",

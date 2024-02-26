@@ -178,8 +178,8 @@ const UpperNavbar = () => {
     <header className="sticky top-0 z-40 flex items-center justify-between w-full p-4 bg-stone-100 ">
       <div className="ml-5">
         <img
-          src="/narang_logo.png"
-          className="w-11 h-11 hover:cursor-pointer"
+          src="/narang_logo.webp"
+          className="w-11 h-auto hover:cursor-pointer"
           onClick={navigateHome}
           alt="Home"
         />
