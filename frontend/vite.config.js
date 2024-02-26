@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { visualizer } from 'rollup-plugin-visualizer';
-import inspector from 'vite-plugin-inspector';
 
 export default defineConfig({
   server: {
