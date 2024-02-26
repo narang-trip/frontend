@@ -19,16 +19,6 @@ export const conceptButtonColorObject = {
     "핫플": "bg-rose-400 hover:bg-rose-500"
 };
 
-export const conceptTemaColorObject = {
-    "낭만": "red",
-    "건축": "teal",
-    "모험": "yellow",
-    "자유": "sky",
-    "쇼핑": "violet",
-    "휴양": "emerald",
-    "핫플": "rose"
-};
-
 export const conceptTemaBannerColorObject = {
     "낭만": "bg-red-600 hover:bg-red-400",
     "건축": "bg-teal-600 hover:bg-teal-400",
@@ -57,16 +47,6 @@ export const conceptTextColorObject = {
     "휴양": "text-emerald-400",
     "핫플": "text-rose-400"
 }
-export const conceptChatRoomColorObject = {
-    "낭만": "bg-red-200",
-    "건축": "bg-teal-200",
-    "모험": "bg-yellow-200",
-    "자유": "bg-sky-200",
-    "쇼핑": "bg-violet-200",
-    "휴양": "bg-emerald-200",
-    "핫플": "bg-rose-200"
-};
-//TailwindCss가 처음에 있다고 판단한것만 만들어두기 때문에 필요한 것들을 모아놓은 것
 
 export const mainConceptDescriptions = {
     "낭만": ["빛 아래에서의 속삭임, 해변의 일몰과 함께하는 춤.", "낭만적인 여행으로 삶에 사랑의 불꽃을 다시 지펴보세요."],
@@ -77,3 +57,4 @@ export const mainConceptDescriptions = {
     "휴양": ["일상의 스트레스에서 벗어나, 몸과 마음의 평화를 찾는 여행.", "함께라면, 진정한 휴식을 경험할 수 있습니다."],
     "핫플": ["세계 곳곳의 핫플레이스를 발견하고, 그곳만의 매력에 빠져보세요.", "함께하는 사람과 최신의 트렌드를 즐겨보세요."]
 }
+//TailwindCss가 처음에 있다고 판단한것만 만들어두기 때문에 필요한 것들을 모아놓은 것

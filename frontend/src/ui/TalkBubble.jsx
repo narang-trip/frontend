@@ -1,4 +1,3 @@
-import colors from "tailwindcss/colors";
 
 import "../css/TalkBubble.css"
 
