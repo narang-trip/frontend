@@ -52,10 +52,12 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "image-webpack-loader": "^8.1.0",
     "mini-css-extract-plugin": "^2.8.0",
+    "rollup-plugin-visualizer": "^5.12.0",
     "sass": "^1.70.0",
     "tailwindcss": "^3.4.1",
     "terser-webpack-plugin": "^5.3.10",
     "vite": "^5.0.8",
+    "vite-plugin-inspector": "^1.0.4",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
   }

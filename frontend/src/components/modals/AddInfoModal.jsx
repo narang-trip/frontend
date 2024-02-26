@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 
