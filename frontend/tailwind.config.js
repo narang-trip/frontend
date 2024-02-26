@@ -40,14 +40,5 @@ export default {
       }
       addUtilities(neonUtilities);
     }),
-    plugin(({ addUtilities }) => {
-      const alignMiddleUtilities = {
-        '.align-middle': {
-          display: 'block',
-          verticalAlign: 'middle',
-        },
-      };
-      addUtilities(alignMiddleUtilities);
-    }),
   ],
 };
