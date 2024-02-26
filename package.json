@@ -1,6 +1,0 @@
-{
-  "devDependencies": {
-    "rollup-plugin-visualizer": "^5.12.0",
-    "vite-plugin-inspector": "^1.0.4"
-  }
-}
