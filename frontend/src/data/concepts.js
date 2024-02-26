@@ -10,13 +10,13 @@ export const conceptColorObject = {
     "핫플": "rose"
 };
 export const conceptButtonColorObject = {
-    "낭만": "bg-red-500 hover:bg-red-700",
-    "건축": "bg-teal-500 hover:bg-teal-700",
-    "모험": "bg-yellow-500 hover:bg-yellow-700",
-    "자유": "bg-sky-500 hover:bg-sky-700",
-    "쇼핑": "bg-violet-500 hover:bg-violet-700",
-    "휴양": "bg-emerald-500 hover:bg-emerald-700",
-    "핫플": "bg-rose-500 hover:bg-rose-700"
+    "낭만": "bg-red-600 hover:bg-red-700",
+    "건축": "bg-teal-600 hover:bg-teal-700",
+    "모험": "bg-yellow-600 hover:bg-yellow-700",
+    "자유": "bg-sky-600 hover:bg-sky-700",
+    "쇼핑": "bg-violet-600 hover:bg-violet-700",
+    "휴양": "bg-emerald-600 hover:bg-emerald-700",
+    "핫플": "bg-rose-600 hover:bg-rose-700"
 };
 
 export const conceptTemaColorObject = {

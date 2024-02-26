@@ -56,7 +56,7 @@ const TripListContent = () => {
     return <NoDataMsg conceptColor={conceptColor} />;
   } //데이터 없으면
 
-  // return <CarouselTemplete list={conceptTripList} />;
+  return <CarouselTemplete list={conceptTripList} />;
   //둘다 아니면
 }
 
