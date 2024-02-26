@@ -47,22 +47,30 @@ const TripSummary = ({ trip }) => {
   useEffect(() => {
     setDepartureDate(DateFormatter({ dateString: trip.departureDate }));
     setReturnDate(DateFormatter({ dateString: trip.returnDate }));
-  // 이미지 최적화
-  Resizer.imageFileResizer(
-    trip.tripImgUrl,
-    240, // 넓이
-    192, // 높이
-    'JPEG', // 포맷
-    100, // 품질 (0-100)
-    0, // 회전 각도 (0-360)
-    (uri) => {
-      setOptimizedImageUrl(uri);
-    },
-    'base64', // 반환 형식 ('base64', 'blob', 'file')
-    300, // 최대 파일 크기 (KB)
-    100 // 최대 이미지 높이 (px)
-  );
-}, [trip.departureDate, trip.returnDate, trip.tripImgUrl]);
+
+    // 이미지 최적화
+    fetch(trip.tripImgUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        Resizer.imageFileResizer(
+          blob,
+          240, // 넓이
+          192, // 높이
+          'JPEG', // 포맷
+          100, // 품질 (0-100)
+          0, // 회전 각도 (0-360)
+          (uri) => {
+            setOptimizedImageUrl(uri);
+          },
+          'base64', // 반환 형식 ('base64', 'blob', 'file')
+          300, // 최대 파일 크기 (KB)
+          100 // 최대 이미지 높이 (px)
+        );
+      })
+      .catch((error) => {
+        console.error("이미지 로딩 오류", error);
+      });
+  }, [trip.departureDate, trip.returnDate, trip.tripImgUrl]);
 
 
   return (
