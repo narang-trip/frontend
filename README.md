@@ -300,6 +300,22 @@ Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woo
 
 [![api](./assets/a701_API.PNG)](hhttps://cheddar-cloudberry-278.notion.site/API-12102a6f33ee4c719a7052d4aee29b9c)
 
+### 4. Frontend Refactoring
+- 성능
+depCheck : 쓰지 않는 dependency check 후 uninstall 로 전체 프로젝트 가볍게 하기  
+vite-plugin-compression2 : 설치후 vite.config.js 설정 변경
+nginx.conf gzip : 텍스트 압축 활성화로 초기 로딩 text 용량을 줄여 성능 향상
+
+event-source 및 datepicker 에 사용되는 babel 및 polyfill로 인해 성능이 조금 떨어짐 
+
+- 접근성 
+font-display: swap 을 통해 폰트 설정 전 text표시로 사용자 경험 향상  
+사이트 버튼, 메인 컨셉 색깔 변경으로 사용자 접근성 향상
+
+- 모범 사례
+초기 더미 데이터로 저장된 DB 상의 이미지와 front에서 표현하는 비율이 달라 점수가 조금 떨어짐
+
+- SEO
 
 # 🛫회고
 
