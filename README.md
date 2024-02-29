@@ -327,7 +327,7 @@ export default defineConfig({
   ],
 });
 ```
-
+이후 압축이 잘 되지 않아 후술한 nginx.conf gzip setting을 추가해서 해결해줌
 nginx.conf gzip setting: 텍스트 압축 활성화로 초기 로딩 text 용량을 줄여 성능 향상
 
 event-source 및 datepicker 에 사용되는 babel 및 polyfill로 인해 성능이 조금 떨어짐 
