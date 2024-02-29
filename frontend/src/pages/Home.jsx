@@ -8,7 +8,7 @@ import TripList from "../components/TripList";
 import Concept from "../components/Concept";
 
 const HomePage = () => {
-  const [lineColor, setLineColor] = useState(colors.teal["400"]);
+  const [lineColor, setLineColor] = useState(colors.rose["400"]);
   const { concept, conceptColor } = useSelector((state) => state.concept);
   const mainConceptDescription = mainConceptDescriptions[concept];
   const [className, setClassName] = useState(`bg-${conceptColor}-600`);

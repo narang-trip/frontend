@@ -7,6 +7,7 @@ import {
   SlEye,
 } from "react-icons/sl";
 import { useNavigate } from "react-router-dom";
+
 import DateFormatter from "../../DateFormatter";
 
 const TripSummary = ({ trip }) => {

@@ -8,7 +8,6 @@
 6. [**기술 스택**](#🛫기술-스택)
 7. [**프로젝트 일정 및 산출물**](#🛫프로젝트-산출물)
 8. [**회고**](#🛫회고)
-
 <br/>
 
 ---
@@ -300,10 +299,57 @@ Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woo
 
 [![api](./assets/a701_API.PNG)](hhttps://cheddar-cloudberry-278.notion.site/API-12102a6f33ee4c719a7052d4aee29b9c)
 
+### 4. Frontend Refactoring
+- 성능
+depCheck : 쓰지 않는 dependency check 후 uninstall 로 전체 프로젝트 가볍게 하기  
+vite-plugin-compression2 : 설치후 vite.config.js 설정 변경
+```js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import compression from 'vite-plugin-compression2';
+
+export default defineConfig({
+  server: {
+    host: true,
+    port: 3000,
+  },
+  define: {
+    global: {},
+  },
+  plugins: [
+    react(),
+    compression( {
+      include: [/\.(js)$/, /\.(css)$/],
+      threshold: 1000,
+    })
+  ],
+});
+
+```
+이후 압축이 잘 되지 않아 후술한 nginx.conf gzip setting을 추가해서 해결해줌
+nginx.conf gzip setting: 텍스트 압축 활성화로 초기 로딩 text 용량을 줄여 성능 향상
+nginx.conf gzip : 텍스트 압축 활성화로 초기 로딩 text 용량을 줄여 성능 향상
+event-source 및 datepicker 에 사용되는 babel 및 polyfill로 인해 성능이 조금 떨어짐 
+
+- 접근성 
+font-display: swap 을 통해 폰트 설정 전 text표시로 사용자 경험 향상  
+사이트 버튼, 메인 컨셉 색깔 변경으로 사용자 접근성 향상
+
+- 모범 사례
+초기 더미 데이터로 저장된 DB 상의 이미지와 front에서 표현하는 비율이 달라 점수가 조금 떨어짐
+
+- SEO
+
+![api](./assets/나랑등대중간점수.PNG)
+![api](./assets/나랑등대최종점수.PNG)
+개선을 통해 FCP 1.5초 -> 0.7초로 약 53%향상
+LCP 2.5초 -> 1.6초로 약 36%향상
+Total Blocking Time(TBT) 80ms -> 40ms 로 50%로 시간 단축
+Speed Index 1.9s -> 1.4s 로 약 26%향상
 
 # 🛫회고
 
-- [조용환](https://github.com/yhc-key) :
+- [조용환](https://github.com/yhc-key) : gerrit의 중요성, 코드 리뷰의 중요성을 다시 한 번 깨달을 수 있었습니다. 최종 기한 직전에 문제 발생시 디버깅에 굉장히 오랜 시간이 걸리므로 예방의 느낌으로 미리미리 하는 것을 생활화 하도록 하겠습니다.
 - [구본승](https://github.com/kbs3103) :
 - [노세희](https://github.com/se2develop) :
 - [김영섭](https://github.com/youngkimi) :

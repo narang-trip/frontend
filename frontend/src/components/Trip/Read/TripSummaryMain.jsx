@@ -49,6 +49,7 @@ const TripSummaryMain = ({ trip }) => {
             <img
                src={trip.tripImgUrl}
                alt="tripThumbnail"
+               loading="lazy" 
                className="mb-2 transition-transform duration-300 ease-in-out transform scale-100 w-[15rem] h-[9rem] rounded-3xl group-hover:scale-125"
             />
             {isHovered && (

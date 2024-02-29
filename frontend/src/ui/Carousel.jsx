@@ -1,5 +1,4 @@
-import axios from "axios";
-import { Fragment, useEffect, useState } from "react";
+import { useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import TripSummaryMain from "../components/Trip/Read/TripSummaryMain";
