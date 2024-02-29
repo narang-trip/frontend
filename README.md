@@ -8,7 +8,6 @@
 6. [**기술 스택**](#🛫기술-스택)
 7. [**프로젝트 일정 및 산출물**](#🛫프로젝트-산출물)
 8. [**회고**](#🛫회고)
-
 <br/>
 
 ---
@@ -304,7 +303,6 @@ Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woo
 - 성능
 depCheck : 쓰지 않는 dependency check 후 uninstall 로 전체 프로젝트 가볍게 하기  
 vite-plugin-compression2 : 설치후 vite.config.js 설정 변경
-
 ```js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -326,10 +324,11 @@ export default defineConfig({
     })
   ],
 });
+
 ```
 이후 압축이 잘 되지 않아 후술한 nginx.conf gzip setting을 추가해서 해결해줌
 nginx.conf gzip setting: 텍스트 압축 활성화로 초기 로딩 text 용량을 줄여 성능 향상
-
+nginx.conf gzip : 텍스트 압축 활성화로 초기 로딩 text 용량을 줄여 성능 향상
 event-source 및 datepicker 에 사용되는 babel 및 polyfill로 인해 성능이 조금 떨어짐 
 
 - 접근성 
@@ -338,7 +337,6 @@ font-display: swap 을 통해 폰트 설정 전 text표시로 사용자 경험 �
 
 - 모범 사례
 초기 더미 데이터로 저장된 DB 상의 이미지와 front에서 표현하는 비율이 달라 점수가 조금 떨어짐
-
 
 - SEO
 
