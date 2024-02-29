@@ -340,8 +340,8 @@ font-display: swap 을 통해 폰트 설정 전 text표시로 사용자 경험 �
 
 - SEO
 
-[![api](./assets/나랑등대중간점수.PNG)]
-[![api](./assets/나랑등대최종점수.PNG)]
+![api](./assets/나랑등대중간점수.PNG)
+![api](./assets/나랑등대최종점수.PNG)
 개선을 통해 FCP 1.5초 -> 0.7초로 약 53%향상
 LCP 2.5초 -> 1.6초로 약 36%향상
 Total Blocking Time(TBT) 80ms -> 40ms 로 50%로 시간 단축
@@ -349,7 +349,7 @@ Speed Index 1.9s -> 1.4s 로 약 26%향상
 
 # 🛫회고
 
-- [조용환](https://github.com/yhc-key) :
+- [조용환](https://github.com/yhc-key) : gerrit의 중요성, 코드 리뷰의 중요성을 다시 한 번 깨달을 수 있었습니다. 최종 기한 직전에 문제 발생시 디버깅에 굉장히 오랜 시간이 걸리므로 예방의 느낌으로 미리미리 하는 것을 생활화 하도록 하겠습니다.
 - [구본승](https://github.com/kbs3103) :
 - [노세희](https://github.com/se2develop) :
 - [김영섭](https://github.com/youngkimi) :
