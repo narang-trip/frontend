@@ -259,6 +259,7 @@ gRPC는 양방향 스트리밍을 지원하여 요청 없이도 데이터 전달
 | Server   | 서버            | AWS EC2              | \-      |
 |          | 배포            | Docker               | 25.10.1 |
 |          | 배포            | Jenkins              | 2.444   |
+</details> 
 
 ## 4. CI/CD 배포 환경
 
@@ -307,3 +308,80 @@ Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woo
 
 <div id="8"></div>
 
+### 4. Frontend Refactoring
+#### ✅ 성능
+
+depCheck : 쓰지 않는 dependency check 후 uninstall 로 전체 프로젝트 가볍게 하기  
+vite-plugin-compression2 : 설치후 vite.config.js 설정 변경
+```js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import compression from 'vite-plugin-compression2';
+
+export default defineConfig({
+  server: {
+    host: true,
+    port: 3000,
+  },
+  define: {
+    global: {},
+  },
+  plugins: [
+    react(),
+    compression( {
+      include: [/\.(js)$/, /\.(css)$/],
+      threshold: 1000,
+    })
+  ],
+});
+
+```
+이후 압축이 잘 되지 않아 후술한 nginx.conf gzip setting을 추가해서 해결해줌
+nginx.conf gzip setting: 텍스트 압축 활성화로 초기 로딩 text 용량을 줄여 성능 향상
+nginx.conf gzip : 텍스트 압축 활성화로 초기 로딩 text 용량을 줄여 성능 향상
+event-source 및 datepicker 에 사용되는 babel 및 polyfill로 인해 성능이 조금 떨어짐 
+
+#### ✅ 접근성
+
+font-display: swap 을 통해 폰트 설정 전 text표시로 사용자 경험 향상  
+사이트 버튼, 메인 컨셉 색깔 변경으로 사용자 접근성 향상
+
+#### ✅ 권장사항
+
+초기 더미 데이터로 저장된 DB 상의 이미지와 front에서 표현하는 비율이 달라 점수가 조금 떨어짐
+
+#### ✅ 검색엔진 최적화
+
+1. 이미지 비율 
+ 
+ - 원본 이미지 비율과 설정한 이미지 비율이 달라서, 이미지 비율을 맞추도록 코드를 수정해서 해결
+ ```js
+<img
+  src="/narang_logo.webp"
+  className="w-11 h-auto hover:cursor-pointer"
+  onClick={navigateHome}
+  alt="Home"
+/>
+ ```
+
+2. meta 설명 추가
+  - 문서에 문서의 내용을 간략히 설명하는 메타데이터 추가
+  - 명시적으로 메타 설명을 추가하는 것이 SEO (Search Engine Optimization) 측면에서 유리
+```js
+  <meta name="description" content="나랑은 컨셉에 맞춘 여행 동행을 모집하는 웹사이트 입니다. 함께 계획을 수정하며 최고의 여행을 만들어보세요." />
+  <meta name="keywords" content="나랑, NARANG, 동행 모집, 여행 계획 작성, 여행 정보" />
+```
+3. robots.txt 파일 추가
+
+  - 프로젝트의 루트 디렉터리에 robots.txt파일을 추가함으로써 웹 크롤러에게 웹 사이트의 어떤 부분을 크롤링할 수 있고 어떤 부분에 접근할 수 없는지 알려주도록 함
+
+### 💡 결과
+
+
+`FCP` 1.5초 -> 0.7초로 **약 53%향상**
+
+`LCP` 2.5초 -> 1.6초로 **약 36%향상**
+
+`Total Blocking Time(TBT)` 80ms -> 40ms 로 **50%로 시간 단축**
+
+`Speed Index` 1.9s -> 1.4s 로 **약 26%향상**
