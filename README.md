@@ -296,12 +296,9 @@ Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woo
 [![figma](./assets/a701_Figma.PNG)](https://www.figma.com/file/Ig653eosD7BMcO7vaSbXcc/%EB%82%98%EB%9E%91?type=design&node-id=0%3A1&mode=design&t=xQdRy5vecULzInJH-1)
 <br>
 
-### 2. ERD / Architecture
-
+### 2. ERD
 
 ![erd](./assets/a701_ERD.png)
-
-![artitecture](./assets/App_Architecture.png)
 
 <br>
 
