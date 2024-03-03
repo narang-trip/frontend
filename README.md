@@ -297,9 +297,11 @@ Git flow 사용을 위해 우아한 형제들의 [git flow](https://techblog.woo
 
 ### 2. ERD / Architecture
 
+
+![erd](./assets/a701_ERD.png)
+
 ![artitecture](./assets/App_Architecture.png)
 
-![erd](./assets/a701_ERD.PNG)
 <br>
 
 ### 3. API 문서
