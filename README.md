@@ -86,7 +86,7 @@
             <img src="https://avatars.githubusercontent.com/" width="140px" /> <br><br> ⛑ 조예진 <br>(Back-End) </a> <br></td>
     </tr>
     <tr>
-        <td align="center">UI/UX<br/>React<br/>WebSocket</td>
+        <td align="center">UI/UX<br/>실시간 알림 & 채팅 기능<br/>WebSocket & Stomp 통신<br/>FE 인프라 담당<br/>프로젝트 계획 수립 & 일정 관리</td>
         <td align="center">UI/UX<br/>React</td>
         <td align="center">UI/UX<br/>React</td>
         <td align="center">REST API<br/>CI/CD<br/>Infra<br/></td>
